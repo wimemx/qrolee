@@ -1,0 +1,166 @@
+.registry.entities{
+    height: auto;
+}
+.registry.entities  .registry{
+    height: auto;
+    padding-bottom: 50px;
+}
+#registry{
+    padding: 0px;
+}
+    #registry p{
+        font-size: 12px;
+        font-family: 'Montserrat' sans-serif;
+        height: 20px;
+        line-height: 20px;
+        float: left;
+        width: 100%;
+        display: inline-block;
+        position: relative;
+    }
+    #registry .textarea{
+        height: 100px;
+    }
+        .textarea textarea{
+            padding: 10px 0px 0px 0px !important;
+            height: 50px;
+            text-transform: none !important;
+
+        }
+        #registry p span select{
+            opacity: 0;
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        #registry .select{
+            padding: 0px;
+            height: 20px;
+        }
+            #registry .select .text{
+                text-transform: capitalize;
+                width: 100%;
+                height: 100%;
+                display: block;
+                color: #424242;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
+            }
+            #registry .select .dropdown{
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                width: 15px;
+                height: 100%;
+                display: block;
+                border-left: 1px solid #e4e4e4;
+                background: url('../img/dropdown.png') no-repeat 4px 7px;
+            }
+        .select,#registry p input:not([type='submit']),#registry p textarea{
+            color: #424242;
+            height: 100%;
+            outline: none;
+            display: block;
+            border:1px solid #e4e4e4;
+            margin:0px !important;
+            background: #fff;
+            text-indent: 5px;
+            font-family: 'Conv_fontscore.com_d-dinproregular';
+        }
+        #registry input[type='submit']{
+            background: #cccc66;
+            padding: 3px 10px 3px 10px;
+            font-family: 'Montserrat' sans-serif;
+        }
+        .green_btn{
+            padding: 2px 8px 2px 8px;
+        }
+        .filename{
+            font-family: 'Conv_fontscore.com_d-dinproregular';
+            line-height: 26px;
+        }
+        input.picture{
+            opacity: 0;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            cursor: pointer;
+            width: 80px;
+            border: none;
+        }
+
+#registry .map{
+    height: 100%;
+    display: block;
+}
+#registry #map{
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0px;
+}
+form p .invalid{
+            background: #fff;
+            font-weight: normal;
+            padding: 3px 10px 3px 10px;
+            position: absolute;
+            right: -85px;
+            top: -20px;
+            box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+    .preview,.dz-message{
+        height: 180px;
+        font-family: 'Montserrat' sans-serif;
+        text-align: center;
+        color: #000;
+        float: right;
+        width: 280px;
+        border: 1px dashed #acacac;
+        border-radius: 10px;
+        margin-bottom: 50px;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+    }
+    .dz-message{
+        line-height: 180px;
+    }
+
+    .dz-filename,.dz-size,.dz-success-mark,.dz-error-mark{
+        display: none;
+    }
+    .dz-remove{
+        color: #ed8571;
+        font-family: 'Montserrat' sans-serif;
+        font-size: 10px;
+    }
+    .dz-preview{
+        width: 100px;
+        display: block;
+        margin: 30px auto;
+    }
+
+.message{
+    display: none;
+    font-family: 'Montserrat' sans-serif;
+    font-size: 12px;
+
+}
+.message.success{
+    color: #cccc66;
+}
+.message.fail{
+    color: #e35e47;
+}
+
+#picture{
+    height: 180px;
+    margin-bottom: 50px;
+    width: 282px;
+}
+#cover{
+    height: 180px;
+    width: 282px;
+}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block main_site %}
+<form action="/accounts/login/?login=true" method="post">{% csrf_token %}
+    <p>Username
+        <input type="text" name="username"/>
+    </p>
+    <p>Password
+        <input type="password" name="password" />
+    </p>
+    <p>
+        <input type="submit" value="login"/>
+    </p>
+    {% if error %}
+      {% if error == 'AUTH_FAILED' %}
+          <p class="error">Authentication failed</p>
+      {% else %}{% if error == 'AUTH_DISABLED' %}
+          <p class="error">Your account is disabled</p>
+      {% else %}{% if error == 'AUTH_DENIED' %}
+          <p class="error">You did not allow access</p>
+      {% else %}{% if error == 'INVALID_CREDENTIALS' %}
+          <p class="error">Your username/password are incorrect</p>
+       {% endif %}{% endif %}{% endif %}{% endif %}
+   {% endif %}
+    <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
+        <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
+    </a>
+    <a href="/?twitter_login=true">
+        <img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt=""/>
+    </a>
+</form>
+
+
+{% endblock %}

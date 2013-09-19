@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="grid-16 register single entities content">
+        <gird class="grid-12 center">
+            <span class="grid-4 alpha">
+                <img class="center" src="/static/img/create.png" alt=""/>
+                <a class="center green_btn" href="/registry/register_entity/organization">Crear organizacion</a>
+                <p class="center">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            </span>
+            <span class="grid-4">
+                <img class="center" src="/static/img/create.png" alt=""/>
+                <a class="center green_btn" href="/registry/register_entity/group">Crear grupo</a>
+                <p class="center">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            </span>
+            <span class="grid-4 omega">
+                <img class="center" src="/static/img/create.png" alt=""/>
+                <a class="center green_btn" href="/registry/register_entity/spot">Crear spot</a>
+                <p class="center">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            </span>
+
+        </gird>
+    </div>
+{% endblock %}
+

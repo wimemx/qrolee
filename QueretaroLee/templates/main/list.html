@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="grid-16 entities">
+        <div class="grid-15">
+            <div class="heading">
+                <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
+                <span class="search fleft grid-4">{% csrf_token %}
+                    <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
+                    <input class="id_user" type="hidden" value="{{ user.id }}"/>
+                    <input type="text" class="field_list"/>
+                    <span class="search_list top right dark_yello_btn">Buscar</span>
+                </span>
+                <span class="place_pink avanced_search">Búsqueda avanzada</span>
+            </div>
+            <p class="content">{{ content }}</p>
+            <div id="scrollbar1">
+            <div class="scrollbar"><div class="track"><div class="thumb">
+                <div class="end"></div></div></div></div>
+            <div class="viewport">
+                <div class="overview ">
+                     {% for obj in list %}
+                            <div class="item_list grid-14 no-margin" >
+                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                    <span class="wrapper_list" >
+                                        <img src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}"/>
+                                    </span>
+                                </a>
+                                <span class="container_data grid-12 no-margin">
+                                    <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}"
+                                        class="title alpha title_book grid-10">
+                                        {{ obj.name }}</a>
+                                    <p class="d-text_list d-text_opacity" >
+                                        Lista con 20 libros
+                                        creada por <span class="d-pink">{{ obj.user }}</span></p>
+                                    <p class="d-text_list" >
+                                        {{ obj.description|truncatewords:50 }}</p>
+                                </span>
+                            </div>
+                     {% endfor %}
+                     {% for obj in book %}
+                            <div class="grid-5 fleft results margin_bottom no-margin">
+                                <div class="item">
+                                    <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                        <span class="wrapper wrapper_book fleft no_margin-right">
+                                            <img src="/static/img/foto.jpg" alt=""/>
+                                        </span>
+                                    </a>
+                                    <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                        <h3 class="title title_book margin_left no-margin grid-2 fleftt">
+                                            {{ obj.title|truncatewords:2 }}
+                                        </h3>
+                                    </a>
+                                    <p class="fleft margin_left no-margin grid-2 ">
+                                        Edgar <span>La Biblia</span></p>
+                                </div>
+                            </div>
+                     {% endfor %}
+                     {% for obj in authors %}
+                            <div class="grid-7 alpha">
+                                <a href="/qro_lee/profile/author/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                    <span class="wrapper borde_author">
+                                        <img src="/static/img/foto.jpg" alt="" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/author/{{ obj.name|cut:" " }}_{{ obj.id }}" class="title alpha grid-4">
+                                    {{ obj.name }}</a>
+                                <p class="grid-4 no-margin">que crea un libro con aventuras o ideas para
+                                    enviarlas al editor. La crítica moderna ha
+                                    cuestionado el concepto de autor, ya que
+                                <p class="title_author grid-4 no-margin"> 23 Titulos</p>
+                            </div>
+                     {% endfor %}
+            </div></div></div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="grid-16 entities">
+        <div class="grid-14">
+            <div class="heading">
+                <h3 class="title grid-3 fleft">{{ entity_type.0|capfirst }}</h3>
+                <span class="search fleft grid-4">{% csrf_token %}
+                    <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
+                    <input class="id_user" type="hidden" value="{{ user.id }}"/>
+                    <input type="text"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                </span>
+                <a href="/registry/register_entity/{{ entity_type.1 }}">
+                    <span class="btn_new grid-1 fright">Crear</span>
+                </a>
+            </div>
+            <p class="content">{{ content }}</p>
+            <div id="scrollbar1" {{ classspot }} >
+            <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+            <div class="viewport">
+                <div class="overview">
+                {% for entity in user_entities %}
+
+                {% if entity_type.1 == 'spot' %}
+
+                <div class="grid-7 omega d-spot">
+
+                {% else %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            <div class="grid-7 omega">
+                        {% else %}
+                            <div class="grid-7 alpha">
+                        {% endif %}
+                {% endif %}
+                    <span class="wrapper {{ classimage }}">
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/">
+                        {% if not entity.picture %}
+                            <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                        {% else %}
+                            <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+
+                        {% endif %}
+                    </a>
+                    <a class="brown_btn" href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}/">Editar</a>
+                    </span>
+
+                {% if entity_type.1 == 'spot' %}
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                        <img src="" class="d-icon_map" /> {{ entity.name|capfirst }}</a>
+                    <div class="d-text_spot ">
+                    <p>
+                        {{ entity.address }}
+                        <br>Teléfonos:442 290 8989
+                        <br>
+                        <a class="d-pink" href="" >Biblioteca</a>
+                    </p>
+                    </div>
+                {% else %}
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst }}</a>
+                    <p>{{ entity.description|truncatewords:28 }}</p>
+                {% endif %}
+                </div>
+            {% endfor %}
+            {% for entity in entities %}
+
+                {% if entity_type.1 == 'spot' %}
+
+                <div class="grid-7 omega d-spot">
+
+                {% else %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            <div class="grid-7 omega">
+                        {% else %}
+                            <div class="grid-7 alpha">
+                        {% endif %}
+                {% endif %}
+
+                    <span class="wrapper {{ classimage }}">
+                        {% if not entity.picture %}
+                            <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                        {% else %}
+                            <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+
+                        {% endif %}
+                    </span>
+
+                {% if entity_type.1 == 'spot' %}
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                        <img src="" class="d-icon_m ap" /> {{ entity.name|capfirst }}</a>
+                    <div class="d-text_spot ">
+                    <p>
+                        {{ entity.address }}
+                        <br>Teléfonos:442 290 8989
+                        <br>
+                        <a class="d-pink" href="" >Biblioteca</a>
+                    </p>
+                    </div>
+                {% else %}
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst }}</a>
+                    <p>{{ entity.description|truncatewords:28 }}</p>
+                {% endif %}
+                </div>
+            {% endfor %}
+            </div></div></div>
+            {% if entity_type.1 == 'spot' %}
+            <input type="hidden" class="d-latlon" value="20.598401,-100.39444" />
+            <div class="d-container_map">
+                <div id="d-map" class="d-map_spot"></div>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

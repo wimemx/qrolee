@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+
+        <div class="grid-16 events content single no-margin">
+            <div class="heading d-heading_event grid-14">
+                <h3 class="title grid-3 fleft">{{ entity_type }}</h3>
+                <span class="search fleft grid-4">{% csrf_token %}
+                    <input class="type" type="hidden" value="{{ entity_type }}"/>
+                    <input type="text" class="d_field_search"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                </span>
+            </div>
+        <div class="grid-14 load offset-1 no-margin">
+            <div class="sidebar-a grid-8 no-margin_events">
+                <span class="month">Septiembre</span>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview d-width-container-event">
+                            <span class="item ">
+                                <span class="grid-6 no-margin">
+                                    <span class="date fright din-m"></span>
+                                    <span class="ruler grid-5 fright"></span>
+
+                                </span>
+                                <span class="wrapper fleft">
+                                    <a class="d-link_event" >
+                                        <img class="profile-picture" src="" alt=""/>
+                                    </a>
+                                </span>
+                                <span class="grid-6 fleft no-margin d-top-data">
+                                    <a class="d-link_event" >
+                                        <h3 class="title"></h3>
+                                    </a>
+                                    <p>
+                                        <span class="info grid-6 alpha"></span>
+
+                                    </p>
+                                    <span class="time fleft"></span>
+                                    <span class="location fright">
+                                        <p>
+                                            <span class="place">Centro Historico</span><br>
+                                            <span class="place2">Queretaro</span>
+                                        </p>
+                                        <span class="apply fright">asistir</span>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-5 sidebar-b fleft d-margin_calendar">
+            <h3 class="title">Calendario</h3>
+            <input class="entity" type="hidden" value="-1"/>{% csrf_token %}
+                <div class="overview">
+                    {% autoescape off %}
+                        {{ calendar }}
+                    {% endautoescape %}
+                </div>
+                <div class="controller center">
+                    <span class="prev fleft"><</span>
+                    <span class="next fright">></span>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+
+
+
+{% endblock %}

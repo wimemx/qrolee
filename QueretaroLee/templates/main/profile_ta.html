@@ -1,0 +1,341 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+<div class="wrapper_message " >
+    <div class="container-16 container_message">
+        <div class="dialog-confirm" ></div>
+    </div>
+</div>
+<div class="grid-16">
+    <div class="grid-16 entity no-margin">
+    {% csrf_token %}
+        {% if type == 'author' %}
+            <span class="wrapper fleft borde_author">
+                {% if not profile.picture %}
+                    <img src="" alt="{{ profile.name }}"/>
+                {% else %}
+                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
+                         alt="{{ profile.picture }}"/>
+                {% endif %}
+            </span>
+            <span class="general-info no-margin grid-7">
+                <h3 class="title d-title_profile">
+                        {{ profile.name|title }}
+                </h3>
+                <p >
+                    {% if count == 0 %}
+                        {{ count }} no tiene títulos
+                    {% endif %}
+                    {% if count >= 2 %}
+                        {{ count }} Títulos
+                    {% endif %}
+                    {% if count == 1 %}
+                        {{ count }} Título
+                    {% endif %}
+                </p>
+                <p >
+                    {{ profile.biography }}
+                </p>
+            </span>
+        {% endif %}
+        {% if type == 'title' %}
+            <span class="wrapper fleft borde_author borde_title">
+                {% if not profile.picture %}
+                    <img src="" alt="{{ profile.title }}"/>
+                {% else %}
+                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
+                         alt="{{ profile.picture }}"/>
+                {% endif %}
+            </span>
+            <span class="general-info no-margin grid-7">
+                <h3 class="title d-title_profile">
+                        {{ profile.title|title }}
+                </h3>
+                <p class="title_author">{{ profile.author.name }} {{ profile.author.last_name }}</p>
+                    <span class="grid-7 no-margin container_rate">
+                        {% if grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < grade_rate %}
+                                        <img src="/static/img/start_black.png" />
+                                    {% else %}
+                                        <img src="/static/img/start.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                        {% else %}
+                            {% for x in range %}
+                                {% if x < grade %}
+                                    <img src="/static/img/start_black.png" />
+                                {% else %}
+                                    <img src="/static/img/start.png" />
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                            {% if grade >= 1 %}
+                                <span class="text_rate"> mi voto: {{ grade }} </span>
+                            {% endif %}
+                        </span>
+                <p>
+                    {% if count == 0 %}
+                        nadie está
+                    {% endif %}
+                    {% if count >= 2 %}
+                        {{ count }} personas están
+                    {% endif %}
+                    {% if count == 1 %}
+                         una persona está
+                    {% endif %}
+                    leyendo este libro
+                </p>
+                <p >
+                    {{ profile.description }}
+                </p>
+            </span>
+        {% endif %}
+        {% if type == 'list' %}
+            <span class="wrapper fleft borde_author borde_title">
+                {% if not profile.picture %}
+                    <img src="" alt="{{ profile.name }}"/>
+                {% else %}
+                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
+                         alt="{{ profile.picture }}"/>
+                {% endif %}
+            </span>
+            <span class="general-info no-margin grid-7">
+                <h3 class="title d-title_profile">
+                        {{ profile.name|title }}
+                </h3>
+                <p class="text_by" >
+                    Lista creada por
+                    <a href="/accounts/users/profile/{{ profile.user.id }}">
+                        <span class="d-pink">
+                            {{ profile.user.first_name }}
+                        </span>
+                    </a>
+                </p>
+                <span class="grid-7 no-margin container_rate">
+                        {% if grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < grade_rate %}
+                                        <img src="/static/img/start_black.png" />
+                                    {% else %}
+                                        <img src="/static/img/start.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                        {% else %}
+                            {% for x in range %}
+                                {% if x < grade %}
+                                    <img src="/static/img/start_black.png" />
+                                {% else %}
+                                    <img src="/static/img/start.png" />
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                            {% if grade >= 1 %}
+                                <span class="text_rate"> mi voto: {{ grade }} </span>
+                            {% endif %}
+                        </span>
+                <p class="descrip_list">
+                    {{ profile.description }}
+                </p>
+            </span>
+        {% endif %}
+        <span class="grid-5 no-margin social_profile">
+            <span class="icon_social btn_fb_profile fright">
+                <img src="/static/img/icon_twitter_foll.png"/>
+            </span>
+            <span class="icon_social fright">
+                <img src="/static/img/icon_fb_foll.png"/>
+            </span>
+            </span>
+    </div>
+
+    <div class="grid-16 content single no-margin">
+        <div class="grid-16 no-margin">
+
+            {% if type == 'list' %}
+                <div class="coments grid-10 no-margin">
+                    <div class="container_titles grid-9 no-margin border_bottom ">
+                        {% for obj in titles %}
+                            <span class="item_title item_height grid-9 no-margin">
+                                <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                    <span class="wrapper_title wrapper_title_list borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                    <h3 class="title grid-6 margin_left">
+                                        {{ obj.title|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                                <p class="grid-6 p_text_mini margin_left title_author text_list">
+                                    {{ obj.title.author.name }}
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+            </div>
+            {% endif %}
+            {% if type != 'list' %}
+                <div class="coments grid-10 no-margin">
+                {% load disqus_tags %}
+                {% set_disqus_identifier type profile.id %}
+                {% disqus_show_comments %}
+            </div>
+            {% endif %}
+            <div class="titles_author grid-5 border_left">
+                {% if type == 'author' %}
+                    <div class="container_titles grid-5 no-margin border_bottom">
+                        <h3 class="title my_titles">
+                            Titulos de este autor
+                        </h3>
+                        {% for title in list_titles %}
+                            <span class="item_title grid-5 no-margin">
+                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                    <h3 class="title grid-3 title_mini">
+                                        {{ title.title|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                    <div class="container_titles grid-5 no-margin ">
+                        <h3 class="title my_titles">
+                            Lista que contiene este autor
+                        </h3>
+                        {% for obj in list %}
+                            <span class="item_title grid-5 no-margin">
+                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                    <h3 class="title grid-3 title_mini">
+                                        {{ obj.list.name|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                                <p class="grid-3 p_text_mini text_list">Lista creada por
+                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                {% endif %}
+                {% if type == 'title' %}
+                    <div class="container_titles grid-5 no-margin border_bottom">
+                        <h3 class="title my_titles">
+                            Personas que han leído este libro
+                        </h3>
+                        {% for obj in list_user %}
+                            <span class="item_title grid-5 no-margin">
+                                <span class="wrapper_title borde_author ">
+                                    <img src="/static/media/users/{{ obj.list.user.id }}/profile/create.jpg" />
+                                </span>
+                                <h3 class="title grid-3 title_mini text_name_user">
+                                   {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
+                                </h3>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                    <div class="container_titles grid-5 no-margin ">
+                        <h3 class="title my_titles">
+                            Lista que contienen este libro
+                        </h3>
+                        {% for obj in list %}
+                            <span class="item_title grid-5 no-margin">
+                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                    <h3 class="title grid-3 title_mini">
+                                        {{ obj.list.name|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                                <p class="grid-3 p_text_mini text_list">Lista creada por
+                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                {% endif %}
+                {% if type == 'list' %}
+                    <div class="container_titles grid-5 no-margin ">
+                        <h3 class="title my_titles text_list">
+                            Listas similares
+                        </h3>
+                        {% for obj in list %}
+                            <span class="item_title grid-5 no-margin">
+                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                    <h3 class="title grid-3 title_mini">
+                                        {{ obj.name|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                                <p class="grid-3 p_text_mini text_list">Lista creada por
+                                    <span class="d-pink">{{ obj.user.first_name }} </span>
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                {% endif %}
+            </div>
+            {% if type == 'list' %}
+                <div class="coments grid-10 no-margin">
+                {% load disqus_tags %}
+                {% set_disqus_identifier type profile.id %}
+                {% disqus_show_comments %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

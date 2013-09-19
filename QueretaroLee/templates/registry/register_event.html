@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <div id="fb-root"></div>
+
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+
+    <div class="grid-16 edit register">
+    <form action="/registry/register/event/" class="grid-14 center">
+        <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
+        <input class="profile-pic" type="hidden" value="" name="picture"/>
+        <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
+        <span class="title main">Crear un nuevo evento en
+            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
+            <span class="member grid-2">
+            <span class="brown_btn fright">Editar
+                <span class="sub-menu">
+                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
+                    <a href="">Administradores</a>
+                    <a href="/registry/register_event/" style="border:none;" href="">Organizar eventos</a>
+                    </span>
+                </span>
+            </span>
+        </span>
+
+        <span class="data grid-8 fleft no-margin">
+            <p>Nombre
+                <span class="close right"></span>
+                <input name="name" type="text" value="" class="grid-5 required alpha fright value"/>
+            </p>
+            <p>Descripción
+                <textarea name="description" class="grid-5 alpha fright value"></textarea>
+            </p>
+            <p>Tipo de evento
+                <span class="select_wrapper grid-5 no-margin fright">
+                <span class="grid-2 select no-margin">
+                            <span class="text">Publica</span>
+                            <span class="dropdown"></span>
+                            <select class="change" name="privacy_type">
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                </span>
+                </span>
+
+            </p>
+            <p>Fecha de evento
+                <span class="grid-3 no-margin fright">
+                    Hora <input type="text" class="fright hour-init"/>
+                </span>
+                <span class="grid-2 fright no-margin">
+                    <input name="start_time" type="text" class="date-init"/>
+                </span>
+
+            </p>
+            <p>Fecha de finalización
+                <span class="grid-3 no-margin fright">
+                    Hora <input type="text" class="fright hour-end"/>
+                </span>
+                <span class="grid-2 fright no-margin">
+                    <input name="end_time" type="text" class="date-end"/>
+                </span>
+            </p>
+            <p>Lugar del evento
+                <input name="location_name" type="text" value="" class="grid-5 alpha address fright value"/>
+            </p>
+            <p>
+                <span id="map" class="grid-5 omega fright"></span>
+            </p>
+            <span class="grid-5 no-margin fright">
+                <input type="hidden" name="share_fb" value="0"/>
+                <p class="checkbox"><span></span>Vincular evento con Facebook</p>
+            </span>
+            <p>
+                <span class="message fleft"></span>
+            </p>
+            <p>
+                <input type="submit" class="green_btn submit" value="Crear evento"/>
+            </p>
+        </span>
+
+    </form>
+    <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="event_picture" value="1"/>
+                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+            </form>
+            <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="event_cover_picture" value="1"/>
+                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+            </form>
+    <span style="margin-right:80px;" class="fb-connect no-margin fright grid-5">
+        <p>¿Cuentas ya con una pagina en Facebook?</p>
+        <p class="fb events fleft">Ver eventos de
+            <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+    </span>
+    </div>
+    <script type="text/javascript">
+    Dropzone.options.picture = {
+        maxFiles: 1,
+        dictDefaultMessage: 'Arrastre aquí el logotipo',
+        dictRemoveFile: 'Quitar',
+        addRemoveLinks: true,
+        init: function() {
+            this.on("addedfile", function(file) {
+                $('#picture .dz-message').fadeOut(300);
+            });
+        },
+        success: function(file) {
+            $('.profile-pic').val(file.name);
+        }
+    }
+    Dropzone.options.cover = {
+        maxFiles:1,
+        addRemoveLinks: true,
+        dictRemoveFile: 'Quitar',
+        dictDefaultMessage: 'Arrastre aquí el cover photo',
+        init: function() {
+            this.on("addedfile", function(file) {
+                $('#cover .dz-message').fadeOut(300);
+            });
+        },
+        success: function(file) {
+            $('.cover-pic').val(file.name);
+        }
+    }
+
+        $(document).ready(function(){
+            var date = new Date();
+            date = date.toTimeString();
+            var prefix;
+            if(date.indexOf('+') > -1){
+                date = date.split('+');
+                date = date[1].split(' ');
+                date = '+'+date[0];
+            }else{
+                date = date.split('-');
+                date = date[1].split(' ');
+                date = '-'+date[0];
+
+            }
+            initialize();
+            $( ".date-init" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function(dateText) {
+                    $('p').find('input.hour-init').val('00:00:00');
+                },
+                onClose: function( selectedDate ) {
+                    $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
+                }
+            });
+            $( ".date-end" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function(dateText) {
+                    $('p').find('input.hour-end').val('00:00:00');
+                }
+            });
+
+            $('form.center').submit(function(e){
+                if($(this).find('.msg-ok').length > 0)
+                    window.location.href = site_url+'/qro_lee/events';
+                if(valid_form){
+
+                    if($.trim($('.date-init').val()) != ''){
+                        $('.date-init').val($.trim($('.date-init').val()) +' '+ $('.hour-init').val());
+                        $('.date-end').val($.trim($('.date-end').val()) +' '+ $('.hour-end').val());
+                    }
+                 $.ajax({
+                    type: "POST",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json'
+                    }).done(function(data) {
+                        if(data.success == 'True'){
+                        $('.message').addClass('success');
+                        $('.message').html('Se ah creado exitosamente!');
+                        $('form.center').find('input[type=submit]').val('Ok');
+                        $('form.center').find('input[type=submit]').addClass('msg-ok');
+                            if($('.checkbox span').html() != ''){
+                                var ename = $('input[name=name]').val();
+                                var estart_time = $('.date-init').val().replace(' ','T')+date;
+                                var edate_end = $('.date-end').val().replace(' ','T')+date;
+                                var edescription = $('textarea[name=description]').val();
+                                var elocation = $('input[name=location_name]').val();
+                                var privacy = 'OPEN';
+                                if($('select.change').val() == 'privada')
+                                    privacy = 'SECRET';
+                                FB.api('/270489626429179/events','post',{
+                                    name: ename,
+                                    start_time: estart_time,
+                                    end_time:   edate_end,
+                                    description: edescription,
+                                    location: elocation,
+                                    privacy_type: privacy
+
+                                },
+
+                                function(response) {
+                                    /*console.log(response);
+                                    alert(response.id);
+                                    eventid(response.id);*/
+
+                                });
+
+                            }
+
+                        }else{
+                            $('.message').addClass('fail');
+                            $('.message').html('Hubo un error, favor de verificar sus datos');
+                        }
+                        $('.message').fadeIn(300);
+
+                    });
+                }
+                return false;
+            });
+            $('.accept').click(function(){
+
+            });
+            $('.checkbox span').click(function(){
+                if($.trim($(this).html()) != ''){
+                    $(this).html('');
+                    $(this).parent().parent().find('input').val(0);
+                }else{
+                    $(this).html('×');
+                    $(this).parent().parent().find('input').val(1);
+                }
+
+            });
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/style_event.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+<div class="erase"></div>
+<div class="grid-16 entities">
+    <div class="grid-14 container_event">
+        <div class="d-container-1 border_bottom">
+
+            <div class="d-container-name"  >
+
+                <div class="d-image" >
+                    <img src="/static/img/{{ event.picture }}" class="d-image-event" />
+                </div>
+
+                <div class="d-name-event">
+                    <b>
+                        {{ event.name }}
+                    </b>
+                </div>
+
+                <div class="d-by">
+                    Organizado por <a href=""> {{ event.owner }} </a>
+                    <input type="hidden" class="d-latlon" value="{{ lat }},
+                    {{ lon }}" />
+                </div>
+
+                <div class="offset-7">
+                    <div class="d-buttoms">
+                    <input type="button" id="d-btn-facebook" value="facebook" />
+                    <input type="button" id="d-btn-attend" value="Asistir" />
+                    </div>
+                </div>
+                <div class="d-line"></div>
+
+                <div class="d-data1">
+                    <div class="d-description" >
+                        <p>
+                            {{ event.description }}
+                        </p>
+                    </div>
+                    <div class="d-map" id="d-map_event" >
+
+                    </div>
+
+                </div>
+
+                <div class="grid-2">
+                    <div class="d-date">
+                        <p><b>Fecha</b></p>
+                        <p>{{ date.weekday }} {{ date.day }}
+                            <br/>{{ date.month }} {{ date.year }}</p>
+                    </div>
+                    <div class="d-address">
+                        <p><b>Lugar</b></p>
+                        <p>{{ event.location }}</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="d-container-2">
+            <div class="d-container_events" >
+                <div class="d-title_events">
+                    Eventos similares
+                </div>
+
+                <div class="d-list_events" >
+
+                    {%  for event in list_event %}
+
+                    <div class="d-event">
+                        <div class="d-image-mini">
+                            <a href="/qro_lee/events/{{ event.name|cut:' ' }}_{{ event.id }}/" >
+                                <img src="/static/img/{{ event.picture }}"
+                                     class="d-image_mini_event"/>
+                            </a>
+                        </div>
+                        <div class="d-text_event">
+                            <b class="d-name-event-mini">{{ event.name }}</b>
+                            <br>
+                            <b class="d-data-event">
+                            {{ event.start_time }} hrs
+                            </b>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+        <div class="coments grid-10 no-margin">
+                {% load disqus_tags %}
+                {% set_disqus_identifier "event" event.id %}
+                {% disqus_show_comments %}
+            </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+hyu
+{% block main_site %}
+    <div class="wrapper_message " >
+    <div class="container-16 container_message">
+        <div class="dialog-confirm" ></div>
+    </div>
+    </div>
+    <div class="grid-16 edit">
+    <div class="grid-14 center">
+        {% csrf_token %}
+        <input type="hidden" class="type" value="{{ type }}" >
+        <span class="title main">Editar información de
+            {% if type == 'profile' %}
+                <a class="d-link_perfil" href="/accounts/users/profile/{{ user.id }}">tu perfil</a>
+            {% endif %}
+            {% if type == 'account' %}
+                tu cuenta
+            {% endif %}
+        </span>
+        {% if type == 'profile' %}
+            <span style="border: none" class="data grid-9 fleft no-margin">
+            <p>Nombre
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="first_name" type="text" value="{{ user_profile.user.first_name }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.user.first_name }}</span>
+            </p>
+             <p>Apellido
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="last_name" type="text" value="{{ user_profile.user.last_name }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.user.last_name }}</span>
+            </p>
+            <p>Email
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="email" type="text" value="{{ user_profile.user.email }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.user.email }}</span>
+            </p>
+            <p>telefono
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="phone" type="text" value="{{ user_profile.phone }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.phone }}</span>
+            </p>
+            <p>Biografía
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="biography" type="text" value="{{ user_profile.biography }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.biography }}</span>
+            </p>
+            <p>Fecha de nacimiento
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="birthday" type="text" value="{{ user_profile.birthday }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.birthday }}</span>
+            </p>
+            <p>Ciudad
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="city" class="map address value" value="{{ user_profile.city }}" />
+                <span class="value map">{{ user_profile.city }}</span>
+                <span id="map" class="grid-5 alpha fright"></span>
+            </p>
+            <p>codigo postal
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="postal_code" type="text" value="{{ user_profile.postal_code }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.postal_code }}</span>
+            </p>
+            <p>Facebook
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="fb_username" type="text" value="{{ user_profile.fb_username }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.fb_username }}</span>
+            </p>
+            <p>Twitter
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="twitter_username" type="text" value="{{ user_profile.twitter_username }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.twitter_username }}</span>
+            </p>
+            <p>Sitio web
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="website" type="text" value="{{ user_profile.website }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_profile.website }}</span>
+            </p>
+        </span>
+            <span class="d-picture_user" >
+            <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="edit_profile" value="1"/>
+            </form>
+        </span>
+        {% endif %}
+        {% if type == 'account' %}
+            <span style="border: none" class="data grid-9 fleft no-margin">
+            <p>Nombre
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="username" type="text" value="{{ user_account.username }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">{{ user_account.username }}</span>
+            </p>
+             <p>Contraseña
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="password" type="password" value="{{ password }}" class="grid-5 alpha fright value "/>
+                <span class="value grid-5 alpha fright">*********</span>
+            </p>
+            <p>Miembro desde
+                <span class="close right"></span>
+                <span class="value grid-5 alpha fright">{{ user_account.date_joined }}3</span>
+            </p>
+        </span>
+        <span class="d-pink_buttom fright message_alert" >Eliminar Cuenta</span>
+        {% endif %}
+    </div>
+    </div>
+    <script type="text/javascript">
+        Dropzone.options.picture = {
+        maxFiles: 1,
+        dictDefaultMessage: 'Inserte aquí su nueva foto de perfil',
+        init: function() {
+            this.on("addedfile", function(file) {
+                $('#picture .dz-message ').fadeOut(300);
+            });
+        },
+        success: function(file) {
+            $('.profile-pic').val(file.name);
+        }
+    }
+        $(document).ready(function(){
+            if($('.type').val()=='profile'){
+                initialize();
+            }
+            $('.green_btn').click(function(){
+                $this = $(this);
+                $(this).parent().find('span.value').fadeOut(300,
+                function(){
+                    if($this.parent().find('input.value').length > 0){
+                        $this.parent().find('input.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else if($this.parent().find('textarea.value').length > 0){
+                        $this.parent().find('textarea.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else{
+                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+
+                                 });
+                            });
+
+                        });
+                    }
+                });
+
+            });
+            $('.close').click(function(){
+                $(this).parent().find('.d-invalid').remove();
+                $this = $(this);
+                $(this).fadeOut(300,
+                    function(){
+                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
+                            $this.parent().find('span.green_btn').fadeIn(300,
+                            function(){
+                                if($this.parent().find('input.value').length > 0){
+                                 $this.parent().find('input.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else if($this.parent().find('textarea.value').length > 0){
+                                    $this.parent().find('textarea.value').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }else{
+                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }
+                            });
+
+                        });
+                });
+            });
+            $('.yellow_btn').click(function(){
+
+                var field = $(this).parent().find('input.value').attr('name');
+                var value = $(this).parent().find('input.value').val();
+                if($(this).parent().find('textarea.value').length > 0){
+                    value = $(this).parent().find('textarea.value').val();
+                    field = $(this).parent().find('textarea.value').attr('name');
+                }else if($(this).parent().find('.select_wrapper').length > 0){
+                    value = $(this).parent().find('select.value').val();
+                    field = $(this).parent().find('select.value').attr('name');
+                }
+                if(value.length>0){
+                url = '';
+                if($('.type').val()=='profile'){
+                    url = '/accounts/users/update_profile/';
+                }
+                if($('.type').val()=='account'){
+                    url = '/accounts/users/update_account/';
+                }
+
+                $this = $(this);
+                $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'field': field,
+                    'value': value
+                },
+                dataType: 'json'
+                }).done(function(data){
+
+                    if($this.parent().find('input.value').length > 0){
+                        if(field!='password'){
+                            $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                        }
+                    }else if($this.parent().find('textarea.value').length > 0)
+                        $this.parent().find('span.value').html($this.parent().find('textarea.value').val());
+                    else
+                        $this.parent().find('span.value').html($this.parent().find('select.value').val());
+                    $this.parent().find('.close').fadeOut(300,function(){
+                    $this.fadeOut(300,function(){
+                            $this.parent().find('span.green_btn').fadeIn(300,
+                            function(){
+                                if($this.parent().find('input.value').length > 0){
+                                 $this.parent().find('input.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else if($this.parent().find('textarea.value').length > 0){
+                                    $this.parent().find('textarea.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else{
+                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }
+                            });
+
+                        });
+                    });
+                });
+                }else{
+                    var span = $('<span class="d-invalid"></span>');
+                    span.html("campo vacio");
+                    $(this).parent().append(span);
+                }
+            });
+        });
+    </script>
+{% endblock %}

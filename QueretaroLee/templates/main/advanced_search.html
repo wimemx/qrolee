@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid-16 edit">
+    <div class="grid-15 center">
+        <div class="grid-5 fleft alpha">
+            <h3 class="title main">Resultados de la búsqueda</h3>
+            <div class="heading">
+                <span class="search advanced_filter fleft alpha grid-4">{% csrf_token %}
+                    <input type="hidden" class="model" value="auth.user"/>
+                    <input class="search" type="text"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                </span>
+                <p class="fleft advanced_search_btn">Búsqueda avanzada</p>
+
+            </div>
+
+            <!--<span class="advanced_search fleft">
+                <p class="title">Usuarios con gustos similares</p>
+                <p class="checkbox"><span></span>Géneros</p>
+                <p class="checkbox"><span></span>Autores</p>
+                <p class="checkbox"><span></span>Títulos</p>
+                <p class="title fleft">Añadir un filtro</p>
+                <div class="search_filters fleft">
+                    <span class="select_wrapper alpha fright">
+                        <span class="grid-2 select no-margin">
+                            <span class="text">Publica</span>
+                            <span class="dropdown"></span>
+                            <select class="change value" name="field">
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                        </span>
+                        <input type="text" name="value"/>
+                    </span>
+                </div>
+                <p class="fleft advanced_search_btn">+ Añadir otro filtro</p>
+            </span>-->
+            <div style="display:none;" id="map" class="clear"></div>
+            <input type="hidden" class="lat" value="20.600008"/>
+            <input type="hidden" class="long" value="-100.388363"/>
+        </div>
+        <div class="grid-6 fleft results">
+            <!--<div class="item">
+                <span class="wrapper fleft">
+                    <img src="" alt=""/>
+                </span>
+                <h3 class="title no-margin grid-3 fright">Laura ALgo</h3>
+                <p class="fright no-margin grid-3">Está leyendo <span>La Biblia</span></p>
+            </div>-->
+        </div>
+        <div class="grid-3 fright filter">
+            <p class="title">Filtrar por</p>
+            <p class="checkbox auth.user account.genre 1"><span></span>Personas</p>
+            <p class="checkbox registry.entity.1 registry.category 2"><span></span>Organizaciones</p>
+            <p class="checkbox registry.entity.2 privacy"><span></span>Grupos</p>
+            <p class="checkbox registry.entity.3 registry.category 3"><span></span>Spots</p>
+            <p class="checkbox registry.event event"><span></span>Eventos</p>
+            <p class="checkbox account.title account.genre 0"><span></span>Títulos</p>
+            <p class="checkbox account.author"><span></span>Autores</p>
+            <p class="checkbox account.list"><span></span>Listas</p>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.filter .checkbox:eq(0)').trigger('click');
+        });
+    </script>
+{% endblock %}

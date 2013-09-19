@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/forms.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    header
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid_16">
+    <form method="post" class="register_entity" action="/registry/register/{{ form.entity_type }}/">{% csrf_token %}
+        <input type="hidden" value="{{ form.entity_type }}" name="entity_type"/>
+    {% for field_name, field_meta in form.iteritems %}
+        {% for value in field_meta %}
+            {% if value == 'CharField' %}
+            <p>
+                <input class="{% ifequal field_meta.1 0 %}required {% endifequal %}"
+                       name="{{ field_name }}" value="{{ field_name }}" type="text"/>
+            </p>
+            {% endif %}
+            {% if value == 'TextField' %}
+            <p>
+                <textarea class="{% ifequal field_meta.1 0 %}required {% endifequal %}"
+                          name="{{ field_name }}">{{ field_name }}</textarea>
+            </p>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    <p class="submit">
+        <input type="submit"/>
+    </p>
+    </form>
+    </div>
+{% endblock %}

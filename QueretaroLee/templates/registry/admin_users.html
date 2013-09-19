@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="alert-message">{% csrf_token %}
+        <p>Estas apunto de eliminar a <span class="name"></span> <br>
+        como administrador</p>
+        <span class="accept green_btn">Acceptar</span>
+        <span class="reject">Rechazar</span>
+        <input class="user" type="hidden"/>
+        <input class="entity" value="{{ entity.id }}" type="hidden"/>
+    </div>
+    <div class="grid-16 entity edit">
+    <div class="grid-15 center">
+        <input type="hidden" class="users entity" value="{{ entity.id }}"/>{% csrf_token %}
+        <span class="title {{ entity_type.name }} main">Administradores de <span class="heading">{{ entity.name|capfirst }}</span>
+            <span class="member grid-2">
+            <span class="brown_btn fright">Editar
+                <span class="sub-menu">
+                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
+                    <a href="">Administradores</a>
+                    <a href="/registry/register_event/{{ entity_type.1 }}/{{ entity.id }}" style="border:none;" href="">Organizar eventos</a>
+                    </span>
+                </span>
+            </span>
+        </span>
+
+        <span style="border:none;" class="data grid-9 fleft no-margin">
+            <span class="nav {{ entity_type.name }} grid-5 no-margin">
+                <span class="btn">Administradores</span>
+                <span class="btn">Nuevo administrador</span>
+            </span>
+            <span class="heading fright">
+                <span class="search fleft grid-4">{% csrf_token %}
+
+                    <input class="search" type="text"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                </span>
+            </span>
+        </span>
+        <div class="grid-15 clear admin load members center">
+            <span class="grid-5 affiliate no-margin">
+                <input type="hidden" class="user-id" value=""/>
+                    <span class="wrapper fleft">
+                        <img src="" alt=""/>
+                    </span>
+                    <span class="title grid-3 no-margin">
+                        <span class="name"></span>
+                        <span class="since"></span>
+                        <span class="remove fleft">-</span>
+                    </span>
+                </span>
+        </div>
+        <div class="grid-15 clear load add members center">
+                <span class="grid-5 affiliate add no-margin">
+                <input type="hidden" class="user-id" value=""/>
+                    <span class="wrapper fleft">
+                        <img src="" alt=""/>
+                    </span>
+                    <span class="title grid-3 no-margin">
+                        <span class="name"></span>
+                        <span class="green_btn fleft">Nuevo administrador</span>
+                        <span class="remove add fleft">Administrador</span>
+                    </span>
+                </span>
+
+        </div>
+    </div>
+    </div>
+{% endblock %}

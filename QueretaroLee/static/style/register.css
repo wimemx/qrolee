@@ -1,0 +1,269 @@
+.header .grid-3{
+    height: 100%;
+}
+    .grid-3 .main_btn{
+        margin: 40px 0px 0px 10px;
+        font-family: "MS Reference Sans Serif";
+
+    }
+
+.welcome_banner{
+   height: 40px;
+}
+    .welcome_banner span{
+        width: 100%;
+        display: block;
+        background: url('../img/welcome_banner.png') no-repeat 50% -55px;
+        height: 113px;
+    }
+
+.instructions{
+    min-height: 350px;
+    position: relative;
+    margin-bottom: 40px !important;
+    margin-top: 20px !important;
+}
+    .instructions .icon{
+        height: 120px;
+        width: 1px;
+        display: block;
+        position: absolute;
+    }
+        .icon span{
+            height: 150px;
+            display: block;
+            position: relative;
+        }
+        .icon.top,.icon.bottom{
+            left: 50%;
+        }
+        .icon.left,.icon.right{
+            top: 120px;
+        }
+        .icon.right span,.icon.bottom span{
+            width: 270px;
+            height: 230px;
+        }
+        .icon.top span, .icon.left span{
+            left: -100px;
+            width: 200px;
+        }
+        .icon.right span{
+            top: -50px;
+            left: -135px;
+        }
+        .icon.bottom span{
+            left: -125px;
+        }
+
+    .instructions p{
+        width: 100%;
+        position: absolute;
+        top: 145px;
+        font-size: 25px;
+        line-height: 25px;
+        font-family: "Montserrat" sans-serif;
+    }
+
+.caption{
+    text-align: center;
+    font-size: 12px;
+    height: 85px;
+    position: relative;
+    margin-bottom: 25px !important;
+    font-family:  "Lucida Bright";
+    padding-top: 20px;
+}
+    .caption span{
+        font-size: 10px;
+        font-family: inherit;
+        margin-top: 5px;
+        display: block;
+    }
+    .caption .left, .caption .right{
+        width: 20px;
+        height: 100px;
+        display: block;
+        position: absolute;
+    }
+    .caption .left{
+        background: url('../img/detail_left.png') no-repeat 0px 0px;
+        left: -20px;
+    }
+    .caption .right{
+        background: url('../img/detail_right.png') no-repeat 0px 0px;
+        right: -20px;
+    }
+    .caption .bottom{
+        display: block;
+        position: absolute;
+        width:333px;
+        height: 5px;
+        left: -55px;
+        background: url('../img/detail_ruler.png') no-repeat 0px 0px;
+    }
+
+.mission{
+    font-size: 14px;
+    position: relative;
+    height: 100px;
+    font-family:  "Lucida Bright";
+}
+    .mission .bottom{
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        display: block;
+        background: url('../img/detail_bottom.png') no-repeat 50% 0px;
+    }
+
+
+.container{
+    padding-bottom: 200px;
+}
+
+.container-16 .form-container{
+    width: 260px;
+    display: none;
+    margin-top: 100px;
+    background: url('../img/register_form_bg.png');
+    padding: 10px 30px 10px 30px;
+    font-family: 'Montserrat', sans-serif;
+    position: relative;
+}
+    .form-container .shadow{
+        position: absolute;
+        left: 14px;
+        bottom: -19px;
+    }
+    .form-container .title{
+        color:#b18a62;
+        font-size: 15px;
+        text-align: left;
+        padding: 0px 0px 0px 20px;
+        border-bottom: 1px solid #b18a62;
+        position: relative;
+        font-family: inherit;
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+        .title .close{
+            width: 9px;
+            height: 8px;
+            display: block;
+            background: #d1a475 url('../img/register_close.png') no-repeat 50% 50%;
+            position: absolute;
+            bottom: -19px;
+            padding: 7px 7px 4px 7px;
+        }
+
+form.center.grid-4{
+    display: none;
+}
+form.register{
+    padding-bottom: 30px;
+}
+    .banner{
+        display: block;
+        margin: 30px 0px 20px 0px;
+        width: 100%;
+        font-size: 10px;
+        text-align: center;
+        font-weight: 400;
+    }
+        .banner span{
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    form p{
+        position: relative;
+        font-size: 12px;
+        display: block;
+        min-height: 30px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+    }
+        form p input:not([type='submit']){
+            background: #f4e5c8;
+            text-indent:5px;
+            border: 1px solid #c2baab;
+            font-family: inherit;
+        }
+        form p .invalid{
+            background: #fff;
+            font-weight: normal;
+            padding: 3px 10px 3px 10px;
+            position: absolute;
+            right: -85px;
+            top: -2px;
+            box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+            display: none;
+        }
+        form p .icon{
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            float: left;
+            margin-right: 5px;
+        }
+        form p input[type='submit']{
+            background: #f2e28e;
+            border: 1px solid #eacea9;
+            padding:7px 10px 7px 10px;
+            float: right;
+            font-family: 'Montserrat', sans-serif;
+        }
+        form p .reset{
+            float: left;
+            text-decoration: underline;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        .social-login{
+            line-height: 30px;
+            font-size: 10px;
+        }
+        .register .social-login{
+            display: inline-block !important;
+        }
+            .social-login a{
+                width: 62px;
+                height: 17px;
+                display: block;
+                margin:6px 0px 0px 10px;
+                float: right;
+
+            }
+            .register .social-login a{
+                float: left !important;
+            }
+            .register .social-login .fb{
+               margin-left: 45px;
+            }
+
+
+.arrow{
+
+    background-image: url('../img/arrow.png');
+    width: 349px !important;
+    height: 247px !important;
+    top: 63px;
+    left: 119px;
+
+}
+
+.left{
+    left: 78px;
+}
+.right{
+    right: 68px;
+}
+.top{
+    top:8px;
+}
+
+.logo{
+
+    left: 118px;
+
+}

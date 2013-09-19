@@ -1,0 +1,319 @@
+html{
+    background: url('../img/bg.png');
+}
+body{
+    background: url('../img/grid.png') repeat-y 50% 0px;
+}
+input{
+    border: none;
+    outline: none;
+    padding: 0px;
+    margin: 0px;
+}
+input:not([type='submit']){
+    height: 25px;
+    width: 100%;
+    text-indent: 5px;
+}
+.container-16 .clear{
+    clear: both;
+    float: left;
+    width: 100%;
+    display: block;
+    height: 1px;
+    margin: 0px;
+}
+
+.main_btn{
+    background: url('../img/main_btn.png') repeat 0px 0px;
+    height: 21px;
+    line-height: 21px;
+    display: inline-block;
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+}
+.left{
+    left: 0px;
+}
+.right{
+    right: 0px;
+}
+.top{
+    top:0px;
+}
+.bottom{
+    bottom: 0px;
+}
+
+.fleft{
+    float: left;
+}
+.fright{
+    float: right;
+}
+
+.container-16 .no-margin{
+    margin:0px;
+}
+.container-16 .center{
+    margin:0 auto;
+    float: none;
+    display: block;
+}
+.container-16 p.center{
+    text-align: center;
+}
+
+.header,.header .grid-16,.header .container-16{
+    height: 100px;
+}
+
+.header{
+    background: url('../img/header_bg.png') repeat-x 0px 0px;
+}
+    .logo{
+        height: 100%;
+    }
+        .logo span{
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: url('../img/logo.png') no-repeat 50% 50%;
+        }
+
+.search{
+    margin-top: 35px;
+}
+    .search span{
+        width: 100%;
+        height: 25px;
+        position: relative;
+        display: block;
+
+    }
+    .search input{
+        background: #98a4a3;
+    }
+    .search span .icon{
+        width: 25px;
+        height: 100%;
+        position: absolute;
+        background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
+        cursor: pointer;
+    }
+
+.account-settings{
+    height: 20px;
+    margin-top: 37px;
+}
+    .account-settings .settings,.account-settings .profile{
+        width: 20px;
+        height: 20px;
+        display: block;
+        background: #fff;
+    }
+
+.d-container .center{
+    margin:0 auto;
+    float: none;
+    display: block;
+}
+
+.d-container{
+    background-color: #ffffff;
+    height: 600pt;
+    margin-top: 10pt;
+}
+
+.d-container-name{
+    width: 100%;
+
+}
+
+.d-image{
+    width: 100%;
+    height: 125pt;
+    background: url('../img/book3') no-repeat 50% 50%;
+    background-size: 100% 100%;
+}
+
+.d-container-1{
+
+    width: 75%;
+    float: left;
+}
+
+.d-container-2{
+
+    width: 25%;
+    float: left;
+
+}
+
+.d-name-event{
+
+    font-size: 14pt;
+    color: #222222;
+    padding: 10pt 0pt 0pt 0pt;
+}
+
+.d-by{
+
+    font-size: 10pt;
+    padding: 0pt 0pt 0pt 0pt;
+}
+
+.d-btn_event{
+
+    width: 40%;
+    margin-left: 349pt;
+    margin-bottom: 10pt;
+
+}
+
+#d-btn-facebook {
+    background-color: rgb(41, 78, 155);
+    width: 49pt;
+    height: 15pt;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+
+}
+
+#d-btn-attend{
+    background-color: rgb(250, 102, 82);
+    width: 49pt;
+    height: 15pt;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 9pt;
+    margin-left: 10pt;
+
+}
+
+p,b{
+
+    color: #000000;
+
+}
+
+.d-description{
+    padding:4pt 0pt 4pt 0pt;
+    border-bottom: 1px solid #999999;
+    width: 95%;
+    font-size: 10pt;
+    text-align: justify;
+}
+
+.d-map{
+
+    margin-top: 18pt;
+    height: 150pt;
+    width: 95%;
+}
+
+.d-date{
+
+    padding:4pt 0pt 4pt 0pt;
+    font-size: 10pt;
+    color: #222222;
+}
+
+.d-address{
+
+    padding:4pt 0pt 4pt 0pt;
+    font-size: 10pt;
+    color: #222222;
+}
+
+.d-container_events{
+
+    width: 85%;
+    padding-left: 24pt;
+}
+
+.d-title_events{
+
+    width: 100%;
+    font-size: 12pt;
+    padding: 0pt 0pt 8pt 0pt;
+    border-bottom: 1pt solid #999999;
+}
+
+.d-list_events{
+    width: 100%;
+}
+
+
+.d-line{
+    border-bottom: 1px solid #999999;
+    padding: 5pt 0pt 5pt 0pt;
+}
+
+.d-container-data{
+
+    width: 100%;
+}
+
+.d-data1{
+    width: 75%;
+    float: left;
+}
+
+.d-data2{
+    float: left;
+    width: 25%;
+
+}
+
+.d-image-event{
+
+    width: 100%;
+    height: 100%;
+
+}
+
+.d-image_mini_event{
+    width:70px;
+    height:70px;
+
+}
+
+.d-image-mini{
+    width: 40%;
+    float: left;
+}
+
+.d-text_event{
+    width: 40%;
+    height: 100%;
+    float: left;
+    padding: 0pt 0pt 0pt 15pt;
+
+}
+
+.d-data-event{
+
+    font-size: 7pt;
+    font-weight: normal;
+}
+.d-name-event-mini{
+
+    font-size: 8pt;
+}
+
+.d-buttoms{
+
+    width: 90%;
+    padding-left: 37pt;
+
+}
+
+.d-event{
+    width: 100%;
+    height: 56pt;
+    padding: 10pt 0pt 0pt 0pt;
+
+}

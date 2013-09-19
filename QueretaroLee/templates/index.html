@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/register.css" %}"/>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/register.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'register_header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="form-container center">
+
+        <p class="title"><span></span>
+            <a style="right:0px" class="close right" href="#"></a>
+        </p>
+        <form class="reset-password grid-4 center" action="#">{% csrf_token %}
+                        <span class="banner">Te enviaremos enseguida tus datos de ingreso</span>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -75px"></span> ¿Cuál es tu e-mail?
+            <input name="email" class="required" type="text"/>
+        </p>
+        <p>
+            <input class="center" value="Enviar" type="submit"/>
+        </p>
+
+        </form>
+        <form class="login grid-4 center" action="/registry/login/">{% csrf_token %}
+            <span class="banner"></span>
+        <p>
+
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Usuario
+            <input name="username" class="required" type="text"/>
+        </p>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span>Contraseña
+            <input name="password" class="required" type="password"/>
+        </p>
+        <p>
+            <span class="reset">¿usuario / contraseña <br> olvidada?</span>
+            <input value="Entrar" type="submit"/>
+        </p>
+        <p class="social-login">
+            Ingresa con
+            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
+            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup"
+               style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
+
+        </p>
+
+        </form>
+        <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
+            <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span> ¿Cuál es tu nombre?
+            <input name="username" class="required" type="text"/>
+        </p>
+
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Contraseña
+            <input name="password" class="required match pass" type="password"/>
+        </p>
+
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Contraseña (otra vez)
+            <input name="password_match" class="required match pass_match" type="password"/>
+        </p>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -75px"></span> E-mail
+            <input name="email" class="required" type="text"/>
+        </p>
+        <p>
+            <input value="Crear cuenta" class="center" type="submit"/>
+
+        </p>
+        <p class="social-login center">
+            Crear cuenta con
+            <span class="clear"></span>
+            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup"
+               style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
+            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
+
+
+        </p>
+    </form>
+        <img class="shadow" src="/static/img/form_shadow.png" alt=""/>
+    </div>
+
+    <div class="container">
+    <span class="grid-4 center welcome_banner">
+        <span></span>
+    </span>
+    <span class="grid-10 center instructions">
+        <span class="icon top">
+            <span style="background: url('../static/img/welcome_icons_set1.png') no-repeat 0px -180px"></span>
+        </span>
+        <span class="icon left">
+            <span style="background: url('../static/img/welcome_icons_set1.png') no-repeat 0px 0px"></span>
+        </span>
+        <p class="no-margin center">
+            <strong>La nueva</strong> forma de <br>
+            intercambiar <strong>tus ideas</strong>
+        </p>
+        <span class="icon arrow">
+        </span>
+        <span class="icon right">
+            <span style="background: url('../static/img/welcome_icons_set2.png') no-repeat 0px 0px"></span>
+        </span>
+        <span class="icon bottom">
+            <span style="background: url('../static/img/welcome_icons_set2.png') no-repeat 0px -230px"></span>
+        </span>
+    </span>
+    <p class="grid-4 center caption">
+        “No es posible vivir sin libros” <br>
+        <span>Thomas Jefferson</span>
+        <span class="left top"></span>
+        <span class="right top"></span>
+        <span class="bottom"></span>
+    </p>
+    <p class="mission grid-6 center">
+        Querétaro Lee es un proyecto enfocado a la
+        creación de momentos de aprendizaje en torno a la lectura en
+        la ciudad de Querétaro.
+        <span class="bottom"></span>
+    </p>
+    </div>
+{% endblock %}

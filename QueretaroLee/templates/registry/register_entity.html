@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/forms.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="lightbox-wrapper register">
+        <div class="container-16">
+            <div class="fb-objs grid-5 center lightbox">
+                <a style="right:0px" class="close right" href="#"></a>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-16 entities registry">
+        <div class="grid-14 registry">
+            <div class="heading">
+                <h3 class="title grid-13 no-margin fleft">{{ entity_type.0|capfirst }}</h3>
+
+            </div>
+            <p class="content">{{ content }}</p>
+
+            <form enctype="multipart/form-data" method="post" id="registry" class="register_entity grid-8 no-margin" action="/registry/register/">{% csrf_token %}
+                <input class="profile-pic" type="hidden" value="" name="picture"/>
+                <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
+                <input type="hidden" name="fb_id" class="fb_id"/>
+                <div class="grid-8 no-margin fleft">
+                <input type="hidden" value="{{ entity_type.1 }}" name="entity_type"/>
+                <p>Nombre*
+                    <input class="required grid-5 fright no-margin" type="text" value="" name="name"/>
+                </p>
+                <p class="textarea">Descripción*
+                    <textarea class="grid-5 fright no-margin" name="description"></textarea>
+                </p>
+                <!--<p>Photo de portada
+                <span class="grid-5 fright no-margin">
+                    <span class="green_btn fleft">Subir imagen</span>
+                    <span class="grid-3 filename fleft"></span>
+                    <input type="file" name="cover_picture"/>
+                </span>
+                </p>-->
+                <p>{% if entity_type.1 == 'spot' %}Tags{% else %}Categoría{% endif %}
+                    <span class="grid-5 fright no-margin">
+                        <span class="grid-2 select no-margin">
+                            <span class="text"></span>
+                            <span class="dropdown"></span>
+                            <select class="change" name="category_id" id="">
+                                {% for category in categories %}
+                                    <option value="{{ category.name }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+
+                    </span>
+
+                </p>
+                <p>Privacidad
+                    <span class="grid-5 fright no-margin">
+                        <span class="grid-2 select no-margin">
+                            <span class="text"></span>
+                            <span class="dropdown"></span>
+                            <select class="change" name="privacy" id="">
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                        </span>
+                    </span>
+
+                </p>
+                <p>Sitio web
+                    <input class="grid-5 fright no-margin" type="text" value="" name="website"/>
+                </p>
+                <p>Dirección
+                    <input type="hidden" class="lat" name="lat"/>
+                    <input type="hidden" class="long" name="long"/>
+                    <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
+                </p>
+                <p style="margin:0px 0px 30px 0px;" class="textarea">Ubicación
+                    <span class="grid-5 map fright no-margin">
+                        <span id="map"></span>
+                    </span>
+                </p>
+                <p>Página de Facebook
+                    <input class="grid-5 fright no-margin" type="text" value="" name="fb"/>
+                </p>
+                <p>Página de twitter
+                    <input class="grid-5 fright no-margin" type="text" value="" name="twitter"/>
+                </p>
+                <p>
+                    <span class="message fright"></span>
+                </p>
+                <p class="submit">
+                    <input id="submit" class="fright" value="Crear {{ entity_type.2|lower }}" type="submit"/>
+                </p>
+
+                </div>
+
+            </form>
+            <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="picture" value="1"/>
+                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+            </form>
+            <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="cover" value="1"/>
+                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+            </form>
+            <span class="fb-connect no-margin fright grid-5">
+                {% if entity_type.1 == 'group' %}
+                <p>¿Cuentas ya con un grupo en Facebook?</p>
+                <p class="fb {{ entity_type.1 }} fleft">Ver grupos de
+                {% else %}
+                 <p>¿Cuentas ya con una pagina en Facebook?</p>
+                <p class="fb {{ entity_type.1 }} fleft">Ver pages de
+                {% endif %}
+                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+            </span>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+    Dropzone.options.picture = {
+        maxFiles: 1,
+        dictDefaultMessage: 'Arrastre aquí el logotipo',
+        init: function() {
+            this.on("addedfile", function(file) {
+                $('#picture .dz-message').fadeOut(300);
+            });
+        },
+        success: function(file) {
+            $('.profile-pic').val(file.name);
+        }
+    }
+    Dropzone.options.cover = {
+        maxFiles:1,
+        dictDefaultMessage: 'Arrastre aquí el cover photo',
+        init: function() {
+            this.on("addedfile", function(file) {
+                $('#cover .dz-message').fadeOut(300);
+            });
+        },
+        success: function(file) {
+            $('.cover-pic').val(file.name);
+        }
+    }
+
+    $(document).ready(function(){
+        if($('#map').length > 0)
+            initialize(-100.4057373,20.6144226);
+        $('form p input').focus(function(){
+            $(this).parent().find('.invalid').fadeOut(300);
+        });
+        $('#registry').submit(function(e){
+            var upload_valid = false;
+
+            if($('#dropzone .dz-preview').length > 1 ||
+               $('#cover .dz-preview').length > 1  ){
+                upload_valid = false;
+                alert('Solo puedes subir 1 archivo');
+            }
+            else
+                upload_valid = true;
+
+
+            if($(this).find('input[type=submit]').hasClass('msg-ok'))
+                window.location.href = site_url;
+            if(valid_form && upload_valid){
+
+                $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json'
+                }).done(function(data) {
+                    if(data.success == 'True'){
+                        $('.message').addClass('success');
+                        $('.message').html('Se ha creado exitosamente!');
+                        $('#registry').find('input[type=submit]').val('Ok');
+                        $('#registry').find('input[type=submit]').addClass('msg-ok');
+                    }else{
+                        $('.message').addClass('fail');
+                        $('.message').html('Hubo un error, favor de verificar sus datos');
+                    }
+                    $('.message').fadeIn(300);
+
+                });
+            }
+            return false;
+        });
+
+
+    });
+    </script>
+{% endblock %}

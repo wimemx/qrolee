@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+<div class="lightbox-wrapper register">
+        <div class="container-16">
+            <div class="fb-objs grid-5 center lightbox">
+                <a style="right:0px" class="close right" href="#"></a>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid-16 edit">
+    <div class="grid-14 center">
+        <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
+        <span class="title {{ entity_type.1 }} main">Editar información de <span class="heading">{{ entity.name|capfirst }}</span>
+            <span class="member grid-2">
+            <span class="brown_btn fright">Editar
+                <span class="sub-menu">
+                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
+                    <a href="">Administradores</a>
+                    <a href="/registry/register_event/{{ entity_type.1 }}/{{ entity.id }}" style="border:none;" href="">Organizar eventos</a>
+                    </span>
+                </span>
+            </span>
+        </span>
+
+        <span class="data grid-9 fleft no-margin">
+            <p>Nombre {{ entity_type.0 }}
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="name" type="text" value="{{ entity.name }}" class="grid-5 alpha fright value"/>
+                <span class="value grid-5 alpha fright">{{ entity.name }}</span>
+            </p>
+            <p>Facebook
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha fright value"/>
+                <span class="value grid-5 alpha fright">{{ entity.fb }}</span>
+            </p>
+            <p>Twitter
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="twitter" type="text" value="{{ entity.twitter }}" class="grid-5 alpha fright value"/>
+                <span class="value grid-5 alpha fright">{{ entity.twitter }}</span>
+            </p>
+            <p>Sitio Web
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="website" type="text" value="{{ entity.website }}" class="grid-5 alpha fright value"/>
+                <span class="value grid-5 alpha fright">{{ entity.website }}</span>
+            </p>
+            <p>Descripción
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <textarea name="description" class="grid-5 alpha fright value">{{ entity.description }}</textarea>
+                <span class="value grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
+            </p>
+        </span>
+        <span class="data grid-9 fleft no-margin">
+            <p>Tipo de acceso
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <span class="value grid-5 alpha fright">
+                    {% if entity.privacy == 0 %}
+                        Públic
+                    {% else %}
+                        Privado
+                    {% endif %}
+
+                </span>
+                <span class="select_wrapper grid-5 alpha fright">
+                <span class="grid-2 select no-margin">
+                            <span class="text">Publica</span>
+                            <span class="dropdown"></span>
+                            <select class="change value" name="privacy">
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                </span>
+                </span>
+
+            </p>
+            <p>Fecha creación
+                <span style="visibility: hidden;" class="green_btn fright">Editar</span>
+                <span class="value grid-5 alpha fright">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
+            </p>
+            <p>Dirección
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <textarea name="address" class="map address value">{{ entity.address }}</textarea>
+                <span class="value map">{{ entity.address }}</span>
+                <span id="map" class="grid-5 alpha fright"></span>
+            </p>
+        </span>
+        <span style="border:none;" class="data grid-9 fleft no-margin">
+        {% if entity.fb_id != None and entity.fb_id != '' %}
+            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
+            <p class="checkbox"><span class="fb">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}</span>Compartir publicaciones de Facebook en Querétaro Lee</p>
+            {% if profile.fb_username != '' %}
+            <p class="checkbox"><span class="twitter">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}
+            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>
+        {% endif %}
+        {% else %}
+            <span class="fb-connect no-margin fleft grid-14">
+            <input type="hidden" name="fb_id" class="fb_id"/>
+                {% if entity_type.1 == 'group' %}
+                <p>¿Cuentas ya con un grupo en Facebook?</p>
+                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver grupos de</span>
+                {% else %}
+                 <p>¿Cuentas ya con una pagina en Facebook?</p>
+                <p class="fb update edit alpha {{ entity_type.1 }} fleft"><span>Ver pages de</span>
+                {% endif %}
+                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+            </span>
+        {% endif %}
+        </span>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            initialize();
+            $('.green_btn').click(function(){
+                $this = $(this);
+                $(this).parent().find('span.value').fadeOut(300,
+                function(){
+                    if($this.parent().find('input.value').length > 0){
+                        $this.parent().find('input.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else if($this.parent().find('textarea.value').length > 0){
+                        $this.parent().find('textarea.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else{
+                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+
+                                 });
+                            });
+
+                        });
+                    }
+                });
+
+            });
+            $('.close').click(function(){
+                $this = $(this);
+                $(this).fadeOut(300,
+                    function(){
+                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
+                            $this.parent().find('span.green_btn').fadeIn(300,
+                            function(){
+                                if($this.parent().find('input.value').length > 0){
+                                 $this.parent().find('input.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else if($this.parent().find('textarea.value').length > 0){
+                                    $this.parent().find('textarea.value').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }else{
+                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }
+                            });
+
+                        });
+                });
+            });
+            $('.yellow_btn').click(function(){
+                var field = $(this).parent().find('input.value').attr('name');
+                var value = $(this).parent().find('input.value').val();
+                if($(this).parent().find('textarea.value').length > 0){
+                    value = $(this).parent().find('textarea.value').val();
+                    field = $(this).parent().find('textarea.value').attr('name');
+                }else if($(this).parent().find('.select_wrapper').length > 0){
+                    value = $(this).parent().find('select.value').val();
+                    field = $(this).parent().find('select.value').attr('name');
+                }
+                $this = $(this);
+                update_obj(field,value,$this);
+            });
+            $('.checkbox span').click(function(){
+                var field;
+                var value;
+                if($(this).hasClass('fb'))
+                    field = 'share_fb';
+                else
+                    field = 'share_twitter';
+                if($.trim($(this).html()) != ''){
+                    value = 0;
+                }else{
+                    value = 1;
+                }
+                $.ajax({
+                type: "POST",
+                url: '/registry/update/'+$('input.entity').val()+'/',
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'field': field,
+                    'value': value
+                },
+                dataType: 'json'
+                }).done(function(data){});
+
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="wrapper_message " >
+        <div class="container-16 container_message">
+            <div class="dialog-confirm" ></div>
+        </div>
+    </div>
+<div class="grid-16">
+<input type="hidden" class="d-entity_id" value="{{ entity.name|cut:" " }}_{{ entity.id }}"/>
+<input type="hidden" class="type" value="{{ entity.type }}"/>
+<input type="hidden" class="lat" value="{{ entity.lat }}"/>
+<input type="hidden" class="long" value="{{ entity.long }}"/>
+    <div class="grid-16 entity no-margin">
+        {% if owner.id != user.id %}
+
+            {% if entity_type.1 == 'spot' %}
+                <span class="member grid-2">
+                    <span class="btn ">Seguir</span>
+                </span>
+            {% endif %}
+            {% if entity_type.1 == 'group' %}
+                <span class="member grid-3">
+                    {% if member  %}
+                        <a href="/registry/unjoin_entity/{{ entity.name|cut:" " }}_{{ entity.id }}">
+                            <span class="btn ">Salir del grupo</span>
+                        </a>
+                    {% else %}
+                            <span class="btn message_alert">unirme</span>
+                    {% endif %}
+                    <p class="din-r ">1,204 miembros</p>
+                </span>
+            {% endif %}
+            {% if entity_type.1 == 'organization' %}
+                <span class="member grid-6 no-margin">
+                    <p class="follow no-margin">Para recibir notificaciones sobre eventos y
+                        actividades referente a {{ entity.name }}, da click en el botón</p>
+                    <span class="btn fright">Seguir</span>
+                    <span class="followers">
+                        <p>Usarios siguiendo</p>
+                        {% for i in 'xxxxx' %}
+                            <span>
+                                <img src="" alt=""/>
+                                <span class="user">Nombre</span>
+                            </span>
+
+                        {% endfor %}
+                    </span>
+                </span>
+            {% endif %}
+        {% else %}
+            <span class="member grid-2">
+                <span class="brown_btn fright">Editar
+                    <span class="sub-menu">
+                        <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
+                        <a href="/registry/admin_users/{{ entity.name|cut:" " }}_{{ entity.id }}">Administradores</a>
+                        <a href="/registry/edit/events/{{ entity.name|cut:" " }}_{{ entity.id }}">Organizar eventos</a>
+                        <a style="border:none;" href="/registry/delete/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}">Borrar</a>
+                    </span>
+                </span>
+            </span>
+        {% endif %}
+        <span class="wrapper fleft">
+            {% if not entity.picture %}
+                <img src="" alt="{{ entity.name }}"/>
+            {% else %}
+                {% if owner.id == user.id %}
+                    <span class="brown_btn edit"></span>
+                {% endif %}
+                <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+
+            {% endif %}
+        </span>
+        <span class="general-info no-margin grid-7">
+            <h3 class="title {{ entity_type.1 }}">{{ entity.name|capfirst }}</h3>
+            <span class="social grid-7 no-margin">
+                <a href="#">
+                    {% if entity_type.1 == 'group' %}
+                        <img src="/static/img/single_fb.png" alt=""/>
+                    {% elif entity_type.1 == 'spot' %}
+                        <img src="/static/img/ssingle_fb.png" alt=""/>
+                    {% else %}
+                        <img src="/static/img/gsingle_fb.png" alt=""/>
+                    {% endif %}
+                </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
+                <a href="#">
+                    {% if entity_type.1 == 'group' %}
+                        <img src="/static/img/single_twitter.png" alt=""/>
+                    {% elif entity_type.1 == 'spot' %}
+                        <img src="/static/img/ssingle_twitter.png" alt=""/>
+                    {% else %}
+                        <img src="/static/img/gsingle_twitter.png" alt=""/>
+                    {% endif %}
+                </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
+                <a href="#">
+                    {% if entity_type.1 == 'group' %}
+                        <img src="/static/img/single_world.png" alt=""/>
+                    {% elif entity_type.1 == 'spot' %}
+                        <img src="/static/img/ssingle_world.png" alt=""/>
+                    {% else %}
+                        <img src="/static/img/gsingle_world.png" alt=""/>
+                    {% endif %}
+                </a>
+            </span>
+            {% if entity_type.1 != 'group' %}
+                <span class="grid-7 no-margin container_rate">
+                    <span class="container_starts_rate fleft">
+                    {% if grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < grade_rate %}
+                                        <img src="/static/img/comunityStar.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ entity.id }}"/>
+                                </span>
+                            {% endfor %}
+                    {% else %}
+                        {% for x in range %}
+                            {% if x < grade %}
+                                <img src="/static/img/starUser.png" />
+                            {% else %}
+                                <img src="/static/img/backgroundStar.png" />
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </span>
+                <span class="container_text_rate">
+                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                        {% if grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% endif %}
+                    </span>
+               </span>
+            {% endif %}
+            <p class="din-r grid-6 alpha omega">{{ entity.description|truncatewords:30 }}</p>
+        </span>
+        <span class="nav {{ entity_type.1 }} grid-8 no-margin">
+            <span class="btn active">Actividad</span>
+            <span class="btn">Información General</span>
+            <span class="btn">Eventos</span>
+            {% if entity_type.1  == 'group' %}
+            <span class="btn">Miembros</span>
+            {% endif %}
+        </span>
+
+    </div>
+
+    <div class="grid-16 content single no-margin">
+        <div class="grid-16 load no-margin" style="display: block">
+            <div class="coments grid-10 no-margin">
+                {% load disqus_tags %}
+                {% set_disqus_identifier entity_type entity.id %}
+                {% disqus_show_comments %}
+                <div class="titles_author grid-5 border_left">
+                {% if type == 'author' %}
+                    <div class="container_titles grid-5 no-margin border_bottom">
+                        <h3 class="title my_titles">
+                            Titulos de este autor
+                        </h3>
+                        {% for title in list_titles %}
+                            <span class="item_title grid-5 no-margin">
+                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                        <img src="/static/media/author/create.png" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                    <h3 class="title grid-3 title_mini">
+                                        {{ title.title|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                    <div class="container_titles grid-5 no-margin ">
+                        <h3 class="title my_titles">
+                            Lista que contiene este autor
+                        </h3>
+                        {% for obj in list %}
+                            <span class="item_title grid-5 no-margin">
+                                <span class="wrapper_title borde_author ">
+                                    <img src="/static/media/author/create.png" />
+                                </span>
+                                <h3 class="title grid-3 title_mini">
+                                   {{ obj.list.name|truncatechars:25 }}
+                                </h3>
+                                <p class="grid-3 p_text_mini text_list">Lista creada por
+                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                {% endif %}
+                {% if type == 'title' %}
+                    <div class="container_titles grid-5 no-margin border_bottom">
+                        <h3 class="title my_titles">
+                            Personas que han leído este libro
+                        </h3>
+                        {% for obj in list_user %}
+                            <span class="item_title grid-5 no-margin">
+                                <span class="wrapper_title borde_author ">
+                                    <img src="/static/media/users/{{ obj.list.user.id }}/profile/create.jpg" />
+                                </span>
+                                <h3 class="title grid-3 title_mini text_name_user">
+                                   {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
+                                </h3>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                    <div class="container_titles grid-5 no-margin ">
+                        <h3 class="title my_titles">
+                            Lista que contienen este libro
+                        </h3>
+                        {% for obj in list %}
+                            <span class="item_title grid-5 no-margin">
+                                <span class="wrapper_title borde_author ">
+                                    <img src="/static/media/author/create.png" />
+                                </span>
+                                <h3 class="title grid-3 title_mini">
+                                   {{ obj.list.name|truncatechars:25 }}
+                                </h3>
+                                <p class="grid-3 p_text_mini text_list">Lista creada por
+                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                </p>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">ver todos</span>
+                    </div>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+
+    {% if entity_type.1 == 'spot' %}
+        <div class="grid-16 spot load no-margin">
+    {% else %}
+        <div class="grid-16 load no-margin">
+    {% endif %}
+
+            <div class="sidebar-a grid-10">
+            <h3 class="title main">Información General</h3>
+            <span class="cover-picture wrapper">
+                {% if entity_type.1 == 'group' %}
+                    {% if not entity.cover_picture %}
+                        <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                    {% else %}
+                        <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.cover_picture }}" alt="{{ entity.name }}"/>
+                    {% endif %}
+                {% endif %}
+                {% if entity_type.1 == 'organization' or entity_type.1 == 'spot' %}
+                    <span id="map">
+
+                    </span>
+                {% endif %}
+            </span>
+
+            {% if entity_type.1 == 'spot' %}
+                <div class="grid-3 contact omega">
+                <span class="ruler"></span>
+                    <span class="contact">
+                        <h3 class="title main">Ubicacion</h3>
+                        <p>{{ entity.address }}</p>
+                        <h3 style="margin-top: 20px" class="title main fleft">Contacto</h3>
+                        <p>{{ profile.phone }}</p>
+                    </span>
+                </div>
+            {% endif %}
+
+            {% if entity_type.1 == 'organization' %}
+                <div class="grid-5 alpha">
+                <span class="ruler"></span>
+            {% endif %}
+
+            {% if entity_type.1 == 'spot' %}
+                <div class="overvieww no-margin fleft grid-6 content">
+                    <span class="ruler"></span>
+                    <p>{{ entity.description }}</p>
+                </div>
+
+            {% else %}
+                <div class="overvieww content">
+                    <p>{{ entity.description }}</p>
+                </div>
+            {% endif %}
+
+            {% if entity_type.1 == 'organization' %}
+            </div>
+
+            {% endif %}
+
+            {% if entity_type.1 == 'organization' %}
+                <div class="grid-4 contact omega">
+                <span class="ruler"></span>
+                    <span class="contact">
+                        <h3 class="title main">Contacto</h3>
+                        <p>{{ owner.email }}</p>
+                        <p>{{ profile.phone }}</p>
+                        <p>{{ entity.website }}</p>
+                        <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
+                        <p>{{ entity.address }}</p>
+                    </span>
+                </div>
+            {% endif %}
+
+
+            {% if entity_type.1 == 'group' %}
+                <div class="more-info">
+                    <span class="grid-3 alpha">
+                    <h3 class="title main">Miembros <span>1200</span></h3>
+                    </span>
+                    <span class="grid-4">
+                        <h3 class="title main">Contacto <span>{{ owner.email }}</span></h3>
+                    </span>
+                    <span class="grid-3 omega">
+                        <h3 class="title main">Administrador/es <span>{{ owner.first_name }}</span></h3>
+                    </span>
+                </div>
+            {% endif %}
+
+            </div>
+            <div class="grid-5 sidebar-b">
+                <h3 class="title">{{ entity_type.0|capfirst }} similares</h3>
+                {% for similar_entity in similar_entities %}
+                <span class="wrapper">
+                    <span class="fleft">
+                        <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt=""/>
+                    </span>
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}">
+                        <h3 class="title fleft">{{ similar_entity.name }}
+                            {% if entity_type.1 == 'spot' %}
+                                <span class="view">Ver spot</span>
+                            {% else %}
+                                <span>1,200 miembros</span>
+                            {% endif %}
+                        </h3>
+                    </a>
+                </span>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="grid-16 load no-margin">
+            <div class="sidebar-a grid-10">
+                <h3 class="title main">Próximos eventos</h3>
+                <span class="month">Septiembre</span>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview">
+                            <span class="item">
+                                <span class="no-margin grid-6">
+                                    <span class="date fright din-m"></span>
+                                    <span class="ruler grid-4 fright"></span>
+
+                                </span>
+                                <span class="wrapper fleft">
+                                    <img class="profile-picture" src="" alt=""/>
+                                </span>
+                                <span class="general-info fleft">
+                                    <h3 class="title"></h3>
+                                    <p>
+                                        <span class="info grid-7 alpha"></span>
+
+                                    </p>
+                                    <span class="time fleft"></span>
+                                    <span class="location fright">
+                                        <p>
+                                            <span class="place"></span><br>
+                                            <span></span>
+                                        </p>
+                                        <span class="apply fright">asistir</span>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-5 sidebar-b fright">
+            <h3 class="title">Calendario</h3>
+            <input class="entity" type="hidden" value="{{ entity.id }}"/>{% csrf_token %}
+                <div class="overview">
+                    {% autoescape off %}
+                        {{ calendar }}
+                    {% endautoescape %}
+                </div>
+                <div class="controller center">
+                    <span class="prev fleft"><</span>
+                    <span class="next fright">></span>
+                </div>
+            </div>
+        </div>
+        {% if entity_type.1 == 'group' %}
+        <div class="grid-15 offset-1 members load no-margin">
+            <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview">
+                            {% for i in 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' %}
+                                <span class="wrapper grid-5 no-margin">
+                                    <span class="fleft">
+                                        <img src="/static/media/entities/1/python.png" alt=""/>
+                                    </span>
+                                    <h3 class="title fleft">Som title
+                                        <span>Se unio hace 2 años</span>
+                                        <a href="#">Ver perfil</a>
+                                    </h3>
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        </div>
+        {% endif %}
+    </div>
+
+
+</div>
+{% endblock %}

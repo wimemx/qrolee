@@ -1,0 +1,481 @@
+.register.single{
+    padding-top: 50px;
+}
+.register.single p{
+    max-width: 135px;
+}
+.register.single a{
+    max-width: 125px;
+    text-align: center;
+    line-height: 25px;
+    height: 25px;
+    text-decoration: none;
+    color: #000;
+    margin-bottom: 10px;
+}
+.register.single img{
+    width: 135px;
+    height: 135px;
+    margin-bottom: 20px;
+}
+
+.edit{
+    margin:20px 0px 20px 0px;
+    background: #fffcf5 !important;
+    padding: 20px 10px 50px 10px;
+    min-height: 500px;
+}
+.title{
+    width: 100%;
+    display: block;
+}
+.title .heading{
+    color: #cccc66;
+}
+.title.organization .heading{
+    color: #8ab493;
+}
+.title.spot .heading{
+    color: #f89883;
+}
+
+.member{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.green_btn{
+    background: #c5c34d;
+}
+span.green_btn,span.yellow_btn{
+    padding:2px 8px 2px 8px;
+    font-size: 10px;
+    cursor: pointer;
+}
+.yellow_btn{
+    background: #e8d76b;
+    font-family: 'Montserrat' sans-serif;
+    display: none;
+}
+.data{
+    margin-top: 20px !important;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #9d9c97;
+}
+.data p{
+    font-family: 'Montserrat' sans-serif;
+    color: #000;
+    position: relative;
+}
+    .data p .value{
+        font-family: 'Conv_fontscore.com_d-dinproregular';
+        color: #454545;
+    }
+    .data p input:not([type=submit]){
+        background: #fbf6ea;
+        height: 17px;
+        line-height: 17px;
+        display: none;
+    }
+    .data p textarea{
+        background: #fbf6ea;
+        display: none;
+        padding: 0px 0px 0px 5px;
+        border: none;
+        margin-right: 5px;
+        height: 100px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .data .value.map{
+        width: 160px;
+        height: 60px;
+        position: absolute;
+        top: 40px;
+        left: 0px;
+
+    }
+    .checkbox{
+        font-size: 10px;
+    }
+    .checkbox span{
+        width: 8px;
+        height: 8px;
+        display: block;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+        top: 1px;
+        border: 1px solid #9d9c97;
+        font-size: 10px;
+        line-height: 9px;
+        text-align: center;
+        color: #454545;
+        cursor: pointer;
+    }
+
+#map{
+    height: 100px;
+}
+
+.close{
+    width: 9px;
+    height: 8px;
+    display: none;
+    background: #c19160 url('../img/register_close.png') no-repeat 50% 50%;
+    position: absolute;
+    bottom: 0px;
+    padding: 3px;
+    right: -20px;
+    cursor: pointer;
+}
+
+.select_wrapper{
+    display: none;
+}
+.select{
+    background: #fbf6ea;
+    padding: 0px 0px 0px 5px;
+    height: 20px;
+}
+ .select .dropdown{
+     position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 15px;
+    height: 100%;
+    display: block;
+    border-left: 1px solid #e4e4e4;
+    background: url('../img/dropdown.png') no-repeat 4px 7px;
+}
+.select .text{
+    text-transform: capitalize;
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #454545;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+    line-height: 20px;
+}
+
+select{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.edit.register{
+    padding-bottom: 100px;
+}
+
+.edit.register .data{
+    border:none;
+
+}
+    .data p{
+        float: left;
+        width: 100%;
+    }
+        .edit.register .data input:not([type=submit]), .edit.register .data textarea{
+            display: block;
+            background: #fff;
+            border:1px solid #acacac;
+            margin:0px;
+            padding: 0px;
+        }
+        .edit.register .select_wrapper{
+            display: block;
+        }
+            .edit.register .select_wrapper .select{
+                background: #fff;
+                border:1px solid #acacac;
+            }
+            .search_filters .select_wrapper .select.date{
+                padding:0px;
+                border:none;
+                margin-bottom: 10px;
+            }
+                .search_filters .select_wrapper.date input.date{
+                    width: 100px;
+                    float: left;
+                }
+        .edit.register p .green_btn{
+            position: relative;
+            left: -1px;
+            z-index: 1;
+        }
+        .edit.register p .picture{
+            opacity: 0;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            cursor: pointer;
+            width: 80px;
+            border: none;
+        }
+        .edit.register p .grid-3{
+            margin-left: 20px;
+        }
+            .edit.register p .grid-3 input{
+                width: 100px;
+            }
+        .edit.register p input[type=submit]{
+            display: block;
+            padding:2px 8px 2px 8px;
+            color: #000;
+        }
+
+
+.alert-message{
+    width: 200px;
+    padding: 10px;
+    height: 80px;
+    display: none;
+    position: fixed;
+    left: 50%;
+    z-index: 1;
+    top: 300px;
+
+}
+    .alert-message p{
+        font-family: 'Montserrat' sans-serif;
+        text-align: center;
+    }
+    .alert-message .accept{
+        margin-left: 40px;
+    }
+    .alert-message .accept,.alert-message .reject{
+        font-family: 'Montserrat' sans-serif !important;
+    }
+
+    .edit.register .invalid{
+        top: -25px;
+    }
+
+    form p .invalid{
+            background: #fff;
+            font-weight: normal;
+            padding: 3px 10px 3px 10px;
+            position: absolute;
+            right: -85px;
+            top: -2px;
+            box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+            display: none;
+        }
+#picture{
+    height: 180px;
+    margin-bottom: 50px;
+    width: 282px;
+    margin-right: 80px;
+    margin-top: 30px;
+}
+#cover{
+    height: 180px;
+    width: 282px;
+    margin-right: 80px;
+}
+.preview,.dz-message{
+        height: 180px;
+        font-family: 'Montserrat' sans-serif;
+        text-align: center;
+        color: #000;
+        float: right;
+        width: 280px;
+        border: 1px dashed #acacac;
+        border-radius: 10px;
+        margin-bottom: 50px;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+    }
+
+.dz-message{
+        line-height: 180px;
+    }
+
+    .dz-filename,.dz-size,.dz-success-mark,.dz-error-mark{
+        display: none;
+    }
+    .dz-remove{
+        color: #ed8571;
+        font-family: 'Montserrat' sans-serif;
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+        display: block;
+
+    }
+    .dz-preview{
+        width: 100px;
+        display: block;
+        margin: 30px auto;
+    }
+
+    .message.success{
+    color: #cccc66;
+}
+.message.fail{
+    color: #e35e47;
+}
+
+.edit .heading{
+    width: auto;
+}
+.entity.edit .nav{
+    margin-top: 5px;
+}
+
+.entity.edit .member{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 0px;
+}
+.members.center{
+    display: none;
+}
+.affiliate{
+    display: none;
+}
+    .affiliate .title{
+        font-size: 13px;
+        margin-top: 30px;
+    }
+    .affiliate .wrapper{
+        width: 110px;
+        height: 110px;
+        margin-right: 10px;
+        border:none;
+    }
+    .affiliate .since{
+        font-family: 'Conv_fontscore.com_d-dinproregular';
+        font-size: 12px;
+        width: 100%;
+        display: block;
+        margin-bottom: 6px;
+    }
+    .affiliate .name{
+        float: left;
+        width: 100%;
+        display: block;
+    }
+    .affiliate .green_btn{
+        margin-top: 8px;
+    }
+    .affiliate .remove{
+        width: 20px;
+        height: 20px;
+        display: block;
+        line-height: 20px;
+        text-align: center;
+        background: #ef846b;
+        color: #000;
+        cursor: pointer;
+    }
+    .add .affiliate .remove{
+        width: auto;
+        padding:0px 8px 0px 8px;
+        font-size: 10px;
+        display: none;
+    }
+    .affiliate.no-margin.margin{
+        margin:0px 20px 0px 20px;
+    }
+
+
+p.advanced_search_btn{
+    color: #ef946b;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 11px;
+}
+.advanced_search{
+    width: 100%;
+    display: none;
+}
+    .advanced_search .title{
+        font-size: 11px;
+        margin-top: 15px;
+    }
+    .advanced_search .checkbox{
+        width: 100%;
+        float: left;
+        margin:0px;
+        font-size: 11px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+        .advanced_search .checkbox span{
+            line-height: 6px;
+        }
+    .search_filters{
+        width: 100%;
+        display: block;
+    }
+        .search_filters .select_wrapper{
+            width: 100%;
+            display: block;
+        }
+            .search_filters .select_wrapper input{
+                float: right;
+                width: 150px;
+                height: 15px;
+                border: 1px solid #acacac;
+                background: #fffcf5;
+                font-size: 11px;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
+            }
+            .search_filters .select_wrapper .select{
+                background: #fffcf5;
+                border:1px solid #acacac;
+                height: 15px;
+            }
+                .search_filters .select_wrapper .select .text{
+                    font-size: 11px;
+                    line-height: 15px;
+                }
+
+.results .item{
+    height: 115px !important;
+}
+    .results .item .title{
+        margin-top: 30px !important;
+    }
+    .results .item .wrapper{
+        margin:0px
+    }
+
+.filter{
+
+}
+    .filter p{
+        padding-left: 15px;
+        margin:0px;
+        width: 100%;
+    }
+    .filter .title{
+        font-size: 13px;
+        background: #dfb38c;
+        height: 25px;
+        line-height: 25px;
+    }
+    .filter .checkbox{
+        background: #FEF1D5;
+        height: 30px;
+        line-height: 30px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+        .filter .checkbox span{
+            width: 16px;
+            height: 16px;
+            margin-top: 4px;
+            border:none;
+
+        }
+    .filter .checkbox.active, .filter .checkbox:hover{
+        background: #E7CB92 ;
+    }
