@@ -227,6 +227,40 @@ function update_obj(field, value, $this){
 }
 
 function advanced_search(search_params, csrf){
+    /*
+        query = {
+                'title__icontains': 'String de busqueda',
+                'pk__in': JSON.stringify([1,2]) (como en django para la busqueda de pk)
+            }
+            fields = ['title', 'cover']; campos en los que bas a buscar
+            and = 1; is es un query tipo and o tipo or
+            join = { (las tablas con las que haces relacion)
+                'tables':{
+                    0: JSON.stringify(['account.author','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
+                },
+                'quieres':{
+                    0: JSON.stringify(['title_id']),
+                    1: JSON.stringify(['element_id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['first_name','last_name']),
+                    1: JSON.stringify(['grade'])
+                }
+            }
+            join = JSON.stringify(join); conviertes el join en un string
+
+            search = {
+                'type': type, el modelo en el que vas a buscar account.title account.list etc...
+                'fields': JSON.stringify(fields),
+                'value': JSON.stringify(query),
+                'and': and,
+                'join': join
+            }
+            search = JSON.stringify(search); conviertes el objeto a string
+            var csrf = el csrf
+            result = advanced_search(search, csrf);
+    */
     var result;
     $.ajax({
         type: "POST",
@@ -241,6 +275,37 @@ function advanced_search(search_params, csrf){
         result = data;
     });
     return result;
+}
+
+
+
+function search_api(csrf, query){
+    /*
+    query = {
+         'q': JSON.stringify($.trim($('.advanced_filter .search').val()).split(' ')),
+         'start_index': {
+            0: 0 (para hacer paginacion en los libros, autores no se puede hacer paginacion )
+         },
+         'type': {
+            0: type (account.title o account.author)
+         }
+     }
+     api = search_api(csrf, query);
+     */
+    var ret = null;
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: '/qro_lee/search_api/',
+        data: {
+            'csrfmiddlewaretoken': csrf,
+            'search': JSON.stringify(query)
+        },
+        dataType: 'json'
+    }).done(function(data){
+        ret = data;
+    });
+    return ret;
 }
 
 $(document).ready(function(){

@@ -661,7 +661,8 @@ $(document).ready(function(){
             }
         }else if(type == 'account.author'){
             query = {
-                'first_name__icontains': $.trim($('.advanced_filter .search').val())
+                'first_name__icontains': $.trim($('.advanced_filter .search').val()),
+                'last_name__icontains': $.trim($('.advanced_filter .search').val())
             }
             fields = ['first_name',
                 'last_name'];
@@ -818,13 +819,16 @@ $(document).ready(function(){
             and = 1;
             join = {
                 'tables':{
-                    0: JSON.stringify(['account.author','account.authortitle'])
+                    0: JSON.stringify(['account.author','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
                 },
                 'quieres':{
-                    0: JSON.stringify(['title_id'])
+                    0: JSON.stringify(['title_id']),
+                    1: JSON.stringify(['element_id'])
                 },
                 'fields':{
-                    0: JSON.stringify(['first_name','last_name'])
+                    0: JSON.stringify(['first_name','last_name']),
+                    1: JSON.stringify(['grade'])
                 }
             }
             join = JSON.stringify(join);
@@ -842,10 +846,29 @@ $(document).ready(function(){
             $('.results .item').each(function(){
                 $(this).remove();
             });
-            result = advanced_search(search, $('.advanced_filter').find('div input[type=hidden]').val());
-            $.each(result,function(i){
-                create_template(type, result, i, create_user);
-            });
+            var csrf = $('.advanced_filter').find('div input[type=hidden]').val();
+            var api = false;
+            if(type == 'account.title' || type == 'account.author'){
+                result = advanced_search(search, csrf);
+                query = {
+                    'q': JSON.stringify($.trim($('.advanced_filter .search').val()).split(' ')),
+                    'start_index': {
+                        0: 0
+                    },
+                    'type': {
+                        0: type
+                    }
+                }
+                api = search_api(csrf, query);
+            }else
+                result = advanced_search(search, csrf);
+            if(result.response != 0){
+                $.each(result,function(i){
+                    create_template(type, result, i, create_user);
+                });
+            }else{
+
+            }
 
         }
     });
@@ -1030,10 +1053,12 @@ function create_template(type, result,i, create_user){
             p.html(result[i].extras[0].length+' Libros');
             item.append(p);
         }else if(type == 'account.title'){
+
             var text= '';
-            p.html(text+result[i].extras[0]
-                + ' '+ result[i].extras[1]);
+            p.html(text+result[i].extras[1][0]
+                + ' '+ result[i].extras[1][1]);
             item.append(p);
+
         }else if(type == 'registry.event'){
             var date = result[i].start_time.split(' ');
             var hour = date[1].split(':');
@@ -1128,63 +1153,3 @@ function add_genre($span){
     });
 }
 
-/*
-query = {
-'q': JSON.stringify(['Harry','Potter']),
-'start_index':{
-0: 0
-},
-'particular_fields': {
-0: 'inauthor',
-1: 'intitle'
-},
-'particular_fields_terms':{
-0: JSON.stringify(['jk', 'rollwing']),
-1: JSON.stringify(['Azkaban'])
-}
-}
-*/
-
-function search_api(csrf, query){
-    var _query = {
-        'title__icontains': ''
-    }
-    var fields = ['title', 'cover'];
-    var and = 0;
-    var join = {
-        'tables':{
-            0: JSON.stringify(['account.author','account.authortitle']),
-            1: JSON.stringify(['account.rate'])
-        },
-        'quieres':{
-            0: JSON.stringify(['title_id']),
-            1: JSON.stringify(['element_id'])
-        },
-        'fields':{
-            0: JSON.stringify(['first_name','last_name']),
-            1: JSON.stringify(['grade'])
-        }
-    }
-    join = JSON.stringify(join);
-    var search = {
-        'type': 'account.title',
-        'fields': JSON.stringify(fields),
-        'value': JSON.stringify(_query),
-        'and': and,
-        'join': join
-    }
-    search = JSON.stringify(search);
-    var result = advanced_search(search, csrf);
-    console.log(result);
-    $.ajax({
-        type: "POST",
-        url: '/qro_lee/search_api/',
-        data: {
-            'csrfmiddlewaretoken': csrf,
-            'search': JSON.stringify(query)
-        },
-        dataType: 'json'
-    }).done(function(data){
-            console.log(data);
-        });
-}

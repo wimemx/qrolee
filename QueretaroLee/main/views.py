@@ -20,6 +20,7 @@ import ast
 import operator
 import math
 import urllib2
+import pprint
 
 
 @login_required(login_url='/')
@@ -409,7 +410,6 @@ def advanced_search(request, **kwargs):
         query_list = ast.literal_eval(data['value'])
         q_list = list()
         for key in query_list:
-            print key
             if '__in' in key:
                 val = ast.literal_eval(query_list[key])
                 if len(val) > 0:
@@ -438,6 +438,13 @@ def advanced_search(request, **kwargs):
             object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
+
+        if not object:
+            context = {
+                'response': 0
+            }
+            context = simplejson.dumps(context)
+            return HttpResponse(context, mimetype='application/json')
 
         value = {}
         #fields = [item for item in fields if item not in fields_foreign]
@@ -468,7 +475,7 @@ def advanced_search(request, **kwargs):
             for ele in users_lists:
                 for search in filter_type:
                     if search == 'A':
-                        parent = str('accountdatetime_from_str.author').split('.')
+                        parent = str('account.author').split('.')
                         child = str('account.listauthor').split('.')
                     elif search == 'G':
                         parent = str('account.genre').split('.')
@@ -490,9 +497,7 @@ def advanced_search(request, **kwargs):
                         for filter in filters:
                             q_list.append((filter[0], filter[1]))
                     query = [Q(x) for x in q_list]
-                    print q_list
                     list_objects = parent_model.objects.filter(reduce(operator.and_, query))
-                    print list_objects
                     if list_objects is None:
                         break
                     for o in list_objects:
@@ -507,16 +512,13 @@ def advanced_search(request, **kwargs):
         fields = ast.literal_eval(str(data['fields']))
         for obj in object:
             if 'distance' in query_list:
-                '''6371 * acos((cos(radians * 37) * cos(radians * 36.9997178)
-                * cos((radians * (-121.9983957)) - (radians * (-122)))) + (sin(radians * 37) *
-                sin(radians * 36.9997178))) '''
                 lat = float(obj.lat)
                 lng = float(obj.long)
                 radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
 
                 if radius > distance:
                     break
-            context_fields = {}
+            context_fields = {'extras': list()}
             if data['join'] != 'none':
                 for ele in join['tables']:
                     if 'type' in join:
@@ -576,31 +578,31 @@ def advanced_search(request, **kwargs):
                     model_name = parent[1]
                     parent_model = get_model(app_label, model_name)
 
-                    child = str(models[1]).split('.')
-                    app_label = child[0]
-                    model_name = child[1]
-                    child_model = get_model(app_label, model_name)
+                    if len(models) > 1:
+                        child = str(models[1]).split('.')
+                        app_label = child[0]
+                        model_name = child[1]
+                        child_model = get_model(app_label, model_name)
 
-                    join_field = ast.literal_eval(join['quieres'][str(0)])
-                    q_list = [(model_name+'__'+str(join_field[0]), related_object)]
+                    join_field = ast.literal_eval(join['quieres'][str(ele)])
+                    if len(models) > 1:
+                        q_list = [(model_name+'__'+str(join_field[0]), related_object)]
+                    else:
+                        q_list = [(str(join_field[0]), related_object)]
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.or_, query))
-
 
                     if len(models) <= 2:
                         values = list()
                         for related_obj in related_object:
-                            counter = 0
-                            join_field = ast.literal_eval(join['fields'][str(0)])
+                            join_field = ast.literal_eval(join['fields'][str(ele)])
                             for val in join_field:
                                 if isinstance(related_obj.__getattribute__(val), unicode):
                                     values.append(related_obj.__getattribute__(val).encode('utf-8', 'ignore'))
                                 else:
                                     field_value = str(related_obj.__getattribute__(str(val)))
                                     values.append(field_value)
-                                counter += 1
-                        context_fields['extras'] = values
-
+                        context_fields['extras'].append(values)
             for val in fields:
                 if isinstance(obj.__getattribute__(val), unicode):
                     context_fields[str(val)] = obj.__getattribute__(val).encode('utf-8', 'ignore')
@@ -723,9 +725,9 @@ def get_titles(request,**kwargs):
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
     context = {
-        'book':book,
-        'content':content,
-        'type':type
+        'book': book,
+        'content': content,
+        'type': type
     }
 
     fields_related_objects = account_models.Title._meta.get_all_related_objects(
@@ -769,7 +771,7 @@ def get_titles(request,**kwargs):
     return render(request, template, context)
 
 
-def get_authors(request,**kwargs):
+def get_authors(request, **kwargs):
     template = kwargs['template_name']
 
     type = ['Autores', 'Author']
@@ -837,7 +839,7 @@ def get_authors(request,**kwargs):
 
     print request.POST.get('field_value')
 
-    if request.POST.get('field_value')!=None:
+    if request.POST.get('field_value')!= None:
         context = simplejson.dumps(dictionary_authors)
         return HttpResponse(context, mimetype='application/json')
 
@@ -847,7 +849,7 @@ def get_authors(request,**kwargs):
 def get_genre(request):
     id_user = request.user
     list_genre = account_models.Genre.objects.all()
-    list_genre_favorite  = account_models.ListGenre.objects.filter(list__user=id_user,
+    list_genre_favorite = account_models.ListGenre.objects.filter(list__user=id_user,
                                                                    list__type='G')
     fields_related_objects = account_models.Genre._meta.get_all_related_objects(
         local_only=True)
@@ -988,15 +990,18 @@ def get_profile(request,**kwargs):
 
 
 def search_api(request, **kwargs):
-    url = 'https://www.googleapis.com/books/v1/volumes?q='
     search = ast.literal_eval(request.POST.get('search'))
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
+    type = search['type']['0'].split('.')
+    print type
+    type = type[1]
     q = ''
     query = ''
     key = '&key='+settings.GOOGLE_BOOKS_KEY
     startIndex = '&startIndex='+index
     languageRestrict = '&langRestrict=es'
+    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+description)'
     for element in q_ast:
         q += element + '+'
 
@@ -1011,13 +1016,22 @@ def search_api(request, **kwargs):
         query = q+query[:-1]
     else:
         query = q[:-1]
-    query += startIndex + key
-    url += query
+    if type == 'title':
+        url = 'https://www.googleapis.com/books/v1/volumes?q='
+        query += startIndex + key
+        url += query
+    else:
+        url = 'https://www.googleapis.com/freebase/v1/search?query='
+        query += search_author + key
+        url += query
+    print url
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
+    pprint.pprint(response)
     if 'items' in response:
-        for element in response['items']:
-            print element
+        pass
+    elif 'cost' in response:
+        pass
     else:
         response = 'No se pudieron encontraron más libros en su búesqueda'
 
