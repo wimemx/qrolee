@@ -1167,59 +1167,8 @@ query = {
 }
 */
 
-function search_api(csrf, query, id){
-    var _query = {
-        'title__icontains': ''
-    }
-    var fields = ['title', 'cover'];
-    var and = 0;
-    var join = {
-        'tables':{
-            0: JSON.stringify(['account.author','account.authortitle']),
-            1: JSON.stringify(['account.rate'])
-        },
-        'quieres':{
-            0: JSON.stringify(['title_id']),
-            1: JSON.stringify(['element_id'])
-        },
-        'fields':{
-            0: JSON.stringify(['first_name','last_name']),
-            1: JSON.stringify(['grade'])
-        }
-    }
-    join = JSON.stringify(join);
-    var search = {
-        'type': 'account.title',
-        'fields': JSON.stringify(fields),
-        'value': JSON.stringify(_query),
-        'and': and,
-        'join': join
-    }
-    search = JSON.stringify(search);
-    //var result = advanced_search(search, csrf);
-    //console.log(result);
-    $.ajax({
-        type: "POST",
-        url: '/qro_lee/search_api/',
-        data: {
-            'csrfmiddlewaretoken': csrf,
-            'search': JSON.stringify(query)
-        },
-        dataType: 'json'
-    }).done(function(data){
-
-            if(id==1)
-                dialog_titles(csrf,data,1);
-            if(id==2)
-                list_title(csrf,data,$('.dialog_text'),1);
-            if(id==3)
-                dialog_titles(csrf,data,2);
-
-        });
-}
 
 function dialog_titles(csrf, data, id){
-
     $('.dialog-confirm').empty();
     div_closet = $('<span class="dialog_closet"></span>');
     closet(div_closet);
@@ -1249,14 +1198,8 @@ function dialog_titles(csrf, data, id){
 
             $(this).remove();
             var words = $('.input_add_book').val();
-            words = words.split(" ");
-            var query = {
-                'q': JSON.stringify(words),
-                'start_index':{
-                    0: 0
-                }
-            };
-            search_api($('.csrf_token').find('div input').val(), query, 2);
+
+            type_add_list($('.csrf_token').find('div input').val(), 2, words);
         });
 
     });
@@ -1280,11 +1223,13 @@ function list_title(csrf, data, div_text, type){
 
     array = [];
 
-    var titles = data['result_api']['items'];
-    $.each(titles,function(i){
-        attribute = titles[i]['volumeInfo'];
-        attribute_access = titles[i]['accessInfo'];
-        item_title = $('<span class="item_ti item_title_' + i + '"></span>')
+    titles_l = data[0];
+    count_id = 0;
+    bar = false;
+
+    $.each(titles_l,function(i){
+        console.log(i);
+        item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
 
         type_add = 'grid-5';
         if(type==2)
@@ -1292,6 +1237,98 @@ function list_title(csrf, data, div_text, type){
 
         div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
         item_title.append(div_item);
+        item_title.append('<input type="hidden" class="title_inte" value="1"/>');
+        item_title.append('<input type="hidden" class="id_tit" value="' +
+            titles_l[i].id + '"/>');
+        span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
+        div_item.append(span_wrapper);
+        url_mini = '' + titles_l[i].cover;
+        url = '' + titles_l[i].cover;
+
+        var obj = {
+            'title':titles_l[i].title
+        }
+
+        array.push(obj);
+
+        img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
+        span_wrapper.append(img_wrapper);
+
+        type_add = 'grid-3';
+        if(type==2)
+            type_add = 'grid-2';
+
+        div_container_text = $('<div class="d-container_text_book ' +
+            type_add + ' no-margin"></div>');
+        div_item.append(div_container_text);
+        item_title.append(div_item);
+        a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
+        a.append((titles_l[i].title).substring(0,15));
+        div_container_text.append(a);
+        p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
+            ' no-margin" ></p>');
+        a_author = $('<a class="title_author" ></a>');
+        var author_att= titles_l[i].extras[1];
+        a_author.append(author_att);
+        p_text_author.append('De ');
+        p_text_author.append(a_author);
+        div_container_text.append(p_text_author);
+        container_stars = $('<span class="grid-3 no-margin"></span>');
+
+        var grade = 5;
+        for(var index = 0;index<5;index++){
+            if(index<grade){
+                container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+            }else{
+                container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+            }
+        }
+
+        div_container_text.append(container_stars);
+        div_add = $('<div class="container_add_my grid-3 no-margin"></div>');
+        span_add_f = $('<span class="add_my_titles grid-3 no-margin"></span>');
+        span_add_l = $('<span class="add_my_titles grid-3 no-margin"></span>');
+        span_add_p = $('<span class="add_my_titles grid-3 no-margin"></span>');
+        span_add_f.append('Añadir a mis favoritos');
+        span_add_l.append('Añadir a mis libros leídos');
+        span_add_p.append('Añadir a mis libros por leer');
+        span_add_f.append('<input type="hidden" class="list_f" value="0" />');
+        span_add_l.append('<input type="hidden" class="list_l" value="0" />');
+        span_add_p.append('<input type="hidden" class="list_p" value="0" />');
+        div_add.append(span_add_f);
+        div_add.append(span_add_l);
+        div_add.append(span_add_p);
+        if(type==1)
+            item_title.append(div_add);
+        if(type==2)
+            div_item.append('<input type="hidden" class="my_list" value="0" />');
+
+        container.append(item_title);
+
+        if(i == (titles_l.length-1)){
+            bar = true;
+        }
+        count_id++;
+
+    });
+
+
+    if(data.length>1){
+
+    data = data[1];
+    var titles = data['result_api']['items'];
+    $.each(titles,function(i){
+        attribute = titles[i]['volumeInfo'];
+        attribute_access = titles[i]['accessInfo'];
+        item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
+
+        type_add = 'grid-5';
+        if(type==2)
+            type_add = 'grid-4 selec_item';
+
+        div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
+        item_title.append(div_item);
+        item_title.append('<input type="hidden" class="title_inte" value="0"/>');
         span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
         div_item.append(span_wrapper);
         url = '/static/img/create.png';
@@ -1305,7 +1342,18 @@ function list_title(csrf, data, div_text, type){
             pages  = attribute['pageCount'];
         des = '';
         if('description' in attribute)
-            desc  = attribute['description'];
+            desc  = ''+attribute['description'];
+
+        isbn = '';
+        isbn13 = '';
+        if('industryIdentifiers' in attribute){
+            if('identifier' in attribute['industryIdentifiers'][0])
+                isbn = attribute['industryIdentifiers'][0]['identifier'];
+            if(attribute['industryIdentifiers'].length >1){
+                if('identifier' in attribute['industryIdentifiers'][1])
+                    isbn13 = attribute['industryIdentifiers'][1]['identifier'];
+            }
+        }
 
         var obj = {
             'title':attribute['title'],
@@ -1316,8 +1364,8 @@ function list_title(csrf, data, div_text, type){
             'publishedDate':attribute['publishedDate'],
             'language':attribute['language'],
             'country':attribute_access['country'],
-            'isbn':attribute['industryIdentifiers'][0]['identifier'],
-            'isbn13':attribute['industryIdentifiers'][1]['identifier'],
+            'isbn':isbn,
+            'isbn13':isbn13,
             'pages':pages,
             'picture':url_mini
         }
@@ -1341,7 +1389,7 @@ function list_title(csrf, data, div_text, type){
         div_container_text.append(a);
         p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
             ' no-margin" ></p>');
-        a_author = $('<a href="#" class="title_author" ></a>');
+        a_author = $('<a " class="title_author" ></a>');
         var author_att= attribute['authors'];
         a_author.append(author_att);
         p_text_author.append('De ');
@@ -1381,8 +1429,10 @@ function list_title(csrf, data, div_text, type){
         if(i == (titles.length-1)){
             bar = true;
         }
+        count_id++;
 
     });
+}
 
         $('.add_my_titles').click(function(){
             if(parseInt($(this).find('input').val())==0){
@@ -1394,11 +1444,13 @@ function list_title(csrf, data, div_text, type){
             }
         });
 
-        div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
-        div_text.append(div_btn_save);
-        div_btn_save.append('<span class=" green_btn ">Guardar</span>');
+            div_text.find('.btn_save').remove();
+            div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
+            div_text.append(div_btn_save);
+            div_btn_save.append('<span class=" green_btn ">Guardar</span>');
 
-        div_btn_save.click(function(){
+
+        $('.btn_save').click(function(){
 
             array_title = [];
 
@@ -1429,16 +1481,26 @@ function list_title(csrf, data, div_text, type){
 
                 if(active_title){
                     active_sel = true;
-                    var title_json = {it:{
-                        'attribute':array[it],
-                        'dafault_type':default_type
-                    }};
+                    title_json = {};
+                    if(parseInt($('.item_title_'+it).find('.title_inte').val())==1){
+                        title_json = {it:{
+                            'attribute':array[it],
+                            'default_type':default_type,
+                            'id':parseInt($('.item_title_'+it).find('.id_tit').val())
+                        }};
+                    }else{
+                       title_json = {it:{
+                            'attribute':array[it],
+                            'default_type':default_type,
+                           'id':-1
+                        }};
+                    }
 
                     array_title.push(title_json);
                 }
-
             }
 
+                console.log(array_title);
             if(active_sel)
                 add_my_title(csrf,array_title,type);
 
@@ -1448,10 +1510,10 @@ function list_title(csrf, data, div_text, type){
         $('.container_message').fadeIn(250);
         if(bar)
             $('#scrollbar1').tinyscrollbar();
-
         aling_message();
         selec_item();
-        get_titles_authors(csrf);
+        //get_titles_authors(csrf);
+
 }
 
 function add_my_title(csrf, array_title, type){
@@ -1518,8 +1580,9 @@ function add_my_title(csrf, array_title, type){
 
             if(type==2){
                 //$('.add_my_list').find('.d-item_book').remove();
+                console.log(data);
                 $.each(data,function(i){
-                    get_titles_authors(data[i],csrf);
+                    //get_titles_authors(2, data[i],csrf);
                 });
 
             }

@@ -101,6 +101,13 @@ class ListTitle(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.title.title, self.list.name)
 
+class AuthorTitle(models.Model):
+    title = models.ForeignKey(Title)
+    author = models.ForeignKey(Author)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.title.title, self.author.first_name)
+
 #class ListUser(models.Model):
 #    user = models.ForeignKey(User)
 #    list = models.ForeignKey(List)

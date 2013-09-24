@@ -55,7 +55,10 @@ $(document).ready(function(){
             'q': JSON.stringify(['Harry','Potter']),
             'start_index':{
                 0: 0
-            }
+            },
+            'type': {
+            0: 'account.title'
+         }
         };
         type = 0;
         if($(this).find('input').val() == 'title')
@@ -63,14 +66,81 @@ $(document).ready(function(){
         if($(this).find('input').val() == 'list')
             type = 3;
 
-        search_api($('.csrf_token').find('div input').val(), query, type);
+        crsf = $('.csrf_token').find('div input').val();
+
+
+        type_add_list(crsf, type, query);
 
     });
 
     show_dialog();
 
-
 });
+
+
+function type_add_list(csrf, id ,query){
+    var data = [];
+    //'pk__in': JSON.stringify([127, 126])
+    if(id==1)
+        var _query = {
+            'title__icontains':''
+        }
+    if(id==2)
+        var _query = {
+            'title__icontains':query
+        }
+
+    var fields = ['title', 'cover', 'id'];
+    var and = 0;
+    var join = {
+        'tables':{
+            0: JSON.stringify(['account.author','account.authortitle']),
+            1: JSON.stringify(['account.rate'])
+        },
+        'quieres':{
+            0: JSON.stringify(['title_id']),
+            1: JSON.stringify(['element_id'])
+        },
+        'fields':{
+            0: JSON.stringify(['first_name','last_name']),
+            1: JSON.stringify(['grade'])
+        }
+    }
+
+    join = JSON.stringify(join);
+
+    var search = {
+        'type': 'account.title',
+        'fields': JSON.stringify(fields),
+        'value': JSON.stringify(_query),
+        'and': and,
+        'join': join
+    }
+        search = JSON.stringify(search);
+
+        data.push(advanced_search(search, csrf));
+
+        if(id==2){
+            query = query.split(" ");
+            var query = {
+                'q': JSON.stringify(query),
+                'start_index':{
+                    0: 0
+                },
+                'type': {
+                    0: 'account.title'
+                }
+            };
+            data.push(search_api(crsf, query));
+        }
+
+        if(id==1)
+            dialog_titles(csrf,data,1);
+        if(id==2)
+            list_title(csrf,data,$('.dialog_text'),1);
+        if(id==3)
+            dialog_titles(csrf,data,2);
+}
 
 function show_dialog(){
     $('.message_alert').click(function(e) {

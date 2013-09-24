@@ -439,6 +439,7 @@ def advanced_search(request, **kwargs):
         else:
             object = model.objects.filter(reduce(operator.and_, query))
 
+
         if not object:
             context = {
                 'response': 0
@@ -1024,10 +1025,9 @@ def search_api(request, **kwargs):
         url = 'https://www.googleapis.com/freebase/v1/search?query='
         query += search_author + key
         url += query
-    print url
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
-    pprint.pprint(response)
+
     if 'items' in response:
         pass
     elif 'cost' in response:
