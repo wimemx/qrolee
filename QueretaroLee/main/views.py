@@ -20,6 +20,7 @@ import ast
 import operator
 import math
 import urllib2
+import pprint
 
 
 @login_required(login_url='/')
@@ -724,9 +725,9 @@ def get_titles(request,**kwargs):
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
     context = {
-        'book':book,
-        'content':content,
-        'type':type
+        'book': book,
+        'content': content,
+        'type': type
     }
 
     fields_related_objects = account_models.Title._meta.get_all_related_objects(
@@ -770,7 +771,7 @@ def get_titles(request,**kwargs):
     return render(request, template, context)
 
 
-def get_authors(request,**kwargs):
+def get_authors(request, **kwargs):
     template = kwargs['template_name']
 
     type = ['Autores', 'Author']
@@ -838,7 +839,7 @@ def get_authors(request,**kwargs):
 
     print request.POST.get('field_value')
 
-    if request.POST.get('field_value')!=None:
+    if request.POST.get('field_value')!= None:
         context = simplejson.dumps(dictionary_authors)
         return HttpResponse(context, mimetype='application/json')
 
@@ -848,7 +849,7 @@ def get_authors(request,**kwargs):
 def get_genre(request):
     id_user = request.user
     list_genre = account_models.Genre.objects.all()
-    list_genre_favorite  = account_models.ListGenre.objects.filter(list__user=id_user,
+    list_genre_favorite = account_models.ListGenre.objects.filter(list__user=id_user,
                                                                    list__type='G')
     fields_related_objects = account_models.Genre._meta.get_all_related_objects(
         local_only=True)
@@ -989,15 +990,18 @@ def get_profile(request,**kwargs):
 
 
 def search_api(request, **kwargs):
-    url = 'https://www.googleapis.com/books/v1/volumes?q='
     search = ast.literal_eval(request.POST.get('search'))
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
+    type = search['type']['0'].split('.')
+    print type
+    type = type[1]
     q = ''
     query = ''
     key = '&key='+settings.GOOGLE_BOOKS_KEY
     startIndex = '&startIndex='+index
     languageRestrict = '&langRestrict=es'
+    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+description)'
     for element in q_ast:
         q += element + '+'
 
@@ -1012,14 +1016,24 @@ def search_api(request, **kwargs):
         query = q+query[:-1]
     else:
         query = q[:-1]
-    query += startIndex + languageRestrict + key
-    url += query
+    if type == 'title':
+        url = 'https://www.googleapis.com/books/v1/volumes?q='
+        query += startIndex + key
+        url += query
+    else:
+        url = 'https://www.googleapis.com/freebase/v1/search?query='
+        query += search_author + key
+        url += query
+    print url
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
+    pprint.pprint(response)
     if 'items' in response:
         pass
+    elif 'cost' in response:
+        pass
     else:
-        response = 'No se pudieron encontraron más libros en su búsqueda'
+        response = 'No se pudieron encontraron más libros en su búesqueda'
 
     context = {
         'result_api': response
