@@ -139,11 +139,13 @@
            value="{{ obj.title.title }}"/>
     <input type="hidden" class="type_list"
            value="{{ obj.list.default_type }}"/>
-    <span class="wrapper_list" >
-                                            <img class="img_size_all" src="{{ obj.title.cover }}"/>
-                                        </span>
+    <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/" >
+        <span class="wrapper_list" >
+             <img class="img_size_all" src="{{ obj.title.cover }}"/>
+        </span>
+    </a>
     <div class="d-container_text_book grid-3 no-margin">
-        <a href="/qro_lee/entity/group/wime8_3/"
+        <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/"
            class="title title_book alpha grid-4 ">
             {{ obj.title.title|truncatechars:16 }}
         </a>
@@ -200,10 +202,13 @@
                value="{{ obj.title.title }}"/>
         <input type="hidden" class="type_list"
                value="{{ obj.list.default_type }}"/>
-        <span class="wrapper_list" >
-                                            <img class="img_size_all" src="{{ obj.title.cover }}" /></span>
+        <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/" >
+            <span class="wrapper_list" >
+                 <img class="img_size_all" src="{{ obj.title.cover }}" />
+            </span>
+        </a>
         <div class="d-container_text_book grid-3 no-margin">
-            <a href="/qro_lee/entity/group/wime8_3/"
+            <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/"
                class="title title_book alpha grid-4 ">
                 {{ obj.title.title|truncatechars:16 }}
             </a>
@@ -265,10 +270,14 @@
                    value="{{ obj.title.title }}"/>
             <input type="hidden" class="type_list"
                    value="{{ obj.list.default_type }}"/>
-            <span class="wrapper_list" >
-                                            <img class="img_size_all" src="{{ obj.title.cover }}"/></span>
+            <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/" >
+                <span class="wrapper_list" >
+                      <img class="img_size_all" src="{{ obj.title.cover }}"/>
+                </span>
+            </a>
+
             <div class="d-container_text_book grid-3 no-margin">
-                <a href="/qro_lee/entity/group/wime8_3/"
+                <a href="/qro_lee/profile/title/{{ obj.title.title|cut:" " }}_{{ obj.title.id }}/"
                    class="title title_book alpha grid-4 ">
                     {{ obj.title.title|truncatechars:16 }}
                 </a>

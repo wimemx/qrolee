@@ -8,7 +8,6 @@ from django.core import serializers
 from account import models as account
 from registry import models, settings
 from decimal import Decimal
-from dateutil import parser
 from QueretaroLee import settings as main_settings
 import calendar
 import os
