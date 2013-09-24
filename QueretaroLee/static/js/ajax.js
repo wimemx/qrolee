@@ -824,7 +824,7 @@ function delete_title($btn_delete){
         type: "POST",
         url: '/registry/delete_title/',
         data: {
-        'csrfmiddlewaretoken': $('.entity  div input[type=hidden]').val(),
+        'csrfmiddlewaretoken': $('.content  div input[type=hidden]').val(),
         'id_title':$btn_delete.find('.id_title').val(),
         'type':$btn_delete.find('.type_list').val()
         },
@@ -842,7 +842,7 @@ function delete_list($btn_delete){
         type: "POST",
         url: '/registry/delete_list/',
         data: {
-        'csrfmiddlewaretoken': $('.entity  div input[type=hidden]').val(),
+        'csrfmiddlewaretoken': $('.content  div input[type=hidden]').val(),
         'id_list':$btn_delete.find('.id_list').val()
         },
         dataType: 'json'
@@ -851,5 +851,29 @@ function delete_list($btn_delete){
                 $(this).remove();
            });
         });
+}
 
+function add_titles_list(csrf, id_list){
+
+    var title_ids = [];
+
+    $.each($('.add_my_list .d-item_book'),function(i){
+        title_ids.push(parseInt($(this).find('.id_title').val()));
+    });
+
+    $.ajax({
+        type: "POST",
+        url: '/registry/add_titles_my_list/',
+        data:{
+            'csrfmiddlewaretoken': csrf,
+            'list':JSON.stringify(title_ids),
+            'id_list':id_list,
+            'type':'T'
+        },
+        dataType: 'json'
+    }).done(function(data) {
+
+        return data;
+
+    });
 }

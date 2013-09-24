@@ -8,6 +8,7 @@ from django.core import serializers
 from account import models as account
 from registry import models, settings
 from decimal import Decimal
+from dateutil import parser
 from QueretaroLee import settings as main_settings
 import calendar
 import os
@@ -160,6 +161,7 @@ def account_register(request):
             os.mkdir(path+'/'+str(user.id)+'/profile/', 0777)
             os.mkdir(path+'/'+str(user.id)+'/entity/', 0777)
             os.mkdir(path+'/'+str(user.id)+'/event/', 0777)
+            os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             auth.login(request, user)
             success = 'True'
@@ -345,6 +347,9 @@ def media_upload(request):
         user = models.Profile.objects.get(user=id_user)
         user.picture = str(request.FILES['file'])
         user.save()
+
+    if 'list_picture' in  request.POST:
+        folder = '/list/'
 
     path_extension = str(request.user.id)+folder
     path = os.path.join(
@@ -712,13 +717,18 @@ def register_ajax_list(request):
 
     copy = list
     for e, val in list.iteritems():
-            copy[e] = val[0]
+            copy[e] = str(val[0])
+
     list = copy
-    id_user = int(request.user.id)
-    user = models.User.objects.get(id=id_user)
+    user = request.user
     list['user'] = user
     list['date'] = datetime.datetime.today()
-    list = models.List.objects.create(**list)
+    list['status'] = True
+    list['type'] = 'T'
+    list['default_type'] = -1
+
+
+    list = account.List.objects.create(**list)
     list.save()
 
     if list is not None:
@@ -728,6 +738,10 @@ def register_ajax_list(request):
     context = {
         'success': succuess
     }
+
+    if succuess == 'True':
+        context['id_list'] = list.id
+
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
@@ -756,7 +770,7 @@ def add_genre(request):
         genre_user.save()
 
     context =  {}
-
+    context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
 
@@ -765,29 +779,24 @@ def delete_title(request):
     user = request.user
     id_title = request.POST.get('id_title')
     type = request.POST.get('type')
-    title = models.Title.objects.get(id=id_title)
-    list = models.List.objects.get(user=user, type=type)
-    title_favorite = models.TitlesFavorites.objects.get(titles=title,
-                                                              list=list)
-    if title_favorite.status:
-        title_favorite.status = False
-    else:
-        title_favorite.status = True
-
-    title_favorite.save()
+    title_favorite = account.ListTitle.objects.get(title__id=id_title,
+                                                   list__default_type=type)
+    title_favorite.delete()
 
     context = {}
+    context = simplejson.dumps(context)
     return  HttpResponse(context, mimetype='application/json')
 
 
 def delete_list(request):
 
     id_list = request.POST.get('id_list')
-    list = models.List.objects.get(id=id_list)
+    list = account.List.objects.get(id=id_list)
     list.status = False
     list.save()
 
     context = {}
+    context = simplejson.dumps(context)
     return  HttpResponse(context, mimetype='application/json')
 
 
@@ -858,3 +867,173 @@ def create_default_list(user):
 
 def not_found(request):
     return HttpResponseRedirect('/qro_lee/')
+
+
+def add_my_title(request):
+
+    user = request.user
+
+    list_id_titles = []
+
+    if request.POST.get('list') != None:
+
+        list = ast.literal_eval(request.POST.get('list'))
+
+        for obj in list:
+
+            date = str(obj['it']['attribute']['publishedDate']).split("-")
+            date_time = str(obj['it']['attribute']['publishedDate'])
+
+            if len(date) < 3 :
+                date_time = str(date[0]) + '-01-01'
+
+            li ={
+                'title':str(obj['it']['attribute']['title']),
+                'subtitle':'',
+                'edition':'',
+                'published_date':date_time,
+                'cover':str(obj['it']['attribute']['cover']),
+                'publisher':str(obj['it']['attribute']['publisher']),
+                'language':str(obj['it']['attribute']['language']),
+                'country':str(obj['it']['attribute']['country']),
+                'type':'T',
+                'isbn':str(obj['it']['attribute']['isbn']),
+                'isbn13':str(obj['it']['attribute']['isbn13']),
+                'pages':int(obj['it']['attribute']['pages']),
+                'picture':str(obj['it']['attribute']['picture']),
+                'description':str(obj['it']['attribute']['description'])
+            }
+
+            title = account.Title.objects.create(**li)
+            title.save()
+
+            list_id_titles.append(int(title.id))
+
+            if request.POST.get('type') == 1:
+
+                for type in obj['it']['dafault_type']:
+                        lista = account.List.objects.get(user=user, default_type=type)
+                        list_ti = {
+                            'list':lista,
+                            'title':title
+                        }
+                        my_list = account.ListTitle.objects.create(**list_ti)
+                        my_list.save()
+
+    fields_related_objects = account.Title._meta.get_all_related_objects(
+    local_only=True)
+    fields = account.Title._meta.get_all_field_names()
+
+    fields_foreign = []
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+    fields = [item for item in fields if item not in fields_foreign]
+
+    list_favorite = account.ListTitle.objects.filter(list__user=user,
+                                                     list__default_type=0)
+    list_read = account.ListTitle.objects.filter(list__user=user,
+                                                     list__default_type=1)
+    list_to_read = account.ListTitle.objects.filter(list__user=user,
+                                                     list__default_type=2)
+    list_dict = {}
+    my_list = {}
+
+    for obj in list_favorite:
+        fields_title = {}
+        for field in fields:
+            if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+            else:
+                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+
+        my_list[int(obj.id)] = fields_title
+
+    list_dict['book_favorite'] = my_list
+    my_list = {}
+
+    for obj in list_read:
+        fields_title = {}
+        for field in fields:
+            if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+            else:
+                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+
+        my_list[int(obj.id)] = fields_title
+
+    list_dict['book_read'] = my_list
+    my_list = {}
+
+    for obj in list_to_read:
+        fields_title = {}
+        for field in fields:
+            if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+            else:
+                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+
+    list_dict['book_for_reading'] = my_list
+
+    context = simplejson.dumps(list_dict)
+
+    if int(request.POST.get('type')) == 2:
+        context = simplejson.dumps(list_id_titles)
+
+    return HttpResponse(context, mimetype='application/json')
+
+
+def add_titles_author_list(request):
+    user = request.user
+    id_list = request.POST.get('id_list')
+    type = request.POST.get('type')
+    list = ast.literal_eval(request.POST.get('list'))
+    my_list = account.List.objects.get(id=id_list)
+    name = my_list.name.replace(' ','')
+
+    if type == 'T':
+
+        for obj in list:
+
+            title = account.Title.objects.get(id=int(obj))
+
+            list_title = {
+                'title':title,
+                'list':my_list
+            }
+            rel_list = account.ListTitle.objects.create(**list_title)
+            rel_list.save()
+
+    #context = {}
+    #context = simplejson.dumps(context)
+    return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')
+
+
+def edit_list(request, **kwargs):
+
+    id_list = kwargs['list'].split('_')
+
+    list = account.List.objects.get(id=id_list[1])
+
+    template = kwargs['template_name']
+
+    context = {
+        'list':list
+    }
+    return render(request, template, context)
+
+
+def update_list(request, **kwargs):
+    field = request.POST.get('field')
+    value = request.POST.get('value')
+
+    dictionary = {
+        field: value
+    }
+    entity = account.List.objects.filter(id=kwargs['list_id']).\
+        update(**dictionary)
+
+    context = {}
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')

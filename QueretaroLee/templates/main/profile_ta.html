@@ -58,61 +58,70 @@
         {% if type == 'title' %}
             <span class="wrapper fleft borde_author borde_title">
                 {% if not profile.picture %}
-                    <img src="" alt="{{ profile.title }}"/>
+                    <img src="/static/img/create.png" alt="{{ profile.title }}"/>
                 {% else %}
-                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
-                         alt="{{ profile.picture }}"/>
+                    <img class="img_size_all" src="{{ profile.cover }}"
+                         alt="{{ profile.cover }}"/>
                 {% endif %}
             </span>
             <span class="general-info no-margin grid-7">
                 <h3 class="title d-title_profile">
-                        {{ profile.title|title }}
+                        {{ profile.title|title|truncatechars:25 }}
                 </h3>
-                <p class="title_author">{{ profile.author.name }} {{ profile.author.last_name }}</p>
-                    <span class="grid-7 no-margin container_rate">
-                        {% if grade == 0 %}
+                <p class="title_author">{{ profile.author.name }}
+                    {{ profile.author.last_name }}</p>
+                <span class="grid-7 no-margin">
+                      <span class="container_starts_rate fleft">
+                    {% if grade == 0 %}
                             {% for x in range %}
                                 <span class="rate">
                                     {% if x < grade_rate %}
-                                        <img src="/static/img/start_black.png" />
+                                        <img src="/static/img/comunityStar.png" />
                                     {% else %}
-                                        <img src="/static/img/start.png" />
+                                        <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
                                     <input class="grade" type="hidden" value="{{ x }}"/>
                                     <input class="type" type="hidden" value="E"/>
-                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                    <input class="element_id" type="hidden" value="{{ entity.id }}"/>
                                 </span>
                             {% endfor %}
-                        {% else %}
-                            {% for x in range %}
-                                {% if x < grade %}
-                                    <img src="/static/img/start_black.png" />
-                                {% else %}
-                                    <img src="/static/img/start.png" />
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
-                            {% if grade >= 1 %}
-                                <span class="text_rate"> mi voto: {{ grade }} </span>
+                    {% else %}
+                        {% for x in range %}
+                            {% if x < grade %}
+                                <img src="/static/img/starUser.png" />
+                            {% else %}
+                                <img src="/static/img/backgroundStar.png" />
                             {% endif %}
-                        </span>
-                <p>
-                    {% if count == 0 %}
-                        nadie está
+                        {% endfor %}
                     {% endif %}
-                    {% if count >= 2 %}
-                        {{ count }} personas están
-                    {% endif %}
-                    {% if count == 1 %}
-                         una persona está
-                    {% endif %}
-                    leyendo este libro
-                </p>
-                <p >
-                    {{ profile.description }}
-                </p>
+                </span>
+                <span class="container_text_rate">
+                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                        {% if grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="grid-7 no-margin">
+                    <p>
+                        {% if count == 0 %}
+                            nadie está
+                        {% endif %}
+                        {% if count >= 2 %}
+                            {{ count }} personas están
+                        {% endif %}
+                        {% if count == 1 %}
+                             una persona está
+                        {% endif %}
+                        leyendo este libro
+                    </p>
+                </span>
+                <span class="grid-7 no-margin">
+                    <p >
+                        {{ profile.description|truncatechars:140 }}
+                    </p>
+                </span>
             </span>
         {% endif %}
         {% if type == 'list' %}
@@ -136,35 +145,39 @@
                         </span>
                     </a>
                 </p>
-                <span class="grid-7 no-margin container_rate">
-                        {% if grade == 0 %}
+                <span class="grid-7 no-margin">
+                      <span class="container_starts_rate fleft">
+                    {% if grade == 0 %}
                             {% for x in range %}
                                 <span class="rate">
                                     {% if x < grade_rate %}
-                                        <img src="/static/img/start_black.png" />
+                                        <img src="/static/img/comunityStar.png" />
                                     {% else %}
-                                        <img src="/static/img/start.png" />
+                                        <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
                                     <input class="grade" type="hidden" value="{{ x }}"/>
                                     <input class="type" type="hidden" value="E"/>
-                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                    <input class="element_id" type="hidden" value="{{ entity.id }}"/>
                                 </span>
                             {% endfor %}
-                        {% else %}
-                            {% for x in range %}
-                                {% if x < grade %}
-                                    <img src="/static/img/start_black.png" />
-                                {% else %}
-                                    <img src="/static/img/start.png" />
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
-                            {% if grade >= 1 %}
-                                <span class="text_rate"> mi voto: {{ grade }} </span>
+                    {% else %}
+                        {% for x in range %}
+                            {% if x < grade %}
+                                <img src="/static/img/starUser.png" />
+                            {% else %}
+                                <img src="/static/img/backgroundStar.png" />
                             {% endif %}
-                        </span>
+                        {% endfor %}
+                    {% endif %}
+                </span>
+                <span class="container_text_rate">
+                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                        {% if grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% endif %}
+                    </span>
+               </span>
                 <p class="descrip_list">
                     {{ profile.description }}
                 </p>

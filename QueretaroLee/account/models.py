@@ -19,8 +19,10 @@ class Title(models.Model):
     country = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
     cover = models.CharField(max_length=255)
+    picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
+    description = models.TextField(max_length=255)
 
     def __unicode__(self):
         return '%s, %s' % (self.title, self.type)

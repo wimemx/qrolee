@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/forms.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid-16 entities registry">
+        <div class="grid-15 registry">
+        <input type="hidden" class="my_list_id" value="{{ list.id }}"/>{% csrf_token %}
+        <span class="title {{ entity_type.1 }} main">Editar <span class="heading">{{ list.name }}</span>
+        </span>
+
+        <span class="data border_none grid-9 fleft no-margin">
+            <p>Nombre {{ entity_type.0 }}
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <input name="name" type="text" value="{{ list.name }}" class="grid-5 alpha fright value"/>
+                <span class="value grid-5 alpha fright">{{ list.name }}</span>
+            </p>
+            <p>Descripción {{ entity_type.0 }}
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                <span class="close right"></span>
+                <textarea name="description" class="grid-5 alpha fright value" >{{ list.description }}
+                </textarea>
+                <span class="value grid-5 alpha fright">{{ list.description }}</span>
+            </p>
+        </span>
+            <form id="picture" class="dropzone fleft grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="list_picture" value="1"/>
+            </form>
+            <hr class="d-line_bottom">
+            <div class="heading">
+                <h3 class="title grid-13 no-margin fleft">Libros de tu lista</h3>
+            </div>
+            <div id="scrollbar1" class="d-paddin_top">
+                <div class="scrollbar"><div class="track"><div class="thumb">
+                    <div class="end"></div></div></div></div>
+                <div class="viewport overview_list">
+                    <div class="overview ">
+                        <div class="add_my_list d-paddin_bottom">
+                            <div class="d-container_add_book grid-5 no-margin">
+                                <div class="d-add_book" >
+                                    <input type="hidden" value="list" />
+                                    <p class="d-add_text_book">
+                                        + Añadir un nuevo libro
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        Dropzone.options.picture = {
+            maxFiles: 1,
+            dictDefaultMessage: 'Inserte aquí la nueva',
+            init: function() {
+                this.on("addedfile", function(file) {
+                    $('#picture .dz-message').fadeOut(300);
+                });
+            },
+            success: function(file) {
+                $('.profile-pic').val(file.name);
+            }
+        }
+        $(document).ready(function(){
+            $('.green_btn').click(function(){
+                $this = $(this);
+                $(this).parent().find('span.value').fadeOut(300,
+                function(){
+                    if($this.parent().find('input.value').length > 0){
+                        $this.parent().find('input.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else if($this.parent().find('textarea.value').length > 0){
+                        $this.parent().find('textarea.value').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+                                 });
+                            });
+
+                        });
+                    }else{
+                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
+                            $this.parent().find('span.green_btn').fadeOut(300,
+                            function(){
+                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
+                                     $this.parent().find('.close').fadeIn(300);
+
+                                 });
+                            });
+
+                        });
+                    }
+                });
+
+            });
+            $('.close').click(function(){
+                $this = $(this);
+                $(this).fadeOut(300,
+                    function(){
+                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
+                            $this.parent().find('span.green_btn').fadeIn(300,
+                            function(){
+                                if($this.parent().find('input.value').length > 0){
+                                 $this.parent().find('input.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else if($this.parent().find('textarea.value').length > 0){
+                                    $this.parent().find('textarea.value').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }else{
+                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                                        $this.parent().find('span.value').fadeIn(300);
+                                    });
+                                }
+                            });
+
+                        });
+                });
+            });
+            $('.yellow_btn').click(function(){
+                var field = $(this).parent().find('input.value').attr('name');
+                var value = $(this).parent().find('input.value').val();
+                if($(this).parent().find('textarea.value').length > 0){
+                    value = $(this).parent().find('textarea.value').val();
+                    field = $(this).parent().find('textarea.value').attr('name');
+                }else if($(this).parent().find('.select_wrapper').length > 0){
+                    value = $(this).parent().find('select.value').val();
+                    field = $(this).parent().find('select.value').attr('name');
+                }
+
+                $.ajax({
+                type: "POST",
+                url: '/registry/update_list/'+$('.my_list_id').val()+'/',
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'field': field,
+                    'value': value
+                },
+                dataType: 'json'
+                }).done(function(data){
+                    if($this.parent().find('input.value').length > 0){
+                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                    }else if($this.parent().find('textarea.value').length > 0)
+                        $this.parent().find('span.value').html($this.parent().find('textarea.value').val());
+                    else
+                        $this.parent().find('span.value').html($this.parent().find('select.value').val());
+                    $this.parent().find('.close').fadeOut(300,function(){
+                    $this.fadeOut(300,function(){
+                            $this.parent().find('span.green_btn').fadeIn(300,
+                            function(){
+                                if($this.parent().find('input.value').length > 0){
+                                 $this.parent().find('input.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else if($this.parent().find('textarea.value').length > 0){
+                                    $this.parent().find('textarea.value').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }else{
+                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                                     $this.parent().find('span.value').fadeIn(300);
+                                 });
+                                }
+                            });
+
+                        });
+                    });
+                    $this.parent().find('.yellow_btn').fadeOut(250);
+                })
+            });
+
+
+        });
+    </script>
+{% endblock %}
