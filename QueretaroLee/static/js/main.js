@@ -1370,7 +1370,7 @@ function list_title(csrf, data, div_text, type){
                 if('publisher' in attribute)
                     publisher = attribute['publisher'];
 
-                publishedDate = '13';
+                publishedDate = '2013';
                 if('publishedDate' in attribute)
                     publisher = attribute['publishedDate'];
 
