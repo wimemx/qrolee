@@ -830,11 +830,12 @@ $(document).ready(function(){
     });
 
     $('.all_book').click(function(){
-        if($(this).parent().parent().find('.title_show').is(':visible'))
-            $(this).parent().parent().find('.title_show').fadeOut(250);
-        else
-            $(this).parent().parent().find('.title_show').fadeIn(250);
+        //if($(this).parent().parent().find('.title_show').is(':visible'))
+            //$(this).parent().parent().find('.title_show').fadeOut(250);
+        //else
+            //$(this).parent().parent().find('.title_show').fadeIn(250);
 
+        show_titles($(this));
 
     });
     $('.rate').click(function(){
@@ -849,7 +850,6 @@ $(document).ready(function(){
                 },
                 dataType: 'json'
             }).done(function(data){
-
                 div = $('.container_rate').fadeOut(250);
                 div.empty();
                 count_rate = parseFloat(data.count_grade);

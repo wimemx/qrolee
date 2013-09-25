@@ -154,7 +154,32 @@
                 {{ obj.title.author }}
             </a>
         </p>
-        <p class="p-d-text" >- - - - -</p>
+        <p class="p-d-text" >
+            <span class="container_starts_rate fleft">
+                    {% if grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < grade_rate %}
+                                        <img src="/static/img/comunityStar.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                    {% else %}
+                        {% for x in range %}
+                            {% if x < grade %}
+                                <img src="/static/img/starUser.png" />
+                            {% else %}
+                                <img src="/static/img/backgroundStar.png" />
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+            </span>
+        </p>
         <p class="p-d-text d-text_opacity">
             añadido el 20 de septiembre
         </p>
@@ -166,13 +191,17 @@
         {% endif %}
     </div>
     </div>
+
+    {% if forloop.counter > 2 and forloop.last %}
+        <span class="grid-15 no-margin">
+            <span class="place_pink fright all_book">
+                ver todos
+            </span>
+        </span>
+    {% endif %}
+
     {% endfor %}
 
-    <span class="grid-15 no-margin">
-                                    <span class="place_pink fright all_book">
-                                        ver todos
-                                    </span>
-                                </span>
     <hr class="d-line_bottom">
     </div>
 
@@ -236,11 +265,15 @@
             {% endif %}
         </div>
         </div>
+        {% if forloop.counter > 2 and forloop.last %}
+            <span class="grid-15 no-margin">
+                <span class="place_pink fright all_book">
+                    ver todos
+                </span>
+            </span>
+        {% endif %}
         {% endfor %}
 
-        <span class="grid-15 no-margin">
-                                        <span class="place_pink fright all_book">ver todos</span>
-                                    </span>
         <hr class="d-line_bottom">
         </div>
 
@@ -300,11 +333,16 @@
                 {% endif %}
             </div>
             </div>
+            {% if forloop.counter > 2 and forloop.last %}
+                <span class="grid-15 no-margin">
+                    <span class="place_pink fright all_book">
+                        ver todos
+                    </span>
+                </span>
+            {% endif %}
+
             {% endfor %}
 
-            <span class="grid-15 no-margin">
-                                        <span class="place_pink fright all_book">ver todos</span>
-                                    </span>
             <hr class="d-line_bottom">
             </div>
             <div class="d-paddin_bottom">

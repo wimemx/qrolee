@@ -1868,3 +1868,7 @@ margin: 0px;
     width: 200px !important;
     height: 170px !important;
 }
+
+.min_list{
+    height: 0px !important;
+}

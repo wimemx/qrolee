@@ -807,6 +807,7 @@ def add_rate(request):
     grade = request.POST.get('grade')
     element_id = request.POST.get('element_id')
 
+    print element_id
     list = {
         'type':str(type),
         'grade':int(grade),
@@ -914,7 +915,8 @@ def add_my_title(request):
 
             list_id_titles.append(int(title.id))
 
-            if int(request.POST.get('type')) == 1:
+            if int(request.POST.get('type')) == 1 |\
+                    int(request.POST.get('type')) == 3:
 
                 for type in obj['it']['default_type']:
                     lista = account.List.objects.get(user=user, default_type=type)

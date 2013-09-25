@@ -134,10 +134,11 @@ function type_add_list(csrf, id ,query){
             data.push(search_api(crsf, query));
         }
 
+
         if(id==1)
             dialog_titles(csrf,data,1);
         if(id==2)
-            list_title(csrf,data,$('.dialog_text'),1);
+            list_title(csrf,data,$('.dialog_text'),3);
         if(id==3)
             dialog_titles(csrf,data,2);
 }

@@ -10,7 +10,7 @@ import hashlib
 import simplejson
 from account import models
 from registry import models as registry
-
+from django.db import models as db_model
 
 
 # Create your views here.
@@ -129,6 +129,10 @@ def user_profile(request, **kwargs):
     titles_favorites = models.ListTitle.objects.filter(list__default_type=0,
                                                        list__user=user, list__status=True)
 
+    list_rate = models.Rate.objects.all().values('element_id').\
+        annotate(count = db_model.Count('element_id'),
+                 score = db_model.Avg('grade'))
+
     context = {
         'user_profile':profile,
         'entities':entity_user,
@@ -138,7 +142,8 @@ def user_profile(request, **kwargs):
         'list_title_favorite':titles_favorites,
         'list_title_read':titles_read,
         'list_title_to_read':titles_to_read,
-        'count_titles':len(titles_read)
+        'count_titles':len(titles_read),
+        'list_rate':list_rate
     }
 
     return render(request, template, context)
