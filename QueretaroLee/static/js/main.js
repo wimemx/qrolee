@@ -1366,15 +1366,31 @@ function list_title(csrf, data, div_text, type){
                     }
                 }
 
+                publisher = '';
+                if('publisher' in attribute)
+                    publisher = attribute['publisher'];
+
+                publishedDate = '';
+                if('publishedDate' in attribute)
+                    publisher = attribute['publishedDate'];
+
+                language = '';
+                if('language' in attribute)
+                    language = attribute['language'];
+
+                country = '';
+                if('country' in attribute)
+                    country = attribute_access['country'];
+
                 var obj = {
                     'title':attribute['title'],
                     'author':attribute['authors'],
                     'cover':url,
                     'description':desc,
-                    'publisher':attribute['publisher'],
-                    'publishedDate':attribute['publishedDate'],
-                    'language':attribute['language'],
-                    'country':attribute_access['country'],
+                    'publisher':publisher,
+                    'publishedDate':publishedDate ,
+                    'language':language,
+                    'country':country,
                     'isbn':isbn,
                     'isbn13':isbn13,
                     'pages':pages,
@@ -1691,8 +1707,8 @@ function show_titles($this){
     var name = $this.parent().parent().attr('class');
     name = name.replace('d-paddin_bottom','');
 
-    $.each($(name + '.d-item_book'),function(i){
-      console.log(i);
+    $.each($('.' + name + '.d-item_book'),function(i){
+      $('.')
     });
 
 
