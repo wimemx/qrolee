@@ -1370,7 +1370,7 @@ function list_title(csrf, data, div_text, type){
                 if('publisher' in attribute)
                     publisher = attribute['publisher'];
 
-                publishedDate = '01/01/13';
+                publishedDate = '13';
                 if('publishedDate' in attribute)
                     publisher = attribute['publishedDate'];
 
@@ -1708,8 +1708,12 @@ function show_titles($this){
     name = name.replace('d-paddin_bottom','');
 
     $.each($('.' + name + '.d-item_book'),function(i){
+
       var disable = '';
-      //if(i>2)
+      if(i>2)
+        disable = ' disable ';
+
+       $(this).addClass(disable);
 
     });
 
