@@ -27,12 +27,12 @@
     <div class="grid-16 entity no-margin">
         <span class="wrapper fleft">
             {% if not user_profile.picture %}
-                <img src="" alt="{{ entity.name }}"/>
+                <img class="img_size_all" src=/static/img/create.png alt="{{ profile.user}}"/>
             {% else %}
                 {% if owner.id == user.id %}
                     <span class="brown_btn edit"></span>
                 {% endif %}
-                <img src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" alt="{{ entity.name }}"/>
+                <img class="img_size_all" src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" alt="{{ entity.name }}"/>
             {% endif %}
         </span>
         <span class="general-info no-margin grid-7">

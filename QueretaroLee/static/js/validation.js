@@ -145,11 +145,10 @@ function type_add_list(csrf, id ,query){
 
 function show_dialog(){
     $('.message_alert').click(function(e) {
-
         $('.dialog-confirm').empty();
         span_text = $('<span></span>');
         var href = '';
-        var type_list = '';
+        var type_list = 0;
 
         if($('.type').val()=="group"){
 
@@ -265,6 +264,7 @@ function show_dialog(){
         if(($(this).find('.type_message').val())=='delete_title'){
             var id_title = $(this).parent().parent().find('.id_title').val();
             btn_acept.click(function(){
+                console.log(type_list);
                 container_item = '';
                 if(type_list==0){
                     container_item = 'book_favorite';

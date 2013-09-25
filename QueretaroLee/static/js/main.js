@@ -1093,7 +1093,7 @@ function get_genre($div_text){
             type: "POST",
             url: '/qro_lee/list_genre/',
             data: {
-                'csrfmiddlewaretoken': $('.entity  div input[type=hidden]').val()
+                'csrfmiddlewaretoken': $('.csrf_token').find('div input').val()
             },
             dataType: 'json'
         }).done(function(data){
@@ -1559,6 +1559,12 @@ function add_my_title(csrf, array_title, type){
                 $.each(data,function(i){
                     title = data[i];
                     container_list = $('.'+i);
+                        type = 0;
+                    if(i=='book_read')
+                        type = 1;
+                    if(i=='book_for_reading')
+                        type = 2;
+
                     container_list.find('.d-item_book').remove();
                     $.each(title,function(i2){
                         name = title[i2].title;
@@ -1571,7 +1577,7 @@ function add_my_title(csrf, array_title, type){
                         input_title =$('<input type="hidden" class="name_title"' +
                             'value="'+title[i2].title+'"/>');
                         input_list = $('<input type="hidden" class="type_list"' +
-                            'value="type_list"/>');
+                            'value="' + type + '"/>');
                         a_ref = $('<a href="'+href+'"></a>')
                         span = $('    <span class="wrapper_list" ></span>');
                         img = $('<img class="img_size_all" src="'+title[i2].cover +
@@ -1605,6 +1611,7 @@ function add_my_title(csrf, array_title, type){
                     });
                     container_list.find('.grid-15').find('.all_book').find('input').val(1);
                 });
+
             }
 
             if(type==2){

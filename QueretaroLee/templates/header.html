@@ -27,10 +27,10 @@
     </div>
     <div class="account-settings omega grid-2 fright">
         <a href="/accounts/users/profile/{{ user.id }}" class="profile fleft">
-            {% if not profile.picture %}
+            {% if not user_profile.picture %}
                 <img src="{% static "img/no_profile.png" %}" alt=""/>
             {% else %}
-
+                <img src="/static/media/users/{{ user_profile.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}
             <span class="user">{{ user|truncatechars:8 }}</span>
         </a>
