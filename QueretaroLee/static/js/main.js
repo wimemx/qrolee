@@ -1141,7 +1141,7 @@ function add_genre($span){
     type: "POST",
     url: '/registry/add_genre/',
     data: {
-    'csrfmiddlewaretoken': $('.entity  div input[type=hidden]').val(),
+    'csrfmiddlewaretoken': $('.csrf_token').find('div input').val(),
     'id_genre':$span.find('input').val()
     },
     dataType: 'json'
