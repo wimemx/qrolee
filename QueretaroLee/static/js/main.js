@@ -1603,6 +1603,7 @@ function add_my_title(csrf, array_title, type){
                         div_add.after(div);
 
                     });
+                    container_list.find('.grid-15').find('.all_book').find('input').val(1);
                 });
             }
 
@@ -1704,20 +1705,29 @@ function get_titles_authors(id, csrf){
 
 function show_titles($this){
 
-    var name = $this.parent().parent().attr('class');
+    div_container = $this.parent().parent();
+    var name = div_container.attr('class');
     name = name.replace('d-paddin_bottom','');
+    disable_value =  parseInt($this.find('input').val());
+    div_container.fadeOut(250,function(){
 
-    $.each($('.' + name + '.d-item_book'),function(i){
+        $.each($('.' + name + '.d-item_book'),function(i){
 
-      var disable = '';
-      if(i>2)
-        disable = ' disable ';
+            $(this).removeClass('disable_title');
+            var disable = '';
+            if(disable_value == 1){
+                if(i>1)
+                    disable = ' disable_title ';
+            }
+            $(this).addClass(disable);
 
-       $(this).addClass(disable);
+        });
 
+        div_container.fadeIn(250);
+        if(disable_value==0)
+            $this.find('input').val(1);
+        else
+            $this.find('input').val(0);
     });
-
-
-
 
 }

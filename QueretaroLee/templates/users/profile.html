@@ -130,7 +130,7 @@
         {% if forloop.counter <= 2 %}
             <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
         {% else %}
-            <div class="d-item_book title_show d-item_{{ obj.title.id }} grid-5 no-margin">
+            <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
         {% endif %}
 
     <input type="hidden" class="id_title"
@@ -196,6 +196,7 @@
         <span class="grid-15 no-margin">
             <span class="place_pink fright all_book">
                 ver todos
+                <input type="hidden" value="0" />
             </span>
         </span>
     {% endif %}
@@ -223,7 +224,7 @@
             {% if forloop.counter <= 2 %}
                 <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
             {% else %}
-                <div class="d-item_book title_show d-item_{{ obj.title.id }} grid-5 no-margin">
+                <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
             {% endif %}
         <input type="hidden" class="id_title"
                value="{{ obj.title.id }}"/>
@@ -269,6 +270,7 @@
             <span class="grid-15 no-margin">
                 <span class="place_pink fright all_book">
                     ver todos
+                    <input type="hidden" value="0" />
                 </span>
             </span>
         {% endif %}
@@ -295,7 +297,7 @@
                 {% if forloop.counter <= 2 %}
                     <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
                 {% else %}
-                    <div class="d-item_book title_show d-item_{{ obj.title.id }} grid-5 no-margin">
+                    <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
                 {% endif %}
             <input type="hidden" class="id_title"
                    value="{{ obj.title.id }}"/>
@@ -337,6 +339,7 @@
                 <span class="grid-15 no-margin">
                     <span class="place_pink fright all_book">
                         ver todos
+                        <input type="hidden" value="0" />
                     </span>
                 </span>
             {% endif %}

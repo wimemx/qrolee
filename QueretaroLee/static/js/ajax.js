@@ -830,13 +830,7 @@ $(document).ready(function(){
     });
 
     $('.all_book').click(function(){
-        //if($(this).parent().parent().find('.title_show').is(':visible'))
-            //$(this).parent().parent().find('.title_show').fadeOut(250);
-        //else
-            //$(this).parent().parent().find('.title_show').fadeIn(250);
-
         show_titles($(this));
-
     });
     $('.rate').click(function(){
          $.ajax({
