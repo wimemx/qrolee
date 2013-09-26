@@ -4,10 +4,10 @@ from django.db.models import signals
 
 def create_default_type(app, created_models, verbosity, **kwargs):
     print 'creating default type'
-    type_org = models.Type.objects.create(name='organization',
+    type_org = models.Type.objects.create(name='group',
                                       description='text')
     type_org.save()
-    type_group = models.Type.objects.create(name='group',
+    type_group = models.Type.objects.create(name='organization',
                                       description='text')
     type_org.save()
     type_spot = models.Type.objects.create(name='spot',

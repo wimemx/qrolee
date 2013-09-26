@@ -52,7 +52,8 @@
         <p class="social-login">
             Ingresa con
             <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
-            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup"
+            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
+scope=publish_stream,email,publish_actions,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
 
         </p>
@@ -85,7 +86,8 @@
         <p class="social-login center">
             Crear cuenta con
             <span class="clear"></span>
-            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup"
+            <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
+scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
             <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
 

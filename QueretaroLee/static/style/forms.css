@@ -18,6 +18,10 @@
         display: inline-block;
         position: relative;
     }
+    #registry .invalid{
+        top: -35px !important;
+        right: -65px !important;
+    }
     #registry .textarea{
         height: 100px;
     }

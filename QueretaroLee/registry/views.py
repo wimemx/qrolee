@@ -223,7 +223,6 @@ def register(request):
         entity['privacy'] = 1
     del entity['csrfmiddlewaretoken']
     del entity['entity_type']
-    #--------------------????????#
     del entity['fb_id']
     succuess = ''
 
@@ -248,7 +247,7 @@ def register(request):
     entity = models.Entity.objects.create(**entity)
     entity.save()
     if entity is not None:
-        succuess = 'True'
+        succuess = entity.id
     else:
         succuess = 'False'
     context = {
