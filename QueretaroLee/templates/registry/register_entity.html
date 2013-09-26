@@ -49,7 +49,7 @@
                 <div class="grid-8 no-margin fleft">
                 <input type="hidden" value="{{ entity_type.1 }}" name="entity_type"/>
                 <p>Nombre*
-                    <input class="required grid-5 fright no-margin" type="text" value="" name="name"/>
+                    <input class="required regex_alpha_numeric grid-5 fright no-margin" type="text" value="" name="name"/>
                 </p>
                 <p class="textarea">Descripción*
                     <textarea class="grid-5 fright no-margin" name="description"></textarea>
@@ -90,7 +90,7 @@
 
                 </p>
                 <p>Sitio web
-                    <input class="grid-5 fright no-margin" type="text" value="" name="website"/>
+                    <input class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>
                 <p>Dirección
                     <input type="hidden" class="lat" name="lat"/>
@@ -103,10 +103,10 @@
                     </span>
                 </p>
                 <p>Página de Facebook
-                    <input class="grid-5 fright no-margin" type="text" value="" name="fb"/>
+                    <input class="grid-5 social regex_social fright no-margin" type="text" value="" name="fb"/>
                 </p>
                 <p>Página de twitter
-                    <input class="grid-5 fright no-margin" type="text" value="" name="twitter"/>
+                    <input class="grid-5 social regex_social fright no-margin" type="text" value="" name="twitter"/>
                 </p>
                 <p>
                     <span class="message fright"></span>
@@ -149,6 +149,7 @@
             });
         },
         success: function(file) {
+            console.log(file);
             $('.profile-pic').val(file.name);
         }
     }
@@ -182,9 +183,11 @@
             else
                 upload_valid = true;
 
-
-            if($(this).find('input[type=submit]').hasClass('msg-ok'))
+            var id;
+            if($(this).find('input[type=submit]').hasClass('msg-ok')){
                 window.location.href = site_url;
+            }
+
             if(valid_form && upload_valid){
 
                 $.ajax({
@@ -193,11 +196,18 @@
                 data: $(this).serialize(),
                 dataType: 'json'
                 }).done(function(data) {
-                    if(data.success == 'True'){
+                    if(data.success != 'False'){
+                        var name = $('input[name=name]').val().charCodeAt(0)+''+
+                                $('input[name=name]').val().charCodeAt(1)+''+
+                                $('input[name=name]').val().charCodeAt(2);
+                        window.location.href = site_url+'/qro_lee/entity/'+$('input[name=entity_type]').val()+'/'+
+                                name+'_'+data.success;
+                        /*
                         $('.message').addClass('success');
                         $('.message').html('Se ha creado exitosamente!');
                         $('#registry').find('input[type=submit]').val('Ok');
                         $('#registry').find('input[type=submit]').addClass('msg-ok');
+                        */
                     }else{
                         $('.message').addClass('fail');
                         $('.message').html('Hubo un error, favor de verificar sus datos');

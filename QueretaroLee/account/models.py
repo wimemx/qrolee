@@ -29,15 +29,15 @@ class Title(models.Model):
 
 
 class Author(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     birthday = models.DateTimeField()
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return '%s, %s' % (self.first_name, self.last_name)
+        return '%s' % (self.name)
+
 
 class AuthorTitle(models.Model):
     title = models.ForeignKey(Title)

@@ -513,15 +513,6 @@ $(document).ready(function(){
     });
 
 
-    $('p.fb').click(function(){
-            var search = '/me/groups?fields=cover,link,description,name,privacy,id';
-            if($(this).hasClass('organization'))
-                search = '/me/accounts?fields=description,name,location,perms,category,username,website,picture,cover';
-            if($(this).hasClass("update"))
-                fb_obj_search(search, -1);
-            else
-                fb_obj_search(search);
-        });
     $('.checkbox span').click(function(){
         if($.trim($(this).html()) != '')
             $(this).html('');
@@ -645,6 +636,11 @@ $(document).ready(function(){
                     }
                     filters.push(filter);
                 });
+                var activity = new Array();
+                $('.select_wrapper').each(function(){
+                    activity.push($(this).find('input').val().toLowerCase());
+                });
+
                 query = {
                     'username__icontains': $.trim($('.advanced_filter .search').val()),
                     'first_name__icontains': $.trim($('.advanced_filter .search').val())
@@ -653,22 +649,27 @@ $(document).ready(function(){
                     'last_name','username'];
                 join = {
                     'tables':{
-                        0: JSON.stringify(['registry.profile','auth.user'])
+                        0: JSON.stringify(['registry.profile','auth.user']),
+                        1: JSON.stringify(['account.activity'])
                     },
                     'quieres':{
-                        0: JSON.stringify(['id'])
+                        0: JSON.stringify(['id']),
+                        1: JSON.stringify(['user_id'])
                     },
                     'fields':{
-                        0: JSON.stringify(['picture'])
+                        0: JSON.stringify(['picture']),
+                        1: JSON.stringify(['title'])
                     },
                     'type':{
                         0: JSON.stringify(search_lists)
                     },
                     'filters':{
                         0: JSON.stringify(filters)
+                    },
+                    'activity':{
+                        0: JSON.stringify(activity)
                     }
                 }
-                //1: JSON.stringify(['account.list','account.listuser', 'account.author', 'account.listauthor'])
 
                 join = JSON.stringify(join);
                 create_user = true;
@@ -679,20 +680,25 @@ $(document).ready(function(){
             }
         }else if(type == 'account.author'){
             query = {
-                'first_name__icontains': $.trim($('.advanced_filter .search').val()),
-                'last_name__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': $.trim($('.advanced_filter .search').val())
             }
-            fields = ['first_name',
-                'last_name'];
+            fields = ['name'];
             join = {
                 'tables':{
-                    0: JSON.stringify(['account.title','account.authortitle'])
+                    0: JSON.stringify(['account.title','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
+
                 },
                 'quieres':{
-                    0: JSON.stringify(['author_id'])
+                    0: JSON.stringify(['author_id']),
+                    1: JSON.stringify(['element_id'])
                 },
                 'fields':{
-                    0: JSON.stringify(['title'])
+                    0: JSON.stringify(['title']),
+                    1: JSON.stringify(['grade'])
+                },
+                'activity':{
+                    0:JSON.stringify(['A'])
                 }
             }
             join = JSON.stringify(join);
@@ -839,6 +845,7 @@ $(document).ready(function(){
                 'tables':{
                     0: JSON.stringify(['account.author','account.authortitle']),
                     1: JSON.stringify(['account.rate'])
+
                 },
                 'quieres':{
                     0: JSON.stringify(['title_id']),
@@ -924,7 +931,7 @@ function create_template(type, result,i, create_user){
         p.click(function(){
             var filter = $('<div style="margin-top:10px;" class="search_filters fleft">');
             var _span =  $('<span class="select_wrapper date alpha fright">');
-            var inner_span = $('<span class="grid-2 select no-margin">');
+            var inner_span = $('<span style="width:130px;" class="grid-2 select no-margin">');
             _span.append(inner_span);
             var input = $('<input style="margin-left:20px;" type="text" class="date">');
             _span.append(input);
@@ -933,9 +940,7 @@ function create_template(type, result,i, create_user){
             var dropdown =  $('<span class="dropdown">');
             inner_span.append(dropdown);
             var select = $('<select class="change value"><select>');
-            var option = $('<option value="author_name">Autor favorito</option>');
-            select.append(option);
-            option = $('<option value="book_title">Titulo favorito</option>');
+            var option = $('<option value="author_name">Actualmente leyendo</option>');
             select.append(option);
             inner_span.append(select);
             filter.append(_span);
@@ -1034,8 +1039,7 @@ function create_template(type, result,i, create_user){
         wrapper_fleft.append(img);
         var h3 = $('<h3 class="title no-margin grid-4 fright"></h3>');
         if(type == 'account.author' || create_user){
-            h3.html(result[i].first_name
-                +' '+result[i].last_name);
+            h3.html(result[i].name);
         }else if(type == 'account.title'){
             h3.html(result[i].title);
         }else{
@@ -1699,7 +1703,6 @@ function get_titles_authors(list, csrf){
     container_list.append(type)
 
     $.each(title,function(i2){
-        console.log(title[i2]);
         div = $('<div class="d-item_book d-item_' + title[i2].id +
             ' grid-5 no-margin"></div>');
         input_id =$('<input type="hidden" class="id_title"' +

@@ -192,7 +192,7 @@ def get_entity(request, **kwargs):
     profile = models.Profile.objects.get(
         user_id=owner.id)
     entities = models.Entity.objects.filter(
-        user_id=owner.id, type_id=entity_type.id)
+        type_id=entity_type.id)
     user = request.user
     rate = account_models.Rate.objects.filter(element_id=id_entity, user=user)
     count_rate = account_models.Rate.objects.filter(element_id=id_entity)
@@ -208,8 +208,7 @@ def get_entity(request, **kwargs):
             count = count + obj.grade
         count_grade = Decimal(Decimal(count)/(len(count_rate)))
 
-        grade_rate = int(round(count_grade,0))
-    print grade_rate
+        grade_rate = int(round(count_grade, 0))
     events = models.Event.objects.all()
     events_months = []
     for event in events:
@@ -242,7 +241,7 @@ def get_entity(request, **kwargs):
 
     member = False
 
-    if len(entity_user)>0:
+    if len(entity_user) > 0:
         member = True
 
     context = {
@@ -252,14 +251,13 @@ def get_entity(request, **kwargs):
         'owner': owner,
         'profile': profile,
         'similar_entities': entities,
-        'member':member
+        'member': member,
+        'grade': grade,
+        'grade_rate': grade_rate,
+        'range': range(5),
+        'count': len(count_rate),
+        'count_grade': count_grade
     }
-
-    context['grade'] = grade
-    context['grade_rate'] = grade_rate
-    context['range'] = range(5)
-    context['count'] = len(count_rate)
-    context['count_grade'] = count_grade
 
     #print entity.id
     return render(request, template, context)
@@ -434,6 +432,17 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
         query = [Q(x) for x in q_list]
+
+        activity = None
+        if 'join' in data:
+            if data['join'] != 'none':
+                join = ast.literal_eval(data['join'])
+            else:
+                join = []
+            if 'activity' in join:
+                activity = join['activity']['0']
+
+
         if data['and'] == 0:
             object = model.objects.filter(reduce(operator.or_, query))
         else:
@@ -446,14 +455,10 @@ def advanced_search(request, **kwargs):
             }
             context = simplejson.dumps(context)
             return HttpResponse(context, mimetype='application/json')
-
         value = {}
         #fields = [item for item in fields if item not in fields_foreign]
         # remove = [0, 3, 5, 6, 7, 8, 10, 11]
-        if data['join'] != 'none':
-            join = ast.literal_eval(data['join'])
-        else:
-            join = []
+
         list_elements = list()
         if 'type' in join:
             filter_type = ast.literal_eval(join['type']['0'])
@@ -502,16 +507,29 @@ def advanced_search(request, **kwargs):
                     if list_objects is None:
                         break
                     for o in list_objects:
-                        if model_name == 'listauthor':
-                            list_elements.append(o.first_name)
-                        elif model_name == 'listtitle':
+                        if model_name == 'listtitle':
                             list_elements.append(o.title)
                         else:
                             list_elements.append(o.name)
             filtered_users = list()
 
+
         fields = ast.literal_eval(str(data['fields']))
         for obj in object:
+            if activity and model_name == 'activity':
+                is_reading = account_models.Activity.objects.filter(user_id=obj.id, type='T')
+                if not is_reading:
+                    break
+                is_reading_list = list()
+                for reading in is_reading:
+                    is_reading_list.append(reading.object)
+                titles = account_models.Title.objects.filter(id__in=is_reading_list)
+                titles_list = list()
+                for title in titles:
+                    titles_list.append(str(title.title).lower())
+                match = set(activity) & set(titles_list)
+                if not match:
+                    break
             if 'distance' in query_list:
                 lat = float(obj.lat)
                 lng = float(obj.long)
@@ -561,17 +579,17 @@ def advanced_search(request, **kwargs):
                             for related_obj in related_object:
                                 q_list.append((model_name+'__list_id', related_obj.id))
                             query = [Q(x) for x in q_list]
+
                             related_object = parent_model.objects.filter(reduce(operator.or_, query))
                             for o in related_object:
-                                if model_name == 'listauthor':
-                                    i = list_elements.index(o.first_name) if o.first_name in list_elements else None
-                                elif model_name == 'listtitle':
+                                if model_name == 'listtitle':
                                     i = list_elements.index(o.title) if o.title in list_elements else None
                                 else:
                                     i = list_elements.index(o.name) if o.name in list_elements else None
                                 if i is not None:
                                     if obj.id not in filtered_users:
                                         filtered_users.append(obj.id)
+
                     models = ast.literal_eval(join['tables'][str(ele)])
                     related_object = obj.id
                     parent = str(models[0]).split('.')
@@ -590,9 +608,19 @@ def advanced_search(request, **kwargs):
                         q_list = [(model_name+'__'+str(join_field[0]), related_object)]
                     else:
                         q_list = [(str(join_field[0]), related_object)]
-                    query = [Q(x) for x in q_list]
-                    related_object = parent_model.objects.filter(reduce(operator.or_, query))
 
+                    if model_name == 'activity':
+                        q_list.append(('type', 'T'))
+
+                    if model_name == 'rate':
+                        q_list.append(('type__in', activity))
+
+                    query = [Q(x) for x in q_list]
+                    related_object = parent_model.objects.filter(reduce(operator.and_, query))
+                    print related_object
+                    if model_name == 'activity':
+                        if related_object:
+                            related_object = account_models.Title.objects.filter(id=related_object[0].object)
                     if len(models) <= 2:
                         values = list()
                         for related_obj in related_object:
@@ -604,6 +632,7 @@ def advanced_search(request, **kwargs):
                                     field_value = str(related_obj.__getattribute__(str(val)))
                                     values.append(field_value)
                         context_fields['extras'].append(values)
+
             for val in fields:
                 if isinstance(obj.__getattribute__(val), unicode):
                     context_fields[str(val)] = obj.__getattribute__(val).encode('utf-8', 'ignore')
@@ -995,7 +1024,6 @@ def search_api(request, **kwargs):
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
     type = search['type']['0'].split('.')
-    print type
     type = type[1]
     q = ''
     query = ''
@@ -1027,6 +1055,7 @@ def search_api(request, **kwargs):
         url += query
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
+
 
     if 'items' in response:
         pass

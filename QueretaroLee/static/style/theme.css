@@ -373,7 +373,7 @@ input:not([type='submit']){
             margin-bottom: 0px;
         }
         .title.organization, a.organization{
-            color: #8ab493;
+            color: #8ab493 !important;
             float: none;
         }
         .title.group, a.group{
@@ -666,7 +666,7 @@ input:not([type='submit']){
         }
         .content .sidebar-a div .ruler{
             position: absolute;
-            right: -20px;
+            right: 0px;
             top: 20px;
             width: 1px;
             height: 200px;
@@ -674,19 +674,22 @@ input:not([type='submit']){
             background: #acacac;
         }
         .content .sidebar-a div.contact{
-            margin-left: 50px;
+            margin-left: 0px;
+        }
+        .content .contact .title.main{
+            font-size: 14px;
         }
         .spot .grid-6.overview{
             margin-left: 40px;
         }
         .spot .sidebar-a div.contact{
-            margin-left: 20px;
+            margin-left: 0px;
         }
             .content .sidebar-a .contact .contact{
                 position: relative;
-                left: -20px;
+                left: 0px;
                 width: 100%;
-                float: left;
+                float: right;
             }
         .content .sidebar-a .contact p{
             margin-bottom: 5px;
@@ -941,7 +944,7 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 15px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: -45px; width: 15px; z-index: 5 }
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
@@ -1778,7 +1781,7 @@ margin: 0px;
 
 .container_text_rate{
     float: left;
-    padding-top: 3px;
+    margin: 3px 0px 0px 5px;
 }
 
 .p_mini_book{
