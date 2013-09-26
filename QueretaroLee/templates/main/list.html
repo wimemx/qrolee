@@ -58,12 +58,12 @@
                      {% for obj in book %}
                             <div class="grid-5 fleft results margin_bottom no-margin">
                                 <div class="item">
-                                    <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                    <a href="/qro_lee/profile/title/{{ obj.id }}">
                                         <span class="wrapper wrapper_book fleft no_margin-right">
                                             <img class="img_size_all" src="{{ obj.cover }}" alt=""/>
                                         </span>
                                     </a>
-                                    <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                    <a href="/qro_lee/profile/title/{{ obj.id }}">
                                         <h3 class="title title_book margin_left no-margin grid-2 fleftt">
                                             {{ obj.title|truncatewords:2 }}
                                         </h3>
@@ -75,12 +75,12 @@
                      {% endfor %}
                      {% for obj in authors %}
                             <div class="grid-7 alpha">
-                                <a href="/qro_lee/profile/author/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                <a href="/qro_lee/profile/author/{{ obj.id }}">
                                     <span class="wrapper borde_author">
                                         <img src="/static/img/foto.jpg" alt="" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/author/{{ obj.name|cut:" " }}_{{ obj.id }}" class="title alpha grid-4">
+                                <a href="/qro_lee/profile/author/{{ obj.id }}" class="title alpha grid-4">
                                     {{ obj.name }}</a>
                                 <p class="grid-4 no-margin">que crea un libro con aventuras o ideas para
                                     enviarlas al editor. La crítica moderna ha

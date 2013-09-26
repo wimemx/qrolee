@@ -129,19 +129,11 @@ function type_add_list(csrf, id ,query){
         model = 'account.title';
         fields = ['title', 'cover', 'id'];
         and = 0;
-        join = {
-            'tables':{
-                0: JSON.stringify(['account.author','account.authortitle']),
-                1: JSON.stringify(['account.rate'])
-            },
-            'quieres':{
-                0: JSON.stringify(['title_id']),
-                1: JSON.stringify(['element_id'])
-            },
-            'fields':{
-                0: JSON.stringify(['first_name','last_name']),
-                1: JSON.stringify(['grade'])
-            }
+        join =  {
+                'activity':
+                {
+                    0: JSON.stringify(['T'])
+                }
             }
     }
 
@@ -176,14 +168,10 @@ function type_add_list(csrf, id ,query){
             'fields': JSON.stringify(fields),
             'value': JSON.stringify(_query),
             'and': and,
-            'join': {
-                'activity':
-                {
-                    0: JSON.stringify(['T'])
-                }
-            }
+            'join':join
         }
 
+        console.log(search);
         search = JSON.stringify(search);
 
         data.push(advanced_search(search, csrf));

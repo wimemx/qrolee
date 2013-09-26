@@ -932,14 +932,14 @@ def get_genre(request):
 def get_profile(request,**kwargs):
     template = kwargs['template_name']
     type = kwargs['type']
-    profile = kwargs['profile'].split("_")
+    profile = kwargs['profile']
     user = request.user
     context = {}
-    rate = account_models.Rate.objects.filter(element_id=profile[1], user=user)
-    count_rate = account_models.Rate.objects.filter(element_id=profile[1])
+    rate = account_models.Rate.objects.filter(element_id=profile, user=user)
+    count_rate = account_models.Rate.objects.filter(element_id=profile)
 
     if type == 'author':
-        profile = account_models.Author.objects.get(id=profile[1])
+        profile = account_models.Author.objects.get(id=profile)
         list_titles = ''
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
         count = len(list_titles)
@@ -948,9 +948,8 @@ def get_profile(request,**kwargs):
             'list':list,
             'count':count
         }
-
     if type == 'title':
-        profile = account_models.Title.objects.get(id=profile[1])
+        profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=0,
                                                           title=profile, list__status=True,                                                          )
         list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
@@ -983,7 +982,7 @@ def get_profile(request,**kwargs):
 
 
     if type == 'list':
-        profile = account_models.List.objects.get(id=profile[1])
+        profile = account_models.List.objects.get(id=profile)
         list = account_models.List.objects.filter(user=profile.user, default_type=-1,
                                                   status=True)
         titles = account_models.ListTitle.objects.filter(list=profile, list__status=True)

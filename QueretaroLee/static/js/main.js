@@ -1269,8 +1269,8 @@ function list_title(csrf, data, div_text, type){
 
     if(type !=1){
 
-        if('response' in titles_l)
-            delete titles_l['response'];
+        //if('response' in titles_l)
+            //delete titles_l['response'];
 
         $.each(titles_l,function(i){
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
