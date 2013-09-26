@@ -159,7 +159,7 @@ function type_add_list(csrf, id ,query){
         }
         }else{
             _query = {
-                'username__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': $.trim($('.advanced_filter .search').val())
                 }
         }
     }
@@ -171,7 +171,7 @@ function type_add_list(csrf, id ,query){
             }
         }else{
             _query = {
-                'username__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': $.trim($('.advanced_filter .search').val())
                 }
         }
     }
@@ -182,13 +182,8 @@ function type_add_list(csrf, id ,query){
             'fields': JSON.stringify(fields),
             'value': JSON.stringify(_query),
             'and': and,
-            'join': {
-                'activity':
-                {
-                    0: JSON.stringify(['T'])
-                }
+            'join': join
             }
-        }
 
         search = JSON.stringify(search);
 

@@ -906,6 +906,7 @@ def add_my_title(request):
                     'description':str(obj['it']['attribute']['description'])
                 }
 
+
                 title = account.Title.objects.create(**li)
                 title.save()
 
@@ -994,11 +995,10 @@ def add_my_title(request):
 
 
 def add_titles_author_list(request):
-    print 55555
+
     user = request.user
     id_list = request.POST.get('id_list')
     type = request.POST.get('type')
-    print request.POST.get('list')
     list = ast.literal_eval(request.POST.get('list'))
     my_list = account.List.objects.get(id=id_list)
     name = my_list.name.replace(' ','')

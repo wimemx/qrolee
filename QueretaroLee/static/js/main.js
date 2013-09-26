@@ -1243,7 +1243,6 @@ function dialog_titles(csrf, data, id){
     list_title(csrf, data, div_text, id);
 }
 
-
 function list_title(csrf, data, div_text, type){
 
     div_scroll = $('<div id="scrollbar1"></div>');
@@ -1251,7 +1250,6 @@ function list_title(csrf, data, div_text, type){
         '<div class="thumb"><div class="end"></div></div></div></div>');
 
     min_height = '';
-
     if(type==1)
         min_height = ' min_list ';
 
@@ -1263,14 +1261,10 @@ function list_title(csrf, data, div_text, type){
 
         array = [];
         titles_l = data[0];
-        console.log(data);
         count_id = 0;
         bar = false;
 
     if(type !=1){
-
-        //if('response' in titles_l)
-            //delete titles_l['response'];
 
         $.each(titles_l,function(i){
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
@@ -1342,6 +1336,7 @@ function list_title(csrf, data, div_text, type){
             div_add.append(span_add_f);
             div_add.append(span_add_l);
             div_add.append(span_add_p);
+
             if(type == 1 | type == 3)
                 item_title.append(div_add);
             if(type==4)
