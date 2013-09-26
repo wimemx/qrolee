@@ -853,6 +853,7 @@ def get_authors(request, **kwargs):
     fields = [item for item in fields if item not in fields_foreign]
 
     dictionary_authors = {}
+    print authors
 
     for obj in authors:
         author = {}
@@ -954,8 +955,9 @@ def get_profile(request,**kwargs):
     if type == 'title':
         profile = account_models.Title.objects.get(id=profile[1])
         list_user = account_models.ListTitle.objects.filter(list__default_type=0,
-                                                          title=profile, list__status=True)
-        list = account_models.ListTitle.objects.filter(title=profile, list__status=True)
+                                                          title=profile, list__status=True,                                                          )
+        list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
+                                                       list__default_type=-1)
         count = len(list_user)
 
         grade = 0

@@ -1259,14 +1259,15 @@ function list_title(csrf, data, div_text, type){
     div_text.append(div_scroll);
 
         array = [];
-        console.log(data);
         titles_l = data[0];
+        console.log(data);
         count_id = 0;
         bar = false;
 
     if(type !=1){
 
-        delete titles_l['response'];
+        if('response' in titles_l)
+            delete titles_l['response'];
 
         $.each(titles_l,function(i){
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')

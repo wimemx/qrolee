@@ -100,9 +100,10 @@ function type_add_list(csrf, id ,query){
 
     var data = [];
     var model = '';
-    var fields = [];
+    var fields;
     var and = 0;
-    var join = {};
+    var join;
+    var _query;
 
     if($('.type_list').val()=='A'){
 
@@ -125,7 +126,6 @@ function type_add_list(csrf, id ,query){
             }
     }
     if($('.type_list').val()=='T'){
-
         model = 'account.title';
         fields = ['title', 'cover', 'id'];
         and = 0;
@@ -148,8 +148,8 @@ function type_add_list(csrf, id ,query){
     //'pk__in': JSON.stringify([127, 126])
     if(id==1){
         if($('.type_list').val()=='T'){
-        var _query = {
-            'title__icontain':''
+            _query = {
+            'title__icontains':''
         }
         }else{
             _query = {
@@ -160,8 +160,8 @@ function type_add_list(csrf, id ,query){
 
     if(id==2 | id == 4){
         if($('.type_list').val()=='T'){
-            var _query = {
-                'title__icontain':query
+                 _query = {
+                'title__icontains':query
             }
         }else{
             _query = {
@@ -170,7 +170,7 @@ function type_add_list(csrf, id ,query){
         }
     }
         join = JSON.stringify(join);
-
+        console.log(_query);
         var search = {
             'type': model,
             'fields': JSON.stringify(fields),
@@ -184,7 +184,7 @@ function type_add_list(csrf, id ,query){
         data.push(advanced_search(search, csrf));
 
         if(id==2|id==4){
-            console.log(query);
+
             query = query.split(" ");
             var query = {
                 'q': JSON.stringify(query),
