@@ -872,61 +872,81 @@ def not_found(request):
 def add_my_title(request):
 
     user = request.user
-
     list_id_titles = []
+    list_id_authors = []
 
     if request.POST.get('list') != None:
-
         list = ast.literal_eval(request.POST.get('list'))
 
-        for obj in list:
+        if request.POST.get('type_list') == 'T':
 
-            if obj['it']['id'] == -1:
+            for obj in list:
 
-                date = str(obj['it']['attribute']['publishedDate']).split("-")
-                date_time = str(obj['it']['attribute']['publishedDate'])
+                if obj['it']['id'] == -1:
 
-                if len(date) < 3 :
-                    date_time = str(date[0]) + '-01-01'
+                    date = str(obj['it']['attribute']['publishedDate']).split("-")
+                    date_time = str(obj['it']['attribute']['publishedDate'])
 
-                li ={
-                    'title':str(obj['it']['attribute']['title']),
-                    'subtitle':'',
-                    'edition':'',
-                    'published_date':date_time,
-                    'cover':str(obj['it']['attribute']['cover']),
-                    'publisher':str(obj['it']['attribute']['publisher']),
-                    'language':str(obj['it']['attribute']['language']),
-                    'country':str(obj['it']['attribute']['country']),
-                    'type':'T',
-                    'isbn':str(obj['it']['attribute']['isbn']),
-                    'isbn13':str(obj['it']['attribute']['isbn13']),
-                    'pages':int(obj['it']['attribute']['pages']),
-                    'picture':str(obj['it']['attribute']['picture']),
-                    'description':str(obj['it']['attribute']['description'])
-                }
+                    if len(date) < 3 :
+                        date_time = str(date[0]) + '-01-01'
 
-
-                title = account.Title.objects.create(**li)
-                title.save()
-
-            else:
-                title = account.Title.objects.get(id=obj['it']['id'])
-
-            list_id_titles.append(int(title.id))
-
-            if int(request.POST.get('type')) == 1 |\
-                    int(request.POST.get('type')) == 3:
-
-                for type in obj['it']['default_type']:
-                    lista = account.List.objects.get(user=user, default_type=type)
-
-                    list_ti = {
-                        'list':lista,
-                        'title':title
+                    li ={
+                        'title':str(obj['it']['attribute']['title']),
+                        'subtitle':'',
+                        'edition':'',
+                        'published_date':date_time,
+                        'cover':str(obj['it']['attribute']['cover']),
+                        'publisher':str(obj['it']['attribute']['publisher']),
+                        'language':str(obj['it']['attribute']['language']),
+                        'country':str(obj['it']['attribute']['country']),
+                        'type':'T',
+                        'isbn':str(obj['it']['attribute']['isbn']),
+                        'isbn13':str(obj['it']['attribute']['isbn13']),
+                        'pages':int(obj['it']['attribute']['pages']),
+                        'picture':str(obj['it']['attribute']['picture']),
+                        'description':str(obj['it']['attribute']['description'])
                     }
-                    my_list = account.ListTitle.objects.create(**list_ti)
-                    my_list.save()
+
+                    title = account.Title.objects.create(**li)
+                    title.save()
+
+                else:
+                    title = account.Title.objects.get(id=obj['it']['id'])
+
+                list_id_titles.append(int(title.id))
+
+                if int(request.POST.get('type')) == 1 | \
+                        int(request.POST.get('type')) == 3:
+
+                    for type in obj['it']['default_type']:
+                        lista = account.List.objects.get(user=user, default_type=type)
+
+                        list_ti = {
+                            'list':lista,
+                            'title':title
+                        }
+                        my_list = account.ListTitle.objects.create(**list_ti)
+                        my_list.save()
+
+        if request.POST.get('type_list') == 'A':
+            for obj in list:
+
+                if obj['it']['id'] == -1:
+                    print obj
+                    li ={
+                        'name':str(obj['it']['attribute']['name']),
+                        'picture':str(obj['it']['attribute']['picture']),
+                        'biography':str(obj['it']['attribute']['biography']),
+                        'birthday':datetime.datetime.today()
+                    }
+
+                    author = account.Author.objects.create(**li)
+                    author.save()
+
+                else:
+                    author = account.Author.objects.get(id=obj['it']['id'])
+
+                list_id_authors.append(int(author.id))
 
     fields_related_objects = account.Title._meta.get_all_related_objects(
     local_only=True)
@@ -988,9 +1008,10 @@ def add_my_title(request):
 
     context = simplejson.dumps(list_dict)
 
-    if int(request.POST.get('type')) == 4:
+    if int(request.POST.get('type')) == 4 and request.POST.get('type_list') == 'T':
         context = simplejson.dumps(list_id_titles)
-
+    else:
+        context = simplejson.dumps(list_id_authors)
     return HttpResponse(context, mimetype='application/json')
 
 
@@ -1014,6 +1035,19 @@ def add_titles_author_list(request):
                 'list':my_list
             }
             rel_list = account.ListTitle.objects.create(**list_title)
+            rel_list.save()
+
+    if type == 'A':
+
+        for obj in list:
+
+            author= account.Author.objects.get(id=int(obj))
+
+            list_title = {
+                'author':author,
+                'list':my_list
+            }
+            rel_list = account.ListAuthor.objects.create(**list_title)
             rel_list.save()
 
     #context = {}

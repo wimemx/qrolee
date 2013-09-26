@@ -1028,7 +1028,7 @@ def search_api(request, **kwargs):
     key = '&key='+settings.GOOGLE_BOOKS_KEY
     startIndex = '&startIndex='+index
     languageRestrict = '&langRestrict=es'
-    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+description)'
+    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
     for element in q_ast:
         q += element + '+'
 

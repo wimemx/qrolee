@@ -77,7 +77,7 @@ $(document).ready(function(){
 
     $('.d-add_book').click(function(){
 
-        var query = '';
+        var query = 'carlos ruiz ';
 
         type = 0;
 
@@ -108,7 +108,7 @@ function type_add_list(csrf, id ,query){
     if($('.type_list').val()=='A'){
 
         model = 'account.author';
-        fields = ['name','id'];
+        fields = ['name','id','picture'];
         and = 0;
         join = {
             'tables':{
@@ -155,28 +155,26 @@ function type_add_list(csrf, id ,query){
     if(id==1){
         if($('.type_list').val()=='T'){
             _query = {
-            'title__icontains':''
+            'title__icontains':' '
         }
         }else{
             _query = {
-                'name__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': query
                 }
         }
     }
-
-    if(id==2 | id == 4){
+    if(id==2 | id == 4 | id == 5){
         if($('.type_list').val()=='T'){
-                 _query = {
+             _query = {
                 'title__icontains':query
             }
         }else{
             _query = {
-                'name__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': query
                 }
         }
     }
         join = JSON.stringify(join);
-
         var search = {
             'type': model,
             'fields': JSON.stringify(fields),
@@ -189,7 +187,7 @@ function type_add_list(csrf, id ,query){
 
         data.push(advanced_search(search, csrf));
 
-        if(id==2|id==4){
+        if(id==2 | id==4 | id==5){
 
             query = query.split(" ");
             var query = {
@@ -203,7 +201,6 @@ function type_add_list(csrf, id ,query){
             };
             data.push(search_api(crsf, query));
         }
-
         if(id==1)
             dialog_titles(csrf,data,1);
         if(id==2)
@@ -211,7 +208,9 @@ function type_add_list(csrf, id ,query){
         if(id==3)
             dialog_titles(csrf,data,2);
         if(id==4)
-            dialog_titles(csrf,data,id);
+            dialog_titles(csrf,data,4);
+        if(id==5)
+            list_title(csrf,data,$('.dialog_text'),4);
 }
 
 function show_dialog(){

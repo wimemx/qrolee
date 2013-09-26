@@ -33,6 +33,7 @@ class Author(models.Model):
     birthday = models.DateTimeField()
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
+    biography = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -80,10 +81,9 @@ class List(models.Model):
 class ListAuthor(models.Model):
     list = models.ForeignKey(List)
     author = models.ForeignKey(Author)
-    picture = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return '%s, %s' % (self.list.name, self.author.first_name)
+        return '%s, %s' % (self.list.name, self.author.name)
 
 class ListGenre(models.Model):
     list = models.ForeignKey(List)
