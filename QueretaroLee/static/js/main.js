@@ -852,8 +852,11 @@ $(document).ready(function(){
                     1: JSON.stringify(['element_id'])
                 },
                 'fields':{
-                    0: JSON.stringify(['first_name','last_name']),
+                    0: JSON.stringify(['name']),
                     1: JSON.stringify(['grade'])
+                },
+                'activity':{
+                    0: JSON.stringify(['T'])
                 }
             }
             join = JSON.stringify(join);
