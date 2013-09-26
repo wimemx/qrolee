@@ -1684,6 +1684,9 @@ function get_titles_authors(list, csrf){
                 'fields':{
                     0: JSON.stringify(['first_name','last_name']),
                     1: JSON.stringify(['grade'])
+                },
+                'activity':{
+                    0: JSON.stringify(['T'])
                 }
             }
             join = JSON.stringify(join); //conviertes el join en un string
@@ -1699,7 +1702,6 @@ function get_titles_authors(list, csrf){
             result = advanced_search(search, csrf);
 
     title = advanced_search(search,csrf);
-
     container_list = $('.add_my_list');
     container_list.find('.type').remove();
     type = $('<input class="type" type="hidden" ' +

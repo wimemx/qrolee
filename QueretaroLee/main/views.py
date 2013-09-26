@@ -929,7 +929,7 @@ def get_genre(request):
     return HttpResponse(context, mimetype='application/json')
 
 
-def get_profile(request,**kwargs):
+def get_profile(request, **kwargs):
     template = kwargs['template_name']
     type = kwargs['type']
     profile = kwargs['profile'].split("_")

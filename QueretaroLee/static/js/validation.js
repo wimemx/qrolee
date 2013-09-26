@@ -108,7 +108,7 @@ function type_add_list(csrf, id ,query){
     if($('.type_list').val()=='A'){
 
         model = 'account.author';
-        fields = ['first_name','id'];
+        fields = ['name','id'];
         and = 0;
         join = {
             'tables':{
@@ -122,8 +122,11 @@ function type_add_list(csrf, id ,query){
             'fields':{
                 0: JSON.stringify(['first_name','last_name']),
                 1: JSON.stringify(['grade'])
+            },
+            'activity':{
+                0:JSON.stringify(['A'])
             }
-            }
+        }
     }
     if($('.type_list').val()=='T'){
         model = 'account.title';
@@ -139,10 +142,13 @@ function type_add_list(csrf, id ,query){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
+            },
+            'activity':{
+                0:JSON.stringify(['A'])
             }
-            }
+        }
     }
 
     //'pk__in': JSON.stringify([127, 126])
@@ -176,12 +182,7 @@ function type_add_list(csrf, id ,query){
             'fields': JSON.stringify(fields),
             'value': JSON.stringify(_query),
             'and': and,
-            'join': {
-                'activity':
-                {
-                    0: JSON.stringify(['T'])
-                }
-            }
+            'join': join
         }
 
         search = JSON.stringify(search);
