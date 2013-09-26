@@ -889,6 +889,7 @@ def add_my_title(request):
 
                     if len(date) < 3 :
                         date_time = str(date[0]) + '-01-01'
+                    desc = str(obj['it']['attribute']['description'])
 
                     li ={
                         'title':str(obj['it']['attribute']['title']),
@@ -904,7 +905,7 @@ def add_my_title(request):
                         'isbn13':str(obj['it']['attribute']['isbn13']),
                         'pages':int(obj['it']['attribute']['pages']),
                         'picture':str(obj['it']['attribute']['picture']),
-                        'description':str(obj['it']['attribute']['description'])
+                        'description':desc[0:800]
                     }
 
                     title = account.Title.objects.create(**li)
@@ -932,11 +933,11 @@ def add_my_title(request):
             for obj in list:
 
                 if obj['it']['id'] == -1:
-                    print obj
+                    desc = str(obj['it']['attribute']['biography'])
                     li ={
                         'name':str(obj['it']['attribute']['name']),
                         'picture':str(obj['it']['attribute']['picture']),
-                        'biography':str(obj['it']['attribute']['biography']),
+                        'biography':desc[0:800],
                         'birthday':datetime.datetime.today()
                     }
 

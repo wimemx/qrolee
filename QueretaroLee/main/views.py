@@ -5,12 +5,14 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from registry.models import Entity,Type,Event
 from django.db.models.loading import get_model
+from django.db import models as db_model
 from django.db.models import Q
-
+from collections import namedtuple
 from account import models as account_models
 from registry import models,views,settings
 from registry.views import datetime_from_str
 from decimal import Decimal
+from django.utils.datastructures import SortedDict
 
 import simplejson
 import calendar
@@ -659,7 +661,7 @@ def get_list(request,**kwargs):
 
     if request.POST.get('field_value')!=None:
         search = request.POST['field_value']
-        list = models.List.objects.filter(name__icontains=search, type ='u',
+        list = models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True)
 
     content = 'Pellentesque habitant morbi tristique senectus et ' \
@@ -676,11 +678,6 @@ def get_list(request,**kwargs):
                   'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
-    context = {
-        'list':list,
-        'content':content,
-        'type':type
-    }
 
     fields_related_objects = account_models.List._meta.get_all_related_objects(
         local_only=True)
@@ -701,23 +698,44 @@ def get_list(request,**kwargs):
 
     fields = [item for item in fields if item not in fields_foreign]
 
-    dictionary = {}
+    dictionary = dict()
 
     for obj in list:
+
         user = {}
+        count = 0
+
+        if obj.type == 'T':
+            titles = account_models.ListTitle.objects.filter(list=obj)
+            count = len(titles)
+
+        if obj.type == 'A':
+            authors = account_models.ListAuthor.objects.filter(list=obj)
+            count = len(authors)
+
+        user['count'] = count
+
         for field in fields:
             if isinstance(obj.__getattribute__(str(field)), unicode):
                 user[str(field)] = obj.__getattribute__(str(field)).\
                     encode('utf-8', 'ignore')
             else:
                 if field=='user':
-                    value = str(obj.__getattribute__(str(field)).first_name)
+                    value = str(obj.__getattribute__(str(field)))
+                    user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
-
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
+        print dictionary
+
+    context = {
+        'list':dictionary,
+        'content':content,
+        'type':type
+    }
+
 
     if request.POST.get('field_value')!=None:
         context = simplejson.dumps(dictionary)

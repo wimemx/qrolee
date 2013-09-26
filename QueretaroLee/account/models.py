@@ -128,3 +128,6 @@ class Activity(models.Model):
     type = models.CharField(max_length=1)
 
 
+class Struct:
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
