@@ -51,23 +51,17 @@ $(document).ready(function(){
     });
 
     $('.d-add_book').click(function(){
-        var query = {
-            'q': JSON.stringify(['Harry','Potter']),
-            'start_index':{
-                0: 0
-            },
-            'type': {
-            0: 'account.title'
-         }
-        };
+
+        var query = '';
+
         type = 0;
+
         if($(this).find('input').val() == 'title')
             type = 1;
         if($(this).find('input').val() == 'list')
-            type = 3;
+            type = 4;
 
         crsf = $('.csrf_token').find('div input').val();
-
 
         type_add_list(crsf, type, query);
 
@@ -77,50 +71,95 @@ $(document).ready(function(){
 
 });
 
-
 function type_add_list(csrf, id ,query){
+
     var data = [];
-    //'pk__in': JSON.stringify([127, 126])
-    if(id==1)
-        var _query = {
-            'title__icontains':''
-        }
-    if(id==2)
-        var _query = {
-            'title__icontains':query
-        }
-
-    var fields = ['title', 'cover', 'id'];
+    var model = '';
+    var fields = [];
     var and = 0;
-    var join = {
-        'tables':{
-            0: JSON.stringify(['account.author','account.authortitle']),
-            1: JSON.stringify(['account.rate'])
-        },
-        'quieres':{
-            0: JSON.stringify(['title_id']),
-            1: JSON.stringify(['element_id'])
-        },
-        'fields':{
-            0: JSON.stringify(['first_name','last_name']),
-            1: JSON.stringify(['grade'])
+    var join = {};
+
+    if($('.type_list').val()=='A'){
+
+        model = 'account.author';
+        fields = ['first_name','id'];
+        and = 0;
+        join = {
+            'tables':{
+                0: JSON.stringify(['account.author','account.authortitle']),
+                1: JSON.stringify(['account.rate'])
+            },
+            'quieres':{
+                0: JSON.stringify(['title_id']),
+                1: JSON.stringify(['element_id'])
+            },
+            'fields':{
+                0: JSON.stringify(['first_name','last_name']),
+                1: JSON.stringify(['grade'])
+            }
+            }
+    }
+    if($('.type_list').val()=='T'){
+
+        model = 'account.title';
+        fields = ['title', 'cover', 'id'];
+        and = 0;
+        join = {
+            'tables':{
+                0: JSON.stringify(['account.author','account.authortitle']),
+                1: JSON.stringify(['account.rate'])
+            },
+            'quieres':{
+                0: JSON.stringify(['title_id']),
+                1: JSON.stringify(['element_id'])
+            },
+            'fields':{
+                0: JSON.stringify(['first_name','last_name']),
+                1: JSON.stringify(['grade'])
+            }
+            }
+    }
+
+    //'pk__in': JSON.stringify([127, 126])
+    if(id==1){
+        if($('.type_list').val()=='T'){
+        var _query = {
+            'title__icontain':''
+        }
+        }else{
+            _query = {
+                'username__icontains': $.trim($('.advanced_filter .search').val())
+                }
         }
     }
 
-    join = JSON.stringify(join);
-
-    var search = {
-        'type': 'account.title',
-        'fields': JSON.stringify(fields),
-        'value': JSON.stringify(_query),
-        'and': and,
-        'join': join
+    if(id==2 | id == 4){
+        if($('.type_list').val()=='T'){
+            var _query = {
+                'title__icontain':query
+            }
+        }else{
+            _query = {
+                'username__icontains': $.trim($('.advanced_filter .search').val())
+                }
+        }
     }
+        join = JSON.stringify(join);
+
+        var search = {
+            'type': model,
+            'fields': JSON.stringify(fields),
+            'value': JSON.stringify(_query),
+            'and': and,
+            'join': join
+        }
+
         search = JSON.stringify(search);
 
         data.push(advanced_search(search, csrf));
 
-        if(id==2){
+        if(id==2|id==4){
+            console.log(query);
             query = query.split(" ");
             var query = {
                 'q': JSON.stringify(query),
@@ -128,12 +167,11 @@ function type_add_list(csrf, id ,query){
                     0: 0
                 },
                 'type': {
-                    0: 'account.title'
+                    0: model
                 }
             };
             data.push(search_api(crsf, query));
         }
-
 
         if(id==1)
             dialog_titles(csrf,data,1);
@@ -141,6 +179,8 @@ function type_add_list(csrf, id ,query){
             list_title(csrf,data,$('.dialog_text'),3);
         if(id==3)
             dialog_titles(csrf,data,2);
+        if(id==4)
+            dialog_titles(csrf,data,id);
 }
 
 function show_dialog(){
@@ -158,7 +198,6 @@ function show_dialog(){
             href = 'href="/registry/join_entity/'+$('.d-entity_id').val()+'"';
         }
 
-        console.log($('.type').val());
 
         if($('.type').val()=="List"){
             var type = $(this).find('.type_message').val();

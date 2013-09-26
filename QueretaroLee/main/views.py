@@ -1033,7 +1033,7 @@ def search_api(request, **kwargs):
     elif 'cost' in response:
         pass
     else:
-        response = 'No se pudieron encontraron más libros en su búesqueda'
+        response = 'No se pudieron encontraron más libros en su búsqueda'
 
     context = {
         'result_api': response

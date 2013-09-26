@@ -208,7 +208,28 @@ $(document).ready(function(){
                 fb_obj_search(search);
         });
 
-
+    $('.radio_btn').click(function(){
+        $('.d-add_text_book').empty();
+        $('.title_list').empty();
+        $('.add_my_list').find('.d-item_book').remove();
+        if($(this).parent().find('.radio_value').val()=='title'){
+            $('.rad_tit').addClass('radio_active');
+            $('.rad_aut').removeClass('radio_active');
+            $('.active_title').val(1);
+            $('.active_author').val(0);
+            $('.type_list').val('T');
+            $('.title_list').append('Libros de tu lista');
+            $('.d-add_text_book').append('+ Añadir un nuevo libro');
+        }else{
+            $('.rad_aut').addClass('radio_active');
+            $('.rad_tit').removeClass('radio_active');
+            $('.active_title').val(0);
+            $('.active_author').val(1);
+            $('.type_list').val('A');
+            $('.title_list').append('Autores de tu lista');
+            $('.d-add_text_book').append('+ Añadir un nuevo autor');
+        }
+    });
 });
 
 function fb_obj_search(search, type){
@@ -1180,8 +1201,13 @@ function dialog_titles(csrf, data, id){
     if(id == 1 | id == 3)
         text2 = 'Selecciona un libro para añadirlo a favoritos,' +
             ' libros leídos y libros por leer';
-    if(id == 2)
-        text2 = 'Selecciona un libro para añadirlo a tu nueva lista';
+    if(id == 4){
+        var text2 = 'Selecciona un libro para añadirlo a tu nueva lista';
+        if($('.type_list').val()=='A'){
+            text = 'Añadir un autor';
+            text2 = 'Selecciona un author para añadirlo a tu nueva lista';
+        }
+    }
 
     p_text = $('<p class="p_text_dialog">' + text + '</p>');
     p_text2 = $('<p class="p_text_mini p_mini_book">' + text2 + '</p>');
@@ -1193,13 +1219,14 @@ function dialog_titles(csrf, data, id){
     span = $('<span class="dark_yello_btn btn_search_book">Buscar</span>');
     span.click(function(){
 
-        console.log($('.input_add_book').val());
         $('.dialog_text').find('#scrollbar1').fadeOut(250,function(){
 
             $(this).remove();
             var words = $('.input_add_book').val();
-
-            type_add_list($('.csrf_token').find('div input').val(), 2, words);
+            type = 4;
+            if(id!=4)
+                type = 2;
+            type_add_list($('.csrf_token').find('div input').val(), type, words);
         });
 
     });
@@ -1228,7 +1255,7 @@ function list_title(csrf, data, div_text, type){
     div_text.append(div_scroll);
 
         array = [];
-
+        console.log(data);
         titles_l = data[0];
         count_id = 0;
         bar = false;
@@ -1241,7 +1268,7 @@ function list_title(csrf, data, div_text, type){
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
 
             type_add = 'grid-5';
-            if(type==2)
+            if(type==4)
                 type_add = 'grid-4 selec_item';
 
             div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
@@ -1264,7 +1291,7 @@ function list_title(csrf, data, div_text, type){
             span_wrapper.append(img_wrapper);
 
             type_add = 'grid-3';
-            if(type==2)
+            if(type==4)
                 type_add = 'grid-2';
 
             div_container_text = $('<div class="d-container_text_book ' +
@@ -1309,7 +1336,7 @@ function list_title(csrf, data, div_text, type){
             div_add.append(span_add_p);
             if(type == 1 | type == 3)
                 item_title.append(div_add);
-            if(type==2)
+            if(type==4)
                 div_item.append('<input type="hidden" class="my_list" value="0" />');
 
             container.append(item_title);
@@ -1321,8 +1348,7 @@ function list_title(csrf, data, div_text, type){
 
         });
     }
-
-        if(data.length>1){
+        if(data.length > 1 & data[1] != null){
 
             data = data[1];
             var titles = data['result_api']['items'];
@@ -1332,7 +1358,7 @@ function list_title(csrf, data, div_text, type){
                 item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
 
                 type_add = 'grid-5';
-                if(type==2)
+                if(type==4)
                     type_add = 'grid-4 selec_item';
 
                 div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
@@ -1404,7 +1430,7 @@ function list_title(csrf, data, div_text, type){
                 span_wrapper.append(img_wrapper);
 
                 type_add = 'grid-3';
-                if(type==2)
+                if(type==4)
                     type_add = 'grid-2';
 
                 div_container_text = $('<div class="d-container_text_book ' +
@@ -1448,7 +1474,7 @@ function list_title(csrf, data, div_text, type){
                 div_add.append(span_add_p);
                 if(type == 1 | type == 3)
                     item_title.append(div_add);
-                if(type==2)
+                if(type==4)
                     div_item.append('<input type="hidden" class="my_list" value="0" />');
 
                 container.append(item_title);
@@ -1526,7 +1552,6 @@ function list_title(csrf, data, div_text, type){
                 }
             }
 
-                console.log(array_title);
             if(active_sel)
                 add_my_title(csrf,array_title,type);
 
@@ -1534,15 +1559,16 @@ function list_title(csrf, data, div_text, type){
 
         $('.dialog-confirm').fadeIn(250);
         $('.container_message').fadeIn(250);
-        if(bar)
+        if(count_id>2)
             $('#scrollbar1').tinyscrollbar();
         aling_message();
         selec_item();
-        //get_titles_authors(csrf);
+
+        //if(type==4)
+            //get_titles_authors(csrf);
 }
 
 function add_my_title(csrf, array_title, type){
-
     $.ajax({
         type: "POST",
         url: '/registry/add_my_title/',
@@ -1558,6 +1584,7 @@ function add_my_title(csrf, array_title, type){
                 //book_favorite
                 $.each(data,function(i){
                     title = data[i];
+
                     container_list = $('.'+i);
                         type = 0;
                     if(i=='book_read')
@@ -1614,12 +1641,8 @@ function add_my_title(csrf, array_title, type){
 
             }
 
-            if(type==2){
-                //$('.add_my_list').find('.d-item_book').remove();
-                console.log(data);
-                $.each(data,function(i){
-                    //get_titles_authors(2, data[i],csrf);
-                });
+            if(type==4){
+                    get_titles_authors(data, csrf);
 
             }
             $('.dialog-confirm').fadeOut(250);
@@ -1630,37 +1653,42 @@ function add_my_title(csrf, array_title, type){
 }
 
 
-function get_titles_authors(id, csrf){
+function get_titles_authors(list, csrf){
 
-    var _query = {
-        'id': id
-    }
+        list_ids = [];
+        $.each(list,function(i){
+           list_ids.push(list[i]);
+        });
+            query = {
+                'pk__in': JSON.stringify(list_ids) //(como en django para la busqueda de pk)
+            }
+            fields = ['title', 'cover', 'id']; //campos en los que bas a buscar
+            and = 1; //is es un query tipo and o tipo or
+            join = { //(las tablas con las que haces relacion)
+                'tables':{
+                    0: JSON.stringify(['account.author','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
+                },
+                'quieres':{
+                    0: JSON.stringify(['title_id']),
+                    1: JSON.stringify(['element_id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['first_name','last_name']),
+                    1: JSON.stringify(['grade'])
+                }
+            }
+            join = JSON.stringify(join); //conviertes el join en un string
 
-    var fields = ['title', 'cover', 'id'];
-    var and = 0;
-    var join = {
-        'tables':{
-            0: JSON.stringify(['account.author','account.authortitle']),
-            1: JSON.stringify(['account.rate'])
-        },
-        'quieres':{
-            0: JSON.stringify(['title_id']),
-            1: JSON.stringify(['element_id'])
-        },
-        'fields':{
-            0: JSON.stringify(['first_name','last_name']),
-            1: JSON.stringify(['grade'])
-        }
-    }
-    join = JSON.stringify(join);
-    var search = {
-        'type': 'account.title',
-        'fields': JSON.stringify(fields),
-        'value': JSON.stringify(_query),
-        'and': and,
-        'join': join
-    }
-    search = JSON.stringify(search);
+            search = {
+                'type': 'account.title', //el modelo en el que vas a buscar account.title account.list etc...
+                'fields': JSON.stringify(fields),
+                'value': JSON.stringify(query),
+                'and': and,
+                'join': join
+            }
+            search = JSON.stringify(search); //conviertes el objeto a string
+            result = advanced_search(search, csrf);
 
     title = advanced_search(search,csrf);
 
@@ -1671,6 +1699,7 @@ function get_titles_authors(id, csrf){
     container_list.append(type)
 
     $.each(title,function(i2){
+        console.log(title[i2]);
         div = $('<div class="d-item_book d-item_' + title[i2].id +
             ' grid-5 no-margin"></div>');
         input_id =$('<input type="hidden" class="id_title"' +
@@ -1736,5 +1765,10 @@ function show_titles($this){
         else
             $this.find('input').val(0);
     });
+
+}
+
+
+function change_type_list(){
 
 }

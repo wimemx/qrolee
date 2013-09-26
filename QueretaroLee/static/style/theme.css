@@ -1793,6 +1793,7 @@ margin: 0px;
 
 .btn_search_book{
     padding: 3px 10px 5px 10px !important;
+    cursor: pointer;
 }
 
 .wrapper_title_mini{
@@ -1871,4 +1872,17 @@ margin: 0px;
 
 .min_list{
     height: 0px !important;
+}
+
+.submit_list{
+    margin-left: 805px !important;
+    width: 72px !important;
+}
+
+.radio_btn{
+    cursor: pointer;
+}
+
+.radio_active{
+    background-color: #000000;
 }

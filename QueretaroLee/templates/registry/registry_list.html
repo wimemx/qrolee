@@ -43,7 +43,7 @@
         <div class="grid-15 registry">
             <div class="heading">
                 <h3 class="title grid-13 no-margin fleft">Crear nueva lista</h3>
-
+                <input type="hidden" class="type_list" value="T" />
             </div>
             <p class="content">{{ content }}</p>
 
@@ -63,20 +63,21 @@
                     <p>
                         Selecciona si deseas tener una lista de títulos o una lista de autores
                         <br><br>
-                    <span class="grid-3 radio_btn fleft no-margin" >
-                        <img src="" class="radio_buttom"/>
-                        <span >Lista de libros</span>
+                    <span class="grid-3 fleft no-margin" >
+                        <img src="" class="radio_btn rad_tit radio_active radio_buttom"/>
+                        <span class="radio_btn" >Lista de libros</span>
+                        <input type="hidden" class="active_title" value="1"/>
+                        <input type="hidden" class="radio_value" value="title"/>
                     </span>
-                    <span class="grid-3 radio_btn fleft no-margin">
-                        <img src="" class="radio_buttom"/>
-                        <span >Lista de autores</span>
+                    <span class="grid-3 fleft no-margin">
+                        <img src="" class="radio_btn rad_aut radio_buttom"/>
+                        <span class="radio_btn">Lista de autores</span>
+                        <input type="hidden" class="active_author" value="0"/>
+                        <input type="hidden" class="radio_value" value="author"/>
                     </span>
                     </p>
-                    <p>
-                        <span class="message fright"></span>
-                    </p>
-                    <p class="submit">
-                        <input id="submit" class="btn_save_list btn" value="Guardar" type="submit"/>
+                    <p class="submit submit_list">
+                        <input id="submit" class="btn" value="Guardar" type="submit"/>
                     </p>
                 </div>
             </form>
@@ -86,7 +87,7 @@
             </form>
             <hr class="d-line_bottom">
             <div class="heading">
-                <h3 class="title grid-13 no-margin fleft">Libros de tu lista</h3>
+                <h3 class="title grid-13 title_list no-margin fleft">Libros de tu lista</h3>
             </div>
             <div id="scrollbar1" class="d-paddin_top">
                 <div class="scrollbar"><div class="track"><div class="thumb">

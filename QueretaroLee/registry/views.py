@@ -948,6 +948,7 @@ def add_my_title(request):
     list_dict = {}
     my_list = {}
 
+
     for obj in list_favorite:
         fields_title = {}
         for field in fields:
@@ -981,21 +982,24 @@ def add_my_title(request):
                 fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
             else:
                 fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+        my_list[int(obj.id)] = fields_title
 
     list_dict['book_for_reading'] = my_list
 
     context = simplejson.dumps(list_dict)
 
-    if int(request.POST.get('type')) == 2:
+    if int(request.POST.get('type')) == 4:
         context = simplejson.dumps(list_id_titles)
 
     return HttpResponse(context, mimetype='application/json')
 
 
 def add_titles_author_list(request):
+    print 55555
     user = request.user
     id_list = request.POST.get('id_list')
     type = request.POST.get('type')
+    print request.POST.get('list')
     list = ast.literal_eval(request.POST.get('list'))
     my_list = account.List.objects.get(id=id_list)
     name = my_list.name.replace(' ','')

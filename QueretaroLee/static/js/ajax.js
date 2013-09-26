@@ -917,9 +917,10 @@ function add_titles_list(csrf, id_list){
     var title_ids = [];
 
     $.each($('.add_my_list .d-item_book'),function(i){
+        console.log(i);
         title_ids.push(parseInt($(this).find('.id_title').val()));
     });
-
+    console.log(title_ids);
     $.ajax({
         type: "POST",
         url: '/registry/add_titles_my_list/',
@@ -927,7 +928,7 @@ function add_titles_list(csrf, id_list){
             'csrfmiddlewaretoken': csrf,
             'list':JSON.stringify(title_ids),
             'id_list':id_list,
-            'type':'T'
+            'type':$('.type_list').val()
         },
         dataType: 'json'
     }).done(function(data) {
