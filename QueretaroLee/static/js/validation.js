@@ -170,13 +170,18 @@ function type_add_list(csrf, id ,query){
         }
     }
         join = JSON.stringify(join);
-        console.log(_query);
+
         var search = {
             'type': model,
             'fields': JSON.stringify(fields),
             'value': JSON.stringify(_query),
             'and': and,
-            'join': join
+            'join': {
+                'activity':
+                {
+                    0: JSON.stringify(['T'])
+                }
+            }
         }
 
         search = JSON.stringify(search);
