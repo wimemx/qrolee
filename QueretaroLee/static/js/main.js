@@ -1264,6 +1264,8 @@ function list_title(csrf, data, div_text, type){
         count_id = 0;
         bar = false;
 
+    if($('.type_list').val()=='T'){
+    delete titles_l['response'];
     if(type !=1){
 
         $.each(titles_l,function(i){
@@ -1489,6 +1491,7 @@ function list_title(csrf, data, div_text, type){
 
             });
         }
+    }
         $('.add_my_titles').click(function(){
             if(parseInt($(this).find('input').val())==0){
                 $(this).find('input').val(1);
