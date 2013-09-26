@@ -442,13 +442,10 @@ def advanced_search(request, **kwargs):
             if 'activity' in join:
                 activity = join['activity']['0']
 
-
         if data['and'] == 0:
             object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
-
-
         if not object:
             context = {
                 'response': 0
@@ -616,8 +613,8 @@ def advanced_search(request, **kwargs):
                         q_list.append(('type__in', activity))
 
                     query = [Q(x) for x in q_list]
+                    print q_list
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
-                    print related_object
                     if model_name == 'activity':
                         if related_object:
                             related_object = account_models.Title.objects.filter(id=related_object[0].object)
