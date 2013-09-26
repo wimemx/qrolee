@@ -447,6 +447,8 @@ def advanced_search(request, **kwargs):
             object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
+
+
         if not object:
             context = {
                 'response': 0
@@ -1053,6 +1055,7 @@ def search_api(request, **kwargs):
         url += query
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
+
 
     if 'items' in response:
         pass

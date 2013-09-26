@@ -18,6 +18,11 @@
 {% endblock %}
 
 {% block main_site %}
+    <div class="wrapper_message " >
+        <div class="container-16 container_message">
+            <div class="dialog-confirm" ></div>
+        </div>
+    </div>
     <div class="lightbox-wrapper register">
         <div class="container-16">
             <div class="fb-objs grid-5 center lightbox">
@@ -35,45 +40,48 @@
     </div>
 
     <div class="grid-16 entities registry">
-        <div class="grid-14 registry">
+        <div class="grid-15 registry">
             <div class="heading">
                 <h3 class="title grid-13 no-margin fleft">Crear nueva lista</h3>
 
             </div>
             <p class="content">{{ content }}</p>
 
-            <form enctype="multipart/form-data" method="post" id="registry" class="register_entity grid-8 no-margin" action="/registry/register_ajax_list/">{% csrf_token %}
+            <form enctype="multipart/form-data" method="post" id="registry" class="register_entity grid-8 no-margin" action="/registry/register_ajax_list/">
+               <div class="csrf_token">
+                   {% csrf_token %}
+               </div>
                 <input class="profile-pic" type="hidden" value="" name="picture"/>
                 <div class="grid-8 no-margin fleft">
-                <input type="hidden" value="{{ type }}" name="type"/>
-                <p>Título de la lista
-                    <input class="required grid-5 fright no-margin" type="text" value="" name="name"/>
-                </p>
-                <p class="textarea">Descripción
-                    <textarea class="grid-5 fright no-margin" name="description"></textarea>
-                </p>
-                <p>
-                    Selecciona si deseas tener una lista de títulos o una lista de autores
-                    <br><br>
-                    <span class="grid-3 fleft no-margin" >
+                    <input type="hidden" value="{{ type }}" name="type"/>
+                    <p>Título de la lista
+                        <input class="required grid-5 fright no-margin" type="text" value="" name="name"/>
+                    </p>
+                    <p class="textarea">Descripción
+                        <textarea class="grid-5 fright no-margin" name="description"></textarea>
+                    </p>
+                    <p>
+                        Selecciona si deseas tener una lista de títulos o una lista de autores
+                        <br><br>
+                    <span class="grid-3 radio_btn fleft no-margin" >
                         <img src="" class="radio_buttom"/>
                         <span >Lista de libros</span>
                     </span>
-                    <span class="grid-3 fleft no-margin">
+                    <span class="grid-3 radio_btn fleft no-margin">
                         <img src="" class="radio_buttom"/>
                         <span >Lista de autores</span>
                     </span>
-                </p>
-                <p>
-                    <span class="message fright"></span>
-                </p>
-                <p class="submit">
-                    <input id="submit" class="fright btn" value="Guardar" type="submit"/>
-                </p>
+                    </p>
+                    <p>
+                        <span class="message fright"></span>
+                    </p>
+                    <p class="submit">
+                        <input id="submit" class="btn_save_list btn" value="Guardar" type="submit"/>
+                    </p>
                 </div>
             </form>
-            <form id="picture" class="fright picture_list dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
-                <input type="hidden" name="picture" value="1"/>
+            <form id="picture" class="picture_list dropzone grid-4" action="/registry/media/upload/">{% csrf_token %}
+                <input type="hidden" name="list_picture" value="1"/>
                 <div class="preview grid-4 fright no-margin dropzone-previews"></div>
             </form>
             <hr class="d-line_bottom">
@@ -85,28 +93,13 @@
                     <div class="end"></div></div></div></div>
                 <div class="viewport overview_list">
                     <div class="overview ">
-                        <div class="book_favorite d-paddin_bottom">
+                        <div class="add_my_list d-paddin_bottom">
                             <div class="d-container_add_book grid-5 no-margin">
                                 <div class="d-add_book" >
+                                    <input type="hidden" value="list" />
                                     <p class="d-add_text_book">
-                                    + Añadir un nuevo libro
+                                        + Añadir un nuevo libro
                                     </p>
-                                </div>
-                            </div>
-                            <div class="d-item_book grid-5 no-margin">
-                                <span class="wrapper_list" >
-                                <img src="/static/img/portada"/></span>
-                                <div class="d-container_text_book grid-3 no-margin">
-                                    <a href="/qro_lee/entity/group/wime8_3/"
-                                           class="title title_book alpha grid-4 ">Wime8</a>
-                                    <p class="p-d-text" >De
-                                        <a href="#" class="place_pink" >daniel</a>
-                                    </p>
-                                    <p class="p-d-text" >- - - - -</p>
-                                    <p class="p-d-text d-text_opacity">
-                                            añadido el 20 de septiembre
-                                    </p>
-                                    <span class="pink_btn size_btn_edit">-</span>
                                 </div>
                             </div>
                         </div>
@@ -116,64 +109,66 @@
         </div>
     </div>
     <script type="text/javascript">
-    Dropzone.options.picture = {
-        maxFiles: 1,
-        dictDefaultMessage: 'Inserte aquí la foto de <br> perfil de la lista',
-        init: function() {
-            this.on("addedfile", function(file) {
-                $('#picture .dz-message').fadeOut(300);
-            });
-        },
-        success: function(file) {
-            $('.profile-pic').val(file.name);
-        }
-    }
-
-    $(document).ready(function(){
-        if($('#map').length > 0)
-            initialize(-100.4057373,20.6144226);
-        $('form p input').focus(function(){
-            $(this).parent().find('.invalid').fadeOut(300);
-        });
-        $('#registry').submit(function(e){
-            var upload_valid = false;
-
-            if($('#dropzone .dz-preview').length > 1 ||
-               $('#cover .dz-preview').length > 1  ){
-                upload_valid = false;
-                alert('Solo puedes subir 1 archivo');
-            }
-            else
-                upload_valid = true;
-
-
-            if($(this).find('input[type=submit]').hasClass('msg-ok'))
-                window.location.href = site_url;
-            if(valid_form && upload_valid){
-
-                $.ajax({
-                type: "POST",
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                dataType: 'json'
-                }).done(function(data) {
-                    if(data.success == 'True'){
-                        $('.message').addClass('success');
-                        $('.message').html('Se ah creado exitosamente!');
-                        $('#registry').find('input[type=submit]').val('Ok');
-                        $('#registry').find('input[type=submit]').addClass('msg-ok');
-                    }else{
-                        $('.message').addClass('fail');
-                        $('.message').html('Hubo un error, favor de verificar sus datos');
-                    }
-                    $('.message').fadeIn(300);
-
+        Dropzone.options.picture = {
+            maxFiles: 1,
+            dictDefaultMessage: 'Inserte aquí la foto de <br> perfil de la lista',
+            init: function() {
+                this.on("addedfile", function(file) {
+                    $('#picture .dz-message').fadeOut(300);
                 });
+            },
+            success: function(file) {
+                $('.profile-pic').val(file.name);
             }
-            return false;
+        }
+
+        $(document).ready(function(){
+
+            $('form p input').focus(function(){
+                $(this).parent().find('.invalid').fadeOut(300);
+            });
+            $('#registry').submit(function(e){
+                var upload_valid = false;
+
+                if($('#dropzone .dz-preview').length > 1 ||
+                        $('#cover .dz-preview').length > 1  ){
+                    upload_valid = false;
+                    alert('Solo puedes subir 1 archivo');
+                }
+                else
+                    upload_valid = true;
+
+
+                if($(this).find('input[type=submit]').hasClass('msg-ok'))
+                    window.location.href = site_url;
+                if(valid_form && upload_valid){
+
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('action'),
+                        data: $(this).serialize(),
+                        dataType: 'json'
+                    }).done(function(data) {
+                                if(data.success == 'True'){
+
+                                    $('.message').addClass('success');
+                                    $('.message').html('Se ha creado exitosamente!');
+                                    $('#registry').find('input[type=submit]').val('Ok');
+                                    $('#registry').find('input[type=submit]').addClass('msg-ok');
+                                    add_titles_list($('.csrf_token').find('div input').val(),data.id_list);
+
+                                }else{
+                                    $('.message').addClass('fail');
+                                    $('.message').html('Hubo un error, favor de verificar sus datos');
+                                }
+                                $('.message').fadeIn(300);
+
+                            });
+                }
+                return false;
+            });
+
+
         });
-
-
-    });
     </script>
 {% endblock %}

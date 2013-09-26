@@ -82,6 +82,7 @@ class FacebookBackend:
             os.mkdir(path+'/'+str(user.id)+'/profile', 0777)
             os.mkdir(path+'/'+str(user.id)+'/entity', 0777)
             os.mkdir(path+'/'+str(user.id)+'/event', 0777)
+            os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
 
         facebook_session.user_id = user.id
         facebook_session.save()
