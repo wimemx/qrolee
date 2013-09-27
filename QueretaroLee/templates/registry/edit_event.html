@@ -22,16 +22,10 @@
     <div class="grid-14 center">
         <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <span class="title main">Editar evento
-            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="group">{{ entity.name|capfirst }}</a>
-            <span class="member grid-2">
-            <span class="brown_btn fright">Editar
-                <span class="sub-menu">
-                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
-                    <a href="">Administradores</a>
-                    <a href="/registry/register_event/{{ entity_type.1 }}/{{ entity.id }}" style="border:none;" href="">Organizar eventos</a>
-                    </span>
-                </span>
-            </span>
+            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
+             {% block entity_menu %}
+                {% include 'blocks/entity_menu.html' %}
+            {% endblock %}
         </span>
 
         <span class="data grid-9 fleft no-margin">

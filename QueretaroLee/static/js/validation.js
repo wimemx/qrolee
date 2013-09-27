@@ -34,30 +34,29 @@ $(document).ready(function(){
                         $(this).append(span);
                         $(this).find('.invalid').fadeIn(300);
 
-                }else{
-                    $(this).find('[class*="regex_"]').each(function(){
-                        var regex_classes = $(this).attr('class').split(' ');
-                        var regex_type = '';
-                        $.each(regex_classes, function(i){
-                            if(regex_classes[i].search('regex_') != -1)
-                                regex_type = regex_classes[i];
-                        });
-                        regex_type = regex_type.split('regex_');
-                        regex_type = regex_type[1];
-                        var regex_validation = validate_regex($.trim($(this).val()), regex_type);
-
-                        if(!regex_validation[0] && $.trim($(this).val()) != ''){
-                            valid--;
-                            console.log(regex_validation);
-                            var span = $('<span class="invalid"></span>');
-                            var value = regex_validation[1];
-                            span.html(value);
-                            $(this).parent().find('.invalid').remove();
-                            $(this).parent().append(span);
-                            $(this).parent().find('.invalid').fadeIn(300);
-                        }
-                    });
                 }
+
+
+            }
+        });
+        $(this).find('[class*="regex_"]').each(function(){
+            var regex_classes = $(this).attr('class').split(' ');
+            var regex_type = '';
+            $.each(regex_classes, function(i){
+                if(regex_classes[i].search('regex_') != -1)
+                    regex_type = regex_classes[i];
+            });
+            regex_type = regex_type.split('regex_');
+            regex_type = regex_type[1];
+            var regex_validation = validate_regex($.trim($(this).val()), regex_type);
+            if(!regex_validation[0] && $.trim($(this).val()) != ''){
+                valid--;
+                var span = $('<span class="invalid"></span>');
+                var value = regex_validation[1];
+                span.html(value);
+                $(this).parent().find('.invalid').remove();
+                $(this).parent().append(span);
+                $(this).parent().find('.invalid').fadeIn(300);
             }
         });
         if($.trim($(this).find('.match:eq(0)').val()) !=
@@ -154,7 +153,7 @@ function type_add_list(csrf, id ,query){
                 1: JSON.stringify(['grade'])
             },
             'activity':{
-                0:JSON.stringify(['A'])
+                0:JSON.stringify(['T'])
             }
         }
     }
@@ -230,35 +229,43 @@ function closet($ele){
 
 }
 
-var url_regex = new RegExp("(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})");
-var alpha_numeric_regex = new RegExp("[a-zA-Z0-9\-áéíóú]+");
-var numeric_regex = new RegExp("[\d]+");
-var alpha_regex = new RegExp("[0-9]+");
-var time_regex = new RegExp("([0-9]{2}[:]){2}[0-9]{2}");
-var social_regex = new RegExp("[^\W]+");
+var url_regex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+var alpha_numeric_regex = /^[a-zA-Z0-9\.áéíóúñÁÉÍÓÚÑ()\s]+/;
+var numeric_regex = /[\d]+/;
+var alpha_regex = /[0-9]+/;
+var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
+var social_regex = /[\W]+/;
+
+
 function validate_regex(input, type){
+
     var ret = new Array();
     ret.push(false);
     ret.push('');
     if (type == 'numeric'){
-        ret[0] = numeric_regex.test(input);
+        if(input.match(numeric_regex) != null)
+            ret[0] = true;
         ret[1] = 'Debe ser un valor numerico';
     }else if(type == 'alpha'){
-        ret[0] = alpha_regex.test(input);
+        if(input.match(alpha_regex) != null)
+            ret[0] = true;
         ret[1] = 'Debe ser un valor de caracteres';
     }else if (type == 'alpha_numeric'){
-        ret[0] = alpha_numeric_regex.test(input);
+        if(input.match(alpha_numeric_regex) != null)
+            ret[0] = true;
         ret[1] = 'Debe ser un valor alpha numerico';
     }else if(type == 'hh:mm:ss'){
 
     }else if(type == 'url'){
-        ret[0] = url_regex.test(input);
+        if(input.match(url_regex) != null)
+            ret[0] = true;
         ret[1] = 'Debe ser una url valida';
     }else if(type == 'social'){
-        ret[0] = social_regex.test(input);
+        if(input.match(social_regex))
+                ret[0] = true;
         ret[1] = 'Solo el usario, no incluya "@ o /"';
     }
-    return ret;
+    return true;
 }
 
 function selec_item(){
@@ -279,4 +286,9 @@ function aling_message(){
     var witdh = parseInt($('.dialog_text').css('width'));
     var left = parseInt($('.dialog-confirm').css('left'));
     $('.dialog-confirm').css({'left':(left-(parseInt(witdh/2)))});
+}
+
+function fb_session(){
+
+
 }

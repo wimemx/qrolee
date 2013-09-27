@@ -61,16 +61,15 @@
                     <input type="file" name="cover_picture"/>
                 </span>
                 </p>-->
-                <p>{% if entity_type.1 == 'spot' %}Tags{% else %}Categoría{% endif %}
-                    <span class="grid-5 fright no-margin">
-                        <span class="grid-2 select no-margin">
-                            <span class="text"></span>
-                            <span class="dropdown"></span>
-                            <select class="change" name="category_id" id="">
-                                {% for category in categories %}
-                                    <option value="{{ category.name }}">{{ category.name }}</option>
-                                {% endfor %}
-                            </select>
+
+                <p style="height: 100px;">{% if entity_type.1 == 'spot' %}Tags{% else %}Categoría{% endif %}
+                <input type="hidden" name="category_ids" value=""/>
+                    <span style="height: 100%;" class="grid-5 fright no-margin">
+                        <span class="multi_select">
+                            {% for category in categories %}
+                                <span class="select_value {{ category.id }}" >{{ category.name }}</span>
+                            {% endfor %}
+                        </span>
                         </span>
 
                     </span>
@@ -122,10 +121,13 @@
                 <input type="hidden" name="picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
+            {% if entity_type.1 == 'group' %}
             <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="cover" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
+            {% endif %}
+            {% if entity_type.1 != 'spot' %}
             <span class="fb-connect no-margin fright grid-5">
                 {% if entity_type.1 == 'group' %}
                 <p>¿Cuentas ya con un grupo en Facebook?</p>
@@ -136,6 +138,7 @@
                 {% endif %}
                     <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
             </span>
+            {% endif %}
         </div>
 
     </div>
@@ -167,13 +170,23 @@
     }
 
     $(document).ready(function(){
+
+
+
         if($('#map').length > 0)
             initialize(-100.4057373,20.6144226);
         $('form p input').focus(function(){
             $(this).parent().find('.invalid').fadeOut(300);
         });
+
+
         $('#registry').submit(function(e){
             var upload_valid = false;
+            var ids = '';
+            $('.multi_select .active').each(function(){
+                var ids_ = $(this).attr('class').split(' ');
+                ids += ids_[1] + ' ';
+            });
 
             if($('#dropzone .dz-preview').length > 1 ||
                $('#cover .dz-preview').length > 1  ){
@@ -189,7 +202,7 @@
             }
 
             if(valid_form && upload_valid){
-
+                $('input[name=category_ids]').val($.trim(ids));
                 $.ajax({
                 type: "POST",
                 url: $(this).attr('action'),

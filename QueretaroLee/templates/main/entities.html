@@ -54,19 +54,22 @@
                         {% if not entity.picture %}
                             <img src="/static/img/create.png" alt="{{ entity.name }}"/>
                         {% else %}
-                            <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
-
+                            <img src="/static/media/users/{{ entity.user_id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
                         {% endif %}
                     </a>
-                    <a class="brown_btn" href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}/">Editar</a>
+                    <a style="background-image: none;padding-right: 8px;" class="brown_btn" href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}/">Editar</a>
                     </span>
 
                 {% if entity_type.1 == 'spot' %}
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
-                        <img src="" class="d-icon_map" /> {{ entity.name|capfirst }}</a>
+                        <img src="/static/img/markers/marker{{ forloop.counter0 }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {{ entity.address }}
+                        {% if entity.address.0 != '' %}
+                            {{ entity.address.0 }} {{ entity.address.1 }}
+                        {% else %}
+                            Querétaro
+                        {% endif %}
                         <br>Teléfonos:442 290 8989
                         <br>
                         <a class="d-pink" href="" >Biblioteca</a>

@@ -50,6 +50,7 @@ class FacebookBackend:
             user_profile = users_models.Profile.objects.create(user_id=user.id)
             user_profile.fb_username = profile['username']
             user_profile.fb_id = profile['id']
+            user_profile.phone = ''
             user_profile.save()
             dict_list = {
                 'name':'Mis libros leidos',
@@ -123,6 +124,7 @@ class TwitterBackend:
             user_profile = users_models.Profile.objects.create(user_id=user.id)
             user_profile.twitter_username = access_token['screen_name']
             user_profile.twitter_id = access_token['user_id']
+            user_profile.phone = ''
             user_profile.save()
             registry_view.create_default_list(user);
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')

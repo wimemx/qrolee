@@ -132,13 +132,14 @@ def account_register(request):
     url = ''
     user_exits = auth_models.User.objects.filter(
         Q(email=user['email'][0]) | Q(username=user['username'][0]))
+    print user_exits
 
     if user['password'] != user['password_match']:
         success = 'False'
 
     else:
 
-        if len(user_exits) > 0:
+        if user_exits:
             success = 'False'
             url = 'Usario ya existente'
         else:
@@ -156,6 +157,7 @@ def account_register(request):
             user.save()
             create_default_list(user)
             profile = models.Profile.objects.create(user_id=user.id)
+            profile.phone = ''
             profile.save()
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
             os.mkdir(path+'/'+str(user.id), 0777)
@@ -196,11 +198,11 @@ def register_entity(request, **kwargs):
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
     if entity_type == 'group':
-        entity_type = ['Crear un nuevo grupo', 'group','grupo']
+        entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
     elif entity_type == 'organization':
-        entity_type = ['Crear una nueva organizacion', 'organization','organizacion']
+        entity_type = ['Crear una nueva organizacion', 'organization', 'organizacion']
     elif entity_type == 'spot':
-        entity_type = ['Crear un nuevo spot', 'spot','spot']
+        entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
     context = {
         'entity_type': entity_type,
@@ -215,10 +217,14 @@ def register(request):
     user = request.user
     entity = dict(request.POST)
     type = models.Type.objects.get(name=entity['entity_type'][0])
-    category = models.Category.objects.get(name=entity['category_id'][0])
+    # category = models.Category.objects.get(name=entity['category_id'][0])
     entity['user_id'] = int(user.id)
     entity['type_id'] = int(type.id)
-    entity['category_id'] = int(category.id)
+    category_ids = entity['category_ids'][0].split(' ')
+    cat_ids = list()
+    for ele in category_ids:
+        cat_ids.append(int(ele))
+
     if entity['privacy'][0] == 'publica':
         entity['privacy'] = 0
     else:
@@ -226,6 +232,7 @@ def register(request):
     del entity['csrfmiddlewaretoken']
     del entity['entity_type']
     del entity['fb_id']
+    del entity['category_ids']
     succuess = ''
 
     if request.FILES:
@@ -245,9 +252,12 @@ def register(request):
         if isinstance(val, list):
             copy[e] = val[0]
     entity = copy
-    print 6
     entity = models.Entity.objects.create(**entity)
     entity.save()
+    if cat_ids:
+        for ele in cat_ids:
+            entity_cat = models.EntityCategory.objects.create(
+                entity_id=entity.id, category_id=ele)
     if entity is not None:
         succuess = entity.id
     else:
@@ -348,7 +358,7 @@ def media_upload(request):
         user.picture = str(request.FILES['file'])
         user.save()
 
-    if 'list_picture' in  request.POST:
+    if 'list_picture' in request.POST:
         folder = '/list/'
 
     path_extension = str(request.user.id)+folder
@@ -393,6 +403,7 @@ def register_event(request, **kwargs):
         'entity': entity,
         'entity_type': entity_type
     }
+    print entity.id
     return render(request, template, context)
 
 def ajax_register_event(request):
@@ -433,7 +444,7 @@ def ajax_register_event(request):
     post_event_fb(event, request.user, profile)
     event.save()
     if event is not None:
-        success = 'True'
+        success = event.id
     else:
         success = 'False'
     context = {
@@ -454,6 +465,8 @@ def event(request, **kwargs):
     id_entity = id_entity[1]
     events = models.Event.objects.filter(location_id=id_entity)
     name = models.Entity.objects.get(id=id_entity)
+    entity_type = models.Type.objects.get(
+        entity__id=name.id)
     events_months = []
 
     for event in events:
@@ -476,11 +489,19 @@ def event(request, **kwargs):
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
 
+    if entity_type.name == 'group':
+        entity_type = ['grupos', 'group']
+    elif entity_type.name == 'spot':
+        entity_type = ['spots', 'spot']
+    else:
+        entity_type.name == 'organization'
+        entity_type = ['organizaciones', 'organization']
+
     context = {
-        'entity_type': name.type,
+        'entity_type': entity_type,
         'entity': name,
         'calendar': unescaped,
-        'id_entity':id_entity
+        'id_entity': id_entity
     }
 
     return render(request, template, context)
@@ -496,6 +517,7 @@ def get_events(request, **kwargs):
                 location_id=int(entity))
         else:
             events_ = models.Event.objects.all()
+
         events = []
         for event in events_:
             # Event date = Month, day, id
@@ -554,10 +576,19 @@ def admin_users(request, **kwargs):
 
     members = models.User.objects.filter(
         id__in=users)
+
+    if entity_type.name == 'group':
+        entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
+    elif entity_type.name == 'organization':
+        entity_type = ['Crear una nueva organizacion', 'organization', 'organizacion']
+    elif entity_type.name == 'spot':
+        entity_type = ['Crear un nuevo spot', 'spot', 'spot']
+
     context = {
         'members': members,
         'entity_type': entity_type,
         'entity': obj
+
     }
     return render(request, template, context)
 

@@ -19,30 +19,23 @@
 <div class="erase"></div>
         <div class="grid-16 events content single no-margin">
             <div class="heading d-heading_event grid-8">
-                <h3 class="title grid-5 fleft">Organizar eventos de <a class="{{ entity_type }} title" href="/qro_lee/entity/group/{{ entity }}_{{ id_entity }}/">{{ entity }}</a></h3>
+                <h3 class="title grid-10 fleft">Organizar eventos de <a class="{{ entity_type.1 }} title" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity|cut:" " }}_{{ id_entity }}/">{{ entity }}</a></h3>
                 <input type="hidden" class="id_entity" value="{{ id_entity }}"/>
 
             </div>
-        <span class="member fright grid-2">
-                <span class="brown_btn fright">Editar
-                    <span class="sub-menu">
-                        <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
-                        <a href="">Administradores</a>
-                        <a style="border:none;" href="/registry/edit/events/{{ entity.name|cut:" " }}_{{ entity.id }}">Organizar eventos</a>
-                    </span>
-                </span>
-            </span>
+         {% block entity_menu %}
+                {% include 'blocks/entity_menu.html' %}
+            {% endblock %}
         <div class="grid-16 load no-margin">
             <div class="sidebar-a grid-10">
-                <span class="month">Septiembre</span>
+                <!--<span class="month">Septiembre</span>-->
                 <div id="scrollbar1">
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport">
                         <div class="overview">
                             <span class="item">
                                 <span class="no-margin grid-6">
-                                    <span class="date fright din-m"></span>
-                                    <span class="ruler grid-4 fright"></span>
+
 
                                 </span>
                                 <span class="wrapper fleft">
@@ -53,15 +46,18 @@
                                 <span class="general-info fleft">
                                     <h3 class="title"></h3>
                                     <p>
-                                        <span class="info grid-7 alpha"></span>
+                                        <span class="info grid-6 alpha"></span>
 
                                     </p>
                                     <span class="time fleft"></span>
+
                                     <span class="location fright">
+                                        <span style="font-size: 11px;position: absolute;top: -70px;" class="date din-r"></span>
                                         <p>
                                             <span class="place">Centro Historico</span><br>
                                             <span>Queretaro</span>
                                         </p>
+
                                         <a href="#" class="green_btn size_btn_edit">Editar</a>
                                         <a href="#" class="pink_btn size_btn_edit">Borrar</a>
                                     </span>
@@ -71,19 +67,19 @@
                     </div>
                 </div>
             </div>
-            <div style="margin-top:20px;" class="grid-4 sidebar-b fleft">
-            <a class="color_btn {{ entity_type }}" href="/registry/register_event/{{ entity_type }}/{{ id_entity }}">
+            <div style="margin:20px 0px 0px 20px;" class="grid-4 sidebar-b fleft">
+            <a class="color_btn {{ entity_type.1 }}" href="/registry/register_event/{{ entity_type.1 }}/{{ id_entity }}">
                 Crear nuevo evento
             </a>
-            <h3 class="title fleft grid-5 fix">Calendario</h3>
+            <h3 class="title fleft grid-4 fix">Calendario</h3>
             <input class="entity" type="hidden" value="-1"/>{% csrf_token %}
-                <div class="grid-5 no-margin">
+                <div style="margin:0px 0px 0px 20px;" class="grid-4">
                 <div class="overview">
                     {% autoescape off %}
                         {{ calendar }}
                     {% endautoescape %}
                 </div>
-
+                <hr>
                 <div class="controller center">
                     <span class="prev fleft"><</span>
                     <span class="next fright">></span>
