@@ -10,6 +10,7 @@ from registry import models, settings
 from decimal import Decimal
 from QueretaroLee import settings as main_settings
 import calendar
+import urllib2
 import os
 import urlparse
 import urllib
@@ -809,9 +810,16 @@ def delete_title(request):
     user = request.user
     id_title = request.POST.get('id_title')
     type = request.POST.get('type')
-    title_favorite = account.ListTitle.objects.get(title__id=id_title,
+    type_list = request.POST.get('type_list')
+    if type_list == 'T':
+        title_favorite = account.ListTitle.objects.get(title__id=id_title,
                                                    list__default_type=type)
-    title_favorite.delete()
+        title_favorite.delete()
+    else:
+        title_favorite = account.ListAuthor.objects.get(title__id=id_title,
+                                                   list__default_type=type)
+        title_favorite.delete()
+
 
     context = {}
     context = simplejson.dumps(context)
@@ -903,60 +911,122 @@ def not_found(request):
 def add_my_title(request):
 
     user = request.user
-
     list_id_titles = []
+    list_id_authors = []
 
     if request.POST.get('list') != None:
-
         list = ast.literal_eval(request.POST.get('list'))
 
-        for obj in list:
+        if request.POST.get('type_list') == 'T':
 
-            if obj['it']['id'] == -1:
+            for obj in list:
 
-                date = str(obj['it']['attribute']['publishedDate']).split("-")
-                date_time = str(obj['it']['attribute']['publishedDate'])
+                if obj['it']['id'] == -1:
 
-                if len(date) < 3 :
-                    date_time = str(date[0]) + '-01-01'
+                    date = str(obj['it']['attribute']['publishedDate']).split("-")
+                    date_time = str(obj['it']['attribute']['publishedDate'])
 
-                li ={
-                    'title':str(obj['it']['attribute']['title']),
-                    'subtitle':'',
-                    'edition':'',
-                    'published_date':date_time,
-                    'cover':str(obj['it']['attribute']['cover']),
-                    'publisher':str(obj['it']['attribute']['publisher']),
-                    'language':str(obj['it']['attribute']['language']),
-                    'country':str(obj['it']['attribute']['country']),
-                    'type':'T',
-                    'isbn':str(obj['it']['attribute']['isbn']),
-                    'isbn13':str(obj['it']['attribute']['isbn13']),
-                    'pages':int(obj['it']['attribute']['pages']),
-                    'picture':str(obj['it']['attribute']['picture']),
-                    'description':str(obj['it']['attribute']['description'])
-                }
+                    if len(date) < 3 :
+                        date_time = str(date[0]) + '-01-01'
+                    desc = str(obj['it']['attribute']['description'])
 
-                title = account.Title.objects.create(**li)
-                title.save()
-
-            else:
-                title = account.Title.objects.get(id=obj['it']['id'])
-
-            list_id_titles.append(int(title.id))
-
-            if int(request.POST.get('type')) == 1 |\
-                    int(request.POST.get('type')) == 3:
-
-                for type in obj['it']['default_type']:
-                    lista = account.List.objects.get(user=user, default_type=type)
-
-                    list_ti = {
-                        'list':lista,
-                        'title':title
+                    li ={
+                        'title':str(obj['it']['attribute']['title']),
+                        'subtitle':'',
+                        'edition':'',
+                        'published_date':date_time,
+                        'cover':str(obj['it']['attribute']['cover']),
+                        'publisher':str(obj['it']['attribute']['publisher']),
+                        'language':str(obj['it']['attribute']['language']),
+                        'country':str(obj['it']['attribute']['country']),
+                        'type':'T',
+                        'isbn':str(obj['it']['attribute']['isbn']),
+                        'isbn13':str(obj['it']['attribute']['isbn13']),
+                        'pages':int(obj['it']['attribute']['pages']),
+                        'picture':str(obj['it']['attribute']['picture']),
+                        'description':desc[0:800]
                     }
-                    my_list = account.ListTitle.objects.create(**list_ti)
-                    my_list.save()
+                    name = str(obj['it']['attribute']['author'][0]).replace(' ','+')
+                    query = ''
+                    key = '&key='+settings.GOOGLE_BOOKS_KEY
+                    search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
+                    url = 'https://www.googleapis.com/freebase/v1/search?query='+name[0:10]
+                    query += search_author + key
+                    url += query
+                    response = urllib2.urlopen(url)
+                    response = simplejson.load(response)
+
+                    biography = ' '
+                    picture = ' '
+
+                    if len(response['result']) != 0:
+                        if 'output' in response['result']:
+                            biography = response['result'][0]['output']['description']
+
+                        if len(biography) > 1000:
+                            biography = biography[0:900]
+
+                        if len(response['result'][0]['mid']) != 0:
+                            picture = 'https://www.googleapis.com/freebase/v1/image' +\
+                                      response['result'][0]['mid']
+
+                        dict_author = {
+                            'name':response['result'][0]['name'],
+                            'picture':picture,
+                            'biography':biography,
+                            'birthday':datetime.datetime.today()
+                        }
+
+                        author = account.Author.objects.create(**dict_author)
+                        author.save()
+
+                    title = account.Title.objects.create(**li)
+                    title.save()
+
+                    if len(response['result']) != 0:
+                        list_author_title = account.AuthorTitle.objects.create(title=title,                                                                           author=author)
+                        list_author_title.save()
+
+                else:
+                    title = account.Title.objects.get(id=obj['it']['id'])
+
+                list_id_titles.append(int(title.id))
+
+                if int(request.POST.get('type')) == 1 | \
+                        int(request.POST.get('type')) == 3:
+
+                    for type in obj['it']['default_type']:
+                        lista = account.List.objects.get(user=user, default_type=type)
+
+                        list_ti = {
+                            'list':lista,
+                            'title':title
+                        }
+                        my_list = account.ListTitle.objects.filter(list=lista, title=title)
+
+                        if len(my_list) == 0:
+                            my_list = account.ListTitle.objects.create(**list_ti)
+                            my_list.save()
+
+        if request.POST.get('type_list') == 'A':
+            for obj in list:
+
+                if obj['it']['id'] == -1:
+                    desc = str(obj['it']['attribute']['biography'])
+                    li ={
+                        'name':str(obj['it']['attribute']['name']),
+                        'picture':str(obj['it']['attribute']['picture']),
+                        'biography':desc[0:800],
+                        'birthday':datetime.datetime.today()
+                    }
+
+                    author = account.Author.objects.create(**li)
+                    author.save()
+
+                else:
+                    author = account.Author.objects.get(id=obj['it']['id'])
+
+                list_id_authors.append(int(author.id))
 
     fields_related_objects = account.Title._meta.get_all_related_objects(
     local_only=True)
@@ -1018,18 +1088,20 @@ def add_my_title(request):
 
     context = simplejson.dumps(list_dict)
 
-    if int(request.POST.get('type')) == 4:
+    if int(request.POST.get('type')) == 4 and request.POST.get('type_list') == 'T':
         context = simplejson.dumps(list_id_titles)
+
+    if int(request.POST.get('type')) == 4 and  request.POST.get('type_list') == 'A':
+        context = simplejson.dumps(list_id_authors)
 
     return HttpResponse(context, mimetype='application/json')
 
 
 def add_titles_author_list(request):
-    print 55555
+
     user = request.user
     id_list = request.POST.get('id_list')
     type = request.POST.get('type')
-    print request.POST.get('list')
     list = ast.literal_eval(request.POST.get('list'))
     my_list = account.List.objects.get(id=id_list)
     name = my_list.name.replace(' ','')
@@ -1047,6 +1119,19 @@ def add_titles_author_list(request):
             rel_list = account.ListTitle.objects.create(**list_title)
             rel_list.save()
 
+    if type == 'A':
+
+        for obj in list:
+
+            author= account.Author.objects.get(id=int(obj))
+
+            list_title = {
+                'author':author,
+                'list':my_list
+            }
+            rel_list = account.ListAuthor.objects.create(**list_title)
+            rel_list.save()
+
     #context = {}
     #context = simplejson.dumps(context)
     return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')
@@ -1054,15 +1139,24 @@ def add_titles_author_list(request):
 
 def edit_list(request, **kwargs):
 
-    id_list = kwargs['list'].split('_')
+    id_list = kwargs['id_list']
+    type = kwargs['type_list']
 
-    list = account.List.objects.get(id=id_list[1])
+    list = account.List.objects.get(id=id_list)
+
+    if type == 'T':
+        list_t_a = account.ListTitle.objects.filter(list=list)
+    else:
+        list_t_a = account.ListAuthor.objects.filter(list=list)
 
     template = kwargs['template_name']
 
     context = {
-        'list':list
+        'list':list,
+        'list_t_a':list_t_a
     }
+
+
     return render(request, template, context)
 
 
@@ -1073,9 +1167,52 @@ def update_list(request, **kwargs):
     dictionary = {
         field: value
     }
+
     entity = account.List.objects.filter(id=kwargs['list_id']).\
         update(**dictionary)
 
     context = {}
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def edit_title_read(request):
+
+    id_list = request.POST.get('id_list')
+    date = request.POST.get('date')
+    context = {}
+
+    if int(request.POST.get('type')) == 1:
+        list_title = account.ListTitle.objects.get(id=id_list)
+        lis = account.List.objects.get(user=list_title.list.user, default_type=1)
+
+        list_title.list = lis
+        #list_title.save()
+
+        if date == '':
+            act_date = datetime.datetime.now().isoformat()
+        else:
+            d = datetime_from_str(date)
+            act_date = d[1].isoformat()
+
+        list_act = {
+            'user':list_title.list.user,
+            'object':list_title.title.id,
+            'date':act_date,
+            'verb':'termino de leer ' + str((list_title.title.title).encode('utf-8', 'ignore')),
+            'meta':'',
+            'type':'T'
+        }
+
+        activity = account.Activity.objects.create(**list_act)
+        #activity.save()
+
+        context['succes'] = 'True'
+        context['type'] = 1
+
+    if int(request.POST.get('type')) == 2:
+        print 2
+
+
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

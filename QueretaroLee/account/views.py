@@ -133,6 +133,16 @@ def user_profile(request, **kwargs):
         annotate(count = db_model.Count('element_id'),
                  score = db_model.Avg('grade'))
 
+    act_title = models.ListTitle.objects.filter(list__user=user,
+                                                list__default_type=5)
+
+    if len(act_title) != 0:
+        act_title = models.ListTitle.objects.get(list__user=user,
+                                                list__default_type=5)
+    else:
+        act_title = 0
+
+
     context = {
         'user_profile':profile,
         'entities':entity_user,
@@ -143,7 +153,8 @@ def user_profile(request, **kwargs):
         'list_title_read':titles_read,
         'list_title_to_read':titles_to_read,
         'count_titles':len(titles_read),
-        'list_rate':list_rate
+        'list_rate':list_rate,
+        'act_title':act_title
     }
 
     return render(request, template, context)

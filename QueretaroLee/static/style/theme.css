@@ -1470,6 +1470,7 @@ input:not([type='submit']){
 .avanced_search{
     margin-left: 10px;
     font-size: 14px !important;
+    cursor: pointer;
 }
 
 .container_data{
@@ -1896,4 +1897,16 @@ margin: 0px;
 
 .radio_active{
     background-color: #000000;
+}
+
+.date_read{
+    width: 85px !important;
+}
+
+.text_act{
+    cursor: pointer;
+}
+.my_items{
+    padding: 0px 5px 0px 5px;
+    font-size: 10px;
 }

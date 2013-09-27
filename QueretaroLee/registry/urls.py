@@ -57,9 +57,9 @@ urlpatterns = patterns('',
     url(r'^add_rate/', views.add_rate, name='rate'),
     url(r'^add_my_title/', views.add_my_title, name='add_my_title'),
     url(r'^add_titles_my_list/', views.add_titles_author_list, name='add_title_author_list'),
-    url(r'^edit_list/(?P<list>[a-zA-Z0-9_]+)/$',views.edit_list,
+    url(r'^edit_list/(?P<type_list>\w+)/(?P<id_list>[0-9]+)/$',views.edit_list,
         { 'template_name': 'registry/edit_list.html' }, name='edit_list'),
     url(r'^update_list/(?P<list_id>[0-9]+)/$', views.update_list,
     name='update_list'),
-
+    url(r'^edit_title_read/', views.edit_title_read, name='edit_title_read'),
 )

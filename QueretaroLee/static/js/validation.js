@@ -76,7 +76,7 @@ $(document).ready(function(){
 
     $('.d-add_book').click(function(){
 
-        var query = '';
+        var query = ' ';
 
         type = 0;
 
@@ -91,7 +91,7 @@ $(document).ready(function(){
 
     });
 
-    show_dialog();
+    //show_dialog();
 
 });
 
@@ -104,10 +104,18 @@ function type_add_list(csrf, id ,query){
     var join;
     var _query;
 
-    if($('.type_list').val()=='A'){
+    var type = 'T';
+
+    if($('.d_type_list').length > 0)
+        type = $('.d_type_list').val();
+    if($('.type_list').length > 0)
+        type = $('.type_list').val();
+
+
+    if(type =='A'){
 
         model = 'account.author';
-        fields = ['name','id'];
+        fields = ['name','id','picture'];
         and = 0;
         join = {
             'tables':{
@@ -127,7 +135,7 @@ function type_add_list(csrf, id ,query){
             }
         }
     }
-    if($('.type_list').val()=='T'){
+    if(type == 'T'){
         model = 'account.title';
         fields = ['title', 'cover', 'id'];
         and = 0;
@@ -152,43 +160,38 @@ function type_add_list(csrf, id ,query){
 
     //'pk__in': JSON.stringify([127, 126])
     if(id==1){
-        if($('.type_list').val()=='T'){
+        if(type == 'T'){
             _query = {
-            'title__icontains':''
+            'title__icontains':' '
         }
         }else{
             _query = {
-                'username__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': query
                 }
         }
     }
-
-    if(id==2 | id == 4){
-        if($('.type_list').val()=='T'){
-                 _query = {
+    if(id==2 | id == 4 | id == 5){
+        if(type == 'T'){
+             _query = {
                 'title__icontains':query
             }
         }else{
             _query = {
-                'username__icontains': $.trim($('.advanced_filter .search').val())
+                'name__icontains': query
                 }
         }
     }
         join = JSON.stringify(join);
-
         var search = {
             'type': model,
             'fields': JSON.stringify(fields),
             'value': JSON.stringify(_query),
             'and': and,
             'join': join
-        }
-
+            }
         search = JSON.stringify(search);
-
         data.push(advanced_search(search, csrf));
-
-        if(id==2|id==4){
+        if(id==2 | id==4 | id==5){
 
             query = query.split(" ");
             var query = {
@@ -210,174 +213,12 @@ function type_add_list(csrf, id ,query){
         if(id==3)
             dialog_titles(csrf,data,2);
         if(id==4)
-            dialog_titles(csrf,data,id);
+            dialog_titles(csrf,data,4);
+        if(id==5)
+            list_title(csrf,data,$('.dialog_text'),4);
 }
 
-function show_dialog(){
-    $('.message_alert').click(function(e) {
-        $('.dialog-confirm').empty();
-        span_text = $('<span></span>');
-        var href = '';
-        var type_list = 0;
 
-        if($('.type').val()=="group"){
-
-            text = 'Para poder ser miembro tu solicitud sera enviada';
-            p_text = $('<p class="p_text_dialog">' + text + '</p>');
-            span_text.append(p_text);
-            href = 'href="/registry/join_entity/'+$('.d-entity_id').val()+'"';
-        }
-
-
-        if($('.type').val()=="List"){
-            var type = $(this).find('.type_message').val();
-
-            if(type=="out_group"){
-
-                var group = $(this).parent().find('.name').val();
-                group = group.split("_");
-                text = '¿ Estás seguro de que deseas abandonar el grupo de ' +
-                    group[0] + ' ?';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                span_text.append(p_text);
-                href = 'href="/registry/unjoin_entity/'+ $(this).parent().
-                    find('input').val()+'"';
-            }
-
-            if(type=="add_genre"){
-
-                text = 'Añadir un nuevo género favorito';
-                text2 = 'Selecciona tus géneros favoritos';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
-                span_text.append(p_text);
-                span_text.append(p_text2);
-                href = 'href="/registry/add_genre/"';
-            }
-
-            if(type =="delete_title_list"){
-
-                name_title = $(this).parent().parent().find('.name_title').val();
-                type_list = parseInt($(this).parent().parent().find('.type_list').val());
-                text = 'Se eliminará ' + name_title + ' de tus lista';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                span_text.append(p_text);
-
-            }
-
-            if(type=="delete_title"){
-
-                name_title = $(this).parent().parent().find('.name_title').val();
-                type_list = parseInt($(this).parent().parent().find('.type_list').val());
-                list = '';
-                if(type_list==0){
-                    list = 'favoritos';
-                }
-                if(type_list==1){
-                    list = 'leídos';
-                }
-                if(type_list==2){
-                    list = 'por leer';
-                }
-                text = 'Se eliminará ' + name_title + ' de tus libros ' + list;
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                span_text.append(p_text);
-
-            }
-            if(type=="edit_read"){
-                name_title = $(this).parent().parent().find('.name_title').val();
-                text = 'Editar libro leído';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                span_text.append(p_text);
-                text2 = ' Fecha en que leíste ' + name_title;
-                p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
-                span_text.append(p_text2);
-                span_text.append('<input type="text" class="fright hour-init"/>');
-            }
-            if(type=="delete_list"){
-                name = $(this).parent().parent().find('.name_list').val();
-                id_list = $(this).parent().parent().find('.id_list').val();
-                text = '¿ Estás seguro que deseas eliminar ' + name + ' ?';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
-                span_text.append(p_text);
-            }
-        }
-        if($('.type').val()=="account"){
-            text = 'Cerrar cuenta';
-            text2 = '¿Estás seguro que deseas eliminar tu cuenta de ' +
-                'Querétaro Lee ? Esta acción no se puede deshacer';
-            p_text = $('<p class="p_text_dialog">' + text + '</p>');
-            p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
-            span_text.append(p_text);
-            span_text.append(p_text2);
-
-            href = 'href="/accounts/delete_user/"';
-        }
-
-        div_closet = $('<span class="dialog_closet"></span>');
-        div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
-        btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
-        btn_acept = $('<a class="dialog_btn green_btn" ' + href + ' >Aceptar</a>');
-        container_btn = $('<div class="dialog_container_btn"></div>');
-        container_btn.append(btn_acept);
-        container_btn.append(btn_cancel);
-        $('.dialog-confirm').append(div_text);
-        div_text.append(div_closet);
-        div_text.append(span_text);
-
-        if(($(this).find('.type_message').val())=='add_genre'){
-            get_genre(div_text);
-        }else{
-            div_text.append(container_btn);
-        }
-        if(($(this).find('.type_message').val())=='delete_title'){
-            var id_title = $(this).parent().parent().find('.id_title').val();
-            btn_acept.click(function(){
-                console.log(type_list);
-                container_item = '';
-                if(type_list==0){
-                    container_item = 'book_favorite';
-                }
-                if(type_list==1){
-                    container_item = 'book_read';
-                }
-                if(type_list==2){
-                    container_item = 'book_for_reading';
-                }
-                d_item = $('.'+container_item).find('.d-item_' + id_title);
-                delete_title(d_item);
-            });
-            closet(btn_acept);
-        }
-
-        if(($(this).find('.type_message').val())=='delete_title_list'){
-            var id_title = $(this).parent().parent().find('.id_title').val();
-            btn_acept.click(function(){
-                item = $('.d-item_' + id_title).fadeOut(250,function(){
-                    $(this).remove();
-                });
-            });
-            closet(btn_acept);
-        }
-
-        if(($(this).find('.type_message').val())=='delete_list'){
-            var id_list = $(this).parent().parent().find('.id_list').val();
-            btn_acept.click(function(){
-                d_list = $('.overview').find('.d-list_' + id_list);
-                delete_list(d_list);
-            });
-            closet(btn_acept);
-        }
-
-        $('.dialog-confirm').fadeIn(250);
-        $('.container_message').fadeIn(250);
-        closet(div_closet);
-        closet(btn_cancel);
-        //closet($('.dialog-confirm').parent().parent());
-        aling_message();
-
-    });
-}
 
 function closet($ele){
 

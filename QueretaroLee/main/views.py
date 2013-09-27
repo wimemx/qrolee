@@ -6,12 +6,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from registry.models import Entity,Type,Event
 from django.db.models.loading import get_model
+from django.db import models as db_model
 from django.db.models import Q
-
+from collections import namedtuple
 from account import models as account_models
 from registry import models,views,settings
 from registry.views import datetime_from_str
 from decimal import Decimal
+from django.utils.datastructures import SortedDict
 
 import simplejson
 import calendar
@@ -688,7 +690,7 @@ def get_list(request,**kwargs):
 
     if request.POST.get('field_value')!=None:
         search = request.POST['field_value']
-        list = models.List.objects.filter(name__icontains=search, type ='u',
+        list = models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True)
 
     content = 'Pellentesque habitant morbi tristique senectus et ' \
@@ -705,11 +707,6 @@ def get_list(request,**kwargs):
                   'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
-    context = {
-        'list':list,
-        'content':content,
-        'type':type
-    }
 
     fields_related_objects = account_models.List._meta.get_all_related_objects(
         local_only=True)
@@ -730,23 +727,44 @@ def get_list(request,**kwargs):
 
     fields = [item for item in fields if item not in fields_foreign]
 
-    dictionary = {}
+    dictionary = dict()
 
     for obj in list:
+
         user = {}
+        count = 0
+
+        if obj.type == 'T':
+            titles = account_models.ListTitle.objects.filter(list=obj)
+            count = len(titles)
+
+        if obj.type == 'A':
+            authors = account_models.ListAuthor.objects.filter(list=obj)
+            count = len(authors)
+
+        user['count'] = count
+
         for field in fields:
             if isinstance(obj.__getattribute__(str(field)), unicode):
                 user[str(field)] = obj.__getattribute__(str(field)).\
                     encode('utf-8', 'ignore')
             else:
                 if field=='user':
-                    value = str(obj.__getattribute__(str(field)).first_name)
+                    value = str(obj.__getattribute__(str(field)))
+                    user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
-
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
+        print dictionary
+
+    context = {
+        'list':dictionary,
+        'content':content,
+        'type':type
+    }
+
 
     if request.POST.get('field_value')!=None:
         context = simplejson.dumps(dictionary)
@@ -958,14 +976,14 @@ def get_genre(request):
 def get_profile(request, **kwargs):
     template = kwargs['template_name']
     type = kwargs['type']
-    profile = kwargs['profile'].split("_")
+    profile = kwargs['profile']
     user = request.user
     context = {}
-    rate = account_models.Rate.objects.filter(element_id=profile[1], user=user)
-    count_rate = account_models.Rate.objects.filter(element_id=profile[1])
+    rate = account_models.Rate.objects.filter(element_id=profile, user=user)
+    count_rate = account_models.Rate.objects.filter(element_id=profile)
 
     if type == 'author':
-        profile = account_models.Author.objects.get(id=profile[1])
+        profile = account_models.Author.objects.get(id=profile)
         list_titles = ''
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
         count = len(list_titles)
@@ -974,9 +992,8 @@ def get_profile(request, **kwargs):
             'list':list,
             'count':count
         }
-
     if type == 'title':
-        profile = account_models.Title.objects.get(id=profile[1])
+        profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=0,
                                                           title=profile, list__status=True,                                                          )
         list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
@@ -1009,7 +1026,7 @@ def get_profile(request, **kwargs):
 
 
     if type == 'list':
-        profile = account_models.List.objects.get(id=profile[1])
+        profile = account_models.List.objects.get(id=profile)
         list = account_models.List.objects.filter(user=profile.user, default_type=-1,
                                                   status=True)
         titles = account_models.ListTitle.objects.filter(list=profile, list__status=True)
@@ -1055,7 +1072,7 @@ def search_api(request, **kwargs):
     key = '&key='+settings.GOOGLE_BOOKS_KEY
     startIndex = '&startIndex='+index
     languageRestrict = '&langRestrict=es'
-    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+description)'
+    search_author = '&limit=10&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
     for element in q_ast:
         q += element + '+'
 
