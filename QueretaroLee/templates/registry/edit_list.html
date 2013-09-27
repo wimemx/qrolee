@@ -12,6 +12,7 @@
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
 {% endblock %}
 
 {% block head %}
@@ -19,10 +20,22 @@
 {% endblock %}
 
 {% block main_site %}
+    <div class="wrapper_message " >
+        <div class="container-16 container_message">
+            <div class="dialog-confirm" ></div>
+        </div>
+    </div>
     <div class="grid-16 entities registry">
         <div class="grid-15 registry">
-        <input type="hidden" class="my_list_id" value="{{ list.id }}"/>{% csrf_token %}
-        <span class="title {{ entity_type.1 }} main">Editar <span class="heading">{{ list.name }}</span>
+        <input type="hidden" class="my_list_id" value="{{ list.id }}"/>
+        <input type="hidden" class="type_my_list" value="{{ list.type }}" />
+        <input type="hidden" class="d_type_list" value="T" />
+        <div class="csrf_token">
+            {% csrf_token %}
+        </div>
+        <input type="hidden" >
+        <input type="hidden" class="type" value="List" />
+        <span class="title {{ entity_type.1 }} main">Editar <a href="/qro_lee/profile/list/{{ list.id }}/"><span class="heading">{{ list.name }}</span></a>
         </span>
 
         <span class="data border_none grid-9 fleft no-margin">
@@ -47,7 +60,14 @@
             </form>
             <hr class="d-line_bottom">
             <div class="heading">
-                <h3 class="title grid-13 no-margin fleft">Libros de tu lista</h3>
+                <h3 class="title grid-13 no-margin fleft">
+                    {% if list.type == 'T' %}
+                        Libros
+                    {% else %}
+                        Autores
+                    {% endif %}
+                     de tu lista
+                </h3>
             </div>
             <div id="scrollbar1" class="d-paddin_top">
                 <div class="scrollbar"><div class="track"><div class="thumb">
@@ -63,6 +83,43 @@
                                     </p>
                                 </div>
                             </div>
+                            {% for obj in list_t_a %}
+                                <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
+                            <input type="hidden" class="id_title"
+                                   value="{{ obj.title.id }}"/>
+                            <input type="hidden" class="name_title"
+                                   value="{{ obj.title.title }}"/>
+                            <input type="hidden" class="type_list"
+                                   value="{{ obj.list.default_type }}"/>
+                            <a href="/qro_lee/profile/title/{{ obj.title.id }}/" >
+            <span class="wrapper_list" >
+                 <img class="img_size_all" src="{{ obj.title.cover }}" />
+            </span>
+                            </a>
+                            <div class="d-container_text_book grid-3 no-margin">
+                                <a href="/qro_lee/profile/title/{{ obj.title.id }}/"
+                                   class="title title_book alpha grid-4 ">
+                                    {{ obj.title.title|truncatechars:16 }}
+                                </a>
+                                <p class="p-d-text" >De
+                                    <a href="#" class="place_pink" >
+                                        {{ obj.titles.author }}
+                                    </a>
+                                </p>
+                                <p class="p-d-text" >- - - - -</p>
+                                <p class="p-d-text d-text_opacity">
+                                    añadido el 20 de septiembre
+                                </p>
+                                    <span class="pink_btn message_alert
+                                                    size_btn_edit ">
+                                                        <input class="type_message"
+                                                               type="hidden" value="delete_title">
+                                                        -
+                                                    </span>
+                            </div>
+                            </div>
+
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

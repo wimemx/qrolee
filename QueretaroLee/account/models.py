@@ -40,14 +40,6 @@ class Author(models.Model):
         return '%s' % (self.name)
 
 
-class AuthorTitle(models.Model):
-    title = models.ForeignKey(Title)
-    author = models.ForeignKey(Author)
-
-    def __unicode__(self):
-        return '%s, %s' % (self.title.title, self.author.first_name)
-
-
 class Genre(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -106,7 +98,7 @@ class AuthorTitle(models.Model):
     author = models.ForeignKey(Author)
 
     def __unicode__(self):
-        return '%s, %s' % (self.title.title, self.author.first_name)
+        return '%s, %s' % (self.title.title, self.author.name)
 
 #class ListUser(models.Model):
 #    user = models.ForeignKey(User)
@@ -121,7 +113,7 @@ class Rate(models.Model):
 
 class Activity(models.Model):
     user = models.ForeignKey(User)
-    object = models.IntegerField(primary_key=True)
+    object = models.IntegerField(max_length=5)
     verb = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     meta = models.TextField()

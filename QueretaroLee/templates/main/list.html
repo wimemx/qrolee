@@ -18,7 +18,7 @@
 
 {% block main_site %}
     <div class="erase"></div>
-    <div class="grid-16 entities">
+    <div class="grid-16 entities list_scroll">
         <div class="grid-15">
             <div class="heading">
                 <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
@@ -28,7 +28,9 @@
                     <input type="text" class="field_list"/>
                     <span class="search_list top right dark_yello_btn">Buscar</span>
                 </span>
-                <span class="place_pink avanced_search">Búsqueda avanzada</span>
+                    <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
+                        Búsqueda avanzada
+                    </a>
             </div>
             <p class="content">{{ content }}</p>
             <div id="scrollbar1">
@@ -41,7 +43,7 @@
                             <div class="item_list grid-14 no-margin" >
                                 <a href="/qro_lee/profile/list/{{ value.id }}">
                                     <span class="wrapper_list" >
-                                        <img src="/static/media/users/{{ value.id_user }}/list/{{ obj.picture }}"/>
+                                        <img src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}"/>
                                     </span>
                                 </a>
                                 <span class="container_data grid-12 no-margin">
@@ -82,7 +84,7 @@
                             <div class="grid-7 alpha">
                                 <a href="/qro_lee/profile/author/{{ obj.id }}">
                                     <span class="wrapper borde_author">
-                                        <img src="/static/img/foto.jpg" alt="" />
+                                        <img class="img_size_all" src="{{ obj.picture }}" alt="" />
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/author/{{ obj.id }}" class="title alpha grid-4">

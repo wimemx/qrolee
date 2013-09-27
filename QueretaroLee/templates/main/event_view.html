@@ -36,7 +36,10 @@
                 </div>
 
                 <div class="d-by">
-                    Organizado por <a href=""> {{ event.owner }} </a>
+                    Organizado por
+                    <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
+                        {{ event.owner }}
+                    </a>
                     <input type="hidden" class="d-latlon" value="{{ lat }},
                     {{ lon }}" />
                 </div>

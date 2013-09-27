@@ -38,15 +38,21 @@
         <span class="general-info no-margin grid-7">
             <h3 class="title d-title_profile">{{ user_profile.user.first_name|title }} {{ user_profile.user.last_name|title }}</h3>
             <span class="social">
-                <a href="#">
+                {% if user_profile.fb_username %}
+                <a href="http://facebook.com/{{ user_profile.fb_username }}">
                     <img src="/static/img/profile_fb.png" alt=""/>
                 </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
-                <a href="#">
+                {% endif %}
+                {% if user_profile.twitter_username %}
+                <a href="http://twitter.com/{{ user_profile.twitter_username }}">
                     <img src="/static/img/profile_twitter.png" alt=""/>
                 </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
-                <a href="#">
-                    <img src="/static/img/profile_world.png" alt=""/>
-                </a>
+                {% endif  %}
+                {% if user_profile.website %}
+                    <a href="http://{{ user_profile.website }}">
+                        <img src="/static/img/profile_world.png" alt=""/>
+                    </a>
+                {% endif %}
             </span>
             <p >{{ user_profile.city }}, México</p>
             <p class="title_author" >
@@ -56,12 +62,26 @@
                     {{ count_titles }} libros leídos
                 {% endif %}
             </p>
-            <p >Acualmente está leyendo <a class="title_author">gato negro</a>
-            <span class="green_btn message_alert">
-                Editar
-                <input class="type_message"
-                       type="hidden" value="edit_read"/>
-            </span>
+            <p class='title_act_read'>
+                {% if act_title == 0 %}
+                    <span class='text_act' >
+                        ¿Qué estás leyendo?
+                        <input type="hidden" class="type_message"
+                               value="show_title" />
+                    </span>
+                {% else %}
+                    Acualmente está leyendo <a class="title_author">
+                    {{ act_title.title.title|truncatechars:17 }}</a>
+                    <span class="green_btn message_alert">
+                        Editar
+                        <input class="type_message"
+                        type="hidden" value="edit_read"/>
+                        <input class="id_list"
+                        type="hidden" value="{{ act_title.id }}"/>
+                        <input class="name_title"
+                        type="hidden" value="{{ act_title.title.title }}"/>
+                    </span>
+                {% endif %}
             </p>
         </span>
         <span class="nav profile grid-8 no-margin">
@@ -90,15 +110,55 @@
                          <h3 class="title grid-4 no-margin title_my_list">
                              Géneros favoritos
                          </h3>
-                         <h3 class="title grid-4 no-margin title_my_list">
-                             Autores favoritos
-                         </h3>
+                         <span class="container_items grid-4 no-margin">
+                             {% for obj in list_genre %}
+                                 {% if forloop.counter <= 3 %}
+                                    <span class="place_pink my_items
+                                        {% if not forloop.last and forloop.counter != 3 %}
+                                                border_right
+                                        {% endif %}
+                                     ">
+                                        {{ obj.genre.name|truncatechars:12 }}
+                                     </span>
+                                 {% endif %}
+                             {% endfor %}
+                         </span>
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
                          </h3>
+                         <span class="container_items grid-4 no-margin">
+                             {% for obj in list_title_favorite %}
+                                 {% if forloop.counter <= 3 %}
+                                    <span class=" my_items
+                                     {% if not forloop.last and forloop.counter != 3 %}
+                                        border_right
+                                    {% endif %}
+                                    ">
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ obj.title.id }}/">
+                                            {{ obj.title.title|truncatechars:12 }}
+                                        </a>
+                                     </span>
+                                 {% endif %}
+                             {% endfor %}
+                         </span>
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros leídos
                          </h3>
+                         <span class="container_items grid-4 no-margin">
+                             {% for obj in list_title_read %}
+                                 {% if forloop.counter <= 3 %}
+                                    <span class=" my_items
+                                    {% if not forloop.last and forloop.counter != 3 %}
+                                        border_right
+                                    {% endif %}
+                                        ">
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ obj.title.id }}/">
+                                            {{ obj.title.title|truncatechars:12 }}
+                                        </a>
+                                     </span>
+                                 {% endif %}
+                             {% endfor %}
+                         </span>
                      </span>
 
             </div>
@@ -106,6 +166,7 @@
     </div>
     <div class="grid-16 load prevent_scroll no-margin">
     <div class="sidebar-a grid-15">
+    <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
         <h3 class="title grid-3 fleft">Mis libros favoritos</h3>
                 <span class="search fleft grid-4">
@@ -196,7 +257,7 @@
     {% if forloop.counter > 2 and forloop.last %}
         <span class="grid-15 no-margin">
             <span class="place_pink fright all_book">
-                ver todos
+                <span class="span_text">Ver todos</span>
                 <input type="hidden" value="0" />
             </span>
         </span>
@@ -270,7 +331,7 @@
         {% if forloop.counter > 2 and forloop.last %}
             <span class="grid-15 no-margin">
                 <span class="place_pink fright all_book">
-                    ver todos
+                    <span class="span_text">Ver todos</span>
                     <input type="hidden" value="0" />
                 </span>
             </span>
@@ -339,7 +400,7 @@
             {% if forloop.counter > 2 and forloop.last %}
                 <span class="grid-15 no-margin">
                     <span class="place_pink fright all_book">
-                        ver todos
+                        <span class="span_text">Ver todos</span>
                         <input type="hidden" value="0" />
                     </span>
                 </span>
@@ -402,14 +463,17 @@
                             <div class="item_list d-list_{{ obj.id }}" >
                                 <input class="name_list" type="hidden" value="{{ obj.name }}">
                                 <input class="id_list" type="hidden" value="{{ obj.id }}">
-                                <span class="wrapper_list" >
-                                    <img src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}"/></span>
-                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}/"
+                                <a href="/qro_lee/profile/list/{{ obj.id }}/">
+                                    <span class="wrapper_list" >
+                                        <img src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}"/>
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/list/{{ obj.id }}/"
                                    class="title alpha title_book grid-4">{{ obj.name }}</a>
 
                                 {% if user_profile.user.id == user.id %}
                                 <span class="container_btn grid-9 no-margin">
-                                    <a href="/registry/edit_list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                    <a href="/registry/edit_list/{{ obj.type }}/{{ obj.id }}">
                                         <span class="green_btn size_btn_edit" >Editar</span>
                                     </a>
                                     <span class="pink_btn size_btn_edit message_alert" >

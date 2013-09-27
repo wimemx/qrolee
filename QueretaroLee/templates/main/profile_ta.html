@@ -31,7 +31,7 @@
                 {% if not profile.picture %}
                     <img src="" alt="{{ profile.name }}"/>
                 {% else %}
-                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
+                    <img class="img_size_all" src="{{ profile.picture }}"
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
@@ -70,7 +70,7 @@
                 </h3>
                 <p class="title_author">{{ profile.author.name }}
                     {{ profile.author.last_name }}</p>
-                <span class="grid-7 no-margin">
+                <span class="grid-7 no-margin container_rate">
                       <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
                             {% for x in range %}
@@ -129,7 +129,7 @@
                 {% if not profile.picture %}
                     <img src="" alt="{{ profile.name }}"/>
                 {% else %}
-                    <img src="/static/media/{{ type }}/{{ profile.picture }}"
+                    <img src="/static/media/users/{{ profile.user.id }}/{{ type }}/{{ profile.picture }}"
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
@@ -145,7 +145,7 @@
                         </span>
                     </a>
                 </p>
-                <span class="grid-7 no-margin">
+                <span class="grid-7 no-margin container_rate">
                       <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
                             {% for x in range %}
@@ -201,12 +201,12 @@
                     <div class="container_titles grid-9 no-margin border_bottom ">
                         {% for obj in titles %}
                             <span class="item_title item_height grid-9 no-margin">
-                                <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                <a href="/qro_lee/profile/title/{{ obj.id }}">
                                     <span class="wrapper_title wrapper_title_list borde_author ">
-                                        <img src="/static/media/author/create.png" />
+                                        <img class="img_size_all" src="{{ obj.title.picture }}" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/title/{{ obj.title|cut:" " }}_{{ obj.id }}">
+                                <a href="/qro_lee/profile/title/{{ obj.id }}">
                                     <h3 class="title grid-6 margin_left">
                                         {{ obj.title|truncatechars:25 }}
                                     </h3>
@@ -235,12 +235,12 @@
                         </h3>
                         {% for title in list_titles %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                <a href="/qro_lee/profile/title/{{ title.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img src="/static/media/author/create.png" />
+                                        <img src="{{ title.title.picture }}" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                <a href="/qro_lee/profile/title/{{ title.id }}">
                                     <h3 class="title grid-3 title_mini">
                                         {{ title.title|truncatechars:25 }}
                                     </h3>
@@ -255,12 +255,12 @@
                         </h3>
                         {% for obj in list %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <span class="wrapper_title borde_author ">
                                         <img src="/static/media/author/create.png" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <h3 class="title grid-3 title_mini">
                                         {{ obj.list.name|truncatechars:25 }}
                                     </h3>
@@ -296,12 +296,12 @@
                         </h3>
                         {% for obj in list %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <span class="wrapper_title borde_author ">
                                         <img src="/static/media/author/create.png" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ obj.list.name|cut:" " }}_{{ obj.list.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <h3 class="title grid-3 title_mini">
                                         {{ obj.list.name|truncatechars:25 }}
                                     </h3>
@@ -321,12 +321,12 @@
                         </h3>
                         {% for obj in list %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img src="/static/media/author/create.png" />
+                                        <img class="img_size_all" src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ obj.name|cut:" " }}_{{ obj.id }}">
+                                <a href="/qro_lee/profile/list/{{ obj.id }}">
                                     <h3 class="title grid-3 title_mini">
                                         {{ obj.name|truncatechars:25 }}
                                     </h3>

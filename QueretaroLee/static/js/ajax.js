@@ -856,9 +856,9 @@ $(document).ready(function(){
                 for(var x = 0;x<5;x++){
 
                     if(x<data.my_count_grade){
-                        div.append('<img src="/static/img/start_black.png" />');
+                        div.append('<img src="/static/img/starUser.png" />');
                     }else{
-                        div.append('<img src="/static/img/start.png" />');
+                        div.append('<img src="/static/img/backgroundStar.png" />');
                     }
                 }
                 span_count = $('<span class="text_rate border_right"> Total: ' + parseFloat(data.count_grade).toFixed(1) + ' </span>');
@@ -879,13 +879,16 @@ $(document).click(function(){
 });
 
 function delete_title($btn_delete){
+
+
         $.ajax({
         type: "POST",
         url: '/registry/delete_title/',
         data: {
-        'csrfmiddlewaretoken': $('.content  div input[type=hidden]').val(),
+        'csrfmiddlewaretoken':$('.csrf_token').find('div input').val(),
         'id_title':$btn_delete.find('.id_title').val(),
-        'type':$btn_delete.find('.type_list').val()
+        'type':$btn_delete.find('.type_list').val(),
+         'type_list':$('.type_my_list').val()
         },
         dataType: 'json'
         }).done(function(data){
@@ -893,7 +896,6 @@ function delete_title($btn_delete){
                 $(this).remove();
            });
         });
-
 }
 
 function delete_list($btn_delete){
@@ -920,6 +922,13 @@ function add_titles_list(csrf, id_list){
         title_ids.push(parseInt($(this).find('.id_title').val()));
     });
 
+    var type_list = 'T';
+
+    if($('.d_type_list').length > 0)
+        type_list = $('.d_type_list').val();
+    if($('.type_list').length > 0)
+        type_list = $('.type_list').val();
+
     $.ajax({
         type: "POST",
         url: '/registry/add_titles_my_list/',
@@ -927,7 +936,7 @@ function add_titles_list(csrf, id_list){
             'csrfmiddlewaretoken': csrf,
             'list':JSON.stringify(title_ids),
             'id_list':id_list,
-            'type':$('.type_list').val()
+            'type':type_list
         },
         dataType: 'json'
     }).done(function(data) {
@@ -935,4 +944,50 @@ function add_titles_list(csrf, id_list){
         return data;
 
     });
+}
+
+function edit_title_read(id, type){
+
+$.ajax({
+        type: "POST",
+        url: '/registry/edit_title_read/',
+        data:{
+            'csrfmiddlewaretoken':$('.csrf_token').find('input').val(),
+            'id_list':id,
+            'date':$('.date_read').val(),
+            'type':type
+        },
+        dataType: 'json'
+    }).done(function(data) {
+
+        if(data.type == 1){
+
+            $('.title_act_read').fadeOut(250,function(){
+                $('.title_act_read').empty();
+                text = $('<span class="text_act">¿Qué estás leyendo?</span>');
+                text.append('<input type="hidden" class="type_message" value="show_titles" />');
+                $('.title_act_read').append(text);
+                text.click(function(){
+                    show_title_act($(this));
+                });
+                $('.title_act_read').fadeIn(250);
+            });
+        }
+    });
+}
+
+
+function show_title_act($this){
+
+    var type = $('.type').val();
+
+    if(type == "List"){
+
+        var type_message = $this.find('.type_message').val();
+
+        if(type_message=="show_titles"){
+            d_show_dialog(0);
+        }
+    }
+
 }
