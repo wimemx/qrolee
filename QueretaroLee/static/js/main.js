@@ -1,6 +1,9 @@
 var content_search_entity = false;
 var header_search_entity = false;
 var entity_search_events = false;
+var clickable = true;
+var date = new Date();
+var curr_month = date.getMonth();
 var months = ['Enero','Febrero','Marzo','Abril',
     'Mayo','Juno','Julio','Agosto','Septiembre','Octubre',
     'Noviembre','Diciembre'];
@@ -150,28 +153,7 @@ $(document).ready(function(){
     if($.trim($('.sidebar-b input.entity').val()) != '')
         entity_search_events = true;
 
-    $('.sidebar-b .controller .next').click(function(){
 
-         if( curr_month<11 ){
-            var position = $('.sidebar-b .year tr').position();
-            var left = position.left-25;
-
-            $('.sidebar-b .year tr').animate({
-                'left':left-125
-            });
-
-        }
-    });
-    $('.sidebar-b .controller .prev').click(function(){
-        if(curr_month>0){
-            var position = $('.sidebar-b .year tr').position();
-            var left = position.left-25;
-            $('.sidebar-b .year tr').animate({
-                'left':left+125
-
-            });
-        }
-    });
 
     $( ".change" ).change(function() {
         $(this).parent().find('.text').html($(this).val());
@@ -184,7 +166,8 @@ $(document).ready(function(){
         $(this).find('select').val(val).trigger('change');
     });
     $('span.settings').click(function(){
-
+         if($('.brown_btn .sub-menu').is(':visible'))
+            $('.brown_btn .sub-menu').fadeOut();
         if($(this).find('.sub-menu').is(':visible'))
             $(this).find('.sub-menu').fadeOut(300);
         else
@@ -202,6 +185,8 @@ $(document).ready(function(){
             var search = '/me/groups?fields=cover,link,description,name,privacy,id';
             if($(this).hasClass('organization'))
                 search = '/me/accounts?fields=description,name,location,perms,category,username,website,picture,cover';
+            else if($(this).hasClass('events'))
+                search = '/me/events'
             if($(this).hasClass("update"))
                 fb_obj_search(search, -1);
             else
@@ -230,6 +215,12 @@ $(document).ready(function(){
             $('.d-add_text_book').append('+ Añadir un nuevo autor');
         }
     });
+    $('.multi_select span').click(function(){
+        if($(this).hasClass('active'))
+            $(this).removeClass('active');
+        else
+            $(this).addClass('active');
+    });
 });
 
 function fb_obj_search(search, type){
@@ -238,6 +229,7 @@ function fb_obj_search(search, type){
         });
         $('.lightbox-wrapper').fadeIn(300);
         FB.api(search, function(response) {
+            console.log(response);
             var len = response.data.length;
             $.each(response.data,function(index){
                 var obj = response.data[index];
@@ -282,7 +274,7 @@ function fb_obj_search(search, type){
                         update_obj('fb_id',obj.id);
                         return;
                     }
-                    clear_input(['submit','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
+                    clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
                     $('input.fb_id').val(obj.id);
                     $('.lightbox-wrapper').fadeOut(300);
                     $('input[name=name]').val(obj.name);
@@ -296,15 +288,20 @@ function fb_obj_search(search, type){
                     if(web)
                         $('input[name=website]').val(web);
                     if(obj.location){
-                        var address = obj.location.street+' '+
-                            obj.location.city+' '+obj.location.country;
+                        var address;
+                        if('rsvp_status' in obj)
+                            $('.address').val(obj.location);
+                        else
+                            address = obj.location.street+' '+obj.location.city+' '+obj.location.country;
                         if(obj.location.latitude){
                             address = new Array();
                             address.push(obj.location.latitude);
                             address.push(obj.location.longitude);
                             update_dir_info(null, address,1);
                         }else{
-                            update_dir_info(address, null, 1);
+                            if(!('rsvp_status' in obj))
+                                update_dir_info(address, null, 1);
+
                         }
 
                     }
@@ -439,28 +436,6 @@ $(document).ready(function(){
     if($.trim($('.sidebar-b input.entity').val()) != '')
         entity_search_events = true;
 
-    $('.sidebar-b .controller .next').click(function(){
-
-         if( curr_month<11 ){
-            var position = $('.sidebar-b .year tr').position();
-            var left = position.left-25;
-
-            $('.sidebar-b .year tr').animate({
-                'left':left-125
-            });
-
-        }
-    });
-    $('.sidebar-b .controller .prev').click(function(){
-        if(curr_month>0){
-            var position = $('.sidebar-b .year tr').position();
-            var left = position.left-25;
-            $('.sidebar-b .year tr').animate({
-                'left':left+125
-
-            });
-        }
-    });
     var init_map = false;
     $('.entity .nav .btn').click(function(){
         $(this).parent().find('.btn').each(function(){
@@ -470,7 +445,7 @@ $(document).ready(function(){
         if($('#map').length > 0){
             if($('.lat').val() != ''){
                 if(!init_map)
-                    init(parseInt($('.lat').val()),parseInt($('.long').val()));
+                    init(parseFloat($('.lat').val()),parseFloat($('.long').val()));
                 init_map = true;
             }else{
                 init(-100.4057373,20.6144226);
@@ -506,6 +481,8 @@ $(document).ready(function(){
         $(this).find('select').val(val).trigger('change');
     });
     $('span.brown_btn').click(function(){
+        if($('.settings .member .sub-menu').is(':visible'))
+            $('.settings .member .sub-menu').fadeOut();
         if($(this).find('.sub-menu').is(':visible'))
             $(this).find('.sub-menu').fadeOut(300);
         else

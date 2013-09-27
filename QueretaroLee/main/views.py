@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from registry.models import Entity,Type,Event
 from django.db.models.loading import get_model
@@ -60,7 +61,7 @@ def get_entities(request, **kwargs):
         user_ids.append(u.id)
 
     entity = models.Entity.objects.filter(
-            type_id__in=entity_ids, status=status).exclude(user_id=request.user)
+        type_id__in=entity_ids, status=status).exclude(user_id=request.user)
 
     user_entities = models.Entity.objects.filter(
         type_id__in=entity_ids, user_id__in=user_ids, status=status)
@@ -160,6 +161,10 @@ def get_entities(request, **kwargs):
                   'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
+        for e in entity:
+            e.address = e.address.split('#')
+        for e in user_entities:
+            e.address = e.address.split('#')
         context = {
             'entities': entity,
             'entity_type': entity_type,
@@ -183,6 +188,11 @@ def get_entity(request, **kwargs):
     entity = kwargs['entity'].split('_', 1)
     id_entity = int(entity[1])
     entity = models.Entity.objects.get(id=id_entity)
+    categories = models.EntityCategory.objects.filter(
+        entity_id=entity.id)
+    categories_ids = list()
+    for ele in categories:
+        categories_ids.append(ele.category_id)
     entity_type = models.Type.objects.get(
         entity__id=entity.id)
     users = models.User.objects.filter(
@@ -192,7 +202,20 @@ def get_entity(request, **kwargs):
     profile = models.Profile.objects.get(
         user_id=owner.id)
     entities = models.Entity.objects.filter(
-        type_id=entity_type.id)
+        type_id=entity_type.id,
+        entitycategory__category_id__in=categories_ids).exclude(
+            id=entity.id).distinct()
+    followers_list = list()
+    entity_users = models.EntityUser.objects.filter(
+        entity_id=entity)
+    entity_followers = entity_users.filter(is_member=1)
+    entity_admins = entity_users.filter(is_admin=1)
+    admins = User.objects.filter(id=entity_admins)
+    for ent in entities:
+        followers = models.EntityUser.objects.filter(
+            entity_id=ent.id)
+        followers_list.append(len(followers))
+
     user = request.user
     rate = account_models.Rate.objects.filter(element_id=id_entity, user=user)
     count_rate = account_models.Rate.objects.filter(element_id=id_entity)
@@ -243,23 +266,24 @@ def get_entity(request, **kwargs):
 
     if len(entity_user) > 0:
         member = True
-
+    entity.address = entity.address.split('#')
     context = {
         'entity': entity,
         'calendar': unescaped,
         'entity_type': entity_type,
         'owner': owner,
         'profile': profile,
-        'similar_entities': entities,
+        'similar_entities': zip(entities, followers_list),
         'member': member,
         'grade': grade,
         'grade_rate': grade_rate,
         'range': range(5),
         'count': len(count_rate),
-        'count_grade': count_grade
+        'count_grade': count_grade,
+        'followers': len(entity_followers),
+        'admins': admins
     }
 
-    #print entity.id
     return render(request, template, context)
 
 def get_events(request, **kwargs):
@@ -293,20 +317,21 @@ def get_events(request, **kwargs):
                 location_id=int(entity), status=status).order_by('start_time')
         else:
             events_ = models.Event.objects.filter(status=status,
-                start_time__month=int(request.POST.get('curr_month'))+1).\
-                order_by('start_time')
+                start_time__month=int(request.POST.get(
+                    'curr_month'))+1).order_by('start_time')
+
 
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
             if request.POST.get('id_entity') != None:
-                print int(request.POST['id_entity'])
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(status=status,
-                        location_id=request.POST['id_entity'])
+                        location_id =request.POST['id_entity'])
 
-        events = []
+        events = list()
         for event in events_:
+            print event.name
             # Event date = Month, day, id
             event_data = list()
             event_data.append(event.name)
@@ -314,11 +339,16 @@ def get_events(request, **kwargs):
             event_data.append(event.start_time.isoweekday())
             event_data.append(event.picture)
             event_data.append(event.description)
+            if str(event.start_time.minute) == '0':
+                min = '00'
+            else:
+                min = str(event.start_time.minute).zfill(2)
             event_data.append(
-                str(event.start_time.hour)+':'+str(event.start_time.minute))
+                str(event.start_time.hour).zfill(2)+':'+min)
             event_data.append(event.id)
             event_data.append(event.location_name)
             event_data.append(event.owner_id)
+            event_data.append(event.start_time.month)
             events.append(event_data)
     context = {
         'events': list(events)
@@ -613,7 +643,6 @@ def advanced_search(request, **kwargs):
                         q_list.append(('type__in', activity))
 
                     query = [Q(x) for x in q_list]
-                    print q_list
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
                         if related_object:
@@ -850,7 +879,6 @@ def get_authors(request, **kwargs):
     fields = [item for item in fields if item not in fields_foreign]
 
     dictionary_authors = {}
-    print authors
 
     for obj in authors:
         author = {}
@@ -864,8 +892,6 @@ def get_authors(request, **kwargs):
                 author[str(field)] = value
 
         dictionary_authors[int(obj.id)] = author
-
-    print request.POST.get('field_value')
 
     if request.POST.get('field_value')!= None:
         context = simplejson.dumps(dictionary_authors)

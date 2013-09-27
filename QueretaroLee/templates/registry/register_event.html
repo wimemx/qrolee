@@ -21,7 +21,21 @@
 {% endblock %}
 
 {% block main_site %}
+    <div class="lightbox-wrapper register">
+        <div class="container-16">
+            <div class="fb-objs grid-5 center lightbox">
+                <a style="right:0px" class="close right" href="#"></a>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport">
+                        <div class="overview">
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="grid-16 edit register">
     <form action="/registry/register/event/" class="grid-14 center">
         <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
@@ -112,34 +126,34 @@
     </span>
     </div>
     <script type="text/javascript">
-    Dropzone.options.picture = {
-        maxFiles: 1,
-        dictDefaultMessage: 'Arrastre aquí el logotipo',
-        dictRemoveFile: 'Quitar',
-        addRemoveLinks: true,
-        init: function() {
-            this.on("addedfile", function(file) {
-                $('#picture .dz-message').fadeOut(300);
-            });
-        },
-        success: function(file) {
-            $('.profile-pic').val(file.name);
+        Dropzone.options.picture = {
+            maxFiles: 1,
+            dictDefaultMessage: 'Arrastre aquí el logotipo',
+            dictRemoveFile: 'Quitar',
+            addRemoveLinks: true,
+            init: function() {
+                this.on("addedfile", function(file) {
+                    $('#picture .dz-message').fadeOut(300);
+                });
+            },
+            success: function(file) {
+                $('.profile-pic').val(file.name);
+            }
         }
-    }
-    Dropzone.options.cover = {
-        maxFiles:1,
-        addRemoveLinks: true,
-        dictRemoveFile: 'Quitar',
-        dictDefaultMessage: 'Arrastre aquí el cover photo',
-        init: function() {
-            this.on("addedfile", function(file) {
-                $('#cover .dz-message').fadeOut(300);
-            });
-        },
-        success: function(file) {
-            $('.cover-pic').val(file.name);
+        Dropzone.options.cover = {
+            maxFiles:1,
+            addRemoveLinks: true,
+            dictRemoveFile: 'Quitar',
+            dictDefaultMessage: 'Arrastre aquí el cover photo',
+            init: function() {
+                this.on("addedfile", function(file) {
+                    $('#cover .dz-message').fadeOut(300);
+                });
+            },
+            success: function(file) {
+                $('.cover-pic').val(file.name);
+            }
         }
-    }
 
         $(document).ready(function(){
             var date = new Date();
@@ -181,52 +195,50 @@
                         $('.date-init').val($.trim($('.date-init').val()) +' '+ $('.hour-init').val());
                         $('.date-end').val($.trim($('.date-end').val()) +' '+ $('.hour-end').val());
                     }
-                 $.ajax({
-                    type: "POST",
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    dataType: 'json'
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('action'),
+                        data: $(this).serialize(),
+                        dataType: 'json'
                     }).done(function(data) {
-                        if(data.success == 'True'){
-                        $('.message').addClass('success');
-                        $('.message').html('Se ah creado exitosamente!');
-                        $('form.center').find('input[type=submit]').val('Ok');
-                        $('form.center').find('input[type=submit]').addClass('msg-ok');
-                            if($('.checkbox span').html() != ''){
-                                var ename = $('input[name=name]').val();
-                                var estart_time = $('.date-init').val().replace(' ','T')+date;
-                                var edate_end = $('.date-end').val().replace(' ','T')+date;
-                                var edescription = $('textarea[name=description]').val();
-                                var elocation = $('input[name=location_name]').val();
-                                var privacy = 'OPEN';
-                                if($('select.change').val() == 'privada')
-                                    privacy = 'SECRET';
-                                FB.api('/270489626429179/events','post',{
-                                    name: ename,
-                                    start_time: estart_time,
-                                    end_time:   edate_end,
-                                    description: edescription,
-                                    location: elocation,
-                                    privacy_type: privacy
+                                if(data.success != 'False'){
+                                    if($('.checkbox span').html() != ''){
+                                        var ename = $('input[name=name]').val();
+                                        var estart_time = $('.date-init').val().replace(' ','T')+date;
+                                        var edate_end = $('.date-end').val().replace(' ','T')+date;
+                                        var edescription = $('textarea[name=description]').val();
+                                        var elocation = $('input[name=location_name]').val();
+                                        var privacy = 'OPEN';
+                                        if($('select.change').val() == 'privada')
+                                            privacy = 'SECRET';
+                                        FB.api('/me/events','post',{
+                                                    name: ename,
+                                                    start_time: estart_time,
+                                                    end_time:   edate_end,
+                                                    description: edescription,
+                                                    location: elocation,
+                                                    privacy_type: privacy
 
-                                },
+                                                },
 
-                                function(response) {
-                                    /*console.log(response);
-                                    alert(response.id);
-                                    eventid(response.id);*/
+                                                function(response) {
+                                                    /*console.log(response);
+                                                     alert(response.id);
+                                                     eventid(response.id);*/
 
-                                });
+                                                });
+                                    }
+                                var name = $('input[name=name]').val().charCodeAt(0)+''+
+                                                $('input[name=name]').val().charCodeAt(1)+''+
+                                                $('input[name=name]').val().charCodeAt(2);
+                                //window.location.href = site_url+'/qro_lee/events/'+name+'_'+data.success;
+                                }else{
+                                    $('.message').addClass('fail');
+                                    $('.message').html('Hubo un error, favor de verificar sus datos');
+                                }
+                                $('.message').fadeIn(300);
 
-                            }
-
-                        }else{
-                            $('.message').addClass('fail');
-                            $('.message').html('Hubo un error, favor de verificar sus datos');
-                        }
-                        $('.message').fadeIn(300);
-
-                    });
+                            });
                 }
                 return false;
             });
@@ -234,7 +246,7 @@
 
             });
             $('.checkbox span').click(function(){
-                if($.trim($(this).html()) != ''){
+                if($.trim($(this).html()) == ''){
                     $(this).html('');
                     $(this).parent().parent().find('input').val(0);
                 }else{

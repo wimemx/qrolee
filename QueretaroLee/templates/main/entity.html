@@ -68,32 +68,26 @@
                 </span>
             {% endif %}
         {% else %}
-            <span class="member grid-2">
-                <span class="brown_btn fright">Editar
-                    <span class="sub-menu">
-                        <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
-                        <a href="/registry/admin_users/{{ entity.name|cut:" " }}_{{ entity.id }}">Administradores</a>
-                        <a href="/registry/edit/events/{{ entity.name|cut:" " }}_{{ entity.id }}">Organizar eventos</a>
-                        <a style="border:none;" href="/registry/delete/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}">Borrar</a>
-                    </span>
-                </span>
-            </span>
+            {% block entity_menu %}
+                {% include 'blocks/entity_menu.html' %}
+            {% endblock %}
         {% endif %}
         <span class="wrapper fleft">
-            {% if not entity.picture %}
-                <img src="" alt="{{ entity.name }}"/>
+            {% if entity.picture == '' %}
+                <img src="/static/img/create.png" alt="{{ entity.name }}"/>
             {% else %}
                 {% if owner.id == user.id %}
                     <span class="brown_btn edit"></span>
                 {% endif %}
                 <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
-
             {% endif %}
+
         </span>
         <span class="general-info no-margin grid-7">
             <h3 class="title {{ entity_type.1 }}">{{ entity.name|capfirst }}</h3>
             <span class="social grid-7 no-margin">
-                <a href="#">
+                {% if entity.fb != '' %}
+                <a href="https://facebook.com/{{ entity.fb }}" target="_blank">
                     {% if entity_type.1 == 'group' %}
                         <img src="/static/img/single_fb.png" alt=""/>
                     {% elif entity_type.1 == 'spot' %}
@@ -102,7 +96,9 @@
                         <img src="/static/img/gsingle_fb.png" alt=""/>
                     {% endif %}
                 </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
-                <a href="#">
+                {% endif %}
+                {% if entity.twitter != '' %}
+                <a href="http://twitter.com/{{ entity.twitter }}" target="_blank">
                     {% if entity_type.1 == 'group' %}
                         <img src="/static/img/single_twitter.png" alt=""/>
                     {% elif entity_type.1 == 'spot' %}
@@ -111,7 +107,9 @@
                         <img src="/static/img/gsingle_twitter.png" alt=""/>
                     {% endif %}
                 </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
-                <a href="#">
+                {% endif %}
+                {% if entity.website != '' %}
+                <a href="{{ entity.website }}" target="_blank">
                     {% if entity_type.1 == 'group' %}
                         <img src="/static/img/single_world.png" alt=""/>
                     {% elif entity_type.1 == 'spot' %}
@@ -120,6 +118,7 @@
                         <img src="/static/img/gsingle_world.png" alt=""/>
                     {% endif %}
                 </a>
+                {% endif %}
             </span>
             {% if entity_type.1 != 'group' %}
                 <span class="grid-7 no-margin container_rate">
@@ -286,7 +285,14 @@
                 <span class="ruler"></span>
                     <span class="contact">
                         <h3 class="title main">Ubicacion</h3>
-                        <p>{{ entity.address }}</p>
+                        <p>
+                            {% if entity.address.0 != '' %}
+                                {{ entity.address.0 }} <br>
+                                {{ entity.address.1 }}
+                            {% else %}
+                                Querétaro
+                            {% endif %}
+                        </p>
                         <h3 style="margin-top: 20px" class="title main fleft">Contacto</h3>
                         <p>{{ profile.phone }}</p>
                     </span>
@@ -299,7 +305,7 @@
             {% endif %}
 
             {% if entity_type.1 == 'spot' %}
-                <div class="overvieww no-margin fleft grid-6 content">
+                <div style="padding: 0px 40px 0px 40px;" class="overvieww no-margin fright grid-6 content">
                     <span class="ruler"></span>
                     <p>{{ entity.description }}</p>
                 </div>
@@ -320,11 +326,13 @@
                 <span class="ruler"></span>
                     <span class="contact">
                         <h3 class="title main">Contacto</h3>
+
                         <p>{{ owner.email }}</p>
                         <p>{{ profile.phone }}</p>
                         <p>{{ entity.website }}</p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
-                        <p>{{ entity.address }}</p>
+                        <p>{{ entity.address.0 }} <br>
+                        <span>{{ entity.address.1 }}</span></p>
                     </span>
                 </div>
             {% endif %}
@@ -333,37 +341,53 @@
             {% if entity_type.1 == 'group' %}
                 <div class="more-info">
                     <span class="grid-3 alpha">
-                    <h3 class="title main">Miembros <span>1200</span></h3>
+                    <h3 class="title main">Miembros <span>{{ followers }}</span></h3>
                     </span>
                     <span class="grid-4">
                         <h3 class="title main">Contacto <span>{{ owner.email }}</span></h3>
                     </span>
                     <span class="grid-3 omega">
-                        <h3 class="title main">Administrador/es <span>{{ owner.first_name }}</span></h3>
+                        <h3 class="title main">Administrador/es
+                            <span>{{ owner.first_name }}</span>
+                            {% for admin in admins %}
+                                {% if admin.first_name == '' %}
+                                    <span>{{ admin.username }}</span>
+                                {% else %}
+                                    <span>{{ admin.first_name }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        </h3>
                     </span>
                 </div>
             {% endif %}
 
             </div>
-            <div class="grid-5 sidebar-b">
+            <div class="grid-5 fright sidebar-b">
                 <h3 class="title">{{ entity_type.0|capfirst }} similares</h3>
-                {% for similar_entity in similar_entities %}
-                <span class="wrapper">
-                    <span class="fleft">
-                        <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt=""/>
-                    </span>
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}">
-                        <h3 class="title fleft">{{ similar_entity.name }}
-                            {% if entity_type.1 == 'spot' %}
-                                <span class="view">Ver spot</span>
-                            {% else %}
-                                <span>1,200 miembros</span>
-                            {% endif %}
-                        </h3>
-                    </a>
-                </span>
-                {% endfor %}
+                <div id="scrollbar1">
+                    <div style="right:-8px;width: 8px;" class="scrollbar"><div style="background:#fffcf5;" class="track"><div class="thumb" style="width: 9px;"><div class="end"></div></div></div></div>
+                    <div class="viewport" style="height:360px;">
+                        <div class="overview" style="border:none;height:auto;">
+                        {% for similar_entity, followers in similar_entities %}
+                        <span class="wrapper">
+                            <span class="fleft">
+                                <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt=""/>
+                            </span>
+                            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.name|cut:" " }}_{{ similar_entity.id }}">
+                                <h3 class="title fleft">{{ similar_entity.name }}
+                                    {% if entity_type.1 == 'spot' %}
+                                        <span class="view">Ver spot</span>
+                                    {% else %}
 
+                                        <span> {{ followers }} miembro{{ followers|pluralize }}</span>
+                                    {% endif %}
+                                </h3>
+                            </a>
+                        </span>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="grid-16 load no-margin">
@@ -371,7 +395,7 @@
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
                 <div id="scrollbar1">
-                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div  class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport">
                         <div class="overview">
                             <span class="item">
@@ -440,7 +464,6 @@
         </div>
         {% endif %}
     </div>
-
 
 </div>
 {% endblock %}

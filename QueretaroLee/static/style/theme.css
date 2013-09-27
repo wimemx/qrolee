@@ -382,7 +382,7 @@ input:not([type='submit']){
             display: inline-block;
         }
         .title.spot, a.spot{
-            color: #f89883;
+            color: #f89883 !important;
             float: none;
         }
         a.color_btn{
@@ -396,7 +396,8 @@ input:not([type='submit']){
             margin-left: 25px;
         }
         .color_btn.organization{
-            background: #8ab493;;
+            background: #8ab493;
+            color: #222 !important;
         }
         .color_btn.spot{
             background: #f89883;;
@@ -410,6 +411,7 @@ input:not([type='submit']){
             font-size: 25px;
             text-decoration: none;
             font-weight:100 ;
+            margin-bottom: 10px;
         }
     .entity .member{
         float: right;
@@ -557,6 +559,7 @@ input:not([type='submit']){
         }
         .content.single.events .active-event{
             background: #f89883 !important;
+            cursor: pointer;
         }
         .content.single.events .apply{
             background: #f89883 !important;
@@ -624,9 +627,8 @@ input:not([type='submit']){
                         display: block;
                         background: #acacac;
                         position: relative;
-                        top: 0px !important;
-                        left: 0px !important;
-                        top: 0px !important;
+                        left: 20px !important;
+                        top: 10px !important;
                         width: 220px !important;
                     }
 
@@ -721,7 +723,7 @@ input:not([type='submit']){
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .content .sidebar-a .location{
-
+                position: relative;
             }
                 .content .sidebar-a .location .apply{
                     font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -737,6 +739,12 @@ input:not([type='submit']){
                     float: left;
                     font-size: 12px;
                     margin-right: 35px;
+                    margin-bottom: 0px;
+                }
+                .content .sidebar-a .location a{
+                    position: relative;
+                    top: 12px;
+
                 }
                     .location p span{
                         font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -771,7 +779,7 @@ input:not([type='submit']){
             .sidebar-b .fix.title{
                 width: 100%;
                 padding-left: 0px;
-                text-indent: 25px;
+                margin-left: 25px;
             }
             .sidebar-b .wrapper{
                 width: 100%;
@@ -842,12 +850,13 @@ input:not([type='submit']){
                 height: 300px;
                 display: block;
                 overflow: hidden;
-                border-bottom: 1px solid #acacac;
             }
+                .sidebar-b hr{
+                    border-color: #acacac;
+                }
             .sidebar-b .year{
                 width: 3000px ;
                 display: block;
-                padding-left: 25px;
                 position: relative;
                 top: -20px;
             }
@@ -956,6 +965,9 @@ input:not([type='submit']){
     width: 50% !important;
     float: left;
 }
+    #scrollbar1.scrollspot .scrollbar{
+        right: 0px;
+    }
 
 .d-container_map{
 
@@ -975,12 +987,11 @@ input:not([type='submit']){
 }
 
 .d-icon_map{
-
-    background-color: #000000;
+    display: block;
     width: 15px;
-    height: 15px;
+    height: auto;
     border: none;
-
+    margin-right:10px;
 }
 
 .d-text_spot{
@@ -1037,7 +1048,7 @@ input:not([type='submit']){
 }
 
 .size_btn_edit{
-
+    color:#222;
     font-size: 11px !important;
     padding: 2px 8px 2px 8px;
     font-family: 'Montserrat' sans-serif;
@@ -1132,10 +1143,7 @@ input:not([type='submit']){
 .d-text_picture{
     margin-top: 70px;
 }
-.edit .fb-connect{
-    margin-top: 0px !important;
-    border-top: none;
-}
+
 .fb-connect{
     margin-top: 50px !important;
     border-top: 1px solid #acacac;
@@ -1615,7 +1623,7 @@ margin: 0px;
     text-align: center !important;
     font-size: 12px;
     text-decoration: none;
-    padding: 3px 15px 3px 8px;
+    padding: 3px 8px 3px 8px;
     font-family: 'Conv_fontscore.com_d-dinproregular';
     cursor: pointer;
     border: 1px solid #a77340;

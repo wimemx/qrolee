@@ -27,7 +27,7 @@
                 </span>
             </div>
         <div class="grid-14 load offset-1 no-margin">
-            <div class="sidebar-a grid-8 no-margin_events">
+            <div class="sidebar-a grid-9 no-margin_events">
                 <span class="month">Septiembre</span>
                 <div id="scrollbar1">
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
@@ -44,7 +44,7 @@
                                         <img class="profile-picture" src="" alt=""/>
                                     </a>
                                 </span>
-                                <span class="grid-6 fleft no-margin d-top-data">
+                                <span class="grid-7 fleft no-margin">
                                     <a class="d-link_event" >
                                         <h3 class="title"></h3>
                                     </a>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-5 sidebar-b fleft d-margin_calendar">
+            <div class="grid-4 sidebar-b fleft d-margin_calendar">
             <h3 class="title">Calendario</h3>
             <input class="entity" type="hidden" value="-1"/>{% csrf_token %}
                 <div class="overview">
@@ -74,6 +74,7 @@
                         {{ calendar }}
                     {% endautoescape %}
                 </div>
+                <hr>
                 <div class="controller center">
                     <span class="prev fleft"><</span>
                     <span class="next fright">></span>

@@ -30,20 +30,15 @@
     <div class="grid-16 entity edit">
     <div class="grid-15 center">
         <input type="hidden" class="users entity" value="{{ entity.id }}"/>{% csrf_token %}
-        <span class="title {{ entity_type.name }} main">Administradores de <span class="heading">{{ entity.name|capfirst }}</span>
-            <span class="member grid-2">
-            <span class="brown_btn fright">Editar
-                <span class="sub-menu">
-                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
-                    <a href="">Administradores</a>
-                    <a href="/registry/register_event/{{ entity_type.1 }}/{{ entity.id }}" style="border:none;" href="">Organizar eventos</a>
-                    </span>
-                </span>
-            </span>
+        <span class="title main">Administradores de
+            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
+             {% block entity_menu %}
+                {% include 'blocks/entity_menu.html' %}
+            {% endblock %}
         </span>
 
         <span style="border:none;" class="data grid-9 fleft no-margin">
-            <span class="nav {{ entity_type.name }} grid-5 no-margin">
+            <span class="nav {{ entity_type.1 }} grid-5 no-margin">
                 <span class="btn">Administradores</span>
                 <span class="btn">Nuevo administrador</span>
             </span>

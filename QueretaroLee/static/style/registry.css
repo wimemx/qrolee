@@ -24,6 +24,7 @@
     background: #fffcf5 !important;
     padding: 20px 10px 50px 10px;
     min-height: 500px;
+    border-bottom: 0px;
 }
 .title{
     width: 100%;
@@ -166,6 +167,8 @@ select{
     top: 0px;
     left: 0px;
 }
+
+
 
 .edit.register{
     padding-bottom: 100px;

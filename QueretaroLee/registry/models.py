@@ -78,7 +78,6 @@ class Entity(models.Model):
     user = models.ForeignKey(User)
     type = models.ForeignKey(Type)
     status = models.BooleanField(default=True)
-    category = models.ForeignKey(Category)
 
     def __unicode__(self):
         return '%s' % (self.name, )
