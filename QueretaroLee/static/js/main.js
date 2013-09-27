@@ -1036,12 +1036,19 @@ function create_template(type, result,i, create_user){
         }else{
             h3.html(result[i].name);
         }
+        if(result[i].picture == '')
+            url = '/static/img/create.png';
         img.attr('src', url);
 
         var p = $('<p class="fright no-margin grid-4"></p>');
         a_title.append(h3);
         item.append(a_title);
+        var entity_type = 'organization';
+
         if (type == 'registry.entity.2'){
+            entity_type = 'group';
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
             var privacy;
             if(result[i].privacy == 'False')
                 privacy = 'Público';
@@ -1051,6 +1058,8 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }else if(type == 'registry.entity.1' ||
             type == 'registry.entity.3'){
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
             $.each(result[i].extras,function(indx){
                 p = $('<p class="fright no-margin grid-4"></p>');
                 p.html(result[i].extras[indx]);

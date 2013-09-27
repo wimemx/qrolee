@@ -440,6 +440,7 @@ def advanced_search(request, **kwargs):
         query_list = ast.literal_eval(data['value'])
         q_list = list()
         for key in query_list:
+            print key
             if '__in' in key:
                 val = ast.literal_eval(query_list[key])
                 if len(val) > 0:
@@ -456,10 +457,11 @@ def advanced_search(request, **kwargs):
                     t = (key, date)
                     q_list.append(t)
             elif 'distance' in key:
-                distance = query_list[key].split('&')
-                latitude = float(distance[1])
-                longitude = float(distance[2])
-                distance = float(distance[0])
+                if query_list[key] != '':
+                    distance = query_list[key].split('&')
+                    latitude = float(distance[1])
+                    longitude = float(distance[2])
+                    distance = float(distance[0])
             else:
                 t = (key, query_list[key])
                 q_list.append(t)
@@ -560,12 +562,13 @@ def advanced_search(request, **kwargs):
                 if not match:
                     break
             if 'distance' in query_list:
-                lat = float(obj.lat)
-                lng = float(obj.long)
-                radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
+                if query_list['distance'] != '':
+                    lat = float(obj.lat)
+                    lng = float(obj.long)
+                    radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
 
-                if radius > distance:
-                    break
+                    if radius > distance:
+                        break
             context_fields = {'extras': list()}
             if data['join'] != 'none':
                 for ele in join['tables']:
