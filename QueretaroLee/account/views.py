@@ -280,12 +280,12 @@ def delete_account(request):
 def list_user(request):
 
     user = registry.User.objects.all()
-    author = registry.Author.objects.all()
+    author = models.Author.objects.all()
 
     if request.POST.get('field_value') != None:
         search = request.POST['field_value']
         user = registry.User.objects.filter(first_name__icontains=search)
-        author = registry.Author.objects.filter(name__icontains=search)
+        author = models.Author.objects.filter(name__icontains=search)
 
     list_us = {}
     list_author = {}
@@ -301,7 +301,6 @@ def list_user(request):
         list = {}
         list['id'] = int(obj.id)
         list['first_name'] = str(obj.name)
-        list['last_name'] = str(obj.last_name)
         list_author[str(obj.id)] = list
 
     context = {'users':list_us,'author':list_author}

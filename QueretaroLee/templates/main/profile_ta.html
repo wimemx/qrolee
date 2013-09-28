@@ -39,17 +39,52 @@
                 <h3 class="title d-title_profile">
                         {{ profile.name|title }}
                 </h3>
-                <p >
-                    {% if count == 0 %}
-                        {{ count }} no tiene títulos
+                            <span class="grid-7 no-margin container_rate">
+                      <span class="container_starts_rate fleft">
+                    {% if grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < grade_rate %}
+                                        <img src="/static/img/comunityStar.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                    {% else %}
+                        {% for x in range %}
+                            {% if x < grade %}
+                                <img src="/static/img/starUser.png" />
+                            {% else %}
+                                <img src="/static/img/backgroundStar.png" />
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
-                    {% if count >= 2 %}
-                        {{ count }} Títulos
-                    {% endif %}
-                    {% if count == 1 %}
-                        {{ count }} Título
-                    {% endif %}
-                </p>
+                </span>
+                <span class="container_text_rate">
+                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                        {% if grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="grid-7 no-margin">
+                    <p >
+                        {% if count == 0 %}
+                            {{ count }} no tiene títulos
+                        {% endif %}
+                        {% if count >= 2 %}
+                            {{ count }} Títulos
+                        {% endif %}
+                        {% if count == 1 %}
+                            {{ count }} Título
+                        {% endif %}
+                    </p>
+                </span>
                 <p >
                     {{ profile.biography }}
                 </p>
@@ -281,7 +316,8 @@
                         {% for obj in list_user %}
                             <span class="item_title grid-5 no-margin">
                                 <span class="wrapper_title borde_author ">
-                                    <img src="/static/media/users/{{ obj.list.user.id }}/profile/create.jpg" />
+                                        <img class="img_size_all"
+                                        src="/static/media/users/{{ obj.list.user.id }}/profile/{% for pict in list_picture %}{% if pict.user == obj.list.user %}{{ pict.picture }}{% endif %}{% endfor %}" />
                                 </span>
                                 <h3 class="title grid-3 title_mini text_name_user">
                                    {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}

@@ -984,17 +984,38 @@ def get_profile(request, **kwargs):
     context = {}
     rate = account_models.Rate.objects.filter(element_id=profile, user=user)
     count_rate = account_models.Rate.objects.filter(element_id=profile)
+    list_picture = models.Profile.objects.all()
 
     if type == 'author':
         profile = account_models.Author.objects.get(id=profile)
         list_titles = ''
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
         count = len(list_titles)
+
+        grade = 0
+        grade_rate = 0
+        if len(rate) > 0:
+            grade = rate[0].grade
+
+        count = 0
+        count_grade = 0
+        if len(count_rate) > 0:
+            for obj in count_rate:
+                count = count + obj.grade
+            count_grade = Decimal(Decimal(count)/(len(count_rate)))
+            grade_rate = int(round(count_grade,0))
+
         context = {
             'list_titles':list_titles,
             'list':list,
-            'count':count
+            'count':len(list_titles),
+            'grade':grade,
+            'grade_rate':grade_rate,
+            'range':range(5),
+            'count_vot':len(count_rate),
+            'count_grade':count_grade,
         }
+
     if type == 'title':
         profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=0,
@@ -1024,7 +1045,8 @@ def get_profile(request, **kwargs):
             'grade_rate':grade_rate,
             'range':range(5),
             'count_vot':len(count_rate),
-            'count_grade':count_grade
+            'count_grade':count_grade,
+            'list_picture':list_picture
         }
 
 
