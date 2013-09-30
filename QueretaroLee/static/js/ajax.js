@@ -657,7 +657,7 @@ $(document).ready(function(){
                                     $('.d-results').append('<a class="user_profile person" >Autores</a>');
                                 if(i=="author")
                                     $('.d-results').append('<a class="user_profile person link_search_all" ' +
-                                       'href="/qro_lee/advanced_search/marin/" >ver todos</a>');
+                                       'href="/qro_lee/advanced_search/" >ver todos</a>');
 
 
                         });
