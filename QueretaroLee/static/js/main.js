@@ -1814,7 +1814,7 @@ function add_my_title(csrf, array_title, type){
                     $.each(title,function(i2){
                         name = title[i2].title;
                         name = name.replace(/\s/g,'');
-                        href = '/qro_lee/profile/title/' + name + '_' + title[i2].id + '/';
+                        href = '/qro_lee/profile/title/' + title[i2].id + '/';
                         div = $('<div class="d-item_book d-item_' + title[i2].id +
                             ' grid-5 no-margin"></div>');
                         input_id =$('<input type="hidden" class="id_title"' +
@@ -1823,8 +1823,9 @@ function add_my_title(csrf, array_title, type){
                             'value="'+title[i2].title+'"/>');
                         input_list = $('<input type="hidden" class="type_list"' +
                             'value="' + type + '"/>');
-                        a_ref = $('<a href="'+href+'"></a>')
-                        span = $('    <span class="wrapper_list" ></span>');
+                        a_ref = $('<a href="'+href+'"></a>');
+                        a_wrapper = $('<a href="'+href+'"></a>');
+                        span = $('<span class="wrapper_list" ></span>');
                         img = $('<img class="img_size_all" src="'+title[i2].cover +
                             '"/>');
                         div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
@@ -1843,7 +1844,8 @@ function add_my_title(csrf, array_title, type){
                         div.append(input_id);
                         div.append(input_title);
                         div.append(input_list);
-                        div.append(span);
+                        a_wrapper.append(span);
+                        div.append(a_wrapper);
                         div.append(div_text);
                         div_text.append(a_t);
                         div_text.append(p_author);
