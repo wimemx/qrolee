@@ -801,11 +801,15 @@ def get_titles(request,**kwargs):
                   'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
+    list_author = account_models.AuthorTitle.objects.all()
+
     context = {
         'book': book,
         'content': content,
-        'type': type
+        'type': type,
+        'list_author':list_author
     }
+
 
     fields_related_objects = account_models.Title._meta.get_all_related_objects(
         local_only=True)

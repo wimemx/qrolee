@@ -2,11 +2,13 @@ $(document).ready(function(){
     $('.main_btn, .register .login, .reset').click(function(e){
         var login = false;
         var reset = false;
+        $('.invalid').fadeOut(250);
         if($(this).hasClass('login'))
             login = true;
         if($(this).hasClass('reset'))
             reset = true;
         var counter = 0;
+        $('form.reset-password.grid-4').fadeOut(300);
         $('.container').children().fadeOut(300,
         function(){
 
@@ -25,6 +27,7 @@ $(document).ready(function(){
                         }
                     });
                 }else if(reset){
+
                     $('.form-container').fadeIn(300,
                     function(){
 

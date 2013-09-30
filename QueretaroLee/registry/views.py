@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
@@ -200,7 +201,7 @@ def register_entity(request, **kwargs):
     if entity_type == 'group':
         entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
     elif entity_type == 'organization':
-        entity_type = ['Crear una nueva organizacion', 'organization', 'organizacion']
+        entity_type = ['Crear una nueva organización', 'organization', 'organizacion']
     elif entity_type == 'spot':
         entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
@@ -950,7 +951,7 @@ def add_my_title(request):
                     query = ''
                     key = '&key='+settings.GOOGLE_BOOKS_KEY
                     search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
-                    url = 'https://www.googleapis.com/freebase/v1/search?query='+name[0:10]
+                    url = 'https://www.googleapis.com/freebase/v1/search?query='+name
                     query += search_author + key
                     url += query
                     response = urllib2.urlopen(url)
@@ -960,8 +961,8 @@ def add_my_title(request):
                     picture = ' '
 
                     if len(response['result']) != 0:
-                        if 'output' in response['result']:
-                            biography = response['result'][0]['output']['description']
+                        if len(response['result'][0]['output']) != 0:
+                            biography = str(response['result'][0]['output']['description']['/common/topic/description'])
 
                         if len(biography) > 1000:
                             biography = biography[0:900]
