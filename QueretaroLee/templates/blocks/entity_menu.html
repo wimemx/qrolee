@@ -1,0 +1,12 @@
+{% block entity_menu %}
+    <span class="member fright grid-2">
+                <span class="brown_btn fright">Editar
+                    <span class="sub-menu">
+                        <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
+                        <a href="/registry/admin_users/{{ entity.name|cut:" " }}_{{ entity.id }}">Administradores</a>
+                        <a href="/registry/edit/events/{{ entity.name|cut:" " }}_{{ entity.id }}">Organizar eventos</a>
+                        <a style="border:none;" href="/registry/delete/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}">Borrar</a>
+                    </span>
+                </span>
+            </span>
+{% endblock %}
