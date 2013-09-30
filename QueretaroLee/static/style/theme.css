@@ -896,6 +896,7 @@ input:not([type='submit']){
                     }
                         .sidebar-b .active-event{
                             background: #d1b75c !important;
+                            cursor:pointer;
                         }
         .sidebar-b .controller{
             width: 65px;
