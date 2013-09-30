@@ -878,12 +878,10 @@ $(document).ready(function(){
 
         }
     });
-    if($('.list_scroll').length>0){
-        $('#scrollbar1').tinyscrollbar();
-    }
-    if($('.entity_scroll').length>0){
-        $('#scrollbar1').tinyscrollbar();
-    }
+    $('#scrollbar1').tinyscrollbar();
+
+
+
 });
 
 function create_template(type, result,i, create_user){
