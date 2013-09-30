@@ -1138,3 +1138,17 @@ def search_api(request, **kwargs):
     return HttpResponse(context, mimetype='application/json')
 
 
+def load_picture_profile(request):
+
+    user = request.user
+
+    profile = models.Profile.objects.get(user=user)
+
+    context = {
+        'id_user':user.id,
+        'picture': profile.picture
+    }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+

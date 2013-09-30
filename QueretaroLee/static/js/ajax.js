@@ -314,6 +314,23 @@ function search_api(csrf, query){
 }
 
 $(document).ready(function(){
+
+    if($('.img_profile_mini').length>0){
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '/qro_lee/load_picture/',
+            data: {
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val()
+            },
+            dataType: 'json'
+        }).done(function(data){
+                $('.img_profile_mini').attr('src','/static/media/users/' +
+                    data.id_user + '/profile/' + data.picture);
+            });
+    }
+
     $('.sidebar-a .month').html(months[curr_month]);
     var $item = $('.sidebar-a .item').clone();
 

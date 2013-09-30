@@ -27,5 +27,7 @@ urlpatterns = patterns('',
     url(r'^advanced_search/$', views.advanced_search ,
         {'template_name': 'main/advanced_search.html'},name='advanced_search'),
     url(r'^search_api/$', views.search_api ,name='search_api'),
+    url(r'^load_picture/$', views.load_picture_profile ,name='load_picture_profile'),
+
 
 )
