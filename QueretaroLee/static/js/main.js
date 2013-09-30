@@ -1012,8 +1012,6 @@ function create_template(type, result,i, create_user){
         });
 
     }else{
-        console.log(result[i]);
-        console.log(type);
         var item = $('<div class="item"></div>');
         var wrapper_fleft = $('<span class="wrapper fleft"></span>');
         var a_wrapper = $('<a></a>');
@@ -1026,10 +1024,17 @@ function create_template(type, result,i, create_user){
         wrapper_fleft.append(img);
         var h3 = $('<h3 class="title no-margin grid-4 fright"></h3>');
         if(type == 'account.author' || create_user){
-            a_wrapper.attr('href','/qro_lee/profile/author/'+result[i].id);
-            a_title.attr('href','/qro_lee/profile/author/'+result[i].id);
-            h3.html(result[i].name);
-            url = result[i].picture;
+            if(type == 'account.author'){
+                awrapper.attr('href','/qro_lee/profile/author/'+result[i].id);
+                a_title.attr('href','/qro_lee/profile/author/'+result[i].id);
+                h3.html(result[i].name);
+                url = result[i].picture;
+            }else{
+                a_wrapper.attr('href','/accounts/users/profile/'+result[i].id);
+                a_title.attr('href','/accounts/users/profile/'+result[i].id);
+                h3.html(result[i].first_name);
+                url = '/static/media/users/' + result[i].id + '/profile/' + result[i].extras[1];
+            }
         }else if(type == 'account.title'){
             h3.html(result[i].title);
             url = result[i].cover;
@@ -1101,7 +1106,7 @@ function create_template(type, result,i, create_user){
             img.attr('src', url);
         }else if(create_user){
             p.html('Esta leyendo');
-            item.append(p);
+            //item.append(p);
         }
         $('.results').append(item);
         return;
@@ -2654,14 +2659,14 @@ function list_titles_and_author(data, type, $container){
                        title_json = {it:{
                             'attribute':array[it],
                             'default_type':default_type,
-                           'id':-1
+                            'id':-1
                         }};
                     }
 
                     array_title.push(title_json);
                 }
             }
-            console.log(array_title);
+
             //if(active_sel)
               //  add_my_title(csrf,array_title,type);
     });

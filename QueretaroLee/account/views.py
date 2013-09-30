@@ -10,6 +10,7 @@ import hashlib
 import simplejson
 from account import models
 from registry import models as registry
+from django.contrib.auth.models import User
 from django.db import models as db_model
 
 
@@ -279,12 +280,13 @@ def delete_account(request):
 
 def list_user(request):
 
-    user = registry.User.objects.all()
+    user = User.objects.filter(is_staff=False)
     author = models.Author.objects.all()
+
 
     if request.POST.get('field_value') != None:
         search = request.POST['field_value']
-        user = registry.User.objects.filter(first_name__icontains=search)
+        user = User.objects.filter(is_staff=False, first_name__icontains=search)
         author = models.Author.objects.filter(name__icontains=search)
 
     list_us = {}
@@ -295,6 +297,8 @@ def list_user(request):
         list['id'] = int(obj.id)
         list['first_name'] = str(obj.first_name)
         list['last_name'] = str(obj.last_name)
+        profile = registry.Profile.objects.filter(user=obj)
+        list['picture'] = profile[0].picture
         list_us[str(obj.id)] = list
 
     for obj in author:
@@ -302,8 +306,11 @@ def list_user(request):
         list['id'] = int(obj.id)
         list['first_name'] = str(obj.name)
         list_author[str(obj.id)] = list
+        list['picture'] = obj.picture
+
 
     context = {'users':list_us,'author':list_author}
+
     context = simplejson.dumps(context)
 
     return HttpResponse(context, mimetype='application/json')

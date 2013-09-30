@@ -599,40 +599,48 @@ $(document).ready(function(){
                 'field_value':$('.search_field').val()
             }
             }).done(function(data) {
-                    //console.log(data);
+
                     $('.results').empty();
                     $('.results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
+
                         $.each(data,function(i){
                             var obj = data[i];
+                            var count = 1;
                             $.each(obj,function(i2){
-                                if(i>=3){
-
+                                if(count<=3){
                                     var href = '';
                                     var src = '';
 
                                     if(i=="users"){
                                         href = '/accounts/users/profile/'+obj[i2].id;
-                                        src = '/static/media/users/1/profile/gandhi-logo.jpg';
+                                        src = '/static/media/users/'+obj[i2].id+'/profile/'+obj[i2].picture;
                                     }else{
-                                        href = '/accounts/users/profile/'+obj[i2].id;
-                                        src = '/static/media/users/1/profile/gandhi-logo.jpg';
+                                        href = '/qro_lee/profile/author/'+obj[i2].id;
+                                        src = obj[i2].picture;
                                     }
 
                                     var a = $('<a href="' + href + '" class="user_profile"></a>');
                                     a.append('<img src='+src+' class="img_user" />');
                                     var name = $('<span class="span_name_user" ></span>')
-                                    var name_user = obj[i2].first_name +' '+ obj[i2].last_name;
+                                    var name_user = '';
+                                    if(i=='users')
+                                        name_user = obj[i2].first_name + ' ' + obj[i2].last_name;
+                                    else
+                                        name_user = obj[i2].first_name;
+
                                     name.append(truncText(name_user,23));
                                     a.append(name);
                                     $('.results').append(a);
                                 }
-                                });
+                                count++;
+                            });
+
                                 if(i=="users")
                                     $('.results').append('<a class="user_profile person" >Autores</a>');
 
-
                         });
+
 
                     }
                     $('.results').fadeIn(250);
