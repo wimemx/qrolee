@@ -603,7 +603,7 @@ $(document).ready(function(){
                     $('.results').empty();
                     $('.results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
-
+                        console.log(data);
                         $.each(data,function(i){
                             var obj = data[i];
                             var count = 1;
@@ -638,6 +638,10 @@ $(document).ready(function(){
 
                                 if(i=="users")
                                     $('.results').append('<a class="user_profile person" >Autores</a>');
+                                if(i=="author")
+                                    $('.results').append('<a class="user_profile person link_search_all" ' +
+                                       'href="/qro_lee/advanced_search/" >ver todos</a>');
+
 
                         });
 

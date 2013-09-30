@@ -1915,3 +1915,11 @@ margin: 0px;
     width: 18px;
     height: 20px;
 }
+
+.link_search_all{
+    text-align: right !important;
+    color: #ffffff !important;
+    background-color: #5a885e !important;
+    width: 145px !important;
+    padding-right: 10px;
+}
