@@ -71,15 +71,13 @@ $(document).ready(function(){
         }
         if($('.select_value').length > 0 ){
             if($('.select_value.active').length < 1){
-
-                    /*
                     valid--;
                     var span = $('<span class="invalid"></span>');
                     var value = 'Favor de escoger una categoria';
                     span.html(value);
-                    $(this).parent().find('.invalid').remove();
-                    $(this).parent().append(span);
-                    $(this).parent().find('.invalid').fadeIn(300);*/
+                    $('.select_value').parent().parent().parent().find('.invalid').remove();
+                    $('.select_value').parent().parent().parent().append(span);
+                    $('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
             }
         }
 
