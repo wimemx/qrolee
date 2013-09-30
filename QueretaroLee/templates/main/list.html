@@ -89,9 +89,7 @@
                                 </a>
                                 <a href="/qro_lee/profile/author/{{ obj.id }}" class="title alpha grid-4">
                                     {{ obj.name }}</a>
-                                <p class="grid-4 no-margin">que crea un libro con aventuras o ideas para
-                                    enviarlas al editor. La crítica moderna ha
-                                    cuestionado el concepto de autor, ya que
+                                <p class="grid-4 no-margin">{{ obj.biography|truncatechars:150 }}
                                 <p class="title_author grid-4 no-margin"> 23 Titulos</p>
                             </div>
                      {% endfor %}

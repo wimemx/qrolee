@@ -221,6 +221,7 @@ $(document).ready(function(){
         else
             $(this).addClass('active');
     });
+    show_dialog();
 });
 
 function fb_obj_search(search, type){
@@ -878,6 +879,9 @@ $(document).ready(function(){
         }
     });
     if($('.list_scroll').length>0){
+        $('#scrollbar1').tinyscrollbar();
+    }
+    if($('.entity_scroll').length>0){
         $('#scrollbar1').tinyscrollbar();
     }
 });

@@ -24,11 +24,23 @@ $(document).ready(function(){
                         valid--;
                         var span = $('<span class="invalid"></span>');
                         var value = 'Ingrese su ';
-                        //console.log($.trim($(this).find('input')).val());
+
                         if ($.trim($(this).find('input').attr('name')) != 'password_match'){
-                            value += $.trim($(this).find('input').attr('name'));
+
+                            var text = '';
+
+                            if($.trim($(this).find('input').attr('name')) == 'username')
+                                text = 'usuario';
+
+                            if($.trim($(this).find('input').attr('name')) == 'password')
+                                text = 'contraseña';
+
+                            if($.trim($(this).find('input').attr('name')) == 'email')
+                                text = 'email';
+
+                            value += text;
                         }else{
-                            value += 'password';
+                            value += 'constraseña otra vez';
                         }
                         span.html(value);
                         $(this).append(span);
@@ -90,8 +102,6 @@ $(document).ready(function(){
         type_add_list(crsf, type, query);
 
     });
-
-    //show_dialog();
 
 });
 

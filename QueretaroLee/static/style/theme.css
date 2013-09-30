@@ -1923,3 +1923,7 @@ margin: 0px;
     width: 145px !important;
     padding-right: 10px;
 }
+
+.title_create_entity{
+    text-transform: none !important;
+}

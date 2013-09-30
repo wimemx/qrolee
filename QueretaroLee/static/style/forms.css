@@ -189,3 +189,7 @@ form p .invalid{
     height: 180px;
     width: 282px;
 }
+
+textarea{
+    resize: none;
+}

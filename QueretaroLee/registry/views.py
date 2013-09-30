@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
@@ -200,7 +201,7 @@ def register_entity(request, **kwargs):
     if entity_type == 'group':
         entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
     elif entity_type == 'organization':
-        entity_type = ['Crear una nueva organizacion', 'organization', 'organizacion']
+        entity_type = ['Crear una nueva organización', 'organization', 'organizacion']
     elif entity_type == 'spot':
         entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
