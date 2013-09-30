@@ -60,15 +60,18 @@ $(document).ready(function(){
             });
             regex_type = regex_type.split('regex_');
             regex_type = regex_type[1];
-            var regex_validation = validate_regex($.trim($(this).val()), regex_type);
-            if(!regex_validation[0] && $.trim($(this).val()) != ''){
-                valid--;
-                var span = $('<span class="invalid"></span>');
-                var value = regex_validation[1];
-                span.html(value);
-                $(this).parent().find('.invalid').remove();
-                $(this).parent().append(span);
-                $(this).parent().find('.invalid').fadeIn(300);
+            if($.trim($(this).val()) != ''){
+                var regex_validation = validate_regex($.trim($(this).val()), regex_type);
+                console.log(regex_validation);
+                if(!regex_validation[0]){
+                    valid--;
+                    var span = $('<span class="invalid"></span>');
+                    var value = regex_validation[1];
+                    span.html(value);
+                    $(this).parent().find('.invalid').remove();
+                    $(this).parent().append(span);
+                    $(this).parent().find('.invalid').fadeIn(300);
+                }
             }
         });
         if($.trim($(this).find('.match:eq(0)').val()) !=
@@ -77,6 +80,17 @@ $(document).ready(function(){
             var span = $('<span class="invalid">contraseña incorrecta</span>');
             $('.match').append(span);
             $(this).find('.invalid').fadeIn(300);
+        }
+        if($('.select_value').length > 0 ){
+            if($('.select_value.active').length < 1){
+                    valid--;
+                    var span = $('<span class="invalid"></span>');
+                    var value = 'Favor de escoger una categoria';
+                    span.html(value);
+                    $('.select_value').parent().parent().parent().find('.invalid').remove();
+                    $('.select_value').parent().parent().parent().append(span);
+                    $('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
+            }
         }
 
         if(valid != required)
@@ -240,42 +254,41 @@ function closet($ele){
 }
 
 var url_regex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-var alpha_numeric_regex = /^[a-zA-Z0-9\.áéíóúñÁÉÍÓÚÑ()\s]+/;
+var alpha_numeric_regex = /[^a-zA-Z0-9\.\-áéíóúñÁÉÍÓÚÑ()\s]+/;
 var numeric_regex = /[\d]+/;
 var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
 var social_regex = /[\W]+/;
 
-
+console.log('asdf/&'.search(alpha_numeric_regex));
 function validate_regex(input, type){
-
     var ret = new Array();
     ret.push(false);
     ret.push('');
     if (type == 'numeric'){
-        if(input.match(numeric_regex) != null)
+        if(input.search(numeric_regex) == -1)
             ret[0] = true;
         ret[1] = 'Debe ser un valor numerico';
     }else if(type == 'alpha'){
-        if(input.match(alpha_regex) != null)
+        if(input.search(alpha_regex) == -1)
             ret[0] = true;
         ret[1] = 'Debe ser un valor de caracteres';
     }else if (type == 'alpha_numeric'){
-        if(input.match(alpha_numeric_regex) != null)
+        if(input.search(alpha_numeric_regex) == -1)
             ret[0] = true;
         ret[1] = 'Debe ser un valor alpha numerico';
     }else if(type == 'hh:mm:ss'){
 
     }else if(type == 'url'){
-        if(input.match(url_regex) != null)
+        if(input.search(url_regex) != -1)
             ret[0] = true;
         ret[1] = 'Debe ser una url valida';
     }else if(type == 'social'){
-        if(input.match(social_regex))
+        if(input.search(social_regex) == -1)
                 ret[0] = true;
         ret[1] = 'Solo el usario, no incluya "@ o /"';
     }
-    return true;
+    return ret;
 }
 
 function selec_item(){
