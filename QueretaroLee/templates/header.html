@@ -28,7 +28,7 @@
             {% if not user_profile.picture %}
                 <img class="img_profile_mini" src="{% static "img/no_profile.png" %}" alt=""/>
             {% else %}
-                <img class="img_profile_mini" src="/static/media/users/00/profile/{{ user_profile.picture }}" />
+                <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}
             <span class="user">{{ user|truncatechars:8 }}</span>
         </a>
