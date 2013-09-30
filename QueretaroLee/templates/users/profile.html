@@ -449,9 +449,11 @@
                     <span class="top right search_list dark_yello_btn">Buscar</span>
                 </span>
                 <a href="/registry/register_list/">
-                    <span class="d-pink_buttom d-brown-btn fright" >
-                        Crear nueva lista
-                    </span>
+                    {% if user_profile.user.id == user.id %}
+                        <span class="d-pink_buttom d-brown-btn fright" >
+                            Crear nueva lista
+                        </span>
+                    {% endif %}
                 </a>
             </div>
             <div id="scrollbar1" class="d-margin_group_user">
