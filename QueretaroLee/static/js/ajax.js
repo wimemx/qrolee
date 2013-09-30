@@ -600,8 +600,8 @@ $(document).ready(function(){
             }
             }).done(function(data) {
 
-                    $('.results').empty();
-                    $('.results').append('<a class="user_profile person" >Personas</a>');
+                    $('.d-results').empty();
+                    $('.d-results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
                         console.log(data);
                         $.each(data,function(i){
@@ -631,23 +631,23 @@ $(document).ready(function(){
 
                                     name.append(truncText(name_user,23));
                                     a.append(name);
-                                    $('.results').append(a);
+                                    $('.d-results').append(a);
                                 }
                                 count++;
                             });
 
                                 if(i=="users")
-                                    $('.results').append('<a class="user_profile person" >Autores</a>');
+                                    $('.d-results').append('<a class="user_profile person" >Autores</a>');
                                 if(i=="author")
-                                    $('.results').append('<a class="user_profile person link_search_all" ' +
-                                       'href="/qro_lee/advanced_search/" >ver todos</a>');
+                                    $('.d-results').append('<a class="user_profile person link_search_all" ' +
+                                       'href="/qro_lee/advanced_search/marin/" >ver todos</a>');
 
 
                         });
 
 
                     }
-                    $('.results').fadeIn(250);
+                    $('.d-results').fadeIn(250);
 
             });
     });
