@@ -72,11 +72,12 @@
                                     </a>
                                     <a href="/qro_lee/profile/title/{{ obj.id }}">
                                         <h3 class="title title_book margin_left no-margin grid-2 fleftt">
-                                            {{ obj.title|truncatewords:2 }}
+                                            {{ obj.title|truncatechars:10 }}
                                         </h3>
                                     </a>
                                     <p class="fleft margin_left no-margin grid-2 ">
-                                        Edgar <span>La Biblia</span></p>
+                                            {{ list_author }}
+                                    </p>
                                 </div>
                             </div>
                      {% endfor %}
@@ -88,7 +89,7 @@
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/author/{{ obj.id }}" class="title alpha grid-4">
-                                    {{ obj.name }}</a>
+                                    {{ obj.name|truncatechars:20 }}</a>
                                 <p class="grid-4 no-margin">{{ obj.biography|truncatechars:150 }}
                                 <p class="title_author grid-4 no-margin"> 23 Titulos</p>
                             </div>

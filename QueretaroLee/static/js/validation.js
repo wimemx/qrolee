@@ -40,7 +40,7 @@ $(document).ready(function(){
 
                             value += text;
                         }else{
-                            value += 'constraseña otra vez';
+                            value += 'constraseña nuevamente';
                         }
                         span.html(value);
                         $(this).append(span);

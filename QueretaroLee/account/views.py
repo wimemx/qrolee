@@ -198,7 +198,7 @@ def update_profile(request, **kwargs):
     dictionary = {
         field: value
     }
-    print dictionary
+
     fields_related_objects = registry.Profile._meta.get_all_related_objects(
         local_only=True)
     fields = registry.Profile._meta.get_all_field_names()
