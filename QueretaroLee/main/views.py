@@ -291,6 +291,8 @@ def get_entity(request, **kwargs):
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
+    print request.POST.get('curr_month')
+    print 1
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
@@ -314,6 +316,7 @@ def get_events(request, **kwargs):
 
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
+            print request.POST.get('curr_month')
             events_ = models.Event.objects.filter(
                 start_time__month=int(request.POST.get('curr_month'))+1,
                 location_id=int(entity), status=status).order_by('start_time')
@@ -332,8 +335,8 @@ def get_events(request, **kwargs):
                         location_id =request.POST['id_entity'])
 
         events = list()
+        print events_
         for event in events_:
-            print event.name
             # Event date = Month, day, id
             event_data = list()
             event_data.append(event.name)
@@ -414,6 +417,18 @@ def event(request, **kwargs):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
+    hc = hc.replace('January', 'Enero')
+    hc = hc.replace('February', 'Febrero')
+    hc = hc.replace('March', 'Marzo')
+    hc = hc.replace('April', 'Abril')
+    hc = hc.replace('May', 'Mayo')
+    hc = hc.replace('June', 'Junio')
+    hc = hc.replace('July', 'Julio')
+    hc = hc.replace('August', 'Agosto')
+    hc = hc.replace('September', 'Septiembre')
+    hc = hc.replace('October', 'Octubre')
+    hc = hc.replace('November', 'Noviembre')
+    hc = hc.replace('December', 'Diciembre')
 
 
     html_parser = HTMLParser.HTMLParser()
@@ -466,7 +481,6 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
         query = [Q(x) for x in q_list]
-
         activity = None
         if 'join' in data:
             if data['join'] != 'none':
@@ -475,11 +489,12 @@ def advanced_search(request, **kwargs):
                 join = []
             if 'activity' in join:
                 activity = join['activity']['0']
-
+        print q_list
         if data['and'] == 0:
             object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
+
         if not object:
             context = {
                 'response': 0
@@ -489,7 +504,6 @@ def advanced_search(request, **kwargs):
         value = {}
         #fields = [item for item in fields if item not in fields_foreign]
         # remove = [0, 3, 5, 6, 7, 8, 10, 11]
-
         list_elements = list()
         if 'type' in join:
             filter_type = ast.literal_eval(join['type']['0'])

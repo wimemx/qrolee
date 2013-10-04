@@ -5,7 +5,7 @@ from django.contrib import auth
 from django.contrib.auth import models as auth_models
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.core import serializers
+from django.utils.timezone import utc
 from account import models as account
 from registry import models, settings
 from decimal import Decimal
@@ -102,12 +102,15 @@ def login(request):
     password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
 
-    if user != None:
+    if user is not None:
         active = models.User.objects.get(id=user.id)
         active = active.is_active
 
         if active:
             if user is not None:
+                user_profile = models.Profile.objects.get(user_id=user.id)
+                user_profile.social_session = 0
+                user_profile.save()
                 auth.login(request, user)
                 success = 'True'
                 url = main_settings.SITE_URL+'qro_lee/'
@@ -133,7 +136,6 @@ def account_register(request):
     url = ''
     user_exits = auth_models.User.objects.filter(
         Q(email=user['email'][0]) | Q(username=user['username'][0]))
-    print user_exits
 
     if user['password'] != user['password_match']:
         success = 'False'
@@ -159,6 +161,7 @@ def account_register(request):
             create_default_list(user)
             profile = models.Profile.objects.create(user_id=user.id)
             profile.phone = ''
+            profile.social_session = 0
             profile.save()
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
             os.mkdir(path+'/'+str(user.id), 0777)
@@ -184,6 +187,8 @@ def register_entity(request, **kwargs):
     entity_type = kwargs['entity_type']
     categories = models.Category.objects.filter(
         type__name=entity_type)
+    user_profile = models.Profile.objects.get(
+        user_id=request.user.id)
     content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
                   'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
@@ -206,6 +211,7 @@ def register_entity(request, **kwargs):
         entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
     context = {
+        'social_session': user_profile.social_session,
         'entity_type': entity_type,
         'content': content,
         'categories': categories
@@ -261,6 +267,13 @@ def register(request):
                 entity_id=entity.id, category_id=ele)
     if entity is not None:
         succuess = entity.id
+        activity_data = {
+            'user_id': request.user.id,
+            'object': entity.id,
+            'type': 'E',
+            'activity_id': 1
+        }
+        update_activity(activity_data)
     else:
         succuess = 'False'
     context = {
@@ -362,22 +375,36 @@ def media_upload(request):
     if 'list_picture' in request.POST:
         folder = '/list/'
 
+    if 'fb_img' in request.POST and 'folder' != '':
+        folder = '/event/'
     path_extension = str(request.user.id)+folder
     path = os.path.join(
         os.path.dirname(__file__), '..',
         'static/media/users/'+path_extension).replace('\\', '/')
 
-    path += str(request.FILES['file'])
-    file = request.FILES['file']
+    if 'fb_img' in request.POST:
+        file = None
+        file_name = request.POST.get('fb_img').split('/')
+        file_name = file_name[-1]
+        urllib.urlretrieve(request.POST.get('fb_img'), os.path.join(path, file_name))
+    else:
+        path += str(request.FILES['file'])
+        file = request.FILES['file']
+        file_name = str(request.FILES['file'])
+
     handle_uploaded_file(path, file)
-    context = {}
+    context = {
+        'file_name': file_name
+    }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
 def handle_uploaded_file(destination, f):
+    if f is None:
+        return
     with open(destination, 'wb+') as destination:
         for chunk in f.chunks():
-            destination.write(chunk)
+                    destination.write(chunk)
 
 def register_menu(request, **kwargs):
     template = kwargs['template_name']
@@ -390,7 +417,7 @@ def register_event(request, **kwargs):
     entity = models.Entity.objects.get(
         id=kwargs['entity_id'])
     entity_type = kwargs['entity_type']
-    profile = models.Profile.objects.filter(
+    profile = models.Profile.objects.get(
         user__id=request.user.id)
     if entity_type == 'group':
         entity_type = ['grupos', 'group']
@@ -400,11 +427,11 @@ def register_event(request, **kwargs):
         entity_type == 'organization'
         entity_type = ['organizaciones', 'organization']
     context = {
-        'profile': profile[0],
+        'profile': profile,
         'entity': entity,
         'entity_type': entity_type
     }
-    print entity.id
+
     return render(request, template, context)
 
 def ajax_register_event(request):
@@ -446,6 +473,15 @@ def ajax_register_event(request):
     event.save()
     if event is not None:
         success = event.id
+        activity_data = {
+            'user_id': request.user.id,
+            'object': event.id,
+            'type': 'D',
+            'activity_id': 1,
+            'added_to_type': 'E',
+            'added_to_object': event.location_id
+        }
+        update_activity(activity_data)
     else:
         success = 'False'
     context = {
@@ -486,6 +522,18 @@ def event(request, **kwargs):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
+    hc = hc.replace('January', 'Enero')
+    hc = hc.replace('February', 'Febrero')
+    hc = hc.replace('March', 'Marzo')
+    hc = hc.replace('April', 'Abril')
+    hc = hc.replace('May', 'Mayo')
+    hc = hc.replace('June', 'Junio')
+    hc = hc.replace('July', 'Julio')
+    hc = hc.replace('August', 'Agosto')
+    hc = hc.replace('September', 'Septiembre')
+    hc = hc.replace('November', 'Noviembre')
+    hc = hc.replace('December', 'Diciembre')
+
 
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
@@ -529,7 +577,6 @@ def get_events(request, **kwargs):
             events.append(event_date)
 
         events_ = models.Event.objects.filter(location=entity)
-
         events = []
         for event in events_:
             # Event date = Month, day, id
@@ -697,7 +744,7 @@ def datetime_from_str(time_str):
             # lines are for Python 2.4 support.
             #t = datetime.datetime.strptime(time_str, format)
             t_tuple = time.strptime(time_str, format)
-            t = datetime.datetime(*t_tuple[:6])
+            t = datetime.datetime(*t_tuple[:6]).replace(tzinfo=utc)
         except ValueError:
             pass
         else:
@@ -794,7 +841,7 @@ def add_genre(request):
         genre_user.save()
     else:
         genre_user = account.ListGenre.objects.get(genre=genre, list__user=user)
-        print genre_user.status
+
         if genre_user.status:
             genre_user.status = False
         else:
@@ -846,14 +893,13 @@ def add_rate(request):
     grade = request.POST.get('grade')
     element_id = request.POST.get('element_id')
 
-    print element_id
     list = {
         'type':str(type),
         'grade':int(grade),
         'user':user,
         'element_id':int(element_id)
     }
-    print list
+
     rate_user = account.Rate.objects.create(**list)
     #rate_user.save()
 
@@ -1211,9 +1257,16 @@ def edit_title_read(request):
         context['succes'] = 'True'
         context['type'] = 1
 
-    if int(request.POST.get('type')) == 2:
-        print 2
-
-
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
+
+def update_activity(data):
+    """
+    User = user that creates the move
+    Object is the object on which the activity was made
+    Type = E (entity) T (title) L (list) etc...
+    Verb = action Actualizo Creo etc...
+    """
+    activity = account.Activity.objects.create(**data)
+    activity.save()

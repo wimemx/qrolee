@@ -18,6 +18,7 @@ class Profile(models.Model):
     postal_code = models.IntegerField(max_length=5, null=True)
     biography = models.CharField(max_length=255, null=True)
     website = models.CharField(max_length=255, null=True)
+    social_session = models.BooleanField()
     user = models.ForeignKey(User)
 
     def __unicode__(self):
@@ -100,7 +101,7 @@ class Event(models.Model):
     share_fb = models.BooleanField(default=False)
     location = models.ForeignKey(Entity)
     owner = models.ForeignKey(User)
-
+    fb_url = models.CharField(max_length=255, null=True)
     def __unicode__(self):
         return '%s, %s' % (self.name, self.description)
 

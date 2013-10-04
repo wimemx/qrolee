@@ -20,7 +20,7 @@ function truncText (text, maxLength, ellipseText){
 
 function populateCal(curr_month,$item){
     $('.item').remove();
-    if((curr_month)>0){
+    if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
 
@@ -703,127 +703,41 @@ $(document).ready(function(){
                         var day = event_data[1];
                         var id = event_data[2];
                         var $table;
-                        if(month <=3){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
+                        $table = $('.sidebar-b table');
+                        $table.find('.month:odd').each(function(index){
+                            if((month-1) == index){
+                                console.log($(this).html());
+                                $table = $(this).parent().parent().parent();
+                                //console.log($table.html());
+                                $table.find('tr').each(function(){
+                                    $(this).find('td').each(function(){
+                                        if($(this).html() == '&nbsp;')
+                                            $(this).css({
+                                                'background': '#DBC8A2'
+                                            })
+                                        if($(this).html() == day){
+                                            $(this).addClass('active-event');
+                                            $(this).click(function(){
+                                                var day = $(this).html();
+                                                var lenth = $('.item').length;
+                                                $('.item').each(function(index){
+                                                    if(!$(this).find('.date').hasClass('day_'+day))
+                                                        $(this).fadeOut();
+                                                    else{
+                                                        $(this).fadeIn();
+                                                        $(this).css('display','block');
+                                                    }
                                                 });
-                                            }
-                                        });
+
+
+                                            });
+                                        }
                                     });
-                                }
-                            });
-
-                        }else if(month <=6){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
+                                });
+                            }
+                        });
 
 
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }else if(month <=9){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                           if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }else{
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }
 
                         if(count == (len-1)){
                             populateCal(curr_month,$item);

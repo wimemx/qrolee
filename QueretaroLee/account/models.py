@@ -33,7 +33,7 @@ class Author(models.Model):
     birthday = models.DateTimeField()
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
-    biography = models.CharField(max_length=1000)
+    biography = models.TextField()
     status = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -111,15 +111,18 @@ class Rate(models.Model):
     user = models.ForeignKey(User)
 
 
+class ActivitiesList(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return '%s' % (self.name)
+
+
 class Activity(models.Model):
     user = models.ForeignKey(User)
     object = models.IntegerField(max_length=5)
-    verb = models.CharField(max_length=255)
+    added_to_object = models.IntegerField(max_length=5, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    meta = models.TextField()
     type = models.CharField(max_length=1)
-
-
-class Struct:
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
+    added_to_type = models.CharField(max_length=1, null=True)
+    activity = models.ForeignKey(ActivitiesList)

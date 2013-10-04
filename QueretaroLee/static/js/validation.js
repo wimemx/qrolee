@@ -260,7 +260,6 @@ var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
 var social_regex = /[\W]+/;
 
-console.log('asdf/&'.search(alpha_numeric_regex));
 function validate_regex(input, type){
     var ret = new Array();
     ret.push(false);
