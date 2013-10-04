@@ -975,7 +975,7 @@ input:not([type='submit']){
 
     width: 50%;
     height: 488px;
-    float: left;
+    float: right;
 }
 
 .d-map_spot{
@@ -1968,4 +1968,15 @@ margin: 0px;
 
 .title_create_entity{
     text-transform: none !important;
+}
+
+.entity_map{
+    height: 200px !important;
+}
+
+.picture_list .dz-message span{
+    padding-top: 64px;
+    float: left;
+    width: 100%;
+    text-align: center;
 }
