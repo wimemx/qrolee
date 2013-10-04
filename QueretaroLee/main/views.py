@@ -208,11 +208,17 @@ def get_entity(request, **kwargs):
         entitycategory__category_id__in=categories_ids).exclude(
             id=entity.id).distinct()
     followers_list = list()
-    entity_users = models.EntityUser.objects.filter(
-        entity_id=entity)
-    entity_followers = entity_users.filter(is_member=1)
-    entity_admins = entity_users.filter(is_admin=1)
+    entity_followers = models.User.objects.filter(
+        entityuser__is_member=1, entityuser__entity_id=entity.id)
+    user_pictures = list()
+    for follower in entity_followers:
+        profile = models.Profile.objects.get(
+            user_id=follower.id)
+        user_pictures.append(profile.picture)
+    entity_admins = models.User.objects.filter(
+        entityuser__is_admin=1, entityuser__entity_id=entity.id)
     admins = User.objects.filter(id=entity_admins)
+
     for ent in entities:
         followers = models.EntityUser.objects.filter(
             entity_id=ent.id)
@@ -282,7 +288,7 @@ def get_entity(request, **kwargs):
         'range': range(5),
         'count': len(count_rate),
         'count_grade': count_grade,
-        'followers': len(entity_followers),
+        'followers': zip(entity_followers, user_pictures),
         'admins': admins
     }
 

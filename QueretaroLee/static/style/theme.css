@@ -75,7 +75,7 @@ input:not([type='submit']){
     font-family: 'Conv_DINPro-Bold';
 }
 .din-r{
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Conv_fontscore.com_d-dinproregular' !important;
 }
 .dark_yello_btn{
     background: #edde84;
@@ -472,7 +472,7 @@ input:not([type='submit']){
         .entity .member .follow{
             margin-top: 0px;
             float: left;
-            width: 240px;
+            width: 210px;
         }
         .entity .member.grid-6 .followers{
             width: 100%;
@@ -499,12 +499,16 @@ input:not([type='submit']){
                     height: 100%;
                     margin-bottom: 5px;
                 }
+        .entity .member a{
+            color: #222;
+        }
         .entity .member .btn{
             background: #edde84;
             padding:5px 15px 5px 15px;
             font-size: 12px;
             font-family: 'Montserrat' sans-serif;
             margin-right: 30px;
+            cursor:pointer;
         }
             .entity .member p{
                 font-size: 11px;
@@ -833,6 +837,11 @@ input:not([type='submit']){
                          font-size: 13px;
                          width: 100%;
                          text-align: inherit;
+                         display: block;
+                         height: auto;
+                     }
+                     .wrapper .title a{
+                         font-size: 12px;
                      }
                      #scrollbar1 .wrapper.grid-5 .title a{
                          text-align: inherit;
@@ -842,6 +851,7 @@ input:not([type='submit']){
                          font-size: 13px;
                          text-decoration: underline;
                          font-family: 'Conv_fontscore.com_d-dinproregular';
+
                      }
                      
 
