@@ -233,15 +233,27 @@ select{
 
 
 .alert-message{
-    width: 200px;
-    padding: 10px;
-    height: 80px;
-    display: none;
-    position: fixed;
-    left: 50%;
+    padding: 20px 10px 20px 10px;
+    max-width: 200px;
+    display: block;
+    position: relative;
     z-index: 1;
-    top: 300px;
+    margin: 200px auto;
+    background: #EBDCC0;
 
+}
+.message-header{
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: #C29E78;
+    text-align: left;
+    text-indent: 15px;
+    color: #F3E4C8;
+    font-family: 'Montserrat' sans-serif;
+    line-height: 20px;
 }
     .alert-message p{
         font-family: 'Montserrat' sans-serif;
@@ -326,7 +338,7 @@ select{
     width: auto;
 }
 .entity.edit .nav{
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 .entity.edit .member{
@@ -368,9 +380,9 @@ select{
     }
     .affiliate .remove{
         width: 20px;
-        height: 20px;
+        height: 18px;
         display: block;
-        line-height: 20px;
+        line-height: 18px;
         text-align: center;
         background: #ef846b;
         color: #000;
@@ -381,6 +393,7 @@ select{
         padding:0px 8px 0px 8px;
         font-size: 10px;
         display: none;
+        margin-top: 10px;
     }
     .affiliate.no-margin.margin{
         margin:0px 20px 0px 20px;
@@ -444,6 +457,9 @@ p.advanced_search_btn{
 }
     .results .item .title{
         margin-top: 30px !important;
+        line-height: 20px;
+        text-transform: capitalize;
+        margin-bottom: 5px;
     }
     .results .item .wrapper{
         margin:0px

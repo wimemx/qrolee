@@ -617,7 +617,9 @@ def admin_users(request, **kwargs):
     entity_type = models.Type.objects.get(
         entity__id=obj.id)
     members = models.EntityUser.objects.filter(
-        entity_id=obj.id).filter(is_admin=True)
+        entity_id=obj.id)
+    admins = members.filter(is_admin=True)
+    requests = members.filter(request=True)
     users = list()
     for member in members:
         users.append(member.user_id)
@@ -633,9 +635,10 @@ def admin_users(request, **kwargs):
         entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
     context = {
-        'members': members,
+        'members': admins,
         'entity_type': entity_type,
-        'entity': obj
+        'entity': obj,
+        'requests': requests
 
     }
     return render(request, template, context)

@@ -50,6 +50,10 @@ input:not([type='submit']){
     width: 100%;
     text-indent: 5px;
 }
+.category{
+    color:#8B5627 !important;
+    text-decoration: underline;
+}
 .container-16 .clear{
     clear: both;
     float: left;
@@ -571,6 +575,9 @@ input:not([type='submit']){
     .content.single .load{
         display: none;
     }
+    .load.add.members{
+        margin-top: 50px;
+    }
     .content.single .members.load{
         padding-top: 50px;
     }
@@ -699,7 +706,7 @@ input:not([type='submit']){
             }
         .content .sidebar-a .contact p{
             margin-bottom: 5px;
-            font-size: 13px;
+            font-size: 12px;
         }
         .content .content.overview p{
             height: 100px;
@@ -711,7 +718,7 @@ input:not([type='submit']){
             float: left;
         }
             .content .sidebar-a .info,.content .sidebar-a p,.content .sidebar-a span{
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 400;
                 margin-top: 0px;
             }
@@ -719,7 +726,7 @@ input:not([type='submit']){
                 width: 100%;
                 margin-bottom: 20px;
                 float: left;
-                font-size: 14px;
+                font-size: 12px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .content .sidebar-a .time,.content .sidebar-a .info{
@@ -965,10 +972,10 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 15px; z-index: 5 }
-#scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
-#scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
-#scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5 }
+#scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
+#scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+#scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 5px; }
 #scrollbar1 .disable{ display: none; }
 .noSelect { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
 

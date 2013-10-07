@@ -23,7 +23,6 @@ import ast
 import operator
 import math
 import urllib2
-import pprint
 
 
 @login_required(login_url='/')
@@ -188,10 +187,36 @@ def get_entities(request, **kwargs):
 def get_entity(request, **kwargs):
     template = kwargs['template_name']
     entity = kwargs['entity'].split('_', 1)
+
     id_entity = int(entity[1])
     entity = models.Entity.objects.get(id=id_entity)
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
+    if request.POST:
+        if 'membership' in request.POST:
+            membership = int(request.POST.get('membership'))
+            entityuser = models.EntityUser.objects.get_or_create(
+                user_id=request.user.id)
+            if membership == 1:
+                entityuser[0].is_member = True
+                entityuser[0].save()
+            else:
+                entityuser[0].is_member = False
+                entityuser[0].save()
+        elif 'follow_private' in request.POST:
+            membership = int(request.POST.get('follow_private'))
+            entityuser = models.EntityUser.objects.get_or_create(
+                user_id=request.user.id)
+            if membership == 1:
+                entityuser[0].request = True
+                entityuser[0].save()
+            else:
+                entityuser[0].request = False
+                entityuser[0].is_member = False
+                entityuser[0].save()
+    else:
+        entityuser = models.EntityUser.objects.filter(
+                user_id=request.user.id)
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -268,12 +293,11 @@ def get_entity(request, **kwargs):
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
 
-    entity_user = models.EntityUser.objects.filter(entity=id_entity)
+    if not entityuser:
+        member = False
+    else:
+        member = entityuser[0].is_member
 
-    member = False
-
-    if len(entity_user) > 0:
-        member = True
     entity.address = entity.address.split('#')
     context = {
         'entity': entity,
@@ -297,8 +321,6 @@ def get_entity(request, **kwargs):
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
-    print request.POST.get('curr_month')
-    print 1
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
@@ -322,7 +344,6 @@ def get_events(request, **kwargs):
 
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
-            print request.POST.get('curr_month')
             events_ = models.Event.objects.filter(
                 start_time__month=int(request.POST.get('curr_month'))+1,
                 location_id=int(entity), status=status).order_by('start_time')
@@ -341,7 +362,6 @@ def get_events(request, **kwargs):
                         location_id =request.POST['id_entity'])
 
         events = list()
-        print events_
         for event in events_:
             # Event date = Month, day, id
             event_data = list()
@@ -460,13 +480,15 @@ def advanced_search(request, **kwargs):
         model = get_model(app_label, model_name)
         query_list = ast.literal_eval(data['value'])
         q_list = list()
+        all_objs = False
         for key in query_list:
-            print key
             if '__in' in key:
                 val = ast.literal_eval(query_list[key])
-                if len(val) > 0:
+                if int(val[0]) != -1:
                     t = (key, val)
                     q_list.append(t)
+                else:
+                    all_objs = True
             elif '__gt' in key:
                 if query_list[key] != '':
                     date = views.datetime_from_str(query_list[key])[1]
@@ -495,9 +517,12 @@ def advanced_search(request, **kwargs):
                 join = []
             if 'activity' in join:
                 activity = join['activity']['0']
-        print q_list
+
         if data['and'] == 0:
-            object = model.objects.filter(reduce(operator.or_, query))
+            if all_objs:
+                object = model.objects.all()
+            else:
+                object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
 
@@ -515,11 +540,11 @@ def advanced_search(request, **kwargs):
             filter_type = ast.literal_eval(join['type']['0'])
             filter_list_type = list()
             filter_default = list()
-            for type in filter_type:
-                if isinstance(type, int):
-                    filter_default.append(type)
+            for type_ in filter_type:
+                if isinstance(type_, int):
+                    filter_default.append(type_)
                 else:
-                    filter_list_type.append(type)
+                    filter_list_type.append(type_)
             q_list = [('user_id', request.user.id)]
             if filter_list_type:
                 for element in filter_list_type:
@@ -780,7 +805,6 @@ def get_list(request,**kwargs):
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
-        print dictionary
 
     context = {
         'list':dictionary,

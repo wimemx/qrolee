@@ -140,13 +140,17 @@ function findUser($ele, userEmail, entity, $parent){
         }
     }).done(function(data) {
             $.each(data,function(index){
-                user = data[index];
+                var user = data[index];
                 $.each(user,function(i){
                     var span = $item.clone();
                     span.removeClass('affiliate margin').addClass('affiliate user_'+user[i][1]);
 
                     if(span.hasClass('user_'+user[i][1])){
-                        var img_url = '/static/media/users/'+user[i][1]+'/'+user[i][0];
+                        var img_url;
+                        if(user[i][0])
+                            img_url = '/static/media/users/'+user[i][1]+'/profile/'+user[i][0];
+                        else
+                            img_url = '/static/img/create.png';
                         span.find('.name').html(user[i][2]);
                         span.find('.user-id').val(user[i][1]);
                         span.find('img').attr('src',img_url);
@@ -163,27 +167,27 @@ function findUser($ele, userEmail, entity, $parent){
                     $(this).addClass('margin');
                     counter += 3;
                 }
-                $(this).find('.green_btn').click(function(){
-                    $(this).fadeOut(300,function(){
-                        $(this).parent().parent().find('.remove').fadeIn(300);
-                    });
-                    removeUser($('.alert-message'),
-                        $(this).parent().parent().find('.user-id').val(), 0,
-                        $('.alert-message input.entity').val());
-                });
-                   $('.remove').click(function(){
-                        if(!$(this).hasClass('add')){
-                            var user = $(this).parent().parent().find('input').val();
-                            var name = $(this).parent().find('.name').html();
-                            $('.alert-message').fadeIn(300,function(){
-                                $(this).find('.name').html(name);
-                                $(this).find('.user').val(user);
-                            });
-                            counter = 1;
-                            len = $('.affiliate').length;
-                        }
-                    });
-            });
+               $(this).find('.green_btn').click(function(){
+                   $(this).fadeOut(300,function(){
+                       $(this).parent().parent().find('.remove').fadeIn(300);
+                   });
+                   removeUser($('.alert-message'),
+                       $(this).parent().parent().find('.user-id').val(), 0,
+                       $('.alert-message input.entity').val());
+               });
+               $(this).find('.remove').click(function(){
+                   if(!$(this).hasClass('add')){
+                       var user = $(this).parent().parent().find('input').val();
+                       var name = $(this).parent().find('.name').html();
+                       $('.container_message').fadeIn(300,function(){
+                           $(this).find('.name').html(name);
+                           $(this).find('.user').val(user);
+                       });
+                       counter = 1;
+                       len = $('.affiliate').length;
+                   }
+               });
+           });
 
     });
 }
@@ -854,7 +858,17 @@ $(document).ready(function(){
         });
         $(this).parent().fadeOut(300,removeUser($(this).parent(), user, 1, $('.alert-message input.entity').val()));
     });
+    $('.alert-message .reject').click(function(){
+        $('.container_message').fadeOut(300);
+    });
     $('.entity .nav .btn:eq(0)').click(function(){
+        $('.admin').find("*[class*='user_']").each(function(){
+            $(this).remove();
+        });
+        findUser($('.alert-message'), '-1',
+            $('.alert-message').find('.entity').val(), $('.admin'));
+    });
+    $('.entity .nav .btn:eq(2)').click(function(){
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });

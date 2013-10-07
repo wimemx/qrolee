@@ -62,7 +62,6 @@ $(document).ready(function(){
             regex_type = regex_type[1];
             if($.trim($(this).val()) != ''){
                 var regex_validation = validate_regex($.trim($(this).val()), regex_type);
-                console.log(regex_validation);
                 if(!regex_validation[0]){
                     valid--;
                     var span = $('<span class="invalid"></span>');
@@ -104,7 +103,7 @@ $(document).ready(function(){
 
         var query = ' ';
 
-        type = 0;
+        var type = 0;
 
         if($(this).find('input').val() == 'title')
             type = 1;

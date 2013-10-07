@@ -8,9 +8,6 @@ register = template.Library()
 @register.filter
 def member_since(date):
     date_now = datetime.datetime.now()
-    print date_now.year
-    print date.year
-    print
     if (date_now.year - date.year) > 0:
         ext = ' años'
         if (date_now.year - date.year) == 1:
@@ -26,3 +23,7 @@ def member_since(date):
         if (date_now.day - date.day) == 1:
             ext = ' dia'
         return str(date_now.day - date.day) + ext
+
+@register.filter
+def total_members(followers):
+    return len(followers)
