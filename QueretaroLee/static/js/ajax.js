@@ -1,6 +1,14 @@
 function truncText (text, maxLength, ellipseText){
         ellipseText = ellipseText || '&hellip;';
 
+        text_ = '';
+        if(text.length > maxLength)
+            text_ = (text).substring(0,(maxLength-3)) + '...';
+        else
+            text_ = text;
+
+        /*ellipseText = ellipseText || '&hellip;';
+
         if (text.length < maxLength)
             return text;
 
@@ -15,7 +23,8 @@ function truncText (text, maxLength, ellipseText){
         if(/[\s\(\[\{]/.test(text[lastCharPosition])) lastCharPosition--;
 
         //Make sure we do not just return a letter..
-        return (lastCharPosition ? text.substr(0, lastCharPosition+1) : '') + ellipseText;
+        return (lastCharPosition ? text.substr(0, lastCharPosition+1) : '') + ellipseText;*/
+        return text_;
 }
 
 function populateCal(curr_month,$item){
@@ -62,7 +71,7 @@ function populateCal(curr_month,$item){
                             var d_name = e[0];
                             d_name = d_name.replace(/\s/g,'');
                             $ditem.find('.d-link_event').attr('href','/qro_lee/events/'
-                                + d_name + "_" + e[6]);
+                                + e[6]);
                             $ditem.find('.profile-picture').attr('src',picture_url);
                             $ditem.find('.title').html(e[0]);
                             $ditem.find('.time').html(e[5]);
@@ -330,8 +339,12 @@ $(document).ready(function(){
             },
             dataType: 'json'
         }).done(function(data){
-                $('.img_profile_mini').attr('src','/static/media/users/' +
-                    data.id_user + '/profile/' + data.picture);
+                var src_picture = '/static/img/create.png';
+                if(data.picture!='')
+                    src_picture = '/static/media/users/' +
+                    data.id_user + '/profile/' + data.picture;
+
+                $('.img_profile_mini').attr('src',src_picture);
             });
     }
 
@@ -492,133 +505,229 @@ $(document).ready(function(){
     });
 
     $('.search_list').click(function(){
-
         var url = '';
+        var text = '';
         if($('.type').val()=="List"){
-             url = '/list/';
+            url = '/list/';
+            text = ' Listas ';
         }
         if($('.type').val()=="Title"){
-             url = '/book/titles/';
+            url = '/book/titles/';
+            text = ' Títulos';
         }
         if($('.type').val()=="Author"){
-             url = '/book/authors/';
+            url = '/book/authors/';
+            text = ' Autores';
         }
+        csrf = $('.csrf_header').find('input').val();
+        my_list_type = parseInt($(this).parent().find('.my_list_typ').val());
 
          $.ajax({
             type: "POST",
             url: '/qro_lee'+url,
             dataType: 'json',
             data: {
-                'csrfmiddlewaretoken': $(this).parent().find('div input').val(),
-                'field_value':$('.field_list').val()
+                'csrfmiddlewaretoken': csrf,
+                'field_value':$('.field_list').val(),
+                'type_list':my_list_type
             }
             }).done(function(data) {
+
                 if(data){
 
-                    $('.overview').fadeOut(250);
-                    $('.overview').empty();
-                    var empty = true;
+                    var overview;
+                    if(my_list_type==0){
+                        overview = $('.my_items_list');
+                    }else{
+                        overview = $('.overview');
+                    }
+
+                    overview.fadeOut(250);
+                    overview.empty();
 
                     if($('.type').val()=="List"){
 
                     $.each(data,function(i){
-                        empty = false;
-                        div = $('<div class="item_list grid-14 no-margin" ></div>');
+                        var href = '/qro_lee/profile/list/'+ data[i].id;
+                        div = $('<div class="item_list grid-15 no-margin" ></div>');
+                        a_wrapper = $('<a href="' + href + '"></a>');
                         span = $('<span class="wrapper_list" ></span>');
-                        div.append(span);
-                        img = $('<img src="/static/media/users/1/list/' +
+                        a_wrapper.append(span);
+                        div.append(a_wrapper);
+                        img = $('<img class="img_size_all" src="/static/media/users/'
+                            + data[i].id_user + '/list/' +
                             data[i].picture + '"/>');
                         span.append(img);
-                        span_data = $('<span class="container_data grid-12 no-margin">'+
+                        span_data = $('<span class="container_data grid-13 no-margin">'+
                             '</span>');
-                        a_title =  $('<a href="/qro_lee/entity/group/wime8_3/"'+
-                        'class="title alpha title_book grid-10"></a>');
+                        if(my_list_type==0){
+
+                            span_title = $('<span class="grid-4 no-margin"></span>');
+                            span_btn = $('<span class="container_btn grid-4 no-margin"></span>');
+                            edit_list = $('<a href="/registry/edit_list/' + data[i].type +
+                                '/' + data[i].id + '"></a>');
+                            span_save = $('<span class="green_btn size_btn_edit marg_edit" >Editar</span>')
+                            del_list = $('<span class="pink_btn size_btn_edit message_alert" >-</span>');
+                            edit_list.append(span_save);
+                            span_btn.append(edit_list);
+                            span_btn.append(del_list);
+                            span_data.append(span_title);
+                            span_data.append(span_btn);
+
+                        }else{
+                            span_title = $('<span class="grid-9 no-margin"></span>');
+                            span_data.append(span_title);
+                        }
+
+                        a_title =  $('<a href="' + href + '" class="title alpha title_book"></a>');
                         a_title.append(data[i].name);
-                        p_by = $('<p class="d-text_list d-text_opacity" >'+
-                                'Lista con 20 libros creada por </p>');
-                        p_by.append('<span class="d-pink">' + data[i].user +
-                            '</span>');
-                        p_text = $('<p class="d-text_list" ></p>');
-                        p_text.append(truncText(data[i].description,300));
-                        span_data.append(a_title);
+                        if(my_list_type==0)
+                            p_stars = $('<span class="fright"></span>');
+                        else
+                            p_stars = $('<span class="grid-4 no-margin"></span>');
+
+                        span_stars = $('<span class="fright" ></span>');
+                        for(ind = 0;ind<5;ind++){
+                            if(ind<data[i].grade)
+                                span_stars.append('<img src="/static/img/comunityStar.png">');
+                            else
+                                span_stars.append('<img src="/static/img/backgroundStar.png">');
+                        }
+                        if(data[i].type == 'T')
+                            type = 'libros';
+                        else
+                            type = 'autores';
+
+                        p_by = $('<span class="d-text_list grid-13 d-text_opacity no-margin" >'+
+                                'Lista con ' + data[i].count +' ' + type + ' creada por </span>');
+                        text_by = $('<a href="/accounts/users/profile/' +
+                            data[i].id_user + '" class="d-pink"></a>');
+                        text_by.append(data[i].user);
+                        p_by.append(text_by);
+                        p_text = $('<span class="d-text_list grid-13 no-margin" ></span>');
+                        p_text.append(truncText(data[i].description,520));
+                        span_title.append(a_title);
+                        p_stars.append(span_stars);
+                        span_data.append(p_stars);
                         span_data.append(p_by);
                         span_data.append(p_text);
                         div.append(span_data);
-                        $('.overview').append(div);
+                        overview.append(div);
 
                   });
                   }
                   if($('.type').val()=='Title'){
+
                     $.each(data,function(i){
-                        empty = false;
-                        div = $('<div class="grid-5 fleft ' +
-                            'results no-margin"></div>');
+                        href = '/qro_lee/profile/title/'+data[i].id;
+                        div = $('<div class="grid-5 fleft results margin_bottom' +
+                            ' no-margin"></div>');
                         div_item = $('<div class="item"></div>');
+                        a_wrapper = $('<a href="' + href + '" ></a>');
                         span = $('<span class="wrapper wrapper_book fleft ' +
                             'no_margin-right"></span>');
-                        div_item.append(span);
-                        img = $('<img src="" alt=""/>');
+                        a_wrapper.append(span);
+                        div_item.append(a_wrapper);
+                        img = $('<img class="img_size_all" src="' + data[i].picture + '" alt=""/>');
                         span.append(img);
-                        h3 = $('<h3 class="title title_book margin_left ' +
-                            'no-margin grid-2 fleftt"></h3>');
-                        h3.append(truncText(data[i].title,11));
-                        div_item.append(h3);
-                        p = $('<p class="fleft margin_left no-margin grid-2 ">' +
-                            'Edgar <span>La Biblia</span></p>');
+                        a_title = $('<a href="' + href + '" ></a>');
+                        h3 = $('<h3 class="title title_book margin_left no-margin' +
+                            ' grid-2 fleftt"></h3>');
+                        h3.append(truncText(data[i].title,8));
+                        a_title.append(h3);
+                        div_item.append(a_title);
+                        var name_author = data[i].author;
+                        var href_a = '';
+
+                        if(data[i].author != 'autor anonimo'){
+                            name_author = name_author.substring(0,15);
+                            href_a = 'href="/qro_lee/profile/author/' + data[i].id_author + '"';
+                        }
+
+                        p = $('<p class="fleft margin_left no-margin grid-2"></p>');
+                        a_author = $('<a class="title_author" ' + href_a + '></a>');
+                        a_author.append(name_author);
+                        p.append(a_author);
                         div_item.append(p);
+                        p_genre = $('<p class="fleft margin_left no-margin grid-2"></p>');
+                        var genre = data[i].genre;
+                        $.each(genre,function(index){
+                            if(index<=3){
+                                p_genre.append(' <span class="title_author">' +
+                                    genre[index] + '</span>');
+                            }
+                        });
+                        p_stars = $('<p class="fleft margin_left no-margin grid-2"></p>');
+                        for(ind = 0;ind<5;ind++){
+                            if(ind<data[i].grade)
+                                p_stars.append('<img class="starts_mini" src="/static/img/comunityStar.png">');
+                            else
+                                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStar.png">');
+                        }
+                        div_item.append(p_genre);
+                        div_item.append(p_stars);
                         div.append(div_item);
-                        $('.overview').append(div);
+                        overview.append(div);
 
                     });
                   }
 
                   if($('.type').val()=='Author'){
                     $.each(data,function(i){
-                        empty = false;
+                        href = '/qro_lee/profile/author/' + data[i].id;
                         div = $('<div class="grid-7 alpha">' +
                             '</div>');
+                        a_wrapper = $('<a href="' + href + '" ></a>');
                         span = $('<span class="wrapper ' +
                             'border_author "><span>');
-                        img = $('<img alt="" src="/static/img/foto.jpg"/>');
-                        div.append(span);
+                        img = $('<img class="img_size_all" alt="" ' +
+                            'src="' + data[i].picture + '"/>');
+                        a_wrapper.append(span);
+                        div.append(a_wrapper);
                         span.append(img);
-                        a = $('<a class="title alpha grid-4"></a>');
-                        a.append(data[i].name);
-                        p_text = $('<p class="grid-4 no-margin"></p>');
+                        a = $('<a href="' + href + '" class="title alpha grid-4"></a>');
+                        a.append(truncText(data[i].name,20));
+                        p_text = $('<p class="grid-4 no-margin text_biography"></p>');
+                        p_text.append(truncText(data[i].biography,180));
                         p_titles = $('<p class="title_author grid-4 no-margin">' +
                             '</p>');
                         div.append(a);
                         div.append(p_text);
                         div.append(p_titles);
-                        p_titles.append("23 Titulos");
-                        $('.overview').append(div);
+                        text_title = 'no tiene Títulos';
+                        if(data[i].count!=0)
+                            text_title = data[i].count + ' Títulos';
+
+                        p_titles.append(text_title);
+                        overview.append(div);
 
                     });
                   }
 
-                    if(empty=true){
-
+                    if(Object.keys(data).length==0){
+                        div = $('<div class="grid-14  no_resuls">No hay ' + text + ' </div>');                        $('.overview').append(div);
                     }
 
-                    $('.overview').fadeIn(250);
+                    $('#scrollbar1').tinyscrollbar();
+                    overview.fadeIn(250);
 
                 }else{
-                    $('.overview').fadeOut(250);
+                    overview.fadeOut(250);
                 }
             });
     });
 
     $('.search_button').click(function(){
-
+        if($('.search_field').val().length>0){
             var url = '/accounts/list_users/';
             $.ajax({
-            type: "POST",
-            url: url,
-            dataType: 'json',
-            data: {
-                'csrfmiddlewaretoken': $(this).parent().find('div input').val(),
-                'field_value':$('.search_field').val()
-            }
+                type: "POST",
+                url: url,
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': $(this).parent().find('div input').val(),
+                    'field_value':$('.search_field').val()
+                }
             }).done(function(data) {
 
                     $('.d-results').empty();
@@ -657,11 +766,11 @@ $(document).ready(function(){
                                 count++;
                             });
 
-                                if(i=="users")
-                                    $('.d-results').append('<a class="user_profile person" >Autores</a>');
-                                if(i=="author")
-                                    $('.d-results').append('<a class="user_profile person link_search_all" ' +
-                                       'href="/qro_lee/advanced_search/" >ver todos</a>');
+                            if(i=="users")
+                                $('.d-results').append('<a class="user_profile person" >Autores</a>');
+                            if(i=="author")
+                                $('.d-results').append('<a class="user_profile person link_search_all" ' +
+                                    'href="/qro_lee/advanced_search/" >ver todos</a>');
 
 
                         });
@@ -670,7 +779,8 @@ $(document).ready(function(){
                     }
                     $('.d-results').fadeIn(250);
 
-            });
+                });
+        }
     });
     if(entity_search_events){
 
@@ -697,7 +807,7 @@ $(document).ready(function(){
             },
             dataType: 'json'
         }).done(function(data){
-                var count = 0;
+          var count = 0;
                 $.each(data,function(i){
                     var event = data[i];
                     var len = event.length;
@@ -919,6 +1029,11 @@ $(document).ready(function(){
             });
     });
 
+    if($('#map').length>0){
+        initialize(20,100);
+
+    }
+
 });
 
 $(document).click(function(){
@@ -935,7 +1050,8 @@ function delete_title($btn_delete){
         'csrfmiddlewaretoken':$('.csrf_token').find('div input').val(),
         'id_title':$btn_delete.find('.id_title').val(),
         'type':$btn_delete.find('.type_list').val(),
-         'type_list':$('.type_my_list').val()
+        'type_list':$('.type_my_list').val(),
+        'id_list':$btn_delete.find('.id_list_rel').val()
         },
         dataType: 'json'
         }).done(function(data){
@@ -993,7 +1109,7 @@ function add_titles_list(csrf, id_list){
     });
 }
 
-function edit_title_read(id, type){
+function edit_title_read(id, type, $this){
 
 $.ajax({
         type: "POST",
@@ -1018,6 +1134,17 @@ $.ajax({
                     show_title_act($(this));
                 });
                 $('.title_act_read').fadeIn(250);
+            });
+        }
+        if(data.type == 2){
+            var text_date = $this.parent().find('.d-text_opacity');
+            var date = data.date;
+            date = date.split('-');
+
+            text_date.fadeOut(250,function(){
+                text_date.empty();
+                text_date.append('añadido el ' + date[2] + ' de ' + months[(date[1]-1)]);
+                text_date.fadeIn(250);
             });
         }
     });

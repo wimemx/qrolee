@@ -65,7 +65,6 @@ class EntityUser(admin.ModelAdmin):
 
     list_filter = ['is_admin', 'is_member']
 
-
 admin.site.register(models.Type, TypeAdmin)
 admin.site.register(models.AttributeType, AttributeTypeAdmin)
 admin.site.register(models.Attribute, AttributeAdmin)
@@ -84,3 +83,6 @@ admin.site.register(account.ListGenre)
 admin.site.register(account.ListAuthor)
 admin.site.register(account.AuthorTitle)
 admin.site.register(account.Activity)
+admin.site.register(models.EntityUser)
+admin.site.register(account.Page)
+admin.site.register(account.ActivitiesList)

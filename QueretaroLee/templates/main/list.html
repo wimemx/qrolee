@@ -24,8 +24,9 @@
                 <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
                 <span class="search fleft grid-4">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
+                    <input class="my_list_typ" type="hidden" value="1"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
-                    <input type="text" class="field_list"/>
+                    <input type="text" class="field_list search_entities"/>
                     <span class="search_list top right dark_yello_btn">Buscar</span>
                 </span>
                     <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
@@ -40,58 +41,123 @@
                 <div class="overview ">
 
                      {% for key, value in list.items %}
-                            <div class="item_list grid-14 no-margin" >
+                            <div class="item_list grid-15 no-margin" >
                                 <a href="/qro_lee/profile/list/{{ value.id }}">
                                     <span class="wrapper_list" >
-                                        <img src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}"/>
+                                        {% if not value.picture %}
+                                            <img class="img_size_all" src="/static/img/create.png" alt="" />
+                                        {% else %}
+                                            <img class="img_size_all"
+                                                 src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}" alt="" />
+                                        {% endif %}
                                     </span>
                                 </a>
-                                <span class="container_data grid-12 no-margin">
-                                    <a href="/qro_lee/profile/list/{{ value.id }}"
-                                        class="title alpha title_book grid-10">
-                                        {{ value.name }}</a>
-                                    <p class="d-text_list d-text_opacity" >
-                                        Lista con {{ value.count }} libros
+                                <span class="container_data grid-13 no-margin">
+                                    <span class=" grid-9 no-margin">
+                                        <a href="/qro_lee/profile/list/{{ value.id }}"
+                                            class="title alpha title_book">
+                                            {{ value.name }}
+                                        </a>
+                                    </span>
+                                    <p class="grid-4 no-margin">
+                                        <span class="fright">
+                                            {% for x in 'xxxxx' %}
+                                                {% if forloop.counter < value.grade %}
+                                                    <img src="/static/img/comunityStar.png" />
+                                                {% else %}
+                                                    <img src="/static/img/backgroundStar.png" />
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </p>
+                                    <p class="d-text_list grid-13 d-text_opacity no-margin" >
+                                        Lista con {{ value.count }}
+                                        {% if value.type == 'T' %}
+                                            libros
+                                        {% else %}
+                                            autores
+                                        {% endif %}
                                         creada por
                                         <a href="/accounts/users/profile/{{ value.id_user }}/">
                                             <span class="d-pink">{{ value.user }}</span>
                                         </a>
                                     </p>
-                                    <p class="d-text_list" >
-                                        {{ value.description|truncatewords:50 }}</p>
+                                    <p class="d-text_list grid-13 no-margin" >
+                                        {{ value.description|truncatechars:520 }}</p>
                                 </span>
                             </div>
                      {% endfor %}
-                     {% for obj in book %}
+                     {% for key, value in book.items %}
                             <div class="grid-5 fleft results margin_bottom no-margin">
                                 <div class="item">
-                                    <a href="/qro_lee/profile/title/{{ obj.id }}">
-                                        <span class="wrapper wrapper_book fleft no_margin-right">
-                                            <img class="img_size_all" src="{{ obj.cover }}" alt=""/>
+                                    <a href="/qro_lee/profile/title/{{ key }}">
+                                        <span class="wrapper wrapper_book borde_author fleft no_margin-right">
+                                            <img class="img_size_all" src="{{ value.cover }}" alt=""/>
                                         </span>
                                     </a>
-                                    <a href="/qro_lee/profile/title/{{ obj.id }}">
+                                    <a href="/qro_lee/profile/title/{{ key }}">
                                         <h3 class="title title_book margin_left no-margin grid-2 fleftt">
-                                            {{ obj.title|truncatechars:10 }}
+                                            {{ value.title|truncatechars:10 }}
                                         </h3>
                                     </a>
+                                    <p class="fleft margin_left no-margin grid-2">
+                                        {% if value.author != 'autor anonimo' %}
+                                            <a href="/qro_lee/profile/author/{{ value.id_author }}"
+                                                   class="title_author" >
+                                                {{ value.author|truncatechars:17 }}
+                                            </a>
+                                        {% else %}
+                                            <a class="title_author" >
+                                                {{ value.author|truncatechars:19 }}
+                                            </a>
+                                        {% endif %}
+                                    </p>
+                                    <p class="fleft margin_left no-margin grid-2">
+                                        {% for k in value.genre %}
+                                            {% if forloop.counter <= 4 %}
+                                                <span class="title_author">{{ k }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
                                     <p class="fleft margin_left no-margin grid-2 ">
-                                            {{ list_author }}
+                                        <span>
+                                            {% for x in 'xxxxx' %}
+                                                {% if forloop.counter < value.grade %}
+                                                    <img class="starts_mini" src="/static/img/comunityStar.png" />
+                                                {% else %}
+                                                    <img class="starts_mini" src="/static/img/backgroundStar.png" />
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
                                     </p>
                                 </div>
                             </div>
                      {% endfor %}
-                     {% for obj in authors %}
+                     {% for key, value in authors.items %}
                             <div class="grid-7 alpha">
-                                <a href="/qro_lee/profile/author/{{ obj.id }}">
+                                <a href="/qro_lee/profile/author/{{ key }}">
                                     <span class="wrapper borde_author">
-                                        <img class="img_size_all" src="{{ obj.picture }}" alt="" />
+                                        {% if not value.picture %}
+                                            <img class="img_size_all" src="/static/img/create.png" alt="" />
+                                        {% else %}
+                                            <img class="img_size_all" src="{{ value.picture }}" alt="" />
+                                        {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/author/{{ obj.id }}" class="title alpha grid-4">
-                                    {{ obj.name|truncatechars:20 }}</a>
-                                <p class="grid-4 no-margin">{{ obj.biography|truncatechars:150 }}
-                                <p class="title_author grid-4 no-margin"> 23 Titulos</p>
+                                <a href="/qro_lee/profile/author/{{ key }}" class="title alpha grid-4">
+                                    {{ value.name|truncatechars:20 }}</a>
+                                <p class="grid-4 no-margin text_biography">
+                                    {{ value.biography|truncatechars:180 }}
+                                </p>
+                                <p class="title_author grid-4 no-margin">
+                                    <a class="title_author" >
+                                        {% if value.count == 0 %}
+                                            no tiene Títulos
+                                        {% else %}
+                                            {{ value.count }} Títulos
+                                        {% endif %}
+                                    </a>
+                                </p>
                             </div>
                      {% endfor %}
             </div></div></div>

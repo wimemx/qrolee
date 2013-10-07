@@ -142,7 +142,7 @@ form p .invalid{
         color: #000;
         float: right;
         width: 280px;
-        border: 1px dashed #acacac;
+        border: 3px dashed #acacac;
         border-radius: 10px;
         margin-bottom: 50px;
         position: absolute;

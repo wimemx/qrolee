@@ -24,7 +24,7 @@
                 <span class="search fleft grid-4">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
-                    <input type="text"/>
+                    <input type="text" class="search_entities"/>
                     <span class="top right search_btn dark_yello_btn">Buscar</span>
                 </span>
                 <a href="/registry/register_entity/{{ entity_type.1 }}">

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector:'.textarea_tinymce'});
+    </script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="grid-16 entities page">
+        <div class="grid-15">
+            <div class="heading">
+                <h3 class="title grid-5 fleft">Crear una página nueva</h3>
+            </div>
+            <form method="post" id="registry" action="/accounts/users/registry_ajax_page/" >
+                <div class="csrf_token">
+                   {% csrf_token %}
+                </div>
+                <p>
+                    Introduce el nombre de tu página
+                    <p>
+                        <input name="name" type="text" class="search_entities">
+                    </p>
+                <p>
+                    Escribe el contenido de tu página
+                    <p>
+                        <textarea name="coment" class="textarea_tinymce textarea_page "></textarea>
+                    </p>
+                </p>
+                <p>
+                    Agregar Etiquetas
+                    <span class="d-text_opacity page_tags">
+                        Añade etiquetas que describa tu pagina separadas por comas
+                    </span>
+                </p>
+                <p>
+                    <textarea name="tags" class="textarea_tags"></textarea>
+                </p>
+                <p>
+                    Compartir en redes sociales
+                </p>
+                <p>
+                    <span class="grid-12 content_check">
+                        <input type="checkbox" class="chec_pag fleft" />
+                        <span class="text_check">Compartir con twitter</span>
+                    </span>
+                    <span class="grid-12 content_check">
+                        <input type="checkbox" class="chec_pag fleft" />
+                        <span class="text_check" >Compartir con facebook</span>
+                    </span>
+                    <span class="container_btn">
+                        <input id="submit" class="btn_page green_btn fright" value="Publicar" type="submit"/>
+                    </span>
+                </p>
+            </form>
+        </div>
+    </div>
+
+<script type="text/javascript">
+     $(document).ready(function(){
+
+            $('form p input').focus(function(){
+                $(this).parent().find('.invalid').fadeOut(300);
+            });
+            if($(this).find('input[type=submit]').hasClass('msg-ok'))
+                    window.location.href = site_url;
+            $('#registry').submit(function(e){
+
+                if(invalid_f($(this))){
+
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('action'),
+                        data: $(this).serialize(),
+                        dataType: 'json'
+                    }).done(function(data) {
+
+                                if(data.success == 'True'){
+                                     window.location.href = site_url+'/qro_lee/';
+                                }else{
+                                    $('.message').addClass('fail');
+                                    $('.message').html('Hubo un error, favor de verificar sus datos');
+                                }
+                            });
+                }
+                return false;
+            });
+
+
+        });
+</script>
+{% endblock %}

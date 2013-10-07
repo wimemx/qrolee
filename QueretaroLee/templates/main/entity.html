@@ -205,7 +205,15 @@
                     </span>
                </span>
             {% endif %}
-            <p class="din-r grid-6 alpha omega">{{ entity.description|truncatewords:30 }}</p>
+            {% if entity_type.1 == 'group' %}
+                <p class="din-r grid-6 alpha omega desc_group">
+                    {{ entity.description|truncatewords:30 }}
+                </p>
+            {% else %}
+                <p class="din-r grid-6 alpha omega">
+                    {{ entity.description|truncatewords:30 }}
+                </p>
+            {% endif %}
         </span>
         <span class="nav {{ entity_type.1 }} grid-8 no-margin">
             <span class="btn">Actividad</span>
@@ -313,7 +321,7 @@
         <div class="grid-16 load no-margin">
     {% endif %}
 
-            <div class="sidebar-a grid-10">
+            <div class="sidebar-a grid-11">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
@@ -350,7 +358,7 @@
             {% endif %}
 
             {% if entity_type.1 == 'organization' %}
-                <div class="grid-6 no-margin">
+                <div class="grid-7 no-margin">
                 <span class="ruler"></span>
             {% endif %}
 
@@ -410,10 +418,9 @@
                     </span>
                 </div>
             {% endif %}
-
             </div>
-            <div class="grid-5 fright sidebar-b">
-                <h3 class="title">{{ entity_type.0|capfirst }} similares</h3>
+            <div class="grid-4 sidebar-b">
+                <h3 class="title grid-4">{{ entity_type.0|capfirst }} similares</h3>
                 <div id="scrollbar1">
                     <div style="width: 5px;" class="scrollbar"><div class="track"><div class="thumb" style="width: 5px;"><div class="end"></div></div></div></div>
                     <div class="viewport" style="height:360px;">
@@ -455,7 +462,7 @@
 
                                 </span>
                                 <span class="wrapper fleft">
-                                    <img class="profile-picture" src="" alt=""/>
+                                    <img class="profile-picture img_size_all" src="" alt=""/>
                                 </span>
                                 <span class="general-info fleft">
                                     <h3 class="title"></h3>

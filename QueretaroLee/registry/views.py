@@ -10,6 +10,7 @@ from account import models as account
 from registry import models, settings
 from decimal import Decimal
 from QueretaroLee import settings as main_settings
+from django.db import models as db_model
 import calendar
 import urllib2
 import os
@@ -136,6 +137,7 @@ def account_register(request):
     url = ''
     user_exits = auth_models.User.objects.filter(
         Q(email=user['email'][0]) | Q(username=user['username'][0]))
+    print user_exits
 
     if user['password'] != user['password_match']:
         success = 'False'
@@ -431,7 +433,7 @@ def register_event(request, **kwargs):
         'entity': entity,
         'entity_type': entity_type
     }
-
+    print entity.id
     return render(request, template, context)
 
 def ajax_register_event(request):
@@ -473,15 +475,6 @@ def ajax_register_event(request):
     event.save()
     if event is not None:
         success = event.id
-        activity_data = {
-            'user_id': request.user.id,
-            'object': event.id,
-            'type': 'D',
-            'activity_id': 1,
-            'added_to_type': 'E',
-            'added_to_object': event.location_id
-        }
-        update_activity(activity_data)
     else:
         success = 'False'
     context = {
@@ -794,6 +787,8 @@ def registry_list(request,**kwargs):
 def register_ajax_list(request):
     user = request.user
     list = dict(request.POST)
+    type = list['type_list'][0]
+    del list['type_list']
     del list['csrfmiddlewaretoken']
     del list['type']
 
@@ -806,9 +801,8 @@ def register_ajax_list(request):
     list['user'] = user
     list['date'] = datetime.datetime.today()
     list['status'] = True
-    list['type'] = 'T'
+    list['type'] = type
     list['default_type'] = -1
-
 
     list = account.List.objects.create(**list)
     list.save()
@@ -861,16 +855,16 @@ def delete_title(request):
     user = request.user
     id_title = request.POST.get('id_title')
     type = request.POST.get('type')
+    id_list =  request.POST.get('id_list')
     type_list = request.POST.get('type_list')
     if type_list == 'T':
         title_favorite = account.ListTitle.objects.get(title__id=id_title,
-                                                   list__default_type=type)
+                                                   list__id=id_list)
         title_favorite.delete()
     else:
-        title_favorite = account.ListAuthor.objects.get(title__id=id_title,
-                                                   list__default_type=type)
+        title_favorite = account.ListAuthor.objects.get(author__id=id_title,
+                                                   list__id=id_list)
         title_favorite.delete()
-
 
     context = {}
     context = simplejson.dumps(context)
@@ -903,8 +897,9 @@ def add_rate(request):
         'element_id':int(element_id)
     }
 
+
     rate_user = account.Rate.objects.create(**list)
-    #rate_user.save()
+    rate_user.save()
 
     count_rate = account.Rate.objects.filter(element_id=element_id)
     my_count = account.Rate.objects.get(user=user, element_id=element_id)
@@ -950,6 +945,11 @@ def create_default_list(user):
     dict_list['type'] = 'G'
     dict_list['name'] = 'Mis generos'
     dict_list['default_type'] = 3
+    list4 = account.List.objects.create(**dict_list)
+    list4.save()
+    dict_list['type'] = 'T'
+    dict_list['name'] = 'Estoy leyendo'
+    dict_list['default_type'] = 5
     list4 = account.List.objects.create(**dict_list)
     list4.save()
 
@@ -1011,7 +1011,8 @@ def add_my_title(request):
 
                     if len(response['result']) != 0:
                         if len(response['result'][0]['output']) != 0:
-                            biography = str(response['result'][0]['output']['description']['/common/topic/description'])
+                            if len(response['result'][0]['output']['description']) != 0:
+                                biography = str(response['result'][0]['output']['description']['/common/topic/description'])
 
                         if len(biography) > 1000:
                             biography = biography[0:900]
@@ -1040,6 +1041,11 @@ def add_my_title(request):
                 else:
                     title = account.Title.objects.get(id=obj['it']['id'])
 
+                if int(request.POST.get('edit_list')) != 0:
+                    list = account.List.objects.get(id=request.POST.get('edit_list'))
+                    add_list = account.ListTitle.objects.create(list=list, title=title)
+                    add_list.save()
+
                 list_id_titles.append(int(title.id))
 
                 if int(request.POST.get('type')) == 1 | \
@@ -1057,6 +1063,13 @@ def add_my_title(request):
                         if len(my_list) == 0:
                             my_list = account.ListTitle.objects.create(**list_ti)
                             my_list.save()
+                            activity_data = {
+                                'user_id': request.user.id,
+                                'object':my_list.id,
+                                'type': 'L',
+                                'activity_id': 1
+                            }
+                            update_activity(activity_data)
 
         if request.POST.get('type_list') == 'A':
             for obj in list:
@@ -1075,6 +1088,11 @@ def add_my_title(request):
 
                 else:
                     author = account.Author.objects.get(id=obj['it']['id'])
+
+                if int(request.POST.get('edit_list')) != 0:
+                    list = account.List.objects.get(id=request.POST.get('edit_list'))
+                    add_list = account.ListAuthor.objects.create(list=list, author=author)
+                    add_list.save()
 
                 list_id_authors.append(int(author.id))
 
@@ -1096,48 +1114,59 @@ def add_my_title(request):
     list_to_read = account.ListTitle.objects.filter(list__user=user,
                                                      list__default_type=2)
     list_dict = {}
-    my_list = {}
 
+    for i in range(3):
+        list_titles = account.ListTitle.objects.filter(list__default_type=i,
+                                        list__user=user, list__status=True)
+        my_list = {}
+        for obj in list_titles:
+            fields_title = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+            title_author = account.AuthorTitle.objects.filter(title=obj.title)
+            name_author = ''
+            id_author = ''
 
-    for obj in list_favorite:
-        fields_title = {}
-        for field in fields:
-            if isinstance(obj.title.__getattribute__(str(field)), unicode):
-                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
-            else:
-                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+            if len(title_author) != 0:
+                name_author = title_author[0].author.name
+                id_author = title_author[0].author.id
 
-        my_list[int(obj.id)] = fields_title
+            rate = account.Rate.objects.all().values('element_id').\
+                annotate(count = db_model.Count('element_id'),
+                         score = db_model.Avg('grade'))
 
-    list_dict['book_favorite'] = my_list
-    my_list = {}
+            fields_title['grade'] = 0
+            fields_title['user'] = 0
 
-    for obj in list_read:
-        fields_title = {}
-        for field in fields:
-            if isinstance(obj.title.__getattribute__(str(field)), unicode):
-                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
-            else:
-                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
+            for obj_rate in rate:
+                if obj_rate['element_id'] == obj.title.id:
 
-        my_list[int(obj.id)] = fields_title
+                    fields_title['grade'] = obj_rate['score']
+                    my_grade = account.Rate.objects.filter(element_id=obj_rate['element_id'],
+                                                           user=user)
+                    if len(my_grade) != 0:
+                        fields_title['user'] = int(my_grade[0].user.id)
 
-    list_dict['book_read'] = my_list
-    my_list = {}
+            fields_title['author'] = name_author
+            fields_title['id_author'] = id_author
+            fields_title['id_list'] = obj.list.id
 
-    for obj in list_to_read:
-        fields_title = {}
-        for field in fields:
-            if isinstance(obj.title.__getattribute__(str(field)), unicode):
-                fields_title[str(field)] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
-            else:
-                fields_title[str(field)] = str(obj.title.__getattribute__(str(field)))
-        my_list[int(obj.id)] = fields_title
+            my_list[int(obj.id)] = fields_title
 
-    list_dict['book_for_reading'] = my_list
+        type = ''
+        if(i == 0):
+            type = 'book_favorite'
+        if(i == 1):
+            type = 'book_read'
+        if(i == 2):
+            type = 'book_for_reading'
+
+        list_dict[type] = my_list
 
     context = simplejson.dumps(list_dict)
-
     if int(request.POST.get('type')) == 4 and request.POST.get('type_list') == 'T':
         context = simplejson.dumps(list_id_titles)
 
@@ -1153,7 +1182,7 @@ def add_titles_author_list(request):
     id_list = request.POST.get('id_list')
     type = request.POST.get('type')
     list = ast.literal_eval(request.POST.get('list'))
-    my_list = account.List.objects.get(id=id_list)
+    my_list = account.List.objects.get(id=id_list, user=user)
     name = my_list.name.replace(' ','')
 
     if type == 'T':
@@ -1174,13 +1203,12 @@ def add_titles_author_list(request):
         for obj in list:
 
             author= account.Author.objects.get(id=int(obj))
-
             list_title = {
                 'author':author,
                 'list':my_list
             }
-            rel_list = account.ListAuthor.objects.create(**list_title)
-            rel_list.save()
+            rel_list_aut = account.ListAuthor.objects.create(**list_title)
+            rel_list_aut.save()
 
     #context = {}
     #context = simplejson.dumps(context)
@@ -1190,22 +1218,105 @@ def add_titles_author_list(request):
 def edit_list(request, **kwargs):
 
     id_list = kwargs['id_list']
-    type = kwargs['type_list']
-
     list = account.List.objects.get(id=id_list)
+    type = list.type
+    dict_items = {}
 
     if type == 'T':
         list_t_a = account.ListTitle.objects.filter(list=list)
+        fields_related_objects = account.Title._meta.get_all_related_objects(
+            local_only=True)
+        fields = account.Title._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        for obj in list_t_a:
+            items = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    items[field] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.title.__getattribute__(str(field))
+
+            grade_title = 0
+            rate_title = account.Rate.objects.filter(element_id=obj.title.id).\
+                values('element_id').\
+            annotate(count = db_model.Count('element_id'),
+                     score = db_model.Avg('grade'))
+
+            if len(rate_title) != 0:
+                grade_title = rate_title[0]['score']
+
+            author_name = 'autor anonimo'
+
+            author =  account.AuthorTitle.objects.filter(title=obj.title)
+
+            if len(author) != 0:
+                author_name = author[0].author.name
+
+            #--------------date------------------------#
+            items['default_type'] = obj.list.default_type
+            items['id_list'] = obj.list.id
+            items['author'] = author_name
+            items['grade'] = grade_title
+            dict_items[int(obj.title.id)] = items
+
+
     else:
         list_t_a = account.ListAuthor.objects.filter(list=list)
+        fields_related_objects = account.Author._meta.get_all_related_objects(
+            local_only=True)
+        fields = account.Author._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        for obj in list_t_a:
+            items = {}
+            for field in fields:
+                if isinstance(obj.author.__getattribute__(str(field)), unicode):
+                    items[field] = obj.author.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.author.__getattribute__(str(field))
+
+            count_titles = account.AuthorTitle.objects.filter(author=obj.author).values('author').\
+            annotate(count = db_model.Count('title'))
+
+            count = 0
+            if len(count_titles) != 0:
+                count = count_titles[0]['count']
+
+            items['count'] = count
+            items['default_type'] = obj.list.default_type
+            items['id_list'] = obj.list.id
+            dict_items[int(obj.author.id)] = items
+
+    rate = account.Rate.objects.filter(element_id=96).values('element_id').\
+            annotate(count = db_model.Count('element_id'),
+                     score = db_model.Avg('grade'))
+
+    grade = 0
+    if len(rate) != 0:
+        grade = rate[0]['score']
 
     template = kwargs['template_name']
 
     context = {
         'list':list,
-        'list_t_a':list_t_a
+        'list_t_a':dict_items,
+        'grade':grade
     }
-
 
     return render(request, template, context)
 
@@ -1237,7 +1348,7 @@ def edit_title_read(request):
         lis = account.List.objects.get(user=list_title.list.user, default_type=1)
 
         list_title.list = lis
-        #list_title.save()
+        list_title.save()
 
         if date == '':
             act_date = datetime.datetime.now().isoformat()
@@ -1245,20 +1356,38 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        list_act = {
-            'user':list_title.list.user,
+        activity_data = {
+            'user_id': list_title.list.user.id,
             'object':list_title.title.id,
-            'date':act_date,
-            'verb':'termino de leer ' + str((list_title.title.title).encode('utf-8', 'ignore')),
-            'meta':'',
-            'type':'T'
+            'type': 'T',
+            'activity_id': 1
         }
-
-        activity = account.Activity.objects.create(**list_act)
-        #activity.save()
+        update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 1
+
+    if int(request.POST.get('type')) == 2:
+        list_title = account.ListTitle.objects.get(id=id_list)
+
+        if date == '':
+            act_date = datetime.datetime.now().isoformat()
+        else:
+            d = datetime_from_str(date)
+            act_date = d[1].isoformat()
+
+        activity_data = {
+            'user_id': list_title.list.user.id,
+            'object':list_title.title.id,
+            'type': 'T',
+            'activity_id': 1
+        }
+        update_activity(activity_data)
+
+        context['succes'] = 'True'
+        context['type'] = 2
+        context['date'] = date
+
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

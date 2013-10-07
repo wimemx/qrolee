@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from account import views as auth
+from registry.views import account_register
 
 urlpatterns = patterns('',
     url(r'^login/', auth.login , {'template_name':'auth/login.html'},
@@ -22,5 +23,13 @@ urlpatterns = patterns('',
         name='auth'),
     url(r'^list_users/',auth.list_user,
         name='list_users'),
+    url(r'^users/registry_page', auth.registry_page, {'template_name':'users/registry_page.html'},
+        name='registry_page'),
+    url(r'^users/registry_ajax_page/',auth.registry_ajax_page,
+        name='registry_ajax_page'),
+    url(r'^users/update_page/(?P<id_page>[0-9]+)/$', auth.update_page, {'template_name':'users/edit_page.html'},
+        name='update_page'),
+    url(r'^users/update_ajax_page/',auth.update_ajax_page,
+        name='update_ajax_page'),
 
 )

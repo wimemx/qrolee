@@ -33,7 +33,7 @@ class Author(models.Model):
     birthday = models.DateTimeField()
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
-    biography = models.TextField()
+    biography = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -126,3 +126,12 @@ class Activity(models.Model):
     type = models.CharField(max_length=1)
     added_to_type = models.CharField(max_length=1, null=True)
     activity = models.ForeignKey(ActivitiesList)
+
+
+class Page(models.Model):
+    name = models.CharField(max_length=100)
+    coment = models.TextField(max_length=2000)
+    tags = models.TextField(max_length=1000)
+    date = models.DateTimeField()
+    meta = models.TextField(max_length=1000)
+    id_user = models.ForeignKey(User)

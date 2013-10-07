@@ -26,7 +26,11 @@
             <div class="d-container-name"  >
 
                 <div class="d-image" >
-                    <img src="/static/img/{{ event.picture }}" class="d-image-event" />
+                    {% if event.picture %}
+                        <img src="/static/media/users/{{ event.owner.id }}/event/{{ event.picture }}" class="d-image-event" />
+                    {% else %}
+                        <img src="/static/img/create.png" class="d-image-event" />
+                    {% endif %}
                 </div>
 
                 <div class="d-name-event">
@@ -40,8 +44,7 @@
                     <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
                         {{ event.owner }}
                     </a>
-                    <input type="hidden" class="d-latlon" value="{{ lat }},
-                    {{ lon }}" />
+                    <input type="hidden" class="d-latlon" value="{{ lat }},{{ lon }}" />
                 </div>
 
                 <div class="offset-7">
@@ -58,7 +61,7 @@
                             {{ event.description }}
                         </p>
                     </div>
-                    <div class="d-map" id="d-map_event" >
+                    <div class="d-map" id="map" >
 
                     </div>
 
@@ -74,7 +77,6 @@
                         <p><b>Lugar</b></p>
                         <p>{{ event.location }}</p>
                     </div>
-
                 </div>
 
             </div>
@@ -92,8 +94,12 @@
                     <div class="d-event">
                         <div class="d-image-mini">
                             <a href="/qro_lee/events/{{ event.name|cut:' ' }}_{{ event.id }}/" >
-                                <img src="/static/img/{{ event.picture }}"
-                                     class="d-image_mini_event"/>
+                                {% if event.picture %}
+                                    <img src="/static/media/users/{{ event.owner.id }}/event/{{ event.picture }}"
+                                         class="d-image-event" />
+                                {% else %}
+                                    <img src="/static/img/create.png" class="d-image-event" />
+                                {% endif %}
                             </a>
                         </div>
                         <div class="d-text_event">

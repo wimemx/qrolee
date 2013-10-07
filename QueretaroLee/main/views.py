@@ -363,7 +363,6 @@ def get_events(request, **kwargs):
 
         events = list()
         for event in events_:
-            # Event date = Month, day, id
             event_data = list()
             event_data.append(event.name)
             event_data.append(event.start_time.day)
@@ -391,8 +390,8 @@ def get_events(request, **kwargs):
 def event_view(request,**kwargs):
 
     template = kwargs['template_name']
-    entity = kwargs['event_id'].split('_', 1)
-    id_event = int(entity[1])
+    entity = kwargs['event_id']
+    id_event = int(entity)
     event = Event.objects.get(id=id_event)
     arraymonth = ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
                 'Agosto','Septiembre','Octubre','Noviembre','Diciembre')
@@ -482,6 +481,7 @@ def advanced_search(request, **kwargs):
         q_list = list()
         all_objs = False
         for key in query_list:
+            print key
             if '__in' in key:
                 val = ast.literal_eval(query_list[key])
                 if int(val[0]) != -1:
@@ -733,13 +733,17 @@ def get_list(request,**kwargs):
     template = kwargs['template_name']
 
     type = ['listas', 'list']
-
+    user = request.user
     list = account_models.List.objects.filter(default_type=-1,status=True)
 
     if request.POST.get('field_value')!=None:
         search = request.POST['field_value']
-        list = models.List.objects.filter(name__icontains=search, default_type=-1,
+        if int(request.POST.get('type_list')) == 1:
+            list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True)
+        else:
+            list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
+                                          status=True, user=user)
 
     content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
@@ -790,7 +794,16 @@ def get_list(request,**kwargs):
             authors = account_models.ListAuthor.objects.filter(list=obj)
             count = len(authors)
 
+        grade_title = 0
+        rate_title = account_models.Rate.objects.filter(element_id=obj.id).values('element_id').\
+            annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+
+        if len(rate_title) != 0:
+            grade_title = rate_title[0]['score']
+
         user['count'] = count
+        user['type'] = obj.type
+        user['grade'] = grade_title
 
         for field in fields:
             if isinstance(obj.__getattribute__(str(field)), unicode):
@@ -805,6 +818,7 @@ def get_list(request,**kwargs):
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
+        print dictionary
 
     context = {
         'list':dictionary,
@@ -824,7 +838,7 @@ def get_titles(request,**kwargs):
     template = kwargs['template_name']
 
     type = ['Titulos', 'Title']
-
+    dict_items = {}
     book = account_models.Title.objects.all()
 
     if request.POST.get('field_value')!=None:
@@ -847,14 +861,6 @@ def get_titles(request,**kwargs):
 
     list_author = account_models.AuthorTitle.objects.all()
 
-    context = {
-        'book': book,
-        'content': content,
-        'type': type,
-        'list_author':list_author
-    }
-
-
     fields_related_objects = account_models.Title._meta.get_all_related_objects(
         local_only=True)
     fields = account_models.Title._meta.get_all_field_names()
@@ -865,32 +871,53 @@ def get_titles(request,**kwargs):
         fields_foreign.append(
             related_object.get_accessor_name().replace('_set', ''))
 
-        fields = account_models.Title._meta.get_all_field_names()
-        fields_foreign = []
-
-    for related_object in fields_related_objects:
-        fields_foreign.append(
-            related_object.get_accessor_name().replace('_set', ''))
-
     fields = [item for item in fields if item not in fields_foreign]
 
-    dictionary_book = {}
-
     for obj in book:
-        user = {}
+        items = {}
         for field in fields:
             if isinstance(obj.__getattribute__(str(field)), unicode):
-                user[str(field)] = obj.__getattribute__(str(field)).\
-                    encode('utf-8', 'ignore')
+                items[field] = obj.__getattribute__(str(field)).encode('utf-8', 'ignore')
             else:
-                value = str(obj.__getattribute__(str(field)))
+                items[field] = str(obj.__getattribute__(str(field)))
 
-                user[str(field)] = value
+        grade_title = 0
+        rate_title = account_models.Rate.objects.filter(element_id=obj.id). \
+            values('element_id'). \
+            annotate(count = db_model.Count('element_id'),
+                     score = db_model.Avg('grade'))
 
-        dictionary_book[int(obj.id)] = user
+        if len(rate_title) != 0:
+            grade_title = rate_title[0]['score']
+
+        author_name = 'autor anonimo'
+        id_author = 0
+        author =  account_models.AuthorTitle.objects.filter(title=obj)
+
+        if len(author) != 0:
+            author_name = author[0].author.name
+            id_author = author[0].author.id
+
+        genre = []
+        genres = account_models.GenreTitle.objects.filter(title=obj)
+        for genr in genres:
+            genre.append(genr.genre.name)
+
+        items['genre'] = genre
+        items['author'] = author_name
+        items['id_author'] = id_author
+        items['grade'] = grade_title
+        dict_items[int(obj.id)] = items
+
+    context = {
+        'book': dict_items,
+        'content': content,
+        'type': type,
+        'list_author':list_author
+    }
 
     if request.POST.get('field_value')!=None:
-        context = simplejson.dumps(dictionary_book)
+        context = simplejson.dumps(dict_items)
         return HttpResponse(context, mimetype='application/json')
 
     return render(request, template, context)
@@ -898,9 +925,8 @@ def get_titles(request,**kwargs):
 
 def get_authors(request, **kwargs):
     template = kwargs['template_name']
-
+    dict_items = {}
     type = ['Autores', 'Author']
-
     authors = account_models.Author.objects.all()
 
     if request.POST.get('field_value')!=None:
@@ -950,20 +976,31 @@ def get_authors(request, **kwargs):
     dictionary_authors = {}
 
     for obj in authors:
-        author = {}
+        items = {}
         for field in fields:
             if isinstance(obj.__getattribute__(str(field)), unicode):
-                author[str(field)] = obj.__getattribute__(str(field)).\
-                    encode('utf-8', 'ignore')
+                items[field] = obj.__getattribute__(str(field)).encode('utf-8', 'ignore')
             else:
-                value = str(obj.__getattribute__(str(field)))
+                items[field] = str(obj.__getattribute__(str(field)))
 
-                author[str(field)] = value
+        count_titles = account_models.AuthorTitle.objects.filter(author=obj).values('author'). \
+            annotate(count = db_model.Count('title'))
 
-        dictionary_authors[int(obj.id)] = author
+        count = 0
+        if len(count_titles) != 0:
+            count = count_titles[0]['count']
+
+        items['count'] = count
+        dict_items[int(obj.id)] = items
+
+    context = {
+        'authors':dict_items,
+        'content':content,
+        'type':type
+    }
 
     if request.POST.get('field_value')!= None:
-        context = simplejson.dumps(dictionary_authors)
+        context = simplejson.dumps(dict_items)
         return HttpResponse(context, mimetype='application/json')
 
     return render(request, template, context)
@@ -1030,20 +1067,59 @@ def get_profile(request, **kwargs):
     profile = kwargs['profile']
     user = request.user
     context = {}
+    dict_items = {}
     rate = account_models.Rate.objects.filter(element_id=profile, user=user)
     count_rate = account_models.Rate.objects.filter(element_id=profile)
     list_picture = models.Profile.objects.all()
 
     if type == 'author':
         profile = account_models.Author.objects.get(id=profile)
-        list_titles = ''
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
-        count = len(list_titles)
-
+        list_titles = account_models.AuthorTitle.objects.filter(author=profile)
         grade = 0
         grade_rate = 0
         if len(rate) > 0:
             grade = rate[0].grade
+
+        fields_related_objects = account_models.Title._meta.get_all_related_objects(
+            local_only=True)
+        fields = account_models.Title._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        for obj in list_titles:
+            items = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    items[field] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.title.__getattribute__(str(field))
+
+            grade_title = 0
+            rate_title = account_models.Rate.objects.filter(element_id=obj.title.id).\
+                values('element_id').\
+            annotate(count = db_model.Count('element_id'),
+                     score = db_model.Avg('grade'))
+
+            if len(rate_title) != 0:
+                grade_title = rate_title[0]['score']
+
+            author_name = 'autor anonimo'
+
+            author =  account_models.AuthorTitle.objects.filter(title=obj.title)
+
+            if len(author) != 0:
+                author_name = author[0].author.name
+
+            items['author'] = author_name
+            items['grade'] = grade_title
+            dict_items[int(obj.title.id)] = items
 
         count = 0
         count_grade = 0
@@ -1054,7 +1130,7 @@ def get_profile(request, **kwargs):
             grade_rate = int(round(count_grade,0))
 
         context = {
-            'list_titles':list_titles,
+            'list_titles':dict_items,
             'list':list,
             'count':len(list_titles),
             'grade':grade,
@@ -1070,8 +1146,15 @@ def get_profile(request, **kwargs):
                                                           title=profile, list__status=True,                                                          )
         list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
                                                        list__default_type=-1)
-        count = len(list_user)
+        author = account_models.AuthorTitle.objects.filter(title=profile)
 
+        name_author = 'autor anonimo'
+        id_author = 0
+        if len(author) != 0:
+            name_author = author[0].author.name
+            id_author = author[0].author.id
+
+        count = len(list_user)
         grade = 0
         grade_rate = 0
         if len(rate) > 0:
@@ -1094,15 +1177,99 @@ def get_profile(request, **kwargs):
             'range':range(5),
             'count_vot':len(count_rate),
             'count_grade':count_grade,
-            'list_picture':list_picture
+            'list_picture':list_picture,
+            'name_author':name_author,
+            'id_author':id_author
         }
 
 
     if type == 'list':
+        dict_titles = {}
+        dict_authors = {}
         profile = account_models.List.objects.get(id=profile)
         list = account_models.List.objects.filter(user=profile.user, default_type=-1,
                                                   status=True)
         titles = account_models.ListTitle.objects.filter(list=profile, list__status=True)
+        authors = account_models.ListAuthor.objects.filter(list=profile, list__status=True)
+
+        fields_related_objects = account_models.Title._meta.get_all_related_objects(
+            local_only=True)
+        fields = account_models.Title._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        for obj in titles:
+            items = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    items[field] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.title.__getattribute__(str(field))
+
+            grade_title = 0
+            rate_title = account_models.Rate.objects.filter(element_id=obj.title.id).\
+                values('element_id').\
+            annotate(count = db_model.Count('element_id'),
+                     score = db_model.Avg('grade'))
+
+            genre = []
+
+            genres = account_models.GenreTitle.objects.filter(title=obj.title)
+            for genr in genres:
+                genre.append(genr.genre.name)
+
+            if len(rate_title) != 0:
+                grade_title = rate_title[0]['score']
+
+            author_name = 'autor anonimo'
+
+            author =  account_models.AuthorTitle.objects.filter(title=obj.title)
+
+            if len(author) != 0:
+                author_name = author[0].author.name
+
+            items['author'] = author_name
+            items['grade'] = grade_title
+            items['genre'] = genre
+            dict_titles[int(obj.title.id)] = items
+
+        fields_related_objects = account_models.Author._meta.get_all_related_objects(
+            local_only=True)
+        fields = account_models.Author._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        for obj in authors:
+            items = {}
+            for field in fields:
+                if isinstance(obj.author.__getattribute__(str(field)), unicode):
+                    items[field] = obj.author.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.author.__getattribute__(str(field))
+
+            count_titles = account_models.AuthorTitle.objects.filter(author=obj.author).values('author').\
+            annotate(count = db_model.Count('title'))
+
+            count = 0
+            if len(count_titles) != 0:
+                count = count_titles[0]['count']
+
+            items['count'] = count
+            items['default_type'] = obj.list.default_type
+            items['id_list'] = obj.list.id
+            dict_authors[int(obj.author.id)] = items
 
         grade = 0
         grade_rate = 0
@@ -1118,7 +1285,8 @@ def get_profile(request, **kwargs):
             grade_rate = int(round(count_grade,0))
 
         context = {
-            'titles':titles,
+            'titles':dict_titles,
+            'authors':dict_authors,
             'list':list,
             'grade':grade,
             'grade_rate':grade_rate,

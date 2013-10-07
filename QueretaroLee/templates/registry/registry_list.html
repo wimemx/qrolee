@@ -43,7 +43,6 @@
         <div class="grid-15 registry">
             <div class="heading">
                 <h3 class="title grid-13 no-margin fleft">Crear nueva lista</h3>
-                <input type="hidden" class="type_list" value="T" />
             </div>
             <p class="content">{{ content }}</p>
 
@@ -51,6 +50,7 @@
                <div class="csrf_token">
                    {% csrf_token %}
                </div>
+                <input type="hidden" name="type_list" class="type_list" value="T" />
                 <input class="profile-pic" type="hidden" value="" name="picture"/>
                 <div class="grid-8 no-margin fleft">
                     <input type="hidden" value="{{ type }}" name="type"/>
@@ -97,7 +97,8 @@
                         <div class="add_my_list d-paddin_bottom">
                             <div class="d-container_add_book grid-5 no-margin">
                                 <div class="d-add_book" >
-                                    <input type="hidden" value="list" />
+                                    <input type="hidden" value="list" class="list_typ" />
+                                    <input type="hidden" value="add" class="add_type" />
                                     <p class="d-add_text_book">
                                         + Añadir un nuevo libro
                                     </p>

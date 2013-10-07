@@ -1,6 +1,6 @@
 var valid_form = false;
 $(document).ready(function(){
-
+    $('form').attr('autocomplete', 'off');
     $('.pass_match').keyup(function(){
         if($(this).val()!=$('.pass').val()){
             var span = $('<span class="invalid">No coincide tu contraseña</span>');
@@ -102,17 +102,19 @@ $(document).ready(function(){
     $('.d-add_book').click(function(){
 
         var query = ' ';
-
         var type = 0;
 
         if($(this).find('input').val() == 'title')
             type = 1;
-        if($(this).find('input').val() == 'list')
+        if($(this).find('.list_typ').val() == 'list')
             type = 4;
 
         crsf = $('.csrf_token').find('div input').val();
 
-        type_add_list(crsf, type, query);
+        if($(this).find('.add_type').val() == 'add')
+            type_add_list(crsf, type, query);
+        if($(this).find('.add_type').val() == 'edit')
+            type_add_list(crsf, type, query);
 
     });
 
@@ -217,7 +219,7 @@ function type_add_list(csrf, id ,query){
         if(id==2 | id==4 | id==5){
 
             query = query.split(" ");
-            var query = {
+            var __query = {
                 'q': JSON.stringify(query),
                 'start_index':{
                     0: 0
@@ -226,8 +228,9 @@ function type_add_list(csrf, id ,query){
                     0: model
                 }
             };
-            data.push(search_api(crsf, query));
+            data.push(search_api(crsf, __query));
         }
+
 
         if(id==1)
             dialog_titles(csrf,data,1);
@@ -258,6 +261,7 @@ var numeric_regex = /[\d]+/;
 var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
 var social_regex = /[\W]+/;
+
 
 function validate_regex(input, type){
     var ret = new Array();
@@ -312,4 +316,39 @@ function aling_message(){
 function fb_session(){
 
 
+}
+
+function invalid_f(form){
+    var invalid = true;
+    $('.invalid_messa').remove();
+
+    var names = {
+        'name':'nombre',
+        'coment':'contenido',
+        'tags':'etiquetas'
+    }
+    form.find('textarea').each(function(i){
+        if($(this).val().length<1){
+            var span = $('<span class="invalid_messa" ></span>');
+            span.append('pon el ' + names[$(this).attr('name')]);
+            $(this).parent().append(span);
+            invalid = false;
+        }
+    });
+    form.find('p input').each(function(i){
+        if($(this).attr('type')=='text'){
+            if($(this).val().length<1){
+                var span = $('<span class="invalid_messa" ></span>');
+                span.append('pon el ' + names[$(this).attr('name')]);
+                $(this).parent().append(span);
+                invalid = false;
+            }
+        }
+    });
+    $('.invalid_messa').fadeIn(250);
+
+    if(invalid)
+        return true;
+    else
+        return false;
 }

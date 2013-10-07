@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector:'.textarea_tinymce'});
+    </script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid-16 entities registry page">
+        <div class="grid-15 ">
+        <span class="title {{ entity_type.1 }} main">Editar una página
+        </span>
+            <form method="post" id="registry" action="/accounts/users/update_ajax_page/" >
+                {% csrf_token %}
+                <input type="hidden" name="id_page" value="{{ page.id }}" >
+                <p>
+                    Introduce el nombre de tu página
+                    <p>
+                        <input name="name" value="{{ page.name }}" type="text" class="search_entities">
+                    </p>
+                <p>
+                    Escribe el contenido de tu página
+                    <p>
+                        <textarea name="coment" class="textarea_tinymce textarea_page ">{{ page.coment }}</textarea>
+                    </p>
+                </p>
+                <p>
+                    Agregar Etiquetas
+                    <span class="d-text_opacity page_tags">
+                        Añade etiquetas que describa tu pagina separadas por comas
+                    </span>
+                </p>
+                <p>
+                    <textarea name="tags" class="textarea_tags">{{ page.tags }}</textarea>
+                </p>
+                <p>
+                    Compartir en redes sociales
+                </p>
+                <p>
+                    <span class="grid-12 content_check">
+                        <input type="checkbox" class="chec_pag fleft" />
+                        <span class="text_check">Compartir con twitter</span>
+                    </span>
+                    <span class="grid-12 content_check">
+                        <input type="checkbox" class="chec_pag fleft" />
+                        <span class="text_check" >Compartir con facebook</span>
+                    </span>
+                    <span class="container_btn">
+                        <input id="submit" class="btn_page green_btn fright" value="Guardar" type="submit"/>
+                    </span>
+                    <span class="message_ok fright"></span>
+                </p>
+            </form>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#registry').submit(function(e){
+
+                var message = $('.message_ok');
+                message.empty();
+                if(invalid_f($(this))){
+                    $.ajax({
+                    type: "POST",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json'
+                    }).done(function(data){
+                        if(data.success == 'True')
+                            message.fadeOut(200,function(){
+                                message.append('Cambios guardados');
+                                message.fadeIn(200);
+                            });
+
+                    });
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
