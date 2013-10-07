@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -353,7 +354,7 @@
             {% if entity_type.1 == 'group' %}
                 <div class="more-info">
                     <span class="grid-3 alpha">
-                    <h3 class="title main">Miembros <span>{{ followers }}</span></h3>
+                    <h3 class="title main">Miembros <span>{{ followers.1 }}</span></h3>
                     </span>
                     <span class="grid-4">
                         <h3 class="title main">Contacto <span>{{ owner.email }}</span></h3>
@@ -458,14 +459,25 @@
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport">
                         <div class="overview">
-                            {% for obj in admins %}
+                            {% for follower, profile in followers %}
                                 <span class="wrapper grid-5 no-margin">
                                     <span class="fleft">
-                                        <img src="/static/media/entities/1/python.png" alt=""/>
+                                        {% if not profile.picture or profile.picture == '' %}
+                                            <img src="/static/img/create.png" alt=""/>
+                                        {% else %}
+                                            <img src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
+                                        {% endif %}
                                     </span>
-                                    <h3 class="title fleft">{{ obj.user.username  }}
-                                        <span>Se unio hace 2 años</span>
-                                        <a href="/accounts/users/profile/{{ obj.user.id }}/">Ver perfil</a>
+                                    <h3 class="title fleft">
+                                        {% if follower.first_name != '' %}
+                                        {{ follower.first_name }} {{ follower.last_name }}
+                                        {% else %}
+                                            {{ follower.username }}
+                                        {% endif %}
+                                        <span class="fleft">Se unio hace
+                                            {{ follower.date_joined|member_since }}
+                                        </span>
+                                        <a class="fleft spot din-r" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
                                     </h3>
                                 </span>
                             {% endfor %}

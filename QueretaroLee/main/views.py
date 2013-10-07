@@ -208,11 +208,17 @@ def get_entity(request, **kwargs):
         entitycategory__category_id__in=categories_ids).exclude(
             id=entity.id).distinct()
     followers_list = list()
-    entity_users = models.EntityUser.objects.filter(
-        entity_id=entity)
-    entity_followers = entity_users.filter(is_member=1)
-    entity_admins = entity_users.filter(is_admin=1)
+    entity_followers = models.User.objects.filter(
+        entityuser__is_member=1, entityuser__entity_id=entity.id)
+    user_pictures = list()
+    for follower in entity_followers:
+        profile = models.Profile.objects.get(
+            user_id=follower.id)
+        user_pictures.append(profile.picture)
+    entity_admins = models.User.objects.filter(
+        entityuser__is_admin=1, entityuser__entity_id=entity.id)
     admins = User.objects.filter(id=entity_admins)
+
     for ent in entities:
         followers = models.EntityUser.objects.filter(
             entity_id=ent.id)
@@ -265,7 +271,6 @@ def get_entity(request, **kwargs):
     entity_user = models.EntityUser.objects.filter(entity=id_entity)
 
     member = False
-    print admins
 
     if len(entity_user) > 0:
         member = True
@@ -283,8 +288,8 @@ def get_entity(request, **kwargs):
         'range': range(5),
         'count': len(count_rate),
         'count_grade': count_grade,
-        'followers': len(entity_followers),
-        'admins': entity_admins
+        'followers': zip(entity_followers, user_pictures),
+        'admins': admins
     }
 
     return render(request, template, context)
@@ -333,9 +338,7 @@ def get_events(request, **kwargs):
                         location_id =request.POST['id_entity'])
 
         events = list()
-        for event in events_:
-            print event.name
-            # Event date = Month, day, id
+        for event in events_:            # Event date = Month, day, id
             event_data = list()
             event_data.append(event.name)
             event_data.append(event.start_time.day)
@@ -415,6 +418,18 @@ def event(request, **kwargs):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
+    hc = hc.replace('January', 'Enero')
+    hc = hc.replace('February', 'Febrero')
+    hc = hc.replace('March', 'Marzo')
+    hc = hc.replace('April', 'Abril')
+    hc = hc.replace('May', 'Mayo')
+    hc = hc.replace('June', 'Junio')
+    hc = hc.replace('July', 'Julio')
+    hc = hc.replace('August', 'Agosto')
+    hc = hc.replace('September', 'Septiembre')
+    hc = hc.replace('October', 'Octubre')
+    hc = hc.replace('November', 'Noviembre')
+    hc = hc.replace('December', 'Diciembre')
 
 
     html_parser = HTMLParser.HTMLParser()
@@ -467,7 +482,6 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
         query = [Q(x) for x in q_list]
-
         activity = None
         if 'join' in data:
             if data['join'] != 'none':
@@ -476,11 +490,12 @@ def advanced_search(request, **kwargs):
                 join = []
             if 'activity' in join:
                 activity = join['activity']['0']
-
+        print q_list
         if data['and'] == 0:
             object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
+
         if not object:
             context = {
                 'response': 0
@@ -490,7 +505,6 @@ def advanced_search(request, **kwargs):
         value = {}
         #fields = [item for item in fields if item not in fields_foreign]
         # remove = [0, 3, 5, 6, 7, 8, 10, 11]
-
         list_elements = list()
         if 'type' in join:
             filter_type = ast.literal_eval(join['type']['0'])
@@ -774,6 +788,7 @@ def get_list(request,**kwargs):
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
+        print dictionary
 
     context = {
         'list':dictionary,
@@ -903,6 +918,12 @@ def get_authors(request, **kwargs):
                   'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
                   'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
+    context = {
+        'authors':authors,
+        'content':content,
+        'type':type
+    }
+
     fields_related_objects = account_models.Author._meta.get_all_related_objects(
         local_only=True)
     fields = account_models.Author._meta.get_all_field_names()
@@ -913,7 +934,16 @@ def get_authors(request, **kwargs):
         fields_foreign.append(
             related_object.get_accessor_name().replace('_set', ''))
 
+        fields = account_models.Author._meta.get_all_field_names()
+        fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
     fields = [item for item in fields if item not in fields_foreign]
+
+    dictionary_authors = {}
 
     for obj in authors:
         items = {}
@@ -1234,6 +1264,7 @@ def get_profile(request, **kwargs):
             'count_vot':len(count_rate),
             'count_grade':count_grade
         }
+
 
     context['type'] = type
     context['profile'] = profile

@@ -1,4 +1,5 @@
 function truncText (text, maxLength, ellipseText){
+        ellipseText = ellipseText || '&hellip;';
 
         text_ = '';
         if(text.length > maxLength)
@@ -28,7 +29,7 @@ function truncText (text, maxLength, ellipseText){
 
 function populateCal(curr_month,$item){
     $('.item').remove();
-    if((curr_month)>0){
+    if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
 
@@ -728,6 +729,7 @@ $(document).ready(function(){
                     $('.d-results').empty();
                     $('.d-results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
+                        console.log(data);
                         $.each(data,function(i){
                             var obj = data[i];
                             var count = 1;
@@ -801,7 +803,7 @@ $(document).ready(function(){
             },
             dataType: 'json'
         }).done(function(data){
-                var count = 0;
+          var count = 0;
                 $.each(data,function(i){
                     var event = data[i];
                     var len = event.length;
@@ -811,126 +813,41 @@ $(document).ready(function(){
                         var day = event_data[1];
                         var id = event_data[2];
                         var $table;
-                        if(month <=3){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
+                        $table = $('.sidebar-b table');
+                        $table.find('.month:odd').each(function(index){
+                            if((month-1) == index){
+                                console.log($(this).html());
+                                $table = $(this).parent().parent().parent();
+                                //console.log($table.html());
+                                $table.find('tr').each(function(){
+                                    $(this).find('td').each(function(){
+                                        if($(this).html() == '&nbsp;')
+                                            $(this).css({
+                                                'background': '#DBC8A2'
+                                            })
+                                        if($(this).html() == day){
+                                            $(this).addClass('active-event');
+                                            $(this).click(function(){
+                                                var day = $(this).html();
+                                                var lenth = $('.item').length;
+                                                $('.item').each(function(index){
+                                                    if(!$(this).find('.date').hasClass('day_'+day))
+                                                        $(this).fadeOut();
+                                                    else{
+                                                        $(this).fadeIn();
+                                                        $(this).css('display','block');
+                                                    }
                                                 });
-                                            }
-                                        });
+
+
+                                            });
+                                        }
                                     });
-                                }
-                            });
-
-                        }else if(month <=6){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
+                                });
+                            }
+                        });
 
 
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }else if(month <=9){
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                           if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }else{
-                            $table = $('.sidebar-b table');
-                            $table.find('.month:odd').each(function(index){
-                                if((month-1) == index){
-                                    $table = $(this).parent().parent().parent();
-                                    //console.log($table.html());
-                                    $table.find('tr').each(function(){
-                                        $(this).find('td').each(function(){
-                                            if($(this).html() == day){
-                                                $(this).addClass('active-event');
-                                                $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-
-                        }
 
                         if(count == (len-1)){
                             populateCal(curr_month,$item);
@@ -979,6 +896,23 @@ $(document).ready(function(){
 
         });
 
+
+
+
+    if($('#d-map').length>0){
+            $.ajax({
+                type: "POST",
+                url: '/qro_lee/entities/spot/',
+                data: {
+                    'csrfmiddlewaretoken': $('.search div input[type=hidden]').val(),
+                    'post': 2
+                },
+                dataType: 'json'
+            }).done(function(data){
+                dmap(data,1);
+
+            });
+    }
 
     if($('#map').length>0){
             var name_event = ""+$('.name_event').val();
@@ -1094,6 +1028,7 @@ $(document).click(function(){
 
 function delete_title($btn_delete){
 
+
         $.ajax({
         type: "POST",
         url: '/registry/delete_title/',
@@ -1142,6 +1077,7 @@ function add_titles_list(csrf, id_list){
         type_list = $('.d_type_list').val();
     if($('.type_list').length > 0)
         type_list = $('.type_list').val();
+
     $.ajax({
         type: "POST",
         url: '/registry/add_titles_my_list/',
@@ -1199,6 +1135,7 @@ $.ajax({
         }
     });
 }
+
 
 function show_title_act($this){
 

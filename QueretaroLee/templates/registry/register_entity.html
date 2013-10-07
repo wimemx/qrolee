@@ -125,8 +125,11 @@
                 <input type="hidden" name="cover" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
+                <div class="fb-img-preview grid-6 fright no-margin">
+
+                </div>
             {% endif %}
-            {% if entity_type.1 != 'spot' %}
+            {% if entity_type.1 != 'spot' and social_session == 1 %}
             <span class="fb-connect no-margin fright grid-5">
                 {% if entity_type.1 == 'group' %}
                 <p>¿Cuentas ya con un grupo en Facebook?</p>

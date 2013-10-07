@@ -34,6 +34,9 @@ class FacebookBackend:
 
         if userExists:
             user = auth_models.User.objects.get(email=profile['email'])
+            user_profile = users_models.Profile.objects.get(user_id=user.id)
+            user_profile.social_session = 1
+            user_profile.save()
         else:
             userExists = user_exists(username=profile['username'])
             user, created = auth_models.User.objects.get_or_create(
@@ -51,6 +54,7 @@ class FacebookBackend:
             user_profile.fb_username = profile['username']
             user_profile.fb_id = profile['id']
             user_profile.phone = ''
+            user_profile.social_session = 1
             user_profile.save()
             dict_list = {
                 'name':'Mis libros leidos',
@@ -125,6 +129,7 @@ class TwitterBackend:
             user_profile.twitter_username = access_token['screen_name']
             user_profile.twitter_id = access_token['user_id']
             user_profile.phone = ''
+            user_profile.social_session = 0
             user_profile.save()
             registry_view.create_default_list(user);
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
@@ -167,6 +172,7 @@ class SocialBackend:
                     user_id=user.id)
                 userProfile.twitter_id = uid
                 userProfile.twitter_username = username
+                userProfile.social_session = 0
                 userProfile.save()
             else:
                 userProfile, created = users_models.Profile.objects.get_or_create(
@@ -190,6 +196,7 @@ class SocialBackend:
                     user_id=user.id,)
                 userProfile.fb_id = profile['id']
                 userProfile.fb_username = profile['username']
+                userProfile.social_session = 1
                 userProfile.save()
             else:
                 userProfile, created = users_models.Profile.objects.get_or_create(

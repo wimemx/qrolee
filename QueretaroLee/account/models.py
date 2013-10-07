@@ -111,13 +111,28 @@ class Rate(models.Model):
     user = models.ForeignKey(User)
 
 
+class ActivitiesList(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return '%s' % (self.name)
+
+
 class Activity(models.Model):
     user = models.ForeignKey(User)
-    object = models.IntegerField(max_length=5)
-    verb = models.CharField(max_length=255)
+    object = models.IntegerField(max_length=5)    
     date = models.DateTimeField(auto_now_add=True)
     meta = models.TextField()
     type = models.CharField(max_length=1)
+
+class Activity_22(models.Model):
+    user = models.ForeignKey(User)
+    object = models.IntegerField(max_length=5)
+    added_to_object = models.IntegerField(max_length=5, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    type = models.CharField(max_length=1)
+    added_to_type = models.CharField(max_length=1, null=True)
+    activity = models.ForeignKey(ActivitiesList)
 
 
 class Page(models.Model):

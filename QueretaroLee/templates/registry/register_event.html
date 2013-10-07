@@ -37,21 +37,19 @@
         </div>
     </div>
     <div class="grid-16 edit register">
-    <form action="/registry/register/event/" class="grid-14 center">
+
+    <div style="margin-left:60px;" class="grid-14">
+        {% block entity_menu %}
+                {% include 'blocks/entity_menu.html' %}
+            {% endblock %}
+    <form action="/registry/register/event/" class="grid-8 fleft no-margin">
         <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <input class="profile-pic" type="hidden" value="" name="picture"/>
         <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
+        <input class="fb-url" type="hidden" value="" name="fb_url"/>
         <span class="title main">Crear un nuevo evento en
             <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
-            <span class="member grid-2">
-            <span class="brown_btn fright">Editar
-                <span class="sub-menu">
-                    <a href="/registry/edit/{{ entity.name|cut:" " }}_{{ entity.id }}">Editar información</a>
-                    <a href="">Administradores</a>
-                    <a href="/registry/register_event/" style="border:none;" href="">Organizar eventos</a>
-                    </span>
-                </span>
-            </span>
+
         </span>
 
         <span class="data grid-8 fleft no-margin">
@@ -75,7 +73,7 @@
                 </span>
 
             </p>
-            <p>Fecha de evento
+            <p>Fecha de evento d
                 <span class="grid-3 no-margin fright">
                     Hora <input type="text" class="fright hour-init"/>
                 </span>
@@ -111,7 +109,8 @@
         </span>
 
     </form>
-    <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+    <span style="margin-top: 77px;display:block;"></span>
+    <form style="margin-top: 0px;" id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
@@ -119,11 +118,14 @@
                 <input type="hidden" name="event_cover_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
-    <span style="margin-right:80px;" class="fb-connect no-margin fright grid-5">
+    {% if profile.social_session == 1 %}
+    <span class="fb-connect no-margin fright grid-5">
         <p>¿Cuentas ya con una pagina en Facebook?</p>
         <p class="fb events fleft">Ver eventos de
             <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
     </span>
+    {% endif %}
+    </div>
     </div>
     <script type="text/javascript">
         Dropzone.options.picture = {
@@ -158,15 +160,15 @@
         $(document).ready(function(){
             var date = new Date();
             date = date.toTimeString();
-            var prefix;
+            console.log(date);
             if(date.indexOf('+') > -1){
                 date = date.split('+');
                 date = date[1].split(' ');
-                date = '+'+date[0];
+                date = '++'+date[0];
             }else{
                 date = date.split('-');
                 date = date[1].split(' ');
-                date = '-'+date[0];
+                date = '--'+date[0];
 
             }
             initialize();
@@ -186,7 +188,7 @@
                 }
             });
 
-            $('form.center').submit(function(e){
+            $('form.grid-8').submit(function(e){
                 if($(this).find('.msg-ok').length > 0)
                     window.location.href = site_url+'/qro_lee/events';
                 if(valid_form){
@@ -227,11 +229,13 @@
                                                      eventid(response.id);*/
 
                                                 });
+
                                     }
-                                var name = $('input[name=name]').val().charCodeAt(0)+''+
-                                                $('input[name=name]').val().charCodeAt(1)+''+
-                                                $('input[name=name]').val().charCodeAt(2);
-                                //window.location.href = site_url+'/qro_lee/events/'+name+'_'+data.success;
+                                    var name = $('input[name=name]').val().charCodeAt(0)+''+
+                                            $('input[name=name]').val().charCodeAt(1)+''+
+                                            $('input[name=name]').val().charCodeAt(2);
+                                    window.location.href = site_url+'/qro_lee/events/'+name+'_'+data.success;
+
                                 }else{
                                     $('.message').addClass('fail');
                                     $('.message').html('Hubo un error, favor de verificar sus datos');

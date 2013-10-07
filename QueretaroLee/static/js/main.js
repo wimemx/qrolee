@@ -186,7 +186,7 @@ $(document).ready(function(){
             if($(this).hasClass('organization'))
                 search = '/me/accounts?fields=description,name,location,perms,category,username,website,picture,cover';
             else if($(this).hasClass('events'))
-                search = '/me/events'
+                search = '/me/events?fields=cover,description,end_time,name,start_time,rsvp_status,location'
             if($(this).hasClass("update"))
                 fb_obj_search(search, -1);
             else
@@ -227,46 +227,69 @@ $(document).ready(function(){
 
     });
     show_dialog();
-    $('form').attr('autocomplete', 'off');
+     $('form').attr('autocomplete', 'off');
     $('.d-paddin_top').tinyscrollbar();
 });
 
 function fb_obj_search(search, type){
     $('.lightbox-wrapper .fb-objs span').each(function(){
-            $(this).remove();
-        });
-        $('.lightbox-wrapper').fadeIn(300);
-        FB.api(search, function(response) {
-            console.log(response);
-            var len = response.data.length;
-            $.each(response.data,function(index){
-                var obj = response.data[index];
-                var id = obj.id;
-                var span = $('<span class="fleft grid-5"></span>');
-                var span_wrapper = $('<span class="fleft wrapper"><img src="" ></span>');
-                var title = $('<h3 class="title grid-3 fright"></h3>');
-                var privacy = $('<p class="grid-3 fright"></p>');
-                var link = $('<p class="grid-3 fright"></p>');
-                var span_accept = $('<span class="green_btn fright">Acceptar</span>');
+        $(this).remove();
+    });
+    $('.lightbox-wrapper').fadeIn(300);
+    FB.api(search, function(response) {
+        if(response.error){
+            $('.fb-objs .scrollbar').fadeOut(300, function(){
+                $('.fb-objs .overview').append(
+                    '<p style="font-size:13px;" class="center">No se pudo encontrar lo que búscaba, ' +
+                        'verifique que este en la cuenta adecuada de ' +
+                        '<a style="color:#3b579d;font-weight:bold;" target="_blank" href="https://facebook.com/me">Facebook</a> o ' +
+                        'que su cuenta cuente con alguna pagía o grupo.</p>');
+            });
+            return;
+        }
+        var len = response.data.length;
+        $.each(response.data,function(index){
+            var obj = response.data[index];
+            var id = obj.id;
+            var span = $('<span class="fleft grid-5"></span>');
+            var span_wrapper = $('<span class="fleft wrapper"><img src="" ></span>');
+            var title = $('<h3 class="title grid-3 fright"></h3>');
+            var privacy = $('<p style="margin-bottom:0px;" class="grid-3 fright"></p>');
+            var link = $('<p class="grid-3 fright"></p>');
+            var span_accept = $('<span class="green_btn fright">Acceptar</span>');
+
                 if(obj.cover)
                     span_wrapper.find('img').attr('src',obj.cover.source);
+                else if(obj.picture)
+                    span_wrapper.find('img').attr('src',obj.picture.data.url);
                 if(obj.link)
                     link.html(obj.link);
-                var web;
+                var web = ' ';
                 if(obj.link){
                     link.html(obj.link);
-                    web = obj.link;
+                    web = obj.link+' ';
                 }
                 if(obj.website){
                     link.html(obj.website);
-                    web = obj.website;
+                    web = obj.website+' ';
                 }
-
+                var start_time, end_time;
+                if(obj.start_time && obj.end_time ){
+                    if(obj.start_time != ''){
+                        start_time = obj.start_time.split('T');
+                        privacy.html('Comienza: '+start_time[0]);
+                    }
+                    if(obj.end_time != ''){
+                        end_time = obj.end_time.split('T');
+                        link.html('Termina: '+start_time[0]);
+                    }
+                }
+                web = web.split(' ');
                 title.html(obj.name);
-                privacy.html(obj.privacy);
                 span.append(span_wrapper);
                 span.append(title);
-                span.append(privacy);
+                if(obj.start_time || obj.privacy)
+                    span.append(privacy);
                 span.append(link);
                 span.append(span_accept);
                 $('.fb-objs #scrollbar1 .overview').append(span);
@@ -293,12 +316,16 @@ function fb_obj_search(search, type){
                     else
                         $('select.change:eq(1)').val($('select.change:eq(1) option:eq(1)').val()).trigger('change');
                     $('input[name=fb]').val(obj.id);
-                    if(web)
-                        $('input[name=website]').val(web);
+                    if(web[0])
+                        $('input[name=website]').val(web[0]);
+                    var folder = '';
                     if(obj.location){
                         var address;
-                        if('rsvp_status' in obj)
+                        if('rsvp_status' in obj){
+                            folder = '/event/';
                             $('.address').val(obj.location);
+                            $('input.fb-url').val(obj.id);
+                        }
                         else
                             address = obj.location.street+' '+obj.location.city+' '+obj.location.country;
                         if(obj.location.latitude){
@@ -311,6 +338,43 @@ function fb_obj_search(search, type){
                                 update_dir_info(address, null, 1);
 
                         }
+
+                    }
+
+                    if(start_time){
+                        $('.date-init').val(start_time[0]);
+                        var time = start_time[1].split(':');
+                        $('.hour-init').val(time[0]+':'+time[1]+':00');
+                    }
+                    if(end_time){
+                        $('.date-end').val(end_time[0]);
+                        var time = end_time[1].split(':');
+                        $('.hour-end').val(time[0]+':'+time[1]+':00');
+                    }
+                    if(span_wrapper.find('img').attr('src') != ''){
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/registry/media/upload/',
+                            data: {
+                                'csrfmiddlewaretoken': $('#picture div input[type=hidden]').val(),
+                                'fb_img': span_wrapper.find('img').attr('src'),
+                                'folder': folder
+                            },
+                            dataType: 'json'
+                        }).done(function(data){
+                            $('input.profile-pic').val(data.file_name);
+                        });
+                        var img_container = $('<div class="fb-img-preview fright"><span class="wrap"><img src="#"><span class="close"></span></span></div>');
+                        img_container.find('img').attr('src', span_wrapper.find('img').attr('src'));
+                        $('#picture').after(img_container);
+                        $('#picture').fadeOut(300,function(){
+                            $('.fb-img-preview').fadeIn(300);
+                        });
+                        img_container.find('.close').click(function(){
+                            $(img_container).remove();
+                            $('#picture').fadeIn(300);
+                        });
 
                     }
 
@@ -2037,6 +2101,7 @@ function get_titles_authors(list, csrf){
         search = JSON.stringify(search);
 
         title = advanced_search(search,csrf);
+        console.log(title);
 
         container_list = $('.add_my_list');
         container_list.find('.type').remove();
@@ -2683,6 +2748,7 @@ function list_titles_and_author(data, type, $container, type_message){
                     title_active = -1;
                 }
             }
+        }
 
         });
     }

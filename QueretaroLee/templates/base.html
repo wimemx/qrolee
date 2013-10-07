@@ -26,14 +26,12 @@
     <script>
               window.fbAsyncInit = function() {
                 // init the FB JS SDK
-                FB.init({
-                  appId      : '476600992414046',                        // App ID from the app dashboard
-                  channelUrl : 'http://qrolee.wimjapps.com/', // Channel file for x-domain comms
-                  status     : true,                                 // Check Facebook Login status
-                  xfbml      : true                                  // Look for social plugins on the page
-                });
-
-                // Additional initialization code such as adding Event Listeners goes here
+                  FB.init({
+                      appId      : '570894232960484',                        // App ID from the app dashboard
+                      channelUrl : 'http://localhost:8000/', // Channel file for x-domain comms
+                      status     : true,                                 // Check Facebook Login status
+                      xfbml      : true                                  // Look for social plugins on the page
+                  });
               };
 
               // Load the SDK asynchronously

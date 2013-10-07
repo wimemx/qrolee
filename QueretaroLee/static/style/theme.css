@@ -75,7 +75,7 @@ input:not([type='submit']){
     font-family: 'Conv_DINPro-Bold';
 }
 .din-r{
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Conv_fontscore.com_d-dinproregular' !important;
 }
 .dark_yello_btn{
     background: #edde84;
@@ -473,7 +473,7 @@ input:not([type='submit']){
         .entity .member .follow{
             margin-top: 0px;
             float: left;
-            width: 240px;
+            width: 210px;
         }
         .entity .member.grid-6 .followers{
             width: 100%;
@@ -500,12 +500,16 @@ input:not([type='submit']){
                     height: 100%;
                     margin-bottom: 5px;
                 }
+        .entity .member a{
+            color: #222;
+        }
         .entity .member .btn{
             background: #edde84;
             padding:5px 15px 5px 15px;
             font-size: 12px;
             font-family: 'Montserrat' sans-serif;
             margin-right: 30px;
+            cursor:pointer;
         }
             .entity .member p{
                 font-size: 11px;
@@ -834,6 +838,11 @@ input:not([type='submit']){
                          font-size: 13px;
                          width: 100%;
                          text-align: inherit;
+                         display: block;
+                         height: auto;
+                     }
+                     .wrapper .title a{
+                         font-size: 12px;
                      }
                      #scrollbar1 .wrapper.grid-5 .title a{
                          text-align: inherit;
@@ -843,7 +852,9 @@ input:not([type='submit']){
                          font-size: 13px;
                          text-decoration: underline;
                          font-family: 'Conv_fontscore.com_d-dinproregular';
+
                      }
+                     
 
 
             .sidebar-b .overview{
@@ -885,6 +896,7 @@ input:not([type='submit']){
                         .sidebar-b .month .month{
                             font-family: 'Conv_fontscore.com_d-dinproregular';
                             font-size: 12px;
+                            cursor: pointer;
                         }
                     .sidebar-b .month td{
                         text-align: center;
@@ -955,7 +967,7 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: -30px; width: 15px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 15px; z-index: 5 }
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
@@ -1201,6 +1213,9 @@ input:not([type='submit']){
     }
     .lightbox.fb-objs{
         padding: 40px;
+    }
+    .fb-objs #scrollbar1 .scrollbar{
+        right: 0px;
     }
         .lightbox.fb-objs span{
             display: block;
@@ -1500,6 +1515,8 @@ margin: 0px;
 .wrapper_book{
     width: 100px !important;
     height: 130px !important;
+    border-radius: 2px;
+    border: 2px solid #fa907e !important;
 }
 
 .margin_left{
@@ -1758,6 +1775,7 @@ margin: 0px;
 }
 .container_btn{
     float: left;
+    margin-top: 20px !important;
 }
 
 .item_my_list{
@@ -1828,9 +1846,11 @@ margin: 0px;
 
 .p-d-text-author{
     font-size: 11px !important;
+
 }
 
 .d-item_book_mini{
+    height: 100px !important;    ;
 
     height: 100px !important;
 }
@@ -1886,6 +1906,43 @@ margin: 0px;
     height: 170px !important;
 }
 
+.fb-img-preview{
+    width: 280px;
+    height: 180px;
+    display: none;
+    height: 180px;
+    font-family: 'Montserrat' sans-serif;
+    text-align: center;
+    color: #000;
+    border: 1px dashed #acacac;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+    .fb-img-preview .wrap{
+        display: block;
+        position: relative;
+        width: 100px;
+        display: block;
+        margin:50px auto;
+    }
+        .fb-img-preview .wrap .close{
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            width: 10px;
+            height: 12px;
+            display: none;
+            cursor: pointer;
+            background: url('../img/cclose.png') no-repeat 0px 0px;
+            background-size: 10px;
+            padding: 0px;
+        }
+        .fb-img-preview:hover .wrap .close{
+            display: block;
+        }
+    .fb-img-preview img{
+        width: 100%;
+    }
 .min_list{
     height: 0px !important;
 }
