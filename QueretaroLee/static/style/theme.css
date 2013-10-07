@@ -967,7 +967,7 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 15px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: -25px; width: 15px; z-index: 5 }
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
@@ -1500,11 +1500,11 @@ input:not([type='submit']){
 }
 
 .entities .grid-15 {
-height: 640px;
-padding: 40px 40px 40px 40px;
-background: #fffcf5;
-display: block;
-margin: 0px;
+    min-height: 640px;
+    padding: 40px 40px 40px 40px;
+    background: #fffcf5;
+    display: block;
+    margin: 0px;
 
 }
 
@@ -1933,7 +1933,7 @@ margin: 0px;
             height: 12px;
             display: none;
             cursor: pointer;
-            background: url('../img/cclose.png') no-repeat 0px 0px;
+            background: url('../img/close.png') no-repeat 0px 0px;
             background-size: 10px;
             padding: 0px;
         }
@@ -2138,10 +2138,30 @@ margin: 0px;
     float: left;
     padding-left: 5px;
 }
-.cont_btn_publisher{
-    height: 50px;
-}
 
 .title_header_list{
     margin-top: 6px !important;
+}
+
+.message_ok{
+    font-weight: bold;
+    color: #c5c34d;
+    padding: 0px 10px 0px 10px;
+    margin-top: 13px;
+    margin-right: 44px;
+}
+
+.btn_page{
+    padding: 10px 10px 10px 10px !important;
+}
+
+form p .invalid_messa{
+    background: #fff;
+    font-weight: normal;
+    padding: 3px 10px 3px 10px;
+    position: absolute;
+    right: -52px;
+    box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+    display: none;
+    font-weight: bold;
 }

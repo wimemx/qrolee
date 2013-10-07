@@ -11,6 +11,7 @@ import simplejson
 from account import models
 from registry import models as registry
 from django.contrib.auth.models import User
+from registry import views as registry_view
 from django.db import models as db_model
 from datetime import datetime
 
@@ -449,16 +450,13 @@ def registry_ajax_page(request):
 
     if list is not None:
         succuess = 'True'
-        list_atc ={
-            'user':user,
+        activity_data = {
+            'user_id': request.user.id,
             'object':page.id,
-            'date':datetime.today(),
-            'meta':'',
-            'type':'P',
-            'verb':str(user) + ' ha creado la pagina ' + str(page.name)
+            'type': 'P',
+            'activity_id': 1
         }
-        activity = models.Activity. objects.create(**list_atc)
-        activity.save()
+        registry_view.update_activity(activity_data)
     else:
         succuess = 'False'
     context = {
@@ -467,4 +465,52 @@ def registry_ajax_page(request):
 
     context = simplejson.dumps(context)
 
+    return HttpResponse(context, mimetype='application/json')
+
+
+def update_page(request, **kwargs):
+    template_name = kwargs['template_name']
+    id_page = kwargs['id_page']
+    page = models.Page.objects.get(id=id_page)
+    context = {
+        'page':page
+    }
+    return render(request, template_name, context)
+
+
+def update_ajax_page(request):
+    user = request.user
+    pages = dict(request.POST)
+
+    del pages['csrfmiddlewaretoken']
+    copy = pages
+    for e, val in pages.iteritems():
+            copy[e] = str(val[0])
+    pages = copy
+    id_page = pages['id_page']
+    del pages['id_page']
+
+    page = models.Page.objects.filter(id=id_page)
+    page.update(**pages)
+
+    success = 'False'
+    if page is not None:
+        success = 'True'
+        activity =  models.Activity.objects.filter(object=page[0].id, user_id=user.id,
+                                    activity_id=2, type='P')
+        if len(activity) == 0:
+            activity_data = {
+                'user_id': request.user.id,
+                'object':page[0].id,
+                'type': 'P',
+                'activity_id': 2
+            }
+            registry_view.update_activity(activity_data)
+        else:
+            activity.update(date=datetime.today())
+
+    context = {
+        'success':success
+    }
+    context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

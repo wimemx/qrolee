@@ -7,9 +7,7 @@
 
 {% block js %}
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
     <script>
@@ -17,31 +15,27 @@
     </script>
 {% endblock %}
 
-
 {% block head %}
     {% include 'header.html' %}
 {% endblock %}
 
 {% block main_site %}
-    <div class="erase"></div>
-    <div class="grid-16 entities page">
-        <div class="grid-15">
-            <div class="heading">
-                <h3 class="title grid-5 fleft">Crear una página nueva</h3>
-            </div>
-            <form method="post" id="registry" action="/accounts/users/registry_ajax_page/" >
-                <div class="csrf_token">
-                   {% csrf_token %}
-                </div>
+    <div class="grid-16 entities registry page">
+        <div class="grid-15 ">
+        <span class="title {{ entity_type.1 }} main">Editar una página
+        </span>
+            <form method="post" id="registry" action="/accounts/users/update_ajax_page/" >
+                {% csrf_token %}
+                <input type="hidden" name="id_page" value="{{ page.id }}" >
                 <p>
                     Introduce el nombre de tu página
                     <p>
-                        <input name="name" type="text" class="search_entities">
+                        <input name="name" value="{{ page.name }}" type="text" class="search_entities">
                     </p>
                 <p>
                     Escribe el contenido de tu página
                     <p>
-                        <textarea name="coment" class="textarea_tinymce textarea_page "></textarea>
+                        <textarea name="coment" class="textarea_tinymce textarea_page ">{{ page.coment }}</textarea>
                     </p>
                 </p>
                 <p>
@@ -51,7 +45,7 @@
                     </span>
                 </p>
                 <p>
-                    <textarea name="tags" class="textarea_tags"></textarea>
+                    <textarea name="tags" class="textarea_tags">{{ page.tags }}</textarea>
                 </p>
                 <p>
                     Compartir en redes sociales
@@ -66,44 +60,38 @@
                         <span class="text_check" >Compartir con facebook</span>
                     </span>
                     <span class="container_btn">
-                        <input id="submit" class="btn_page green_btn fright" value="Publicar" type="submit"/>
+                        <input id="submit" class="btn_page green_btn fright" value="Guardar" type="submit"/>
                     </span>
+                    <span class="message_ok fright"></span>
                 </p>
             </form>
         </div>
+
     </div>
+    <script type="text/javascript">
 
-<script type="text/javascript">
-     $(document).ready(function(){
-
-            $('form p input').focus(function(){
-                $(this).parent().find('.invalid').fadeOut(300);
-            });
-            if($(this).find('input[type=submit]').hasClass('msg-ok'))
-                    window.location.href = site_url;
+        $(document).ready(function(){
             $('#registry').submit(function(e){
 
+                var message = $('.message_ok');
+                message.empty();
                 if(invalid_f($(this))){
-
                     $.ajax({
-                        type: "POST",
-                        url: $(this).attr('action'),
-                        data: $(this).serialize(),
-                        dataType: 'json'
-                    }).done(function(data) {
-
-                                if(data.success == 'True'){
-                                     window.location.href = site_url+'/qro_lee/';
-                                }else{
-                                    $('.message').addClass('fail');
-                                    $('.message').html('Hubo un error, favor de verificar sus datos');
-                                }
+                    type: "POST",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json'
+                    }).done(function(data){
+                        if(data.success == 'True')
+                            message.fadeOut(200,function(){
+                                message.append('Cambios guardados');
+                                message.fadeIn(200);
                             });
+
+                    });
                 }
                 return false;
             });
-
-
         });
-</script>
+    </script>
 {% endblock %}

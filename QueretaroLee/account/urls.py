@@ -27,5 +27,9 @@ urlpatterns = patterns('',
         name='registry_page'),
     url(r'^users/registry_ajax_page/',auth.registry_ajax_page,
         name='registry_ajax_page'),
+    url(r'^users/update_page/(?P<id_page>[0-9]+)/$', auth.update_page, {'template_name':'users/edit_page.html'},
+        name='update_page'),
+    url(r'^users/update_ajax_page/',auth.update_ajax_page,
+        name='update_ajax_page'),
 
 )

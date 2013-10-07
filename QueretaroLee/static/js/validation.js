@@ -62,7 +62,6 @@ $(document).ready(function(){
             regex_type = regex_type[1];
             if($.trim($(this).val()) != ''){
                 var regex_validation = validate_regex($.trim($(this).val()), regex_type);
-                console.log(regex_validation);
                 if(!regex_validation[0]){
                     valid--;
                     var span = $('<span class="invalid"></span>');
@@ -313,4 +312,39 @@ function aling_message(){
 function fb_session(){
 
 
+}
+
+function invalid_f(form){
+    var invalid = true;
+    $('.invalid_messa').remove();
+
+    var names = {
+        'name':'nombre',
+        'coment':'contenido',
+        'tags':'etiquetas'
+    }
+    form.find('textarea').each(function(i){
+        if($(this).val().length<1){
+            var span = $('<span class="invalid_messa" ></span>');
+            span.append('pon el ' + names[$(this).attr('name')]);
+            $(this).parent().append(span);
+            invalid = false;
+        }
+    });
+    form.find('p input').each(function(i){
+        if($(this).attr('type')=='text'){
+            if($(this).val().length<1){
+                var span = $('<span class="invalid_messa" ></span>');
+                span.append('pon el ' + names[$(this).attr('name')]);
+                $(this).parent().append(span);
+                invalid = false;
+            }
+        }
+    });
+    $('.invalid_messa').fadeIn(250);
+
+    if(invalid)
+        return true;
+    else
+        return false;
 }

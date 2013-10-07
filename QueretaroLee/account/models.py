@@ -120,13 +120,6 @@ class ActivitiesList(models.Model):
 
 class Activity(models.Model):
     user = models.ForeignKey(User)
-    object = models.IntegerField(max_length=5)    
-    date = models.DateTimeField(auto_now_add=True)
-    meta = models.TextField()
-    type = models.CharField(max_length=1)
-
-class Activity_22(models.Model):
-    user = models.ForeignKey(User)
     object = models.IntegerField(max_length=5)
     added_to_object = models.IntegerField(max_length=5, null=True)
     date = models.DateTimeField(auto_now_add=True)

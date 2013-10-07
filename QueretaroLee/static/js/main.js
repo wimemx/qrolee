@@ -2748,7 +2748,6 @@ function list_titles_and_author(data, type, $container, type_message){
                     title_active = -1;
                 }
             }
-        }
 
         });
     }

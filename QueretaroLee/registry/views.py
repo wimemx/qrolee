@@ -1060,17 +1060,13 @@ def add_my_title(request):
                         if len(my_list) == 0:
                             my_list = account.ListTitle.objects.create(**list_ti)
                             my_list.save()
-                            list_activity = {
-                                'user':user,
-                                'object':title.id,
-                                'verb':'añadio el ' + str(title.title),
-                                'meta':'',
-                                'type':'T'
+                            activity_data = {
+                                'user_id': request.user.id,
+                                'object':my_list.id,
+                                'type': 'L',
+                                'activity_id': 1
                             }
-                            activity = account.Activity.objects.filter(object=title.id)
-                            if len(activity) == 0:
-                                activity = account.Activity.objects.create(**list_activity)
-                                activity.save()
+                            update_activity(activity_data)
 
         if request.POST.get('type_list') == 'A':
             for obj in list:
@@ -1349,7 +1345,7 @@ def edit_title_read(request):
         lis = account.List.objects.get(user=list_title.list.user, default_type=1)
 
         list_title.list = lis
-        #list_title.save()
+        list_title.save()
 
         if date == '':
             act_date = datetime.datetime.now().isoformat()
@@ -1357,17 +1353,13 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        list_act = {
-            'user':list_title.list.user,
+        activity_data = {
+            'user_id': list_title.list.user.id,
             'object':list_title.title.id,
-            'date':act_date,
-            'verb':'termino de leer ' + str((list_title.title.title).encode('utf-8', 'ignore')),
-            'meta':'',
-            'type':'T'
+            'type': 'T',
+            'activity_id': 1
         }
-
-        activity = account.Activity.objects.create(**list_act)
-        #activity.save()
+        update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 1
@@ -1381,17 +1373,13 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        list_act = {
-            'user':list_title.list.user,
+        activity_data = {
+            'user_id': list_title.list.user.id,
             'object':list_title.title.id,
-            'date':act_date,
-            'verb':'termino de leer ' + str((list_title.title.title).encode('utf-8', 'ignore')),
-            'meta':'',
-            'type':'T'
+            'type': 'T',
+            'activity_id': 1
         }
-
-        list_activity = account.Activity.objects.filter(object=list_title.title.id).\
-            update(**list_act)
+        update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 2
