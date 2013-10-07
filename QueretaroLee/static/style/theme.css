@@ -265,7 +265,7 @@ input:not([type='submit']){
                 height: 140px;
                 display: block;
                 float: left;
-                border:2px solid #fae8bd;
+                border:3px solid #fae8bd;
                 margin-right: 20px;
                 overflow:hidden;
                 position: relative;
@@ -371,6 +371,7 @@ input:not([type='submit']){
             font-weight: 400;
             font-family: 'Montserrat' sans-serif;
             margin-bottom: 0px;
+            margin-top: 0px;
         }
         .title.organization, a.organization{
             color: #8ab493 !important;
@@ -404,7 +405,7 @@ input:not([type='submit']){
         }
         .entity .general-info a{
             text-decoration: none;
-            margin: 0px 10px 0px 10px;
+            margin: 0px 5px 0px 5px;
         }
         .entity .general-info .social{
             color: #cccc66;
@@ -676,7 +677,7 @@ input:not([type='submit']){
             background: #acacac;
         }
         .content .sidebar-a div.contact{
-            margin-left: 0px;
+            margin-left: 20px;
         }
         .content .contact .title.main{
             font-size: 14px;
@@ -707,7 +708,7 @@ input:not([type='submit']){
             float: left;
         }
             .content .sidebar-a .info,.content .sidebar-a p,.content .sidebar-a span{
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: 400;
                 margin-top: 0px;
             }
@@ -715,7 +716,7 @@ input:not([type='submit']){
                 width: 100%;
                 margin-bottom: 20px;
                 float: left;
-                font-size: 14px;
+                font-size: 13px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .content .sidebar-a .time,.content .sidebar-a .info{
@@ -843,7 +844,7 @@ input:not([type='submit']){
                          text-decoration: underline;
                          font-family: 'Conv_fontscore.com_d-dinproregular';
                      }
-                     
+
 
             .sidebar-b .overview{
                 width: 100%;
@@ -954,7 +955,7 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: -45px; width: 15px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: -30px; width: 15px; z-index: 5 }
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
@@ -1045,7 +1046,7 @@ input:not([type='submit']){
 .pink_btn{
     margin-right: 10px;
     cursor: pointer;
-    background: #f89883;
+    background: #f79882;
 }
 
 .size_btn_edit{
@@ -1127,6 +1128,7 @@ input:not([type='submit']){
 
 .d-title_profile{
     color: #000000 !important;
+    margin-top: 0px;
 }
 
 .d-link_perfil{
@@ -1264,7 +1266,7 @@ input:not([type='submit']){
 }
 
 .wrapper_list{
-    width: 95px;
+    width: 94px;
     height: 120px;
     display: block;
     float: left;
@@ -1276,8 +1278,8 @@ input:not([type='submit']){
 }
 
 .d-text_list{
-    width: 86% !important;
     font-size: 12px !important;
+    margin-top: 5px !important;
 }
 
 .item_list{
@@ -1292,7 +1294,7 @@ input:not([type='submit']){
     text-align: center;
     color: #000;
     width: 198px;
-    border: 1px dashed #acacac;
+    border: 3px dashed #acacac;
     border-radius: 10px;
     right: 0px;
     cursor: pointer;
@@ -1319,8 +1321,7 @@ input:not([type='submit']){
 }
 
 .title_book{
-    margin-top: 20px !important;
-    margin-bottom: 0px;
+    margin-bottom: 0px !important;
 
 }
 
@@ -1342,7 +1343,11 @@ input:not([type='submit']){
 }
 
 .d-add_text_book{
-    margin-top: 46px !important;
+    margin-top: 52px !important;
+    font-family: 'Montserrat' sans-serif !important;
+    color: #000000;
+    font-weight: normal !important;
+    font-size: 12px !important;
 }
 
 .place_pink{
@@ -1355,6 +1360,7 @@ input:not([type='submit']){
 
 .d-text_opacity{
     color: #7a7a7a;
+    font-size: 11px !important;
 }
 
 .dialog-confirm{
@@ -1494,8 +1500,6 @@ margin: 0px;
 .wrapper_book{
     width: 100px !important;
     height: 130px !important;
-    border-radius: 2px;
-    border: 2px solid #fa907e !important;
 }
 
 .margin_left{
@@ -1504,7 +1508,7 @@ margin: 0px;
 
 .title_author{
     color: #b69035 !important;
-    text-decoration:underline !important;
+    text-decoration:underline !important;|
     margin-top: 10px !important;
 }
 
@@ -1620,15 +1624,11 @@ margin: 0px;
 }
 
 .btn_new{
-    background: #c69264;
-    color: #fff;
-    text-align: center !important;
-    font-size: 12px;
-    text-decoration: none;
-    padding: 3px 8px 3px 8px;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
-    cursor: pointer;
-    border: 1px solid #a77340;
+    color: white;
+    font-family: 'montserrat' sans-serif;
+    padding:  4px 9px;
+    background: #d0a475;
+    border: 1px solid #a77340
 }
 
 .text_list_user{
@@ -1719,6 +1719,10 @@ margin: 0px;
 .text_list{
     margin-top: 0px !important;
 }
+.text_tit{
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+}
 
 .text_name_user{
     margin-top: 35px !important;
@@ -1754,7 +1758,6 @@ margin: 0px;
 }
 .container_btn{
     float: left;
-    margin-top: 20px !important;
 }
 
 .item_my_list{
@@ -1813,6 +1816,7 @@ margin: 0px;
     width: 60px !important;
     height: 78px !important;
     border: none !important;
+    margin-left: 8px;
 }
 
 .title_book_mini{
@@ -1824,12 +1828,11 @@ margin: 0px;
 
 .p-d-text-author{
     font-size: 11px !important;
-
 }
 
 .d-item_book_mini{
-    height: 100px !important;    ;
 
+    height: 100px !important;
 }
 
 .container_title{
@@ -1861,7 +1864,7 @@ margin: 0px;
 }
 
 .active_item{
-    background-color: rgb(209, 177, 164);
+    background-color: rgba(196, 164, 124, 0.53);
 }
 
 .btn_save_list{
@@ -1901,7 +1904,11 @@ margin: 0px;
 }
 
 .date_read{
-    width: 85px !important;
+    width: 80px !important;
+    margin-left: 200px;
+    height: 19px !important;
+    border: 1px solid;
+    background-color: wheat;
 }
 
 .text_act{
@@ -1913,8 +1920,9 @@ margin: 0px;
 }
 
 .img_profile_mini{
-    width: 18px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
+    margin-top: -2px;
 }
 
 .link_search_all{
@@ -1938,4 +1946,145 @@ margin: 0px;
     float: left;
     width: 100%;
     text-align: center;
+}
+
+.menu a:hover{
+    color: #edde83;
+
+}
+
+.search_entities:focus{
+    background-color:  #FCF8EF !important;
+
+}
+
+.desc_group{
+    margin-top: 0px;
+}
+
+.starts_mini{
+    height: 15px;
+    width: 15px;
+}
+
+.rate_perfil_list{
+    margin-left: 104px;
+}
+
+.drop_zone_list{
+    margin-bottom: 0px !important;
+}
+
+.container_list{
+    margin-left: 28px !important;
+    margin-top: 28px !important;
+}
+
+.text_biography{
+    height: 85px;
+}
+
+.scrollbar_add{
+    right: -20px !important;
+}
+
+.text_profile{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.name_author{
+    margin: 0px !important;
+}
+
+.title_contai_aut{
+    margin-top: 10px !important;
+}
+
+.height_tit_list{
+    height: 67px;
+}
+
+.bottom_text{
+    margin-bottom: 10px !important;
+}
+
+.user_list{
+    margin-left: 0px !important;
+}
+
+.text_pink_mini{
+    font-size: 11px !important;
+}
+
+.no_resuls{
+    font-size: 18px !important;
+    color: #fa907e;
+    font-family: 'montserrat' sans-serif;
+    text-align: center;
+    padding: 0px !important;
+    margin-top: 70px!important;
+    max-height: 100px !important;
+
+}
+.marg_edit{
+    margin-right: 4px !important;
+}
+
+.text_entity{
+    width: 377px !important;
+    height: 228px !important;
+}
+
+.stars_grade{
+    margin-bottom: 5px !important;
+}
+
+.d-item_mini_list{
+    height: 85px !important;
+    width: 211px!important;
+    margin-left: 10px !important;
+    margin-bottom: 6px !important;
+    border-radius: 6px;
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.textarea_page{
+    height: 250px !important;
+}
+
+.page p{
+    color: #222222;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.page_tags{
+    margin-left: 10px;
+}
+.textarea_tags{
+    width: 100%;
+    min-height: 50px;
+}
+
+.chec_pag{
+    width: 15px !important;
+    height: 15px !important;
+}
+
+.content_check{
+    margin-bottom: 10px;
+}
+
+.text_check{
+    float: left;
+    padding-left: 5px;
+}
+.cont_btn_publisher{
+    height: 50px;
+}
+
+.title_header_list{
+    margin-top: 6px !important;
 }

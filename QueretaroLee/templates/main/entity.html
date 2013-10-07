@@ -155,7 +155,15 @@
                     </span>
                </span>
             {% endif %}
-            <p class="din-r grid-6 alpha omega">{{ entity.description|truncatewords:30 }}</p>
+            {% if entity_type.1 == 'group' %}
+                <p class="din-r grid-6 alpha omega desc_group">
+                    {{ entity.description|truncatewords:30 }}
+                </p>
+            {% else %}
+                <p class="din-r grid-6 alpha omega">
+                    {{ entity.description|truncatewords:30 }}
+                </p>
+            {% endif %}
         </span>
         <span class="nav {{ entity_type.1 }} grid-8 no-margin">
             <span class="btn active">Actividad</span>
@@ -263,7 +271,7 @@
         <div class="grid-16 load no-margin">
     {% endif %}
 
-            <div class="sidebar-a grid-10">
+            <div class="sidebar-a grid-11">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
@@ -300,7 +308,7 @@
             {% endif %}
 
             {% if entity_type.1 == 'organization' %}
-                <div class="grid-6 no-margin">
+                <div class="grid-7 no-margin">
                 <span class="ruler"></span>
             {% endif %}
 
@@ -312,7 +320,11 @@
 
             {% else %}
                 <div class="overvieww content">
-                    <p>{{ entity.description }}</p>
+                    {% if entity_type.1 == 'organization' %}
+                        <p class="text_entity">{{ entity.description }}</p>
+                    {% else %}
+                        <p >{{ entity.description }}</p>
+                    {% endif %}
                 </div>
             {% endif %}
 
@@ -360,10 +372,9 @@
                     </span>
                 </div>
             {% endif %}
-
             </div>
-            <div class="grid-5 fright sidebar-b">
-                <h3 class="title">{{ entity_type.0|capfirst }} similares</h3>
+            <div class="grid-4 sidebar-b">
+                <h3 class="title grid-4">{{ entity_type.0|capfirst }} similares</h3>
                 <div id="scrollbar1">
                     <div style="right:-8px;width: 8px;" class="scrollbar"><div style="background:#fffcf5;" class="track"><div class="thumb" style="width: 9px;"><div class="end"></div></div></div></div>
                     <div class="viewport" style="height:360px;">
@@ -405,7 +416,7 @@
 
                                 </span>
                                 <span class="wrapper fleft">
-                                    <img class="profile-picture" src="" alt=""/>
+                                    <img class="profile-picture img_size_all" src="" alt=""/>
                                 </span>
                                 <span class="general-info fleft">
                                     <h3 class="title"></h3>
@@ -447,14 +458,14 @@
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport">
                         <div class="overview">
-                            {% for i in 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' %}
+                            {% for obj in admins %}
                                 <span class="wrapper grid-5 no-margin">
                                     <span class="fleft">
                                         <img src="/static/media/entities/1/python.png" alt=""/>
                                     </span>
-                                    <h3 class="title fleft">Som title
+                                    <h3 class="title fleft">{{ obj.user.username  }}
                                         <span>Se unio hace 2 años</span>
-                                        <a href="#">Ver perfil</a>
+                                        <a href="/accounts/users/profile/{{ obj.user.id }}/">Ver perfil</a>
                                     </h3>
                                 </span>
                             {% endfor %}

@@ -196,7 +196,9 @@ $(document).ready(function(){
     $('.radio_btn').click(function(){
         $('.d-add_text_book').empty();
         $('.title_list').empty();
-        $('.add_my_list').find('.d-item_book').remove();
+        $('.add_my_list').find('.d-item_book').fadeOut(250,function(){
+            $('.add_my_list').find('.d-item_book').remove();
+        });
         if($(this).parent().find('.radio_value').val()=='title'){
             $('.rad_tit').addClass('radio_active');
             $('.rad_aut').removeClass('radio_active');
@@ -221,7 +223,12 @@ $(document).ready(function(){
         else
             $(this).addClass('active');
     });
+    $('.menu a').click(function(){
+
+    });
     show_dialog();
+    $('form').attr('autocomplete', 'off');
+    $('.d-paddin_top').tinyscrollbar();
 });
 
 function fb_obj_search(search, type){
@@ -878,10 +885,9 @@ $(document).ready(function(){
 
         }
     });
-    $('#scrollbar1').tinyscrollbar();
-
-
-
+    if($('.list_scroll').length>0){
+        $('#scrollbar1').tinyscrollbar();
+    }
 });
 
 function create_template(type, result,i, create_user){
@@ -1252,10 +1258,9 @@ function dialog_titles(csrf, data, id){
     list_title(csrf, data, div_text, id);
 }
 
-function list_title(csrf, data, div_text, type){
-
+function list_title(csrf, data, div_text, type){    console.log(1);
     div_scroll = $('<div id="scrollbar1"></div>');
-    div_scroll.append('<div class="scrollbar"><div class="track">'+
+    div_scroll.append('<div class="scrollbar scrollbar_add"><div class="track">'+
         '<div class="thumb"><div class="end"></div></div></div></div>');
 
     min_height = '';
@@ -1273,7 +1278,7 @@ function list_title(csrf, data, div_text, type){
 
     div_view_port = $('<div class="viewport' + min_height + ' container_title"></div>');
     div_scroll.append(div_view_port);
-    container = $('<div class="overview grid-8"></div>');
+    container = $('<div class="overview grid-8 no-margin"></div>');
     div_view_port.append(container);
     div_text.append(div_scroll);
 
@@ -1290,9 +1295,9 @@ function list_title(csrf, data, div_text, type){
         $.each(titles_l,function(i){
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
 
-            type_add = 'grid-5';
+            type_add = 'grid-5 ';
             if(type==4)
-                type_add = 'grid-4 selec_item';
+                type_add = 'grid-4 selec_item d-item_mini_list ';
 
             div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
             item_title.append(div_item);
@@ -1322,18 +1327,18 @@ function list_title(csrf, data, div_text, type){
             div_item.append(div_container_text);
             item_title.append(div_item);
             a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-            a.append((titles_l[i].title).substring(0,15));
+            a.append(truncText(titles_l[i].title,15));
             div_container_text.append(a);
             p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                 ' no-margin" ></p>');
             a_author = $('<a class="title_author" ></a>');
-            var author_att= titles_l[i].extras[1];
+            var author_att = 'autor anonimo';
+            if(titles_l[i]['extras'][1].length!=0)
+                author_att = 'De ' + truncText(titles_l[i]['extras'][1][0],13);
             a_author.append(author_att);
-            p_text_author.append('De ');
             p_text_author.append(a_author);
             div_container_text.append(p_text_author);
             container_stars = $('<span class="grid-3 no-margin"></span>');
-
             var grade = 5;
             for(var index = 0;index<5;index++){
                 if(index<grade){
@@ -1383,7 +1388,7 @@ function list_title(csrf, data, div_text, type){
 
                 type_add = 'grid-5';
                 if(type==4)
-                    type_add = 'grid-4 selec_item';
+                    type_add = 'grid-4 selec_item d-item_mini_list';
 
                 div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
                 item_title.append(div_item);
@@ -1447,7 +1452,6 @@ function list_title(csrf, data, div_text, type){
                     'picture':url_mini
                 }
 
-
                 array.push(obj);
 
                 img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
@@ -1462,25 +1466,23 @@ function list_title(csrf, data, div_text, type){
                 div_item.append(div_container_text);
                 item_title.append(div_item);
                 a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-                a.append((attribute['title']).substring(0,15));
+                a.append(truncText(attribute['title'],13));
                 div_container_text.append(a);
                 p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                     ' no-margin" ></p>');
                 a_author = $('<a " class="title_author" ></a>');
-                var author_att= attribute['authors'];
+                var author_att = 'autor anonimo';
+                if('authors' in attribute)
+                    if(attribute['authors'][0].length=!0)
+                    author_att = truncText(attribute['authors'][0],13)
                 a_author.append(author_att);
                 p_text_author.append('De ');
                 p_text_author.append(a_author);
                 div_container_text.append(p_text_author);
                 container_stars = $('<span class="grid-3 no-margin"></span>');
 
-                var grade = 5;
                 for(var index = 0;index<5;index++){
-                    if(index<grade){
-                        container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
-                    }else{
-                        container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
-                    }
+                    container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
                 }
                 div_container_text.append(container_stars);
                 div_add = $('<div class="container_add_my grid-3 no-margin"></div>');
@@ -1519,6 +1521,7 @@ function list_title(csrf, data, div_text, type){
     if(type !=1){
 
         $.each(author_l,function(i){
+
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
             type_add = 'grid-5';
             if(type==4)
@@ -1559,7 +1562,7 @@ function list_title(csrf, data, div_text, type){
             a_author = $('<a class="title_author" ></a>');
             var author_att= '';
             a_author.append(author_att);
-            p_text_author.append('De ');
+            p_text_author.append('Títulos');
             p_text_author.append(a_author);
             div_container_text.append(p_text_author);
             container_stars = $('<span class="grid-3 no-margin"></span>');
@@ -1707,6 +1710,7 @@ function list_title(csrf, data, div_text, type){
             }else{
                 $(this).find('input').val(0);
                 $(this).removeClass('active_add_title');
+                $(this).removeClass('active_add_title');
             }
         });
 
@@ -1788,6 +1792,10 @@ function add_my_title(csrf, array_title, type){
     if($('.type_list').length > 0)
         type_list  = $('.type_list').val();
 
+    edit_list = 0;
+    if($('.my_list_id').length > 0){
+        edit_list = parseInt($('.my_list_id').val());
+    }
     $.ajax({
         type: "POST",
         url: '/registry/add_my_title/',
@@ -1795,7 +1803,8 @@ function add_my_title(csrf, array_title, type){
             'csrfmiddlewaretoken': csrf,
             'list':JSON.stringify(array_title),
             'type':type,
-            'type_list':type_list
+            'type_list':type_list,
+            'edit_list':edit_list
         },
         dataType: 'json'
     }).done(function(data){
@@ -1804,7 +1813,6 @@ function add_my_title(csrf, array_title, type){
                 //book_favorite
                 $.each(data,function(i){
                     title = data[i];
-
                     container_list = $('.'+i);
                         type = 0;
                     if(i=='book_read')
@@ -1825,32 +1833,47 @@ function add_my_title(csrf, array_title, type){
                             'value="'+title[i2].title+'"/>');
                         input_list = $('<input type="hidden" class="type_list"' +
                             'value="' + type + '"/>');
+                        input_rel = $('<input type="hidden" value="'+ title[i2].id_list +'" class="id_list_rel">');
                         a_ref = $('<a href="'+href+'"></a>');
                         a_wrapper = $('<a href="'+href+'"></a>');
-                        span = $('<span class="wrapper_list" ></span>');
+                        span = $('    <span class="wrapper_list borde_author" ></span>');
                         img = $('<img class="img_size_all" src="'+title[i2].cover +
                             '"/>');
                         div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                         a_t = $('<a href="' + href +
                             '" class="title title_book alpha grid-4 "></a>');
                         a_t.append(truncText(title[i2].title,15));
-                        p_author = $('<p class="p-d-text" >De <a href="#" class="place_pink" >' +
-                            ' Riber Kars </a></p>');
+                        href_author = '/qro_lee/profile/author/'+title[i2].id_author;
+                        name_author = '<a class="place_pink" >autor anonimo</a>';
+                        if((title[i2].author).length!=0)
+                            name_author = 'De <a href="' + href_author +
+                                '" class="place_pink" >' + truncText(title[i2].author,12)  +
+                                '</a>';
+                        p_author = $('<p class="p-d-text" >' + name_author +'</p>');
                         span_rate = $('<span></span>');
                         p_date = $('<p class="p-d-text d-text_opacity">' +
                             title[i2].published_date + '</p>');
                         btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
                         input_type = $('<input class="type_message" type="hidden" ' +
                             'value="delete_title"/>');
+                        p_stars = $('<p class="no-margin stars_grade grid-2"></p>');
+                        for(ind = 0;ind<5;ind++){
+                            if(ind<title[i2].grade)
+                                p_stars.append('<img class="starts_mini" src="/static/img/comunityStar.png">');
+                            else
+                                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStar.png">');
+                        }
+
                         span.append(img);
                         div.append(input_id);
                         div.append(input_title);
                         div.append(input_list);
-                        a_wrapper.append(span);
-                        div.append(a_wrapper);
+                        div.append(input_rel);
+                        div.append(span);
                         div.append(div_text);
                         div_text.append(a_t);
                         div_text.append(p_author);
+                        div_text.append(p_stars);
                         div_text.append(p_date);
                         div_text.append(btn_del);
                         btn_del.append(input_type);
@@ -1904,7 +1927,7 @@ function get_titles_authors(list, csrf){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
             },
             'activity':{
@@ -1922,51 +1945,62 @@ function get_titles_authors(list, csrf){
         }
 
         search = JSON.stringify(search);
-
         title = advanced_search(search,csrf);
         container_list = $('.add_my_list');
         container_list.find('.type').remove();
         type = $('<input class="type" type="hidden" ' +
             'value="List"/>');
         container_list.append(type);
-
         $.each(title,function(i2){
-            div = $('<div class="d-item_book d-item_' + title[i2].id +
-                ' grid-5 no-margin"></div>');
-            input_id =$('<input type="hidden" class="id_title"' +
-                'value="'+title[i2].id+'"/>');
-            input_title =$('<input type="hidden" class="name_title"' +
-                'value="'+title[i2].title+'"/>');
-            input_list = $('<input type="hidden" class="type_list"' +
-                'value="type_list"/>');
-            span = $('    <span class="wrapper_list" ></span>');
-            img = $('<img class="img_size_all" src="'+title[i2].cover +
-                '"/>');
-            div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
-            a_t = $('<a class="title title_book alpha grid-4 "></a>');
-            a_t.append(truncText(title[i2].title,15));
-            p_author = $('<p class="p-d-text" >De <a class="place_pink" >' +
-                ' Riber Kars </a></p>');
-            span_rate = $('<span></span>');
-            p_date = $('<p class="p-d-text d-text_opacity">' +
-                title[i2].published_date + '</p>');
-            btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
-            input_type = $('<input class="type_message" type="hidden" ' +
-                'value="delete_title_list"/>');
-            span.append(img);
-            div.append(input_id);
-            div.append(input_title);
-            div.append(input_list);
-            div.append(span);
-            div.append(div_text);
-            div_text.append(a_t);
-            div_text.append(p_author);
-            div_text.append(p_date);
-            div_text.append(btn_del);
-            btn_del.append(input_type);
-            div_add = container_list.find('.d-container_add_book');
-            div_add.after(div);
+            if(container_list.find('.d-item_'+title[i2].id).length==0){
+                div = $('<div class="d-item_book d-item_' + title[i2].id +
+                    ' grid-5 no-margin"></div>');
+                input_id =$('<input type="hidden" class="id_title"' +
+                    'value="'+title[i2].id+'"/>');
+                input_title =$('<input type="hidden" class="name_title"' +
+                    'value="'+title[i2].title+'"/>');
+                input_list = $('<input type="hidden" class="type_list"' +
+                    'value="type_list"/>');
+                span = $('    <span class="wrapper_list" ></span>');
+                img = $('<img class="img_size_all" src="'+title[i2].cover +
+                    '"/>');
+                div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
+                a_t = $('<a class="title title_book alpha grid-4 "></a>');
+                a_t.append(truncText(title[i2].title,15));
+                name_author = '<p class="p-d-text place_pink" >anonimo</a>';
+                if(title[i2].extras[1].length!=0)
+                    name_author = '<p class="p-d-text" >De <a class="place_pink" >' +
+                        truncText(title[i2].extras[1][0],12)+'</a></p>';
 
+                p_author = $(name_author);
+                span_rate = $('<span></span>');
+                p_date = $('<p class="p-d-text d-text_opacity">' +
+                    title[i2].published_date + '</p>');
+                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                input_type = $('<input class="type_message" type="hidden" ' +
+                    'value="delete_title_list"/>');
+                span_stars = $('<span></span>');
+                for(ind = 0;ind<5;ind++){
+                    if(ind<title[i2].extras[0][0])
+                        span_stars.append('<img src="/static/img/comunityStar.png">');
+                    else
+                        span_stars.append('<img src="/static/img/backgroundStar.png">');
+                }
+                span.append(img);
+                div.append(input_id);
+                div.append(input_title);
+                div.append(input_list);
+                div.append(span);
+                div.append(div_text);
+                div_text.append(a_t);
+                div_text.append(p_author);
+                div_text.append(span_stars);
+                div_text.append(p_date);
+                div_text.append(btn_del);
+                btn_del.append(input_type);
+                div_add = container_list.find('.d-container_add_book');
+                div_add.after(div);
+            }
         });
     }else{
         //query = {'name__icontains':'carlos'}
@@ -2003,7 +2037,6 @@ function get_titles_authors(list, csrf){
         search = JSON.stringify(search);
 
         title = advanced_search(search,csrf);
-        console.log(title);
 
         container_list = $('.add_my_list');
         container_list.find('.type').remove();
@@ -2012,40 +2045,40 @@ function get_titles_authors(list, csrf){
         container_list.append(type)
 
         $.each(title,function(i2){
-            div = $('<div class="d-item_book d-item_' + title[i2].id +
-                ' grid-5 no-margin"></div>');
-            input_id =$('<input type="hidden" class="id_title"' +
-                'value="'+title[i2].id+'"/>');
-            input_title =$('<input type="hidden" class="name_title"' +
-                'value="'+title[i2].name+'"/>');
-            input_list = $('<input type="hidden" class="type_list"' +
-                'value="type_list"/>');
-            span = $('    <span class="wrapper_list" ></span>');
-            img = $('<img class="img_size_all" src="'+title[i2].picture +
-                '"/>');
-            div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
-            a_t = $('<a class="title title_book alpha grid-4 "></a>');
-            a_t.append(truncText(title[i2].name,15));
-            p_author = $('<p class="p-d-text" > </p>');
-            span_rate = $('<span></span>');
-            btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
-            input_type = $('<input class="type_message" type="hidden" ' +
-                'value="delete_title_list"/>');
-            span.append(img);
-            div.append(input_id);
-            div.append(input_title);
-            div.append(input_list);
-            div.append(span);
-            div.append(div_text);
-            div_text.append(a_t);
-            div_text.append(p_author);
-            div_text.append(btn_del);
-            btn_del.append(input_type);
-            div_add = container_list.find('.d-container_add_book');
-            div_add.after(div);
-
+            if(container_list.find('.d-item_'+title[i2].id).length==0){
+                div = $('<div class="d-item_book d-item_' + title[i2].id +
+                    ' grid-5 no-margin"></div>');
+                input_id =$('<input type="hidden" class="id_title"' +
+                    'value="'+title[i2].id+'"/>');
+                input_title =$('<input type="hidden" class="name_title"' +
+                    'value="'+title[i2].name+'"/>');
+                input_list = $('<input type="hidden" class="type_list"' +
+                    'value="type_list"/>');
+                span = $('    <span class="wrapper_list" ></span>');
+                img = $('<img class="img_size_all" src="'+title[i2].picture +
+                    '"/>');
+                div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
+                a_t = $('<a class="title title_book alpha grid-4 "></a>');
+                a_t.append(truncText(title[i2].name,15));
+                p_author = $('<p class="p-d-text" > </p>');
+                span_rate = $('<span></span>');
+                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                input_type = $('<input class="type_message" type="hidden" ' +
+                    'value="delete_title_list"/>');
+                span.append(img);
+                div.append(input_id);
+                div.append(input_title);
+                div.append(input_list);
+                div.append(span);
+                div.append(div_text);
+                div_text.append(a_t);
+                div_text.append(p_author);
+                div_text.append(btn_del);
+                btn_del.append(input_type);
+                div_add = container_list.find('.d-container_add_book');
+                div_add.after(div);
+            }
         });
-
 
     }
 }
@@ -2138,25 +2171,21 @@ function show_dialog(){
                 span_text.append(p_text);
 
             }
-
             if(type=="delete_title"){
 
                 name_title = $(this).parent().parent().find('.name_title').val();
                 type_list = parseInt($(this).parent().parent().find('.type_list').val());
-                list = '';
+                list = ' tu lista';
                 if(type_list==0){
-                    list = 'favoritos';
+                    list = ' tus libros favoritos';
                 }
                 if(type_list==1){
-                    list = 'leídos';
+                    list = ' tus libros leídos';
                 }
                 if(type_list==2){
-                    list = 'por leer';
+                    list = ' tus libros por leer';
                 }
-                if(type_list==-1){
-                    list = 'add_my_list';
-                }
-                text = 'Se eliminará ' + name_title + ' de tus libros ' + list;
+                text = 'Se eliminará ' + name_title + list;
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
 
@@ -2182,6 +2211,29 @@ function show_dialog(){
                 onClose: function( selectedDate ) {
                     $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
                 }
+                });
+            }
+            if(type=="edit_title_read"){
+                name_title = $(this).find('.name_title').val();
+                text = 'Editar libro leído';
+                p_text = $('<p class="p_text_dialog">' + text + '</p>');
+                span_text.append(p_text);
+                text2 = ' Fecha en que leíste ' + name_title;
+                p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
+                span_text.append(p_text2);
+                input_date = $('<input type="text" class="date_read"/>');
+                var date = new Date();
+                input_date.val(date.getFullYear() + '-' + (date.getMonth()+1) +
+                    '-' + date.getDate());
+                span_text.append(input_date);
+                input_date.datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    onSelect: function(dateText) {
+                        $('p').find('input.hour-init').val('00:00:00');
+                    },
+                    onClose: function( selectedDate ) {
+                        $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
+                    }
                 });
             }
             if(type=="delete_list"){
@@ -2224,7 +2276,7 @@ function show_dialog(){
             var id_title = $(this).parent().parent().find('.id_title').val();
             btn_acept.click(function(){
 
-                container_item = '';
+                container_item = 'add_my_list';
                 if(type_list==0){
                     container_item = 'book_favorite';
                 }
@@ -2234,9 +2286,7 @@ function show_dialog(){
                 if(type_list==2){
                     container_item = 'book_for_reading';
                 }
-                if(type_list==-1){
-                    container_item = 'add_my_list';
-                }
+
                 d_item = $('.'+container_item).find('.d-item_' + id_title);
                 delete_title(d_item);
             });
@@ -2261,11 +2311,20 @@ function show_dialog(){
             });
             closet(btn_acept);
         }
-
         if(($(this).find('.type_message').val()) == 'edit_read'){
             var id = $(this).find('.id_list').val();
+            $this = $(this);
             btn_acept.click(function(){
-                edit_title_read(id, 1);
+                edit_title_read(id, 1, $this);
+            });
+            closet(btn_acept);
+
+        }
+        if(($(this).find('.type_message').val()) == 'edit_title_read'){
+            var id = $(this).find('.id_list').val();
+            $this = $(this);
+            btn_acept.click(function(){
+                edit_title_read(id, 2, $this);
             });
             closet(btn_acept);
 
@@ -2388,6 +2447,10 @@ function d_show_dialog(type_message){
         text = '¿Qué estás leyendo actualmente?';
         text2 = 'Selecciona un libro para añadirlo a tu perfil como libro actual de lectura';
     }
+    if(type_message == 1){
+        text = '¿Qué estás leyendo actualmente?';
+        text2 = 'Selecciona un libro para añadirlo a tu perfil como libro actual de lectura';
+    }
 
     p_text = $('<p class="p_text_dialog">' + text + '</p>');
     p_text2 = $('<p class="p_text_mini p_mini_book">' + text2 + '</p>');
@@ -2397,13 +2460,14 @@ function d_show_dialog(type_message){
 
     input = $('<input class="input_add_book" type="text"/>');
     span = $('<span class="dark_yello_btn btn_search_book">Buscar</span>');
+    btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
 
     input.keyup(function(){
 
         csrf = $('.csrf_token').find('div input').val();
         words = $(this).val();
         data = search_titles_and_author_in_api_bd('T', csrf, words);
-        list_titles_and_author(data, 'T', div_text);
+        list_titles_and_author(data, 'T', div_text, type_message);
 
     });
 
@@ -2419,7 +2483,7 @@ function d_show_dialog(type_message){
     aling_message();
 }
 
-function list_titles_and_author(data, type, $container){
+function list_titles_and_author(data, type, $container, type_message){
 
     $container.find('#scrollbar1').remove();
 
@@ -2601,24 +2665,27 @@ function list_titles_and_author(data, type, $container){
 
     if(bar)
         div_scroll.tinyscrollbar();
-    var title_active = -1;
-    var acti = false;
+    if(type_message == 0){
 
-    $('.item_ti').click(function(){
+        var title_active = -1;
+        var acti = false;
 
-        if(!acti){
-            $(this).find('.selec_item').addClass('active_item');
-            title_active = parseInt($(this).find('.id_tit').val());
-            acti = true;////////--------------
-        }else{
-            if(title_active == parseInt($(this).find('.id_tit').val())){
-                $(this).find('.selec_item').removeClass('active_item');
-                acti = false;
-                title_active = -1;
+        $('.item_ti').click(function(){
+
+            if(!acti){
+                $(this).find('.selec_item').addClass('active_item');
+                title_active = parseInt($(this).find('.id_tit').val());
+                acti = true;////////--------------
+            }else{
+                if(title_active == parseInt($(this).find('.id_tit').val())){
+                    $(this).find('.selec_item').removeClass('active_item');
+                    acti = false;
+                    title_active = -1;
+                }
             }
-        }
 
-    });
+        });
+    }
 
     span_save = $('<span class=" green_btn " >Guardar</span>');
     span_save.click(function(){
@@ -2676,3 +2743,4 @@ function list_titles_and_author(data, type, $container){
     });
     $container.append();
 }
+

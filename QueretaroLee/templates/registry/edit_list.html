@@ -29,13 +29,18 @@
         <div class="grid-15 registry">
         <input type="hidden" class="my_list_id" value="{{ list.id }}"/>
         <input type="hidden" class="type_my_list" value="{{ list.type }}" />
-        <input type="hidden" class="d_type_list" value="T" />
+        <input type="hidden" class="d_type_list" value="{{ list.type }}" />
         <div class="csrf_token">
             {% csrf_token %}
         </div>
         <input type="hidden" >
         <input type="hidden" class="type" value="List" />
-        <span class="title {{ entity_type.1 }} main">Editar <a href="/qro_lee/profile/list/{{ list.id }}/"><span class="heading">{{ list.name }}</span></a>
+        <span class="title {{ entity_type.1 }} main">Editar
+            <a href="/qro_lee/profile/list/{{ list.id }}/">
+                <span class="heading title_author" style="text-decoration: none!important;">
+                    {{ list.name }}
+                </span>
+            </a>
         </span>
 
         <span class="data border_none grid-9 fleft no-margin">
@@ -54,8 +59,20 @@
                 </textarea>
                 <span class="value grid-5 alpha fright">{{ list.description }}</span>
             </p>
+            <p>
+                Valorización
+                <span class="rate_perfil_list">
+                {% for x in 'xxxxx' %}
+                    {% if forloop.counter < grade %}
+                        <img src="/static/img/comunityStar.png" />
+                    {% else %}
+                        <img src="/static/img/backgroundStar.png" />
+                    {% endif %}
+                {% endfor %}
+                </span>
+            </p>
         </span>
-            <form id="picture" class="dropzone fleft grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
+            <form id="picture" class="dropzone fleft drop_zone_list grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="list_picture" value="1"/>
             </form>
             <hr class="d-line_bottom">
@@ -77,48 +94,117 @@
                         <div class="add_my_list d-paddin_bottom">
                             <div class="d-container_add_book grid-5 no-margin">
                                 <div class="d-add_book" >
-                                    <input type="hidden" value="list" />
+                                    <input type="hidden" value="list" class="list_typ" />
+                                    <input type="hidden" value="edit" class="add_type" />
                                     <p class="d-add_text_book">
-                                        + Añadir un nuevo libro
+                                        {% if list.type == 'T' %}
+                                            + Añadir un nuevo libro
+                                        {% else %}
+                                            + Añadir un nuevo autor
+                                        {% endif %}
                                     </p>
                                 </div>
                             </div>
-                            {% for obj in list_t_a %}
-                                <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
-                            <input type="hidden" class="id_title"
-                                   value="{{ obj.title.id }}"/>
-                            <input type="hidden" class="name_title"
-                                   value="{{ obj.title.title }}"/>
-                            <input type="hidden" class="type_list"
-                                   value="{{ obj.list.default_type }}"/>
-                            <a href="/qro_lee/profile/title/{{ obj.title.id }}/" >
-            <span class="wrapper_list" >
-                 <img class="img_size_all" src="{{ obj.title.cover }}" />
-            </span>
-                            </a>
-                            <div class="d-container_text_book grid-3 no-margin">
-                                <a href="/qro_lee/profile/title/{{ obj.title.id }}/"
-                                   class="title title_book alpha grid-4 ">
-                                    {{ obj.title.title|truncatechars:16 }}
-                                </a>
-                                <p class="p-d-text" >De
-                                    <a href="#" class="place_pink" >
-                                        {{ obj.titles.author }}
-                                    </a>
-                                </p>
-                                <p class="p-d-text" >- - - - -</p>
-                                <p class="p-d-text d-text_opacity">
-                                    añadido el 20 de septiembre
-                                </p>
-                                    <span class="pink_btn message_alert
+                             {% for key, value in list_t_a.items %}
+                                {% if list.type == 'T' %}
+                                    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                                        <input type="hidden" class="id_title"
+                                        value="{{ key }}"/>
+                                        <input type="hidden" class="name_title"
+                                        value="{{ value.title }}"/>
+                                        <input type="hidden" value="{{ value.id_list }}"
+                                               class="id_list_rel" />
+                                        <a >
+                                            <span class="wrapper_list borde_author" >
+                                                {% if not value.cover %}
+                                                    <img src="/static/img/create.png"
+                                                         class="img_size_all" />
+                                                {% else %}
+                                                    <img class="img_size_all" src="{{ value.cover }}" />
+                                                {% endif %}
+                                            </span>
+                                       </a>
+                                        <div class="d-container_text_book grid-3 no-margin">
+                                            <a class="title title_book alpha grid-4 ">
+                                                {{ value.title|truncatechars:16 }}
+                                            </a>
+                                        <p class="p-d-text" >
+                                            {% if value.author != 'autor anonimo' %}
+                                                De
+                                                <a class="place_pink" >
+                                                    {{ value.author|truncatechars:19 }}
+                                                </a>
+                                            {% else %}
+                                                <a class="place_pink" >
+                                                    {{ value.author|truncatechars:19 }}
+                                                </a>
+                                            {% endif %}
+                                        </p>
+                                        <p class="p-d-text" >
+                                            <span >
+                                                {% for x in 'xxxxx' %}
+                                                    {% if forloop.counter < value.grade %}
+                                                        <img src="/static/img/comunityStar.png" />
+                                                    {% else %}
+                                                        <img src="/static/img/backgroundStar.png" />
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                        </p>
+                                        <p class="p-d-text d-text_opacity">
+                                            añadido el {{ value.date }}
+                                        </p>
+                                        <span class="pink_btn message_alert
                                                     size_btn_edit ">
-                                                        <input class="type_message"
-                                                               type="hidden" value="delete_title">
+                                            <input class="type_message"
+                                                type="hidden" value="delete_title">
+                                            <input class="id_title" type="hidden" value="{{ key }}"/>
                                                         -
-                                                    </span>
-                            </div>
-                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                                {% else %}
+                                     <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                                         <input type="hidden" class="id_title"
+                                                value="{{ key }}"/>
+                                         <input type="hidden" class="name_title"
+                                                value="{{ value.name }}"/>
+                                        <input type="hidden" value="{{ value.id_list }}"
+                                               class="id_list_rel" />
+                                         <a >
+                                            <span class="wrapper_list borde_author" >
+                                                {% if not value.picture %}
+                                                    <img src="/static/img/create.png"
+                                                         class="img_size_all" />
+                                                {% else %}
+                                                    <img class="img_size_all" src="{{ value.picture }}"
+                                                            />
+                                                {% endif %}
+                                            </span>
+                                         </a>
+                                         <div class="d-container_text_book grid-3 no-margin">
+                                             <a class="title title_book alpha grid-4 ">
+                                                 {{ value.name|truncatechars:13 }}
+                                             </a>
+                                             <p class="p-d-text" >
+                                                 <a class="title_author" >
+                                                     {% if value.count == 0 %}
+                                                         no tiene Títulos
+                                                     {% else %}
+                                                        {{ value.count }} Títulos
+                                                     {% endif %}
+                                                 </a>
+                                             </p>
 
+                                        <span class="pink_btn message_alert
+                                                    size_btn_edit ">
+                                            <input class="type_message"
+                                                   type="hidden" value="delete_title">
+                                                        -
+                                        </span>
+                                         </div>
+                                     </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>

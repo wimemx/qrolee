@@ -1,117 +1,4 @@
-html{
-    background: url('../img/bg.png');
-}
-body{
-    background: url('../img/grid.png') repeat-y 50% 0px;
-}
-input{
-    border: none;
-    outline: none;
-    padding: 0px;
-    margin: 0px;
-}
-input:not([type='submit']){
-    height: 25px;
-    width: 100%;
-    text-indent: 5px;
-}
-.container-16 .clear{
-    clear: both;
-    float: left;
-    width: 100%;
-    display: block;
-    height: 1px;
-    margin: 0px;
-}
 
-.main_btn{
-    background: url('../img/main_btn.png') repeat 0px 0px;
-    height: 21px;
-    line-height: 21px;
-    display: inline-block;
-    padding: 0px 10px 0px 10px;
-    cursor: pointer;
-}
-.left{
-    left: 0px;
-}
-.right{
-    right: 0px;
-}
-.top{
-    top:0px;
-}
-.bottom{
-    bottom: 0px;
-}
-
-.fleft{
-    float: left;
-}
-.fright{
-    float: right;
-}
-
-.container-16 .no-margin{
-    margin:0px;
-}
-.container-16 .center{
-    margin:0 auto;
-    float: none;
-    display: block;
-}
-.container-16 p.center{
-    text-align: center;
-}
-
-.header,.header .grid-16,.header .container-16{
-    height: 100px;
-}
-
-.header{
-    background: url('../img/header_bg.png') repeat-x 0px 0px;
-}
-    .logo{
-        height: 100%;
-    }
-        .logo span{
-            width: 100%;
-            height: 100%;
-            display: block;
-            background: url('../img/logo.png') no-repeat 50% 50%;
-        }
-
-.search{
-    margin-top: 35px;
-}
-    .search span{
-        width: 100%;
-        height: 25px;
-        position: relative;
-        display: block;
-
-    }
-    .search input{
-        background: #98a4a3;
-    }
-    .search span .icon{
-        width: 25px;
-        height: 100%;
-        position: absolute;
-        background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
-        cursor: pointer;
-    }
-
-.account-settings{
-    height: 20px;
-    margin-top: 37px;
-}
-    .account-settings .settings,.account-settings .profile{
-        width: 20px;
-        height: 20px;
-        display: block;
-        background: #fff;
-    }
 
 .d-container .center{
     margin:0 auto;
@@ -212,6 +99,7 @@ p,b{
     margin-top: 18pt;
     height: 150pt;
     width: 95%;
+    margin-bottom: 25px;
 }
 
 .d-date{

@@ -127,15 +127,15 @@
                              Libros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
-                             {% for obj in list_title_favorite %}
+                             {% for key, value in list_titles.0.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
                                      {% if not forloop.last and forloop.counter != 3 %}
                                         border_right
                                     {% endif %}
                                     ">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ obj.title.id }}/">
-                                            {{ obj.title.title|truncatechars:12 }}
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:12 }}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -145,15 +145,15 @@
                              Libros leídos
                          </h3>
                          <span class="container_items grid-4 no-margin">
-                             {% for obj in list_title_read %}
+                             {% for key, value in list_titles.2.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
                                     {% if not forloop.last and forloop.counter != 3 %}
                                         border_right
                                     {% endif %}
                                         ">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ obj.title.id }}/">
-                                            {{ obj.title.title|truncatechars:12 }}
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:12 }}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -165,10 +165,10 @@
         </div>
     </div>
     <div class="grid-16 load prevent_scroll no-margin">
-    <div class="sidebar-a grid-15">
+    <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
-        <h3 class="title grid-3 fleft">Mis libros favoritos</h3>
+        <h3 class="title grid-3 fleft title_header_list">Mis libros favoritos</h3>
                 <span class="search fleft grid-4">
                     <input type="text"/>
                     <span class="top right search_btn dark_yello_btn">Buscar</span>
@@ -180,72 +180,79 @@
     {% if user_profile.user.id == user.id %}
         <div class="d-container_add_book grid-5 no-margin">
             <div class="d-add_book" >
-                <input type="hidden" value="title" />
+                <input type="hidden" value="title" class="list_typ" />
+                <input type="hidden" value="add" class="add_type" />
                 <p class="d-add_text_book">
                     + Añadir un nuevo libro
                 </p>
             </div>
         </div>
     {% endif %}
-    {% for obj in list_title_favorite %}
-
-        {% if forloop.counter <= 2 %}
-            <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
+    {% for key, value in list_titles.0.items %}
+        {% if user_profile.user.id == user.id %}
+            {% if forloop.counter <= 2 %}
+                <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+            {% else %}
+                <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+            {% endif %}
         {% else %}
-            <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
+            {% if forloop.counter <= 3 %}
+                <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+            {% else %}
+                <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+            {% endif %}
         {% endif %}
 
     <input type="hidden" class="id_title"
-           value="{{ obj.title.id }}"/>
+           value="{{ key }}"/>
     <input type="hidden" class="name_title"
-           value="{{ obj.title.title }}"/>
+           value="{{ value.title }}"/>
     <input type="hidden" class="type_list"
-           value="{{ obj.list.default_type }}"/>
-    <a href="/qro_lee/profile/title/{{ obj.title.id }}/" >
-        <span class="wrapper_list" >
-             <img class="img_size_all" src="{{ obj.title.cover }}"/>
+           value="{{ value.default_type }}"/>
+    <input type="hidden" value="{{ value.id_list }}"
+                         class="id_list_rel" />
+    <a href="/qro_lee/profile/title/{{ key }}/" >
+        <span class="wrapper_list borde_author" >
+            {% if not value.cover %}
+                <img src="/static/img/create.png" class="img_size_all" />
+            {% else %}
+                <img class="img_size_all" src="{{ value.cover }}"/>
+            {% endif %}
         </span>
     </a>
     <div class="d-container_text_book grid-3 no-margin">
-        <a href="/qro_lee/profile/title/{{ obj.title.id }}/"
+        <a href="/qro_lee/profile/title/{{ key }}/"
            class="title title_book alpha grid-4 ">
-            {{ obj.title.title|truncatechars:16 }}
+            {{ value.title|truncatechars:16 }}
         </a>
-        <p class="p-d-text" >De
-            <a href="#" class="place_pink" >
-                {{ obj.title.author }}
-            </a>
+        <p class="p-d-text" >
+            {% if value.author != 'autor anonimo' %}
+                De
+                <a href="/qro_lee/profile/author/{{ value.id_author }}"
+                        class="place_pink" >
+                    {{ value.author|truncatechars:19 }}
+                </a>
+            {% else %}
+                <a class="place_pink" >
+                    {{ value.author|truncatechars:19 }}
+                </a>
+            {% endif %}
         </p>
         <p class="p-d-text" >
-            <span class="container_starts_rate fleft">
-                    {% if grade == 0 %}
-                            {% for x in range %}
-                                <span class="rate">
-                                    {% if x < grade_rate %}
-                                        <img src="/static/img/comunityStar.png" />
-                                    {% else %}
-                                        <img src="/static/img/backgroundStar.png" />
-                                    {% endif %}
-                                    <input class="grade" type="hidden" value="{{ x }}"/>
-                                    <input class="type" type="hidden" value="E"/>
-                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
-                                </span>
-                            {% endfor %}
+             <span >
+                {% for x in 'xxxxx' %}
+                    {% if forloop.counter < value.grade %}
+                        <img src="/static/img/comunityStar.png" />
                     {% else %}
-                        {% for x in range %}
-                            {% if x < grade %}
-                                <img src="/static/img/starUser.png" />
-                            {% else %}
-                                <img src="/static/img/backgroundStar.png" />
-                            {% endif %}
-                        {% endfor %}
+                        <img src="/static/img/backgroundStar.png" />
                     {% endif %}
+                {% endfor %}
             </span>
         </p>
         <p class="p-d-text d-text_opacity">
-            añadido el 20 de septiembre
+            añadido el 1 de septiembre
         </p>
-        {% if obj.list.user.id == user.id %}
+        {% if value.id_user == user.id %}
             <span class="pink_btn size_btn_edit message_alert">
                <input class="type_message" type="hidden" value="delete_title"/>
                                                     -
@@ -276,66 +283,100 @@
             <div class="d-container_add_book grid-5 no-margin">
                 <div class="d-add_book" >
                     <input type="hidden" value="title" />
+                    <input type="hidden" value="title" class="list_typ" />
+                    <input type="hidden" value="add" class="add_type" />
                     <p class="d-add_text_book">
                         + Añadir un nuevo libro
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% for obj in list_title_read %}
-            {% if forloop.counter <= 2 %}
-                <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
+        {% for key, value in list_titles.1.items %}
+            {% if user_profile.user.id == user.id %}
+                {% if forloop.counter <= 2 %}
+                    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                {% else %}
+                    <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+                {% endif %}
             {% else %}
-                <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
+                {% if forloop.counter <= 3 %}
+                    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                {% else %}
+                    <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+                {% endif %}
             {% endif %}
+
         <input type="hidden" class="id_title"
-               value="{{ obj.title.id }}"/>
+               value="{{ key }}"/>
         <input type="hidden" class="name_title"
-               value="{{ obj.title.title }}"/>
+               value="{{ value.title }}"/>
         <input type="hidden" class="type_list"
-               value="{{ obj.list.default_type }}"/>
-        <a href="/qro_lee/profile/title/{{ obj.title.id }}/" >
-            <span class="wrapper_list" >
-                 <img class="img_size_all" src="{{ obj.title.cover }}" />
-            </span>
+               value="{{ value.default_type }}"/>
+        <input type="hidden" value="{{ value.id_list }}"
+               class="id_list_rel" />
+        <a href="/qro_lee/profile/title/{{ key }}/" >
+        <span class="wrapper_list borde_author" >
+            {% if not value.cover %}
+                <img src="/static/img/create.png" class="img_size_all" />
+            {% else %}
+                <img class="img_size_all" src="{{ value.cover }}"/>
+            {% endif %}
+        </span>
         </a>
         <div class="d-container_text_book grid-3 no-margin">
-            <a href="/qro_lee/profile/title/{{ obj.title.id }}/"
+            <a href="/qro_lee/profile/title/{{ key }}/"
                class="title title_book alpha grid-4 ">
-                {{ obj.title.title|truncatechars:16 }}
+                {{ value.title|truncatechars:16 }}
             </a>
-            <p class="p-d-text" >De
-                <a href="#" class="place_pink" >
-                    {{ obj.titles.author }}
-                </a>
+            <p class="p-d-text" >
+                {% if value.author != 'autor anonimo' %}
+                    De
+                    <a href="/qro_lee/profile/author/{{ value.id_author }}"
+                       class="place_pink" >
+                        {{ value.author|truncatechars:19 }}
+                    </a>
+                {% else %}
+                    <a class="place_pink" >
+                        {{ value.author|truncatechars:19 }}
+                    </a>
+                {% endif %}
             </p>
-            <p class="p-d-text" >- - - - -</p>
+            <p class="p-d-text" >
+             <span >
+                {% for x in 'xxxxx' %}
+                    {% if forloop.counter < value.grade %}
+                        <img src="/static/img/comunityStar.png" />
+                    {% else %}
+                        <img src="/static/img/backgroundStar.png" />
+                    {% endif %}
+                {% endfor %}
+            </span>
+            </p>
             <p class="p-d-text d-text_opacity">
-                añadido el 20 de septiembre
+                añadido el 1 de septiembre
             </p>
-            {% if obj.list.user.id == user.id %}
-                <span class="pink_btn message_alert
-                                                    size_btn_edit ">
-                                                        <input class="type_message"
-                                                               type="hidden" value="delete_title"/>
-                                                        -
-                                                    </span>
+            {% if value.id_user == user.id %}
+                <span class="pink_btn size_btn_edit message_alert">
+                    <input class="type_message" type="hidden" value="delete_title"/>
+                    -
+                </span>
                 <span class="green_btn message_alert size_btn_edit">
-                                                        <input class="type_message"
-                                                               type="hidden" value="edit_read"/>
-                                                            Editar
-                                                    </span>
+                    <input class="type_message" type="hidden" value="edit_read"/>
+                    Editar
+                </span>
             {% endif %}
         </div>
         </div>
-        {% if forloop.counter > 2 and forloop.last %}
-            <span class="grid-15 no-margin">
-                <span class="place_pink fright all_book">
-                    <span class="span_text">Ver todos</span>
-                    <input type="hidden" value="0" />
-                </span>
+
+            {% if forloop.counter > 2 and forloop.last %}
+                <span class="grid-15 no-margin">
+            <span class="place_pink fright all_book">
+                <span class="span_text">Ver todos</span>
+                <input type="hidden" value="0" />
             </span>
-        {% endif %}
+        </span>
+            {% endif %}
+
         {% endfor %}
 
         <hr class="d-line_bottom">
@@ -349,63 +390,95 @@
                 <div class="d-container_add_book grid-5 no-margin">
                     <div class="d-add_book" >
                         <input type="hidden" value="title" />
+                        <input type="hidden" value="title" class="list_typ" />
+                        <input type="hidden" value="add" class="add_type" />
                         <p class="d-add_text_book">
                             + Añadir un nuevo libro
                         </p>
                     </div>
                 </div>
             {% endif %}
-            {% for obj in list_title_to_read %}
-                {% if forloop.counter <= 2 %}
-                    <div class="d-item_book d-item_{{ obj.title.id }} grid-5 no-margin">
+            {% for key, value in list_titles.2.items %}
+                {% if user_profile.user.id == user.id %}
+                    {% if forloop.counter <= 2 %}
+                        <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                    {% else %}
+                        <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+                    {% endif %}
                 {% else %}
-                    <div class="d-item_book disable_title d-item_{{ obj.title.id }} grid-5 no-margin">
-                {% endif %}
+                    {% if forloop.counter <= 3 %}
+                        <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
+                    {% else %}
+                        <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
+                    {% endif %}
+               {% endif %}
+
             <input type="hidden" class="id_title"
-                   value="{{ obj.title.id }}"/>
+                   value="{{ key }}"/>
             <input type="hidden" class="name_title"
-                   value="{{ obj.title.title }}"/>
+                   value="{{ value.title }}"/>
             <input type="hidden" class="type_list"
-                   value="{{ obj.list.default_type }}"/>
-            <a href="/qro_lee/profile/title/{{ obj.title.id }}/" >
-                <span class="wrapper_list" >
-                      <img class="img_size_all" src="{{ obj.title.cover }}"/>
-                </span>
+                   value="{{ value.default_type }}"/>
+            <input type="hidden" value="{{ value.id_list }}"
+                   class="id_list_rel" />
+            <a href="/qro_lee/profile/title/{{ key }}/" >
+        <span class="wrapper_list borde_author" >
+            {% if not value.cover %}
+                <img src="/static/img/create.png" class="img_size_all" />
+            {% else %}
+                <img class="img_size_all" src="{{ value.cover }}"/>
+            {% endif %}
+        </span>
             </a>
-
             <div class="d-container_text_book grid-3 no-margin">
-                <a href="/qro_lee/profile/title/{{ obj.title.id }}/"
+                <a href="/qro_lee/profile/title/{{ key }}/"
                    class="title title_book alpha grid-4 ">
-                    {{ obj.title.title|truncatechars:16 }}
+                    {{ value.title|truncatechars:16 }}
                 </a>
-                <p class="p-d-text" >De
-                    <a href="#" class="place_pink" >
-                        {{ obj.title.author }}s
-                    </a>
+                <p class="p-d-text" >
+                    {% if value.author != 'autor anonimo' %}
+                        De
+                        <a href="/qro_lee/profile/author/{{ value.id_author }}"
+                           class="place_pink" >
+                            {{ value.author|truncatechars:19 }}
+                        </a>
+                    {% else %}
+                        <a class="place_pink" >
+                            {{ value.author|truncatechars:19 }}
+                        </a>
+                    {% endif %}
                 </p>
-                <p class="p-d-text" >- - - - -</p>
+                <p class="p-d-text" >
+             <span >
+                {% for x in 'xxxxx' %}
+                    {% if forloop.counter < value.grade %}
+                        <img src="/static/img/comunityStar.png" />
+                    {% else %}
+                        <img src="/static/img/backgroundStar.png" />
+                    {% endif %}
+                {% endfor %}
+            </span>
+                </p>
                 <p class="p-d-text d-text_opacity">
-                    añadido el 20 de septiembre
+                    añadido el 1 de septiembre
                 </p>
-                {% if obj.list.user.id == user.id %}
-                    <span class="pink_btn size_btn_edit
-                                                        message_alert">
-                                                        <input class="type_message"
-                                                               type="hidden" value="delete_title"/>
-                                                        -
-                                                    </span>
+                {% if value.id_user == user.id %}
+                    <span class="pink_btn size_btn_edit message_alert">
+               <input class="type_message" type="hidden" value="delete_title"/>
+                                                    -
+            </span>
                 {% endif %}
             </div>
             </div>
-            {% if forloop.counter > 2 and forloop.last %}
-                <span class="grid-15 no-margin">
-                    <span class="place_pink fright all_book">
-                        <span class="span_text">Ver todos</span>
-                        <input type="hidden" value="0" />
-                    </span>
-                </span>
-            {% endif %}
 
+                {% if forloop.counter > 2 and forloop.last %}
+                    <span class="grid-15 no-margin">
+            <span class="place_pink fright all_book">
+                <span class="span_text">Ver todos</span>
+                <input type="hidden" value="0" />
+            </span>
+        </span>
+                {% endif %}
             {% endfor %}
 
             <hr class="d-line_bottom">
@@ -445,6 +518,7 @@
                 <h3 class="title grid-3 fleft">Mis listas</h3>
                 <span class="search fleft grid-4">
                     <input class="type" type="hidden" value="List"/>
+                    <input class="my_list_typ" type="hidden" value="0"/>
                     <input type="text" class="field_list"/>
                     <span class="top right search_list dark_yello_btn">Buscar</span>
                 </span>
@@ -460,33 +534,59 @@
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
                 <div class="viewport overview_list">
-                    <div class="overview">
-                        {% for obj in list %}
-                            <div class="item_list d-list_{{ obj.id }}" >
-                                <input class="name_list" type="hidden" value="{{ obj.name }}">
-                                <input class="id_list" type="hidden" value="{{ obj.id }}">
-                                <a href="/qro_lee/profile/list/{{ obj.id }}/">
+                    <div class="overview my_items_list">
+                        {% for key, value in list.items %}
+                            <div class="item_list d-list_{{ key }}" >
+                                <input class="name_list" type="hidden" value="{{ value.name }}">
+                                <input class="id_list" type="hidden" value="{{ key }}">
+                                <a href="/qro_lee/profile/list/{{ key }}/">
                                     <span class="wrapper_list" >
-                                        <img src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}"/>
+                                        {% if not value.picture %}
+                                            <img src="/static/img/create.png" class="img_size_all" />
+                                        {% else %}
+                                            <img src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}"
+                                                 class="img_size_all"   />
+                                        {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ obj.id }}/"
-                                   class="title alpha title_book grid-4">{{ obj.name }}</a>
+                                <a href="/qro_lee/profile/list/{{ key }}/"
+                                   class="title alpha title_book grid-4">{{ value.name }}</a>
 
-                                {% if user_profile.user.id == user.id %}
-                                <span class="container_btn grid-9 no-margin">
-                                    <a href="/registry/edit_list/{{ obj.type }}/{{ obj.id }}">
-                                        <span class="green_btn size_btn_edit" >Editar</span>
-                                    </a>
-                                    <span class="pink_btn size_btn_edit message_alert" >
-                                        -
-                                        <input class="type_message" type="hidden" value="delete_list">
-                                    </span>
-                                </span>
+                                <span class="container_btn grid-4 no-margin">
+                                    {% if value.id_user == user.id %}
+                                        <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
+                                            <span class="green_btn size_btn_edit" >Editar</span>
+                                        </a>
+                                        <span class="pink_btn size_btn_edit message_alert" >
+                                            -
+                                            <input class="type_message" type="hidden" value="delete_list">
+                                        </span>
                                 {% endif %}
-                                <p class="d-text_list d-text_opacity text_list_by text_list_user grid-13 no-margin" >Lista con 20 libros
-                                    creada por {{ obj.user }}</p>
-                                <p class="d-text_list text_list_user grid-13 no-margin"  >{{ obj.description }}</p>
+                                </span>
+                                <span class="fright">
+                                            {% for x in 'xxxxx' %}
+                                                {% if forloop.counter < value.grade %}
+                                                    <img src="/static/img/comunityStar.png" />
+                                                {% else %}
+                                                    <img src="/static/img/backgroundStar.png" />
+                                                {% endif %}
+                                            {% endfor %}
+                                 </span>
+                                <span class="d-text_list grid-13 d-text_opacity no-margin bottom_text" >
+                                    Lista con {{ value.count }}
+                                        {% if value.type == 'T' %}
+                                            libros
+                                        {% else %}
+                                            autores
+                                        {% endif %}
+                                        creada por
+                                        <a href="/accounts/users/profile/{{ value.id_user }}/">
+                                            <span class="d-pink text_pink_mini">{{ value.user }}</span>
+                                        </a>
+                                </span>
+                                <span class="d-text_list grid-13 no-margin bottom_text"  >
+                                    {{ value.description }}
+                                </span>
                             </div>
                         {% endfor %}
                     </div>

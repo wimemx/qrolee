@@ -29,7 +29,7 @@
         {% if type == 'author' %}
             <span class="wrapper fleft borde_author">
                 {% if not profile.picture %}
-                    <img src="" alt="{{ profile.name }}"/>
+                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.name }}"/>
                 {% else %}
                     <img class="img_size_all" src="{{ profile.picture }}"
                          alt="{{ profile.picture }}"/>
@@ -39,9 +39,9 @@
                 <h3 class="title d-title_profile">
                         {{ profile.name|title }}
                 </h3>
-                            <span class="grid-7 no-margin container_rate">
+                <span class="grid-7 no-margin container_rate">
                       <span class="container_starts_rate fleft">
-                    {% if grade == 0 %}
+                        {% if grade == 0 %}
                             {% for x in range %}
                                 <span class="rate">
                                     {% if x < grade_rate %}
@@ -75,7 +75,7 @@
                 <span class="grid-7 no-margin">
                     <p >
                         {% if count == 0 %}
-                            {{ count }} no tiene títulos
+                            no tiene títulos
                         {% endif %}
                         {% if count >= 2 %}
                             {{ count }} Títulos
@@ -86,14 +86,14 @@
                     </p>
                 </span>
                 <p >
-                    {{ profile.biography }}
+                    {{ profile.biography|truncatechars:330 }}
                 </p>
             </span>
         {% endif %}
         {% if type == 'title' %}
             <span class="wrapper fleft borde_author borde_title">
                 {% if not profile.picture %}
-                    <img src="/static/img/create.png" alt="{{ profile.title }}"/>
+                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.title }}"/>
                 {% else %}
                     <img class="img_size_all" src="{{ profile.cover }}"
                          alt="{{ profile.cover }}"/>
@@ -103,9 +103,19 @@
                 <h3 class="title d-title_profile">
                         {{ profile.title|title|truncatechars:25 }}
                 </h3>
-                <p class="title_author">{{ profile.author.name }}
-                    {{ profile.author.last_name }}</p>
-                <span class="grid-7 no-margin container_rate">
+                <p class="text_profile">
+                    {% if name_author != 'autor anonimo' %}
+                        <a href="/qro_lee/profile/author/{{ id_author }}"
+                                class="title_author name_author" >
+                            {{ name_author|truncatechars:19 }}
+                        </a>
+                    {% else %}
+                        <a class="title_author name_author" >
+                            {{ name_author|truncatechars:19 }}
+                        </a>
+                    {% endif %}
+                </p>
+                <span class="grid-7 no-margin container_rate text_profile">
                       <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
                             {% for x in range %}
@@ -138,8 +148,8 @@
                         {% endif %}
                     </span>
                 </span>
-                <span class="grid-7 no-margin">
-                    <p>
+                <span class="grid-7 no-margin ">
+                    <p class="text_profile">
                         {% if count == 0 %}
                             nadie está
                         {% endif %}
@@ -152,9 +162,9 @@
                         leyendo este libro
                     </p>
                 </span>
-                <span class="grid-7 no-margin">
-                    <p >
-                        {{ profile.description|truncatechars:140 }}
+                <span class="grid-7 no-margin ">
+                    <p class="text_profile">
+                        {{ profile.description|truncatechars:200 }}
                     </p>
                 </span>
             </span>
@@ -162,9 +172,9 @@
         {% if type == 'list' %}
             <span class="wrapper fleft borde_author borde_title">
                 {% if not profile.picture %}
-                    <img src="" alt="{{ profile.name }}"/>
+                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.name }}"/>
                 {% else %}
-                    <img src="/static/media/users/{{ profile.user.id }}/{{ type }}/{{ profile.picture }}"
+                    <img class="img_size_all" src="/static/media/users/{{ profile.user.id }}/{{ type }}/{{ profile.picture }}"
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
@@ -174,7 +184,8 @@
                 </h3>
                 <p class="text_by" >
                     Lista creada por
-                    <a href="/accounts/users/profile/{{ profile.user.id }}">
+                    <a href="/accounts/users/profile/{{ profile.user.id }}"
+                            class="user_list">
                         <span class="d-pink">
                             {{ profile.user.first_name }}
                         </span>
@@ -234,24 +245,69 @@
             {% if type == 'list' %}
                 <div class="coments grid-10 no-margin">
                     <div class="container_titles grid-9 no-margin border_bottom ">
-                        {% for obj in titles %}
+                        {% for key, value in titles.items %}
                             <span class="item_title item_height grid-9 no-margin">
-                                <a href="/qro_lee/profile/title/{{ obj.id }}">
+                                <a href="/qro_lee/profile/title/{{ key }}">
                                     <span class="wrapper_title wrapper_title_list borde_author ">
-                                        <img class="img_size_all" src="{{ obj.title.picture }}" />
+                                        <img class="img_size_all" src="{{ value.picture }}" />
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/title/{{ obj.id }}">
-                                    <h3 class="title grid-6 margin_left">
-                                        {{ obj.title|truncatechars:25 }}
+                                <a href="/qro_lee/profile/title/{{ key }}">
+                                    <h3 class="title grid-6 text_tit margin_left">
+                                        {{ value.title|truncatechars:25 }}
                                     </h3>
                                 </a>
-                                <p class="grid-6 p_text_mini margin_left title_author text_list">
-                                    {{ obj.title.author.name }}
+                                <p class="grid-6 p_text_mini margin_left title_author text_tit">
+                                    {{ value.author }}
+                                </p>
+                                <p class="grid-6 p_text_mini margin_left text_tit">
+                                    {% for k in value.genre %}
+                                        {% if forloop.counter <= 4 %}
+                                            <span class="title_author">{{ k }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p class="grid-6 p_text_mini margin_left text_tit">
+                                    <span >
+                                        {% for x in 'xxxxx' %}
+                                            {% if forloop.counter < value.grade %}
+                                                <img src="/static/img/comunityStar.png" />
+                                            {% else %}
+                                                <img src="/static/img/backgroundStar.png" />
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
                                 </p>
                             </span>
                         {% endfor %}
-                        <span class="place_pink link_all fright all_book">ver todos</span>
+                        {% for key, value in authors.items %}
+                            <span class="item_title item_height grid-9 no-margin">
+                                <a href="/qro_lee/profile/author/{{ key }}">
+                                    <span class="wrapper_title wrapper_title_list borde_author ">
+                                        <img class="img_size_all" src="{{ value.picture }}" />
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/author/{{ key }}">
+                                    <h3 class="title grid-6 margin_left">
+                                        {{ value.name|truncatechars:25 }}
+                                    </h3>
+                                </a>
+                                <span class="grid-6 margin_left height_tit_list">
+                                    {{ value.biography|truncatechars:200 }}
+                                </span>
+                                <span class="grid-6 margin_left title_author">
+                                    {% if value.count == 0 %}
+                                        no tiene Títulos
+                                    {% else %}
+                                        {{ value.count }} Títulos
+                                    {% endif %}
+                                </span>
+                            </span>
+                        {% endfor %}
+                        <span class="place_pink link_all fright all_book">
+                            ver todos
+                            <input type="hidden" value="0">
+                        </span>
                     </div>
             </div>
             {% endif %}
@@ -268,31 +324,52 @@
                         <h3 class="title my_titles">
                             Titulos de este autor
                         </h3>
-                        {% for title in list_titles %}
+                        {% for key, value in list_titles.items %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/title/{{ title.id }}">
+                                <a href="/qro_lee/profile/title/{{ key }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img src="{{ title.title.picture }}" />
+                                        {% if not value.picture %}
+                                        <img class="img_size_all"
+                                             src="/static/img/create.png" />
+                                        {% else %}
+                                            <img class="img_size_all"
+                                                 src="{{ value.picture }}" />
+                                        {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/title/{{ title.id }}">
+                                <a href="/qro_lee/profile/title/{{ key }}">
                                     <h3 class="title grid-3 title_mini">
-                                        {{ title.title|truncatechars:25 }}
+                                        {{ value.title|truncatechars:25 }}
                                     </h3>
                                 </a>
+                                <span class="grid-3">
+                                    {% for x in 'xxxxx' %}
+                                        {% if forloop.counter < value.grade %}
+                                            <img class="starts_mini" src="/static/img/comunityStar.png" />
+                                        {% else %}
+                                            <img class="starts_mini" src="/static/img/backgroundStar.png" />
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
                             </span>
                         {% endfor %}
                         <span class="place_pink link_all fright all_book">ver todos</span>
                     </div>
                     <div class="container_titles grid-5 no-margin ">
-                        <h3 class="title my_titles">
+                        <h3 class="title my_titles title_contai_aut">
                             Lista que contiene este autor
                         </h3>
                         {% for obj in list %}
                             <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img src="/static/media/author/create.png" />
+                                        {% if not obj.list.picture %}
+                                            <img class="img_size_all"
+                                                 src="/static/img/create.png"/>
+                                        {% else %}
+                                            <img src="/static/media/users/{{ obj.list.user.id }}/list/{{ obj.list.picture }}"
+                                                 class="img_size_all"   />
+                                        {% endif %}
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/list/{{ obj.list.id }}">
@@ -301,7 +378,10 @@
                                     </h3>
                                 </a>
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
-                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                    <a href="/accounts/users/profile/{{ obj.list.user.id }}"
+                                       class="d-pink">
+                                        {{ obj.list.user.first_name }}
+                                    </a>
                                 </p>
                             </span>
                         {% endfor %}
@@ -327,14 +407,19 @@
                         <span class="place_pink link_all fright all_book">ver todos</span>
                     </div>
                     <div class="container_titles grid-5 no-margin ">
-                        <h3 class="title my_titles">
+                        <h3 class="title my_titles title_contai_aut">
                             Lista que contienen este libro
                         </h3>
                         {% for obj in list %}
                             <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img src="/static/media/author/create.png" />
+                                        {% if not obj.list.picture %}
+                                            <img class="img_size_all" src="/static/media/author/create.png" />
+                                        {% else %}
+                                            <img class="img_size_all"
+                                                 src="/static/media/users/{{ obj.list.user.id }}/list/{{ obj.list.picture }}" />
+                                        {% endif %}
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/list/{{ obj.list.id }}">
@@ -343,7 +428,9 @@
                                     </h3>
                                 </a>
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
-                                    <span class="d-pink">{{ obj.list.user.first_name }} </span>
+                                    <a href="/accounts/users/profile/{{ obj.list.user.id }}" class="d-pink ">
+                                        {{ obj.list.user.first_name }}
+                                    </a>
                                 </p>
                             </span>
                         {% endfor %}
@@ -359,7 +446,11 @@
                             <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/list/{{ obj.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        <img class="img_size_all" src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}" />
+                                        {% if not obj.picture %}
+                                            <img src="/static/img/create.png" class="img_size_all" />
+                                        {% else %}
+                                            <img class="img_size_all" src="/static/media/users/{{ obj.user.id }}/list/{{ obj.picture }}" />
+                                        {% endif %}
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/list/{{ obj.id }}">
@@ -368,7 +459,15 @@
                                     </h3>
                                 </a>
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
-                                    <span class="d-pink">{{ obj.user.first_name }} </span>
+                                        {% if type != 'list' %}
+                                            <a href="/accounts/users/profile/{{ obj.list.user.id }}" class="d-pink">
+                                                {{ obj.list.user.first_name }}
+                                            </a>
+                                        {% else %}
+                                            <a href="/accounts/users/profile/{{ obj.user.id }}" class="d-pink">
+                                                {{ obj.user.first_name }}
+                                            </a>
+                                        {% endif %}
                                 </p>
                             </span>
                         {% endfor %}

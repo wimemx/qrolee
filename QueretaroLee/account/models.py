@@ -120,6 +120,10 @@ class Activity(models.Model):
     type = models.CharField(max_length=1)
 
 
-class Struct:
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
+class Page(models.Model):
+    name = models.CharField(max_length=100)
+    coment = models.TextField(max_length=2000)
+    tags = models.TextField(max_length=1000)
+    date = models.DateTimeField()
+    meta = models.TextField(max_length=1000)
+    id_user = models.ForeignKey(User)

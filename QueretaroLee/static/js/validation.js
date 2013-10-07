@@ -1,6 +1,6 @@
 var valid_form = false;
 $(document).ready(function(){
-
+    $('form').attr('autocomplete', 'off');
     $('.pass_match').keyup(function(){
         if($(this).val()!=$('.pass').val()){
             var span = $('<span class="invalid">No coincide tu contraseña</span>');
@@ -103,17 +103,18 @@ $(document).ready(function(){
     $('.d-add_book').click(function(){
 
         var query = ' ';
-
         type = 0;
-
-        if($(this).find('input').val() == 'title')
+        if($(this).find('.list_typ').val() == 'title')
             type = 1;
-        if($(this).find('input').val() == 'list')
+        if($(this).find('.list_typ').val() == 'list')
             type = 4;
 
         crsf = $('.csrf_token').find('div input').val();
 
-        type_add_list(crsf, type, query);
+        if($(this).find('.add_type').val() == 'add')
+            type_add_list(crsf, type, query);
+        if($(this).find('.add_type').val() == 'edit')
+            type_add_list(crsf, type, query);
 
     });
 
@@ -127,14 +128,11 @@ function type_add_list(csrf, id ,query){
     var and = 0;
     var join;
     var _query;
-
     var type = 'T';
-
     if($('.d_type_list').length > 0)
         type = $('.d_type_list').val();
     if($('.type_list').length > 0)
         type = $('.type_list').val();
-
 
     if(type =='A'){
 
@@ -218,7 +216,7 @@ function type_add_list(csrf, id ,query){
         if(id==2 | id==4 | id==5){
 
             query = query.split(" ");
-            var query = {
+            var __query = {
                 'q': JSON.stringify(query),
                 'start_index':{
                     0: 0
@@ -227,8 +225,9 @@ function type_add_list(csrf, id ,query){
                     0: model
                 }
             };
-            data.push(search_api(crsf, query));
+            data.push(search_api(crsf, __query));
         }
+
 
         if(id==1)
             dialog_titles(csrf,data,1);
@@ -260,7 +259,7 @@ var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
 var social_regex = /[\W]+/;
 
-console.log('asdf/&'.search(alpha_numeric_regex));
+
 function validate_regex(input, type){
     var ret = new Array();
     ret.push(false);
