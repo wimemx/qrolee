@@ -1589,7 +1589,7 @@ function list_title(csrf, data, div_text, type){    console.log(1);
             item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
             type_add = 'grid-5';
             if(type==4)
-                type_add = 'grid-4 selec_item';
+                type_add = 'grid-4 selec_item d-item_mini_list';
 
             div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
             item_title.append(div_item);
@@ -1681,7 +1681,7 @@ function list_title(csrf, data, div_text, type){    console.log(1);
 
                 type_add = 'grid-5';
                 if(type==4)
-                    type_add = 'grid-4 selec_item';
+                    type_add = 'grid-4 selec_item d-item_mini_list';
 
                 div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
                 item_title.append(div_item);
@@ -1872,7 +1872,6 @@ function add_my_title(csrf, array_title, type){
         },
         dataType: 'json'
     }).done(function(data){
-
             if(type == 1 | type == 3){
                 //book_favorite
                 $.each(data,function(i){
@@ -1915,8 +1914,8 @@ function add_my_title(csrf, array_title, type){
                                 '</a>';
                         p_author = $('<p class="p-d-text" >' + name_author +'</p>');
                         span_rate = $('<span></span>');
-                        p_date = $('<p class="p-d-text d-text_opacity">' +
-                            title[i2].published_date + '</p>');
+                        p_date = $('<p class="p-d-text d-text_opacity"> añadido ' +
+                            title[i2].date + '</p>');
                         btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
                         input_type = $('<input class="type_message" type="hidden" ' +
                             'value="delete_title"/>');
@@ -1951,6 +1950,26 @@ function add_my_title(csrf, array_title, type){
 
             if(type==4)
                 get_titles_authors(data, csrf);
+
+            if(type==5){
+                $('.title_act_read').fadeOut(250,function(){
+                    $(this).remove();
+                });
+                p = $('<p class="title_act_read">Acualmente está leyendo</p>');
+                a_author = $('<a class="title_author"></a>');
+                a_author.append(truncText(data.name,10));
+                span_btn = $('<span class="green_btn message_alert">Editar</span>');
+                input_l = $('<input class="type_message" type="hidden" value="edit_title_read">');
+                input_id = $('<input class="id_list" type="hidden" value="' + data.id_list + '">');
+                input_nam = $('<input class="name_title" type="hidden" value="' + data.name + '">');
+                span_btn.append(input_l);
+                span_btn.append(input_id);
+                span_btn.append(input_nam);
+                p.append(a_author);
+                p.append(span_btn);
+                $('.general-info').append(p);
+
+            }
 
             $('.dialog-confirm').fadeOut(250);
             $('.container_message').fadeOut(250);
@@ -2377,7 +2396,7 @@ function show_dialog(){
             closet(btn_acept);
         }
         if(($(this).find('.type_message').val()) == 'edit_read'){
-            var id = $(this).find('.id_list').val();
+            var id = $(this).parent().parent().find('.id_list_rel').val();
             $this = $(this);
             btn_acept.click(function(){
                 edit_title_read(id, 1, $this);
@@ -2563,6 +2582,7 @@ function list_titles_and_author(data, type, $container, type_message){
     $container.append(div_scroll);
     var bar = false;
     var count = 0;
+    var array = [];
 
     if(type == 'T'){
 
@@ -2570,10 +2590,9 @@ function list_titles_and_author(data, type, $container, type_message){
         delete titles_l['response'];
 
         $.each(titles_l,function(i){
-
             item_title = $('<span class="item_ti item_title_'+count+' "></span>')
 
-            type_add = 'grid-4 selec_item';
+            type_add = 'grid-4 selec_item d-item_mini_list';
 
             div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
             item_title.append(div_item);
@@ -2585,6 +2604,12 @@ function list_titles_and_author(data, type, $container, type_message){
             div_item.append(span_wrapper);
             url_mini = '' + titles_l[i].cover;
             url = '' + titles_l[i].cover;
+
+            var obj = {
+                'title':titles_l[i].title
+            }
+
+            array.push(obj);
 
             img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
             span_wrapper.append(img_wrapper);
@@ -2633,12 +2658,11 @@ function list_titles_and_author(data, type, $container, type_message){
         data = data[1];
         var titles = data['result_api']['items'];
         $.each(titles,function(i){
-
             attribute = titles[i]['volumeInfo'];
             attribute_access = titles[i]['accessInfo'];
             item_title = $('<span class="item_ti item_title_'+count+'"></span>')
 
-            type_add = 'grid-4 selec_item';
+            type_add = 'grid-4 selec_item d-item_mini_list';
 
             div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
             item_title.append(div_item);
@@ -2688,6 +2712,23 @@ function list_titles_and_author(data, type, $container, type_message){
             if('country' in attribute)
                 country = attribute_access['country'];
 
+            var obj = {
+                'title':attribute['title'],
+                'author':attribute['authors'],
+                'cover':url,
+                'description':desc,
+                'publisher':publisher,
+                'publishedDate':publishedDate ,
+                'language':language,
+                'country':country,
+                'isbn':isbn,
+                'isbn13':isbn13,
+                'pages':pages,
+                'picture':url_mini
+            }
+
+            array.push(obj);
+
             img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
             span_wrapper.append(img_wrapper);
 
@@ -2698,13 +2739,13 @@ function list_titles_and_author(data, type, $container, type_message){
             div_item.append(div_container_text);
             item_title.append(div_item);
             a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-            a.append((attribute['title']).substring(0,15));
+            a.append((attribute['title']).substring(0,12));
             div_container_text.append(a);
             p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                 ' no-margin" ></p>');
             a_author = $('<a " class="title_author" ></a>');
             var author_att= attribute['authors'];
-            a_author.append(author_att);
+            a_author.append(truncText(author_att[0],13));
             p_text_author.append('De ');
             p_text_author.append(a_author);
             div_container_text.append(p_text_author);
@@ -2730,29 +2771,37 @@ function list_titles_and_author(data, type, $container, type_message){
 
     if(bar)
         div_scroll.tinyscrollbar();
+
     if(type_message == 0){
 
-        var title_active = -1;
+        var title_active = 0;
         var acti = false;
 
         $('.item_ti').click(function(){
+            var item_act = $(this).find('.selec_item').hasClass('active_item');
 
-            if(!acti){
+            if(!acti & !item_act){
                 $(this).find('.selec_item').addClass('active_item');
                 title_active = parseInt($(this).find('.id_tit').val());
-                acti = true;////////--------------
-            }else{
-                if(title_active == parseInt($(this).find('.id_tit').val())){
-                    $(this).find('.selec_item').removeClass('active_item');
-                    acti = false;
-                    title_active = -1;
-                }
+                acti = true;
+            }else if(acti & item_act){
+                acti = false;
+                $(this).find('.selec_item').removeClass('active_item');
+                title_active = 0;
+
             }
+
 
         });
     }
+    div_text.find('.btn_save').remove();
+    div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
+    var span_save;
+    if(count!==0)
+        div_text.append(div_btn_save);
+        span_save = $('<span class=" green_btn " >Guardar</span>');
+        div_btn_save.append(span_save);
 
-    span_save = $('<span class=" green_btn " >Guardar</span>');
     span_save.click(function(){
 
         array_title = [];
@@ -2761,24 +2810,9 @@ function list_titles_and_author(data, type, $container, type_message){
 
             for(var it = 0;it< ($('.overview .item_ti').length);it++){
 
-                var default_type = [];
                 var active_title = false;
 
-                if(parseInt($('.item_title_'+it).find('.list_f').val())==1){
-                    default_type.push(0);
-                    active_title = true;
-                }
-                if(parseInt($('.item_title_'+it).find('.list_l').val())==1){
-                    default_type.push(1);
-                    active_title = true;
-                }
-                if(parseInt($('.item_title_'+it).find('.list_p').val())==1){
-                    default_type.push(2);
-                    active_title = true;
-                }
-
-                if(parseInt($('.item_title_'+it).find('.selec_item').find('input').val())==1){
-                    default_type.push(4);
+                if($('.item_title_'+it).find('.d-item_book_mini').hasClass('active_item')){
                     active_title = true;
                 }
 
@@ -2788,13 +2822,13 @@ function list_titles_and_author(data, type, $container, type_message){
                     if(parseInt($('.item_title_'+it).find('.title_inte').val())==1){
                         title_json = {it:{
                             'attribute':array[it],
-                            'default_type':default_type,
+                            'default_type':[5],
                             'id':parseInt($('.item_title_'+it).find('.id_tit').val())
                         }};
                     }else{
                        title_json = {it:{
                             'attribute':array[it],
-                            'default_type':default_type,
+                            'default_type':[5],
                             'id':-1
                         }};
                     }
@@ -2803,8 +2837,9 @@ function list_titles_and_author(data, type, $container, type_message){
                 }
             }
 
-            //if(active_sel)
-              //  add_my_title(csrf,array_title,type);
+        var csrf = $('.csrf_token').find('div input').val();
+        if(active_sel)
+            add_my_title(csrf,array_title,5);
     });
     $container.append();
 }

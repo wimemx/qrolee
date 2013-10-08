@@ -19,6 +19,7 @@ class Profile(models.Model):
     biography = models.CharField(max_length=255, null=True)
     website = models.CharField(max_length=255, null=True)
     social_session = models.BooleanField()
+    social_session_twitter = models.BooleanField()
     user = models.ForeignKey(User)
 
     def __unicode__(self):

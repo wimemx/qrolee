@@ -27,7 +27,8 @@
     <div class="grid-16 entities page">
         <div class="grid-15">
             <div class="heading">
-                <h3 class="title grid-5 fleft">Crear una página nueva</h3>
+                <input type="hidden" value="{{ profile.user.user_name }} " class="user_name">
+                <h3 class="title title_page grid-5 fleft">Crear una página nueva</h3>
             </div>
             <form method="post" id="registry" action="/accounts/users/registry_ajax_page/" >
                 <div class="csrf_token">
@@ -58,15 +59,20 @@
                 </p>
                 <p>
                     <span class="grid-12 content_check">
-                        <input type="checkbox" class="chec_pag fleft" />
-                        <span class="text_check">Compartir con twitter</span>
+                        {% if profile.social_session %}
+                            <input type="checkbox" class="chec_pag fleft" />
+                            <span class="text_check">Compartir con facebook</span>
+                        {% endif %}
                     </span>
                     <span class="grid-12 content_check">
-                        <input type="checkbox" class="chec_pag fleft" />
-                        <span class="text_check" >Compartir con facebook</span>
+                        {% if profile.social_session_twitter %}
+                            <input type="checkbox" class="chec_pag fleft" />
+                            <span class="text_check" >Compartir con twitter</span>
+                        {% endif %}
                     </span>
                     <span class="container_btn">
-                        <input id="submit" class="btn_page green_btn fright" value="Publicar" type="submit"/>
+                        <span class="btn_page d-pink_buttom fright">Cancelar</span>
+                        <input id="submit" class="btn_page btn_save_pag fright" value="Publicar" type="submit"/>
                     </span>
                 </p>
             </form>
@@ -84,6 +90,8 @@
             $('#registry').submit(function(e){
 
                 if(invalid_f($(this))){
+                    var page_name = $(this).find('input[name=name]').val();
+                    var content = $(this).find('textarea[name=coment]').val();
 
                     $.ajax({
                         type: "POST",
@@ -93,7 +101,21 @@
                     }).done(function(data) {
 
                                 if(data.success == 'True'){
-                                     window.location.href = site_url+'/qro_lee/';
+                                    FB.ui(
+                                            {
+                                                method: 'feed',
+                                                name: 'Qro_lee',
+                                                link: 'http://localhost:8000/',
+                                                caption: page_name,
+                                                description: $('.user_name').val()
+                                                        + ' ha creado la pagina ' + page_name,
+                                                message: content
+                                            },
+
+                                            function(response) {
+                                                window.location.href = site_url+'/qro_lee/';
+
+                                            });
                                 }else{
                                     $('.message').addClass('fail');
                                     $('.message').html('Hubo un error, favor de verificar sus datos');

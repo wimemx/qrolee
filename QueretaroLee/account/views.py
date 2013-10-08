@@ -202,6 +202,9 @@ def user_profile(request, **kwargs):
 
     fields = [item for item in fields if item not in fields_foreign]
 
+    array_date = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
     for i in range(3):
         list_titles = models.ListTitle.objects.filter(list__default_type=i,
                                         list__user=user, list__status=True)
@@ -228,6 +231,8 @@ def user_profile(request, **kwargs):
 
                 author =  models.AuthorTitle.objects.filter(title=obj.title)
 
+                activity = models.Activity.objects.get(object=obj.title.id,
+                                                       added_to_object=obj.list.id)
                 id_author = 0
                 if len(author) != 0:
                     author_name = author[0].author.name
@@ -235,8 +240,11 @@ def user_profile(request, **kwargs):
 
                 #--------------date------------------------#
                 items['default_type'] = obj.list.default_type
-                items['id_list'] = obj.list.id
+                items['id_list'] = obj.id
                 items['id_author'] = id_author
+                items['date'] = str(activity.date.day) + ' de ' \
+                                + str(array_date[(activity.date.month-1)]) + ' ' \
+                                + str(activity.date.year)
                 items['author'] = author_name
                 items['grade'] = grade_title
                 items['id_user'] = obj.list.user.id
@@ -254,6 +262,32 @@ def user_profile(request, **kwargs):
     else:
         act_title = 0
 
+    fields_related_objects = models.Page._meta.get_all_related_objects(
+        local_only=True)
+    fields = models.Page._meta.get_all_field_names()
+
+    fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+    fields = [item for item in fields if item not in fields_foreign]
+
+    pages = models.Page.objects.filter(id_user=user)
+
+    dict_pages = {}
+    for obj in pages:
+        items = {}
+        for field in fields:
+            if isinstance(obj.__getattribute__(str(field)), unicode):
+                items[field] = obj.__getattribute__(str(field)).encode('utf-8', 'ignore')
+            else:
+                items[field] = obj.__getattribute__(str(field))
+        items['id_user'] = obj.id_user.id
+        dict_pages[int(obj.id)] = items
+
+
     context = {
         'user_profile':profile,
         'entities':entity_user,
@@ -262,7 +296,8 @@ def user_profile(request, **kwargs):
         'list_genre':list_genre,
         'list_titles':dict_list,
         'count_titles':len(titles_read),
-        'act_title':act_title
+        'act_title':act_title,
+        'pages':dict_pages
     }
 
     return render(request, template, context)
@@ -415,8 +450,10 @@ def list_user(request):
         list_author[str(obj.id)] = list
         list['picture'] = obj.picture
 
-
-    context = {'users':list_us,'author':list_author}
+    context = {
+        'users':list_us,
+        'author':list_author
+    }
 
     context = simplejson.dumps(context)
 
@@ -425,8 +462,10 @@ def list_user(request):
 
 def registry_page(request, **kwargs):
     template_name = kwargs['template_name']
+    user = request.user
+    profile = registry.Profile.objects.get(user=user)
     context = {
-
+        'profile':profile
     }
 
     return render(request, template_name, context)
@@ -471,9 +510,13 @@ def registry_ajax_page(request):
 def update_page(request, **kwargs):
     template_name = kwargs['template_name']
     id_page = kwargs['id_page']
+    user = request.user
     page = models.Page.objects.get(id=id_page)
+    profile = registry.Profile.objects.get(user=user)
+
     context = {
-        'page':page
+        'page':page,
+        'profile':profile
     }
     return render(request, template_name, context)
 

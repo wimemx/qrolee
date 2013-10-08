@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from _mysql import connection
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
@@ -433,7 +434,7 @@ def register_event(request, **kwargs):
         'entity': entity,
         'entity_type': entity_type
     }
-    print entity.id
+
     return render(request, template, context)
 
 def ajax_register_event(request):
@@ -488,6 +489,7 @@ def post_event_fb(event, user, profile):
         uid=profile.fb_id)[0]
     fb_profile = facebook_session.query('me/events')
     pass
+
 
 def event(request, **kwargs):
     template = kwargs['template_name']
@@ -855,8 +857,7 @@ def delete_title(request):
     id_list =  request.POST.get('id_list')
     type_list = request.POST.get('type_list')
     if type_list == 'T':
-        title_favorite = account.ListTitle.objects.get(title__id=id_title,
-                                                   list__id=id_list)
+        title_favorite = account.ListTitle.objects.get(id=id_list)
         title_favorite.delete()
     else:
         title_favorite = account.ListAuthor.objects.get(author__id=id_title,
@@ -960,7 +961,6 @@ def add_my_title(request):
     user = request.user
     list_id_titles = []
     list_id_authors = []
-
     if request.POST.get('list') != None:
         list = ast.literal_eval(request.POST.get('list'))
 
@@ -1044,9 +1044,9 @@ def add_my_title(request):
                     add_list.save()
 
                 list_id_titles.append(int(title.id))
+                type_li = int(request.POST.get('type'))
 
-                if int(request.POST.get('type')) == 1 | \
-                        int(request.POST.get('type')) == 3:
+                if type_li == 1 or type_li == 3 or type_li == 5:
 
                     for type in obj['it']['default_type']:
                         lista = account.List.objects.get(user=user, default_type=type)
@@ -1060,13 +1060,20 @@ def add_my_title(request):
                         if len(my_list) == 0:
                             my_list = account.ListTitle.objects.create(**list_ti)
                             my_list.save()
-                            activity_data = {
-                                'user_id': request.user.id,
-                                'object':my_list.id,
-                                'type': 'L',
-                                'activity_id': 1
-                            }
-                            update_activity(activity_data)
+                            activity = account.Activity.objects.filter(object=my_list.title.id,
+                                                                       added_to_object=my_list.list.id)
+                            if len(activity)==0:
+                                activity_data = {
+                                    'user_id': request.user.id,
+                                    'object':title.id,
+                                    'added_to_object':my_list.list.id,
+                                    'type': 'T',
+                                    'added_to_type':'L',
+                                    'activity_id': 1
+                                }
+                                update_activity(activity_data)
+                            else:
+                                activity[0].date = datetime.datetime.today()
 
         if request.POST.get('type_list') == 'A':
             for obj in list:
@@ -1103,15 +1110,10 @@ def add_my_title(request):
             related_object.get_accessor_name().replace('_set', ''))
 
     fields = [item for item in fields if item not in fields_foreign]
-
-    list_favorite = account.ListTitle.objects.filter(list__user=user,
-                                                     list__default_type=0)
-    list_read = account.ListTitle.objects.filter(list__user=user,
-                                                     list__default_type=1)
-    list_to_read = account.ListTitle.objects.filter(list__user=user,
-                                                     list__default_type=2)
     list_dict = {}
 
+    array_date = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
     for i in range(3):
         list_titles = account.ListTitle.objects.filter(list__default_type=i,
                                         list__user=user, list__status=True)
@@ -1147,10 +1149,15 @@ def add_my_title(request):
                     if len(my_grade) != 0:
                         fields_title['user'] = int(my_grade[0].user.id)
 
+            activity = account.Activity.objects.get(object=obj.title.id,
+                                                    added_to_object=obj.list.id)
+
             fields_title['author'] = name_author
             fields_title['id_author'] = id_author
             fields_title['id_list'] = obj.list.id
-
+            fields_title['date'] = str(activity.date.day) + ' de ' \
+                               + str(array_date[(activity.date.month-1)]) + ' ' \
+                              + str(activity.date.year)
             my_list[int(obj.id)] = fields_title
 
         type = ''
@@ -1169,6 +1176,16 @@ def add_my_title(request):
 
     if int(request.POST.get('type')) == 4 and  request.POST.get('type_list') == 'A':
         context = simplejson.dumps(list_id_authors)
+
+    if int(request.POST.get('type')) == 5:
+        list = account.ListTitle.objects.get(list__default_type=5,
+                                              title__id=list_id_titles[0])
+        context = {
+            'name':list.title.title,
+            'id_list':list.id
+        }
+
+        context = simplejson.dumps(context)
 
     return HttpResponse(context, mimetype='application/json')
 
@@ -1336,14 +1353,30 @@ def update_list(request, **kwargs):
 
 def edit_title_read(request):
 
-    id_list = request.POST.get('id_list')
+    id_list = int(request.POST.get('id_list'))
     date = request.POST.get('date')
     context = {}
 
     if int(request.POST.get('type')) == 1:
         list_title = account.ListTitle.objects.get(id=id_list)
-        lis = account.List.objects.get(user=list_title.list.user, default_type=1)
 
+        if date == '':
+            act_date = datetime.datetime.now().isoformat()
+        else:
+            d = datetime_from_str(date)
+            act_date = d[1].isoformat()
+
+        activity = account.Activity.objects.get(object=list_title.title.id,
+                                                added_to_object=list_title.list.id)
+        activity.date = act_date
+        activity.save()
+        context['succes'] = 'True'
+        context['type'] = 2
+        context['date'] = date
+
+    if int(request.POST.get('type')) == 2:
+        list_title = account.ListTitle.objects.get(id=id_list)
+        lis = account.List.objects.get(user=list_title.list.user, default_type=1)
         list_title.list = lis
         list_title.save()
 
@@ -1353,38 +1386,25 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        activity_data = {
-            'user_id': list_title.list.user.id,
-            'object':list_title.title.id,
-            'type': 'T',
-            'activity_id': 1
-        }
-        update_activity(activity_data)
+        activity = account.Activity.objects.filter(object=list_title.title.id,
+                                                added_to_object=list_title.list.id)
+        if len(activity)!=0:
+            activity[0].date = act_date
+            activity[0].save()
+        else:
+            activity_data = {
+                'user_id': request.user.id,
+                'object': list_title.title.id,
+                'added_to_object':list_title.list.id,
+                'type': 'T',
+                'added_to_type':'L',
+                'activity_id': 9
+            }
+            #update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 1
-
-    if int(request.POST.get('type')) == 2:
-        list_title = account.ListTitle.objects.get(id=id_list)
-
-        if date == '':
-            act_date = datetime.datetime.now().isoformat()
-        else:
-            d = datetime_from_str(date)
-            act_date = d[1].isoformat()
-
-        activity_data = {
-            'user_id': list_title.list.user.id,
-            'object':list_title.title.id,
-            'type': 'T',
-            'activity_id': 1
-        }
-        update_activity(activity_data)
-
-        context['succes'] = 'True'
-        context['type'] = 2
         context['date'] = date
-
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

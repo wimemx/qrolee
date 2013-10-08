@@ -1500,12 +1500,16 @@ input:not([type='submit']){
 }
 
 .entities .grid-15 {
-    min-height: 640px;
+    height: 640px;
     padding: 40px 40px 40px 40px;
     background: #fffcf5;
     display: block;
     margin: 0px;
 
+}
+
+.page .grid-15 {
+    min-height: 680px !important;
 }
 
 .no_margin-right{
@@ -1966,6 +1970,7 @@ input:not([type='submit']){
     height: 19px !important;
     border: 1px solid;
     background-color: wheat;
+    cursor: pointer;
 }
 
 .text_act{
@@ -2121,7 +2126,7 @@ input:not([type='submit']){
     margin-left: 10px;
 }
 .textarea_tags{
-    width: 100%;
+    width: 99%;
     min-height: 50px;
 }
 
@@ -2152,7 +2157,15 @@ input:not([type='submit']){
 }
 
 .btn_page{
-    padding: 10px 10px 10px 10px !important;
+    font-size: 12px !important;
+    padding: 2px 10px 2px 10px !important;
+    color: #000000 !important;
+}
+
+.btn_save_pag{
+    background: #7ca680;
+    margin-right: 10px;
+    padding-bottom: 3px !important;
 }
 
 form p .invalid_messa{
@@ -2165,3 +2178,9 @@ form p .invalid_messa{
     display: none;
     font-weight: bold;
 }
+
+.title_page{
+    text-transform: none !important;
+}
+
+d-

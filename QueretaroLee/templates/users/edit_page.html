@@ -52,12 +52,16 @@
                 </p>
                 <p>
                     <span class="grid-12 content_check">
-                        <input type="checkbox" class="chec_pag fleft" />
-                        <span class="text_check">Compartir con twitter</span>
+                        {% if profile.social_seccion %}
+                            <input type="checkbox" class="chec_pag fleft" />
+                            <span class="text_check">Compartir con twitter</span>
+                        {% endif %}
                     </span>
                     <span class="grid-12 content_check">
-                        <input type="checkbox" class="chec_pag fleft" />
-                        <span class="text_check" >Compartir con facebook</span>
+                        {% if profile.social_seccion_twitter %}
+                            <input type="checkbox" class="chec_pag fleft" />
+                            <span class="text_check" >Compartir con facebook</span>
+                        {% endif %}
                     </span>
                     <span class="container_btn">
                         <input id="submit" class="btn_page green_btn fright" value="Guardar" type="submit"/>

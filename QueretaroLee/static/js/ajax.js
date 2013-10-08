@@ -712,6 +712,9 @@ $(document).ready(function(){
                 }
             });
     });
+    $('.search_pages').click(function(){
+        console.log($('.field_pag').val());
+    });
 
     $('.search_button').click(function(){
         if($('.search_field').val().length>0){
@@ -729,7 +732,7 @@ $(document).ready(function(){
                     $('.d-results').empty();
                     $('.d-results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
-                        console.log(data);
+
                         $.each(data,function(i){
                             var obj = data[i];
                             var count = 1;
@@ -755,7 +758,7 @@ $(document).ready(function(){
                                     else
                                         name_user = obj[i2].first_name;
 
-                                    name.append(truncText(name_user,23));
+                                    name.append(truncText(name_user,20));
                                     a.append(name);
                                     $('.d-results').append(a);
                                 }
@@ -1019,6 +1022,9 @@ $(document).ready(function(){
         initialize(20,100);
 
     }
+    $('.text_act').click(function(){
+        show_title_act($(this));
+    });
 
 });
 
@@ -1129,7 +1135,8 @@ $.ajax({
 
             text_date.fadeOut(250,function(){
                 text_date.empty();
-                text_date.append('añadido el ' + date[2] + ' de ' + months[(date[1]-1)]);
+                text_date.append('añadido ' + date[2] + ' de ' + months[(date[1]-1)]
+                    + ' ' + date[0]);
                 text_date.fadeIn(250);
             });
         }
@@ -1140,11 +1147,9 @@ $.ajax({
 function show_title_act($this){
 
     var type = $('.type').val();
-
     if(type == "List"){
 
         var type_message = $this.find('.type_message').val();
-
         if(type_message=="show_titles"){
             d_show_dialog(0);
         }
