@@ -126,7 +126,7 @@ span.green_btn,span.yellow_btn{
     display: none;
     background: #c19160 url('../img/register_close.png') no-repeat 50% 50%;
     position: absolute;
-    bottom: 0px;
+    top: 2px;
     padding: 3px;
     right: -20px;
     cursor: pointer;
@@ -450,7 +450,7 @@ p.advanced_search_btn{
         line-height: 25px;
     }
     .filter .checkbox{
-        background: #FEF1D5;
+        background: #FEF1D5 ;
         height: 30px;
         line-height: 30px;
         font-size: 13px;
@@ -458,9 +458,10 @@ p.advanced_search_btn{
     }
         .filter .checkbox span{
             width: 16px;
-            height: 16px;
+            height: 25px;
             margin-top: 4px;
             border:none;
+            background: url('../img/filter_sprite.png') no-repeat 0px 0px;
 
         }
     .filter .checkbox.active, .filter .checkbox:hover{

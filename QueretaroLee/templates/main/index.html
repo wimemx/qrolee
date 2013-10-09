@@ -94,7 +94,7 @@
         </div>
 
         <div class="grid-8 left">
-            {% if activiy != 0 %}
+            {% if activiy %}
                 {% for news_feed in activity %}
                     {{ news_feed.id|feed_type }}
                 {% endfor %}

@@ -921,7 +921,8 @@ $(document).ready(function(){
             });
     }
 
-    if($('#map').length>0){
+    if($('#map').length>0 ){
+        if(!$('#map').hasClass('map')){
             var name_event = ""+$('.name_event').val();
             name_event = name_event.replace(/\s/g,'');
             var id_event = $('.id_event').val();
@@ -935,13 +936,14 @@ $(document).ready(function(){
                 dataType: 'json'
             }).done(function(data){
                     initialize(data['lat'],data['long']);
-            });
+                });
+        }
     }
 
 
 
 
-    $('.affiliate').each(function(i){
+$('.affiliate').each(function(i){
         if(i == counter){
             $(this).addClass('margin');
             counter += 3;

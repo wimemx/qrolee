@@ -570,18 +570,23 @@ $(document).ready(function(){
             $(this).html('×');
     });
     $('.advanced_search_btn').click(function(){
+
         if($('.advanced_search').is(':visible'))
             $('.advanced_search').fadeOut(300);
         else{
             $('.advanced_search').fadeIn(300,function(){
-                if($(this).hasClass('map'))
-                    $('#map').fadeIn(300,initialize(20.600008,-100.388363));
+                if($(this).hasClass('map')){
+                    var map = $('<div id="map" class="clear"></div>');
+                    map.insertAfter($('.advanced_search.map'));
+                    map.fadeIn(300,initialize(20.600811424184588,-100.38887798413089));
+                }
             });
         }
     });
 
 
     $('.filter .checkbox').click(function(){
+        $('#map').remove();
         $('.filter .checkbox').each(function(){
             $(this).removeClass('active');
         });
@@ -945,11 +950,15 @@ $(document).ready(function(){
                 api = search_api(csrf, query);
             }else
                 result = advanced_search(search, csrf);
+
             if(result.response != 0){
                 $.each(result,function(i){
                     create_template(type, result, i, create_user);
                 });
             }else{
+               var p = $('<span class="item"><p class="center"> No se pudieron ' +
+                    'encontrar resultados para su búesqeda</p></span>');
+                $('.results').append(p);
 
             }
 
@@ -1117,7 +1126,10 @@ function create_template(type, result,i, create_user){
             }else{
                 a_wrapper.attr('href','/accounts/users/profile/'+result[i].id);
                 a_title.attr('href','/accounts/users/profile/'+result[i].id);
-                h3.html(result[i].first_name);
+                if (result[i].first_name != '')
+                    h3.html(result[i].first_name);
+                else
+                    h3.html(result[i].username);
             }
         }else if(type == 'account.title'){
             h3.html(result[i].title);
@@ -1179,12 +1191,12 @@ function create_template(type, result,i, create_user){
             p.html(result[i].extras[0].length+' Libros');
             item.append(p);
         }else if(type == 'account.title'){
+            img.attr('src',result[i].picture);
             a_wrapper.attr('href','/qro_lee/profile/title/'+result[i].id);
             a_title.attr('href','/qro_lee/profile/title/'+result[i].id);
             var text= '';
             p.html(text+result[i].extras[1][0]);
             item.append(p);
-
         }else if(type == 'registry.event'){
             a_wrapper.attr('href','/qro_lee/events/event_'+result[i].id);
             a_title.attr('href','/qro_lee/events/event_'+result[i].id);
@@ -1202,14 +1214,17 @@ function create_template(type, result,i, create_user){
             '/event/'+result[i].picture;
             img.attr('src', url);
         }else if(create_user){
-            var a = $('<a class="spot" href="/qro_lee/profile/title/'+result[i].extras[0][1]+'">'+result[i].extras[0][0]+'</a>')
-            p.html('Esta leyendo ');
+            var a;
+            if(result[i].extras[0][0]){
+                a = $('<a class="spot" href="/qro_lee/profile/title/'+result[i].extras[0][1]+'">'+result[i].extras[0][0]+'</a>')
+                p.html('Esta leyendo ');
+            }
             p.append(a);
             item.append(p);
         }
         var title = h3.html();
         title = title.substring(0, 16);
-        h3.html(title+'...');
+        h3.html(title+' ...');
         $('.results').append(item);
         return;
     }
