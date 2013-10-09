@@ -67,7 +67,7 @@
                     <span class='text_act' >
                         ¿Qué estás leyendo?
                         <input type="hidden" class="type_message"
-                               value="show_title" />
+                               value="show_titles" />
                     </span>
                 {% else %}
                     Acualmente está leyendo <a class="title_author">
@@ -75,7 +75,7 @@
                     <span class="green_btn message_alert">
                         Editar
                         <input class="type_message"
-                        type="hidden" value="edit_read"/>
+                        type="hidden" value="edit_title_read"/>
                         <input class="id_list"
                         type="hidden" value="{{ act_title.id }}"/>
                         <input class="name_title"
@@ -89,6 +89,7 @@
             <span class="btn">Libros</span>
             <span class="btn">Listas</span>
             <span class="btn">Grupos</span>
+            <span class="btn">Páginas</span>
         </span>
     </div>
 
@@ -145,7 +146,7 @@
                              Libros leídos
                          </h3>
                          <span class="container_items grid-4 no-margin">
-                             {% for key, value in list_titles.2.items %}
+                             {% for key, value in list_titles.1.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
                                     {% if not forloop.last and forloop.counter != 3 %}
@@ -250,7 +251,7 @@
             </span>
         </p>
         <p class="p-d-text d-text_opacity">
-            añadido el 1 de septiembre
+            añadido {{ value.date }}
         </p>
         {% if value.id_user == user.id %}
             <span class="pink_btn size_btn_edit message_alert">
@@ -353,7 +354,7 @@
             </span>
             </p>
             <p class="p-d-text d-text_opacity">
-                añadido el 1 de septiembre
+                añadido {{ value.date }}
             </p>
             {% if value.id_user == user.id %}
                 <span class="pink_btn size_btn_edit message_alert">
@@ -460,7 +461,7 @@
             </span>
                 </p>
                 <p class="p-d-text d-text_opacity">
-                    añadido el 1 de septiembre
+                    añadido {{ value.date }}
                 </p>
                 {% if value.id_user == user.id %}
                     <span class="pink_btn size_btn_edit message_alert">
@@ -510,7 +511,6 @@
         </div>
     </div>
     </div>
-
     </div>
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15">
@@ -585,7 +585,7 @@
                                         </a>
                                 </span>
                                 <span class="d-text_list grid-13 no-margin bottom_text"  >
-                                    {{ value.description }}
+                                    {{ value.description|truncatechars:350 }}
                                 </span>
                             </div>
                         {% endfor %}
@@ -593,9 +593,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="grid-16 entities load no-margin">
+    <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15 no-margin">
             <h3 class="title main">Grupos a los que pertenezco</h3>
             <div id="scrollbar1" class="d-margin_group_user" >
@@ -637,10 +636,80 @@
                             {% endif %}
                         </p>
                         </div>
-
                         {% endfor %}
                         </div></div></div>
             </div>
         </div>
+    <div class="grid-16 load no-margin">
+        <div class="sidebar-a grid-15">
+            <div class="heading">
+                <h3 class="title grid-3 fleft">Mis páginas</h3>
+                <span class="search fleft grid-4">
+                    <input type="text" class="field_pag">
+                    <input type="hidden" value="{{ user_profile.user.id }}"/>
+                    <span class="top search_pages right dark_yello_btn">Buscar</span>
+                </span>
+                <a href="/accounts/users/registry_page/">
+                    <span class="d-pink_buttom d-brown-btn fright">
+                        Crear nueva página
+                    </span>
+                </a>
+            </div>
+            <div id="scrollbar1" class="d-margin_group_user">
+                <div class="scrollbar"><div class="track"><div class="thumb">
+                    <div class="end"></div></div></div></div>
+                <div class="viewport overview_list">
+                    <div class="overview my_items_pages">
+                        {% for key, value in pages.items %}
+                            <div class="item_list d-list_{{ key }}" >
+                                <input class="name_list" type="hidden" value="{{ value.name }}">
+                                <input class="id_list" type="hidden" value="{{ key }}">
+                                <a href="/qro_lee/profile/list/{{ key }}/">
+                                    <span class="wrapper_list" >
+                                        {% if not value.picture %}
+                                            <img src="/static/img/create.png" class="img_size_all" />
+                                        {% else %}
+                                            <img src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}"
+                                                 class="img_size_all"   />
+                                        {% endif %}
+                                    </span>
+                                </a>
+                                <a href="/qro_lee/profile/list/{{ key }}/"
+                                   class="title alpha title_book grid-4">{{ value.name }}</a>
+
+                                <span class="container_btn grid-4 no-margin">
+                                    {% if value.id_user == user.id %}
+                                        <a href="/accounts/users/update_page/{{ key }}">
+                                            <span class="green_btn size_btn_edit" >Editar</span>
+                                        </a>
+                                        <span class="pink_btn size_btn_edit message_alert" >
+                                            -
+                                            <input class="type_message" type="hidden" value="delete_list">
+                                        </span>
+                                {% endif %}
+                                </span>
+                                <!--<span class="fright">
+                                            {% for x in 'xxxxx' %}
+                                                {% if forloop.counter < value.grade %}
+                                                    <img src="/static/img/comunityStar.png" />
+                                                {% else %}
+                                                    <img src="/static/img/backgroundStar.png" />
+                                                {% endif %}
+                                            {% endfor %}
+                                 </span>-->
+                                <span class="d-text_list grid-13 no-margin bottom_text"  >
+                                    {% autoescape off %}
+                                        {{ value.coment }}
+                                    {% endautoescape %}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+    </div>
+
 {% endblock %}
