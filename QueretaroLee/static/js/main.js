@@ -955,12 +955,13 @@ $(document).ready(function(){
 
         }
     });
-    if($('.list_scroll').length>0){
-        $('#scrollbar1').tinyscrollbar();
-    }
+    $('#scrollbar1').tinyscrollbar();
+
 
     $('.nav .btn:eq(0)').trigger('click');
-
+    $('.btn.no-ajax').click(function(){
+        $('.container_message').fadeIn(300);
+    });
 });
 
 function create_template(type, result,i, create_user){
@@ -2782,7 +2783,6 @@ function list_titles_and_author(data, type, $container, type_message){
                     title_active = -1;
                 }
             }
-        }
 
         });
     }
@@ -2790,7 +2790,7 @@ function list_titles_and_author(data, type, $container, type_message){
     span_save = $('<span class=" green_btn " >Guardar</span>');
     span_save.click(function(){
 
-        array_title = [];
+    array_title = [];
 
             var active_sel = false;
 

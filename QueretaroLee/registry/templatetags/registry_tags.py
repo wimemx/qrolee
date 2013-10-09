@@ -1,6 +1,9 @@
 #coding: utf8
 from django import template
 
+from account import models
+from registry import models as rmodels
+
 import datetime
 
 register = template.Library()
@@ -26,4 +29,29 @@ def member_since(date):
 
 @register.filter
 def total_members(followers):
+    print followers
     return len(followers)
+
+@register.filter
+def feed_type(feed_id):
+    feed = models.Activity.objects.get(
+        id=feed_id)
+    if feed.type == 'E':
+        obj = rmodels.Entity.objects.get(
+            id=feed.object)
+    elif feed.type == 'D':
+        obj = rmodels.Event.objects.get(
+            id=feed.object)
+    elif feed.type == 'A':
+        obj = models.Author.objects.get(
+            id=feed.object)
+    elif feed.type == 'L':
+        obj = models.List.objects.get(
+            id=feed.object)
+    elif feed.type == 'T':
+        obj = models.Title.objects.get(
+            id=feed.object)
+    else:
+        obj = None
+    print obj
+    return 0

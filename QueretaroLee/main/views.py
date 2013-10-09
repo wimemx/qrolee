@@ -11,10 +11,8 @@ from django.db.models import Q
 from collections import namedtuple
 from account import models as account_models
 from registry import models,views,settings
-from registry.views import datetime_from_str
-from decimal import Decimal
-from django.utils.datastructures import SortedDict
 
+from decimal import Decimal
 import simplejson
 import calendar
 import HTMLParser
@@ -27,14 +25,22 @@ import urllib2
 
 @login_required(login_url='/')
 def index(request, **kwargs):
-
     template = kwargs['template_name']
     if request.user.is_authenticated():
         user = request.user
-        #profile = models.Profile.objects.get(user_id=user)
+        profile = models.Profile.objects.get(user_id=user)
+        activity = account_models.Activity.objects.filter(
+            user_id=user.id)
+    else:
+        return HttpResponseRedirect('/')
+
+    if not activity:
+        activity = 0
+
     context = {
         'user': user,
-        'profile': user
+        'profile': profile,
+        'activity': activity
     }
     return render(request, template, context)
 
@@ -196,7 +202,7 @@ def get_entity(request, **kwargs):
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
             entityuser = models.EntityUser.objects.get_or_create(
-                user_id=request.user.id)
+                user_id=request.user.id, entity_id=entity.id)
             if membership == 1:
                 entityuser[0].is_member = True
                 entityuser[0].save()
@@ -206,7 +212,7 @@ def get_entity(request, **kwargs):
         elif 'follow_private' in request.POST:
             membership = int(request.POST.get('follow_private'))
             entityuser = models.EntityUser.objects.get_or_create(
-                user_id=request.user.id)
+                user_id=request.user.id, entity_id=entity.id)
             if membership == 1:
                 entityuser[0].request = True
                 entityuser[0].save()
@@ -216,7 +222,7 @@ def get_entity(request, **kwargs):
                 entityuser[0].save()
     else:
         entityuser = models.EntityUser.objects.filter(
-                user_id=request.user.id)
+                user_id=request.user.id, entity_id=entity.id)
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -285,9 +291,9 @@ def get_entity(request, **kwargs):
     hc = hc.replace('Sat', 'S')
 
     if entity_type.name == 'group':
-        entity_type = ['grupos', 'group']
+        entity_type = ['grupos', 'group', 'grupo']
     elif entity_type.name == 'organization':
-        entity_type = ['organizaciones', 'organization']
+        entity_type = ['organizaciones', 'organization', 'organizacion']
     elif entity_type.name == 'spot':
         entity_type = ['spots', 'spot']
     html_parser = HTMLParser.HTMLParser()

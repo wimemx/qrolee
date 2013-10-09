@@ -62,23 +62,27 @@
         top: 145px;
         font-size: 25px;
         line-height: 25px;
-        font-family: "Montserrat" sans-serif;
+        font-family: "Raleway" sans-serif;
     }
 
 .caption{
+    margin-bottom: 20px !important;
+    height: 115px;
+}
+.caption .c{
     text-align: center;
-    font-size: 12px;
-    height: 85px;
+    font-size: 14px;
     position: relative;
-    margin-bottom: 25px !important;
     font-family:  "Lucida Bright";
     padding-top: 20px;
+    font-style: italic;
 }
     .caption span{
         font-size: 10px;
         font-family: inherit;
         margin-top: 5px;
         display: block;
+        font-style: normal;
     }
     .caption .left, .caption .right{
         width: 20px;
@@ -108,6 +112,7 @@
     position: relative;
     height: 100px;
     font-family:  "Lucida Bright";
+    line-height: 20px;
 }
     .mission .bottom{
         position: absolute;
@@ -119,7 +124,7 @@
 
 
 .container{
-    padding-bottom: 200px;
+    padding-bottom: 60px;
 }
 
 .container-16 .form-container{
@@ -128,7 +133,7 @@
     margin-top: 100px;
     background: url('../img/register_form_bg.png');
     padding: 10px 30px 10px 30px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Raleway', sans-serif;
     position: relative;
 }
     .form-container .shadow{
@@ -137,24 +142,31 @@
         bottom: -19px;
     }
     .form-container .title{
-        color:#b18a62;
+        color:#F4E5C9;
         font-size: 15px;
         text-align: left;
-        padding: 0px 0px 0px 20px;
-        border-bottom: 1px solid #b18a62;
-        position: relative;
+        text-indent: 15px;
         font-family: inherit;
         font-weight: 400;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        background: #C29E78;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        margin-top: 0px;
+
     }
         .title .close{
-            width: 9px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             display: block;
-            background: #d1a475 url('../img/register_close.png') no-repeat 50% 50%;
+            background: url('../img/light_close.png') no-repeat 50% 50%;
             position: absolute;
-            bottom: -19px;
-            padding: 7px 7px 4px 7px;
+            top: 8px;
+            right: 8px;
         }
 
 form.center.grid-4{
@@ -170,18 +182,20 @@ form.register{
         font-size: 10px;
         text-align: center;
         font-weight: 400;
+        font-family: sans-serif;
     }
         .banner span{
             cursor: pointer;
             text-decoration: underline;
+            font-family: inherit;
         }
     form p{
         position: relative;
         font-size: 12px;
         display: block;
         min-height: 30px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 400;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 500;
     }
         form p input:not([type='submit']){
             background: #f4e5c8;
@@ -196,8 +210,14 @@ form.register{
             position: absolute;
             right: -85px;
             top: -2px;
-            box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+            box-shadow: 2px 3px 3px rgba(0,0,0,0.1);
             display: none;
+            font-size: 11px;
+            font-family: sans-serif;
+
+        }
+        .banner.error{
+            color: #EE7960;
         }
         form p .icon{
             width: 25px;
@@ -207,28 +227,31 @@ form.register{
             margin-right: 5px;
         }
         form p input[type='submit']{
-            background: #f2e28e;
+            background: #f2e28e !important;
             border: 1px solid #eacea9;
             padding:7px 10px 7px 10px;
             float: right;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Raleway', sans-serif;
         }
         form p .reset{
             float: left;
             text-decoration: underline;
             font-size: 10px;
             cursor: pointer;
+            font-family: sans-serif;
         }
         .social-login{
             line-height: 30px;
             font-size: 10px;
+            font-family: sans-serif;
         }
         .register .social-login{
             display: inline-block !important;
+
         }
             .social-login a{
-                width: 62px;
-                height: 17px;
+                width: 68px;
+                height: 20px;
                 display: block;
                 margin:6px 0px 0px 10px;
                 float: right;

@@ -56,7 +56,7 @@ span.green_btn,span.yellow_btn{
 }
 .yellow_btn{
     background: #e8d76b;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     display: none;
 }
 .data{
@@ -65,7 +65,7 @@ span.green_btn,span.yellow_btn{
     border-bottom: 1px solid #9d9c97;
 }
 .data p{
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     color: #000;
     position: relative;
 }
@@ -232,39 +232,7 @@ select{
         }
 
 
-.alert-message{
-    padding: 20px 10px 20px 10px;
-    max-width: 200px;
-    display: block;
-    position: relative;
-    z-index: 1;
-    margin: 200px auto;
-    background: #EBDCC0;
 
-}
-.message-header{
-    width: 100%;
-    height: 20px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background: #C29E78;
-    text-align: left;
-    text-indent: 15px;
-    color: #F3E4C8;
-    font-family: 'Montserrat' sans-serif;
-    line-height: 20px;
-}
-    .alert-message p{
-        font-family: 'Montserrat' sans-serif;
-        text-align: center;
-    }
-    .alert-message .accept{
-        margin-left: 40px;
-    }
-    .alert-message .accept,.alert-message .reject{
-        font-family: 'Montserrat' sans-serif !important;
-    }
 
     .edit.register .invalid{
         top: -25px;
@@ -279,6 +247,8 @@ select{
             top: -2px;
             box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
             display: none;
+            font-size: 11px;
+            font-family: sans-serif;
         }
 #picture{
     height: 180px;
@@ -292,7 +262,7 @@ select{
 }
 .preview,.dz-message{
         height: 180px;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         text-align: center;
         color: #000;
         float: right;
@@ -314,7 +284,7 @@ select{
     }
     .dz-remove{
         color: #ed8571;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         font-size: 10px;
         width: 100%;
         text-align: center;
