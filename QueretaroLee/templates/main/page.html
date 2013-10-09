@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block main_site %}
+    <div class="erase"></div>
+    <div class="grid-16 pages">
+        <div class="grid-15">
+            <div class="grid-4 no-margin">
+                <span class="grid-4 no-margin title">Más páginas del autor</span>
+                {% for obj in list_pages %}
+                <span class="item_page grid-4 no-margin">
+                    <a href="/qro_lee/user/{{ obj.id_user.id }}/page/{{ obj.id }}">
+                        <span class="wrapper_page">
+                            <img src="/static/img/create.png" class="img_size_all"/>
+                        </span>
+                    </a>
+                    <a href="/qro_lee/user/{{ obj.id_user.id }}/page/{{ obj.id }}">
+                        <span title="{{ obj.name }}" class="title title_pages grid-2 no-margin">
+                            {{ obj.name|truncatechars:16 }}
+                        </span>
+                    </a>
+                </span>
+                {% endfor %}
+            </div>
+            <div class="grid-11 ">
+                <span class="grid-10 no-margin container_pag">
+                    <span class="title grid-9 no-margin">{{ page.name }}</span>
+                    <a href="/accounts/users/update_page/{{ page.id }}">
+                        <span class="fright">
+                            <img class="img_mini_pag" src="/static/img/checked.jpg">
+                        </span>
+                    </a>
+                    <span class="grid-10 user_p no-margin">
+                        {% if not profile.picture %}
+                            <img class="img_mini_pag" src="/static/img/create.png">
+                        {% else %}
+                            <img class="img_mini_pag"
+                                 src="/static/media/users/{{ profile.user.id }}/profile/{{ profile.picture }}">
+                        {% endif %}
+                        <span class="pag_user_name">Por
+                            <a href="/accounts/users/profile/{{ profile.user.id }}/">
+                                {{ profile.user.username }}
+                            </a>
+                        </span>
+                    </span>
+                    <span class="grid-10 no-margin">
+                        <span class="fright">
+                            <span class="btn_pag_fb">
+                                <img src="/static/img/icon_fb_foll.png" />
+                            </span>
+                            <span class="btn_pag_tw">
+                                <img src="/static/img/icon_twitter_foll.png" />
+                            </span>
+                        </span>
+                    </span>
+                    <span class="grid-10 no-margin content_pag">
+                        {% autoescape off %}
+                            {{ page.coment }}
+                        {% endautoescape %}
+                    </span>
+                    <span class=" grid-10 no-margin coments_pag">
+                        {% load disqus_tags %}
+                        {% set_disqus_identifier type page.id %}
+                        {% disqus_show_comments %}
+                    </span>
+
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1730,11 +1730,10 @@ input:not([type='submit']){
 
 .social_profile{
     padding-top: 35px;
-    margin-left: 35px !important;
 }
 
 .btn_fb_profile{
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .text_list{
@@ -1747,6 +1746,10 @@ input:not([type='submit']){
 
 .text_name_user{
     margin-top: 35px !important;
+}
+
+.container_pag{
+    margin-left: 40px!important;
 }
 
 .container_event{
@@ -2183,4 +2186,59 @@ form p .invalid_messa{
     text-transform: none !important;
 }
 
-d-
+.pages .grid-15{
+
+    min-height: 640px;
+    padding: 40px 30px 40px 30px;
+    background: #fffcf5;
+    display: block;
+    margin: 0px;
+
+}
+
+.pages{
+    margin: 40px 0px 30px 0px;
+}
+
+.wrapper_page{
+    width: 70px;
+    height: 70px;
+    display: block;
+    float: left;
+    margin-right: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.title_pages{
+    font-size: 12px !important;
+}
+
+.item_page{
+    margin-top: 30px !important;
+}
+
+.user_p{
+    margin-top: 10px !important;
+}
+
+.pag_user_name{
+    margin-left: 5px;
+}
+
+.btn_pag_tw{
+    margin-left: 10px;
+}
+
+.content_pag{
+    margin-top: 25px !important;
+}
+
+.coments_pag{
+    margin-top: 25px !important;
+}
+
+.img_mini_pag{
+    width: 25px;
+    height: 25px;
+}

@@ -23,6 +23,7 @@ class Title(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
     description = models.TextField(max_length=255)
+    id_google = models.TextField(max_length=30)
 
     def __unicode__(self):
         return '%s, %s' % (self.title, self.type)

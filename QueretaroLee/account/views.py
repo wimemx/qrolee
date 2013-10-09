@@ -424,21 +424,40 @@ def list_user(request):
 
     user = User.objects.filter(is_staff=False)
     author = models.Author.objects.all()
+    org = registry.Entity.objects.filter(type__name='organization')
+    group = registry.Entity.objects.filter(type__name='group')
+    spot = registry.Entity.objects.filter(type__name='spot')
+    list_ = models.List.objects.filter(default_type=-1)
+    title = models.Title.objects.all()
 
 
     if request.POST.get('field_value') != None:
         search = request.POST['field_value']
         user = User.objects.filter(is_staff=False, first_name__icontains=search)
         author = models.Author.objects.filter(name__icontains=search)
+        org = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='organization')
+        group = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='group')
+        spot = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='spot')
+        list_ = models.List.objects.filter(name__icontains=search, default_type=-1)
+        title = models.Title.objects.filter(title__icontains=search)
+
 
     list_us = {}
     list_author = {}
+    list_org = {}
+    list_group = {}
+    list_spot = {}
+    list_lis = {}
+    list_title = {}
 
     for obj in user:
         list = {}
         list['id'] = int(obj.id)
-        list['first_name'] = str(obj.first_name)
-        list['last_name'] = str(obj.last_name)
+        list['name'] = str(obj.first_name)
+        list['name_2'] = str(obj.last_name)
         profile = registry.Profile.objects.filter(user=obj)
         list['picture'] = profile[0].picture
         list_us[str(obj.id)] = list
@@ -446,13 +465,57 @@ def list_user(request):
     for obj in author:
         list = {}
         list['id'] = int(obj.id)
-        list['first_name'] = str(obj.name)
-        list_author[str(obj.id)] = list
+        list['name'] = str(obj.name)
         list['picture'] = obj.picture
+        list_author[str(obj.id)] = list
+
+    for obj in org:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_org[str(obj.id)] = list
+
+    for obj in group:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_group[str(obj.id)] = list
+
+    for obj in spot:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_spot[str(obj.id)] = list
+
+    for obj in list_:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_lis[str(obj.id)] = list
+
+    for obj in title:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.title).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list_title[str(obj.id)] = list
 
     context = {
         'users':list_us,
-        'author':list_author
+        'author':list_author,
+        'org':list_org,
+        'group':list_group,
+        'spot':list_spot,
+        'list':list_lis,
+        'title':list_title
     }
 
     context = simplejson.dumps(context)
@@ -479,7 +542,7 @@ def registry_ajax_page(request):
     del pages['csrfmiddlewaretoken']
     copy = pages
     for e, val in pages.iteritems():
-            copy[e] = str(val[0])
+            copy[e] = str(val[0].encode('utf-8', 'ignore'))
     pages = copy
     pages['id_user'] = user
     pages['date'] = datetime.today()

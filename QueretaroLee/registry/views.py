@@ -991,7 +991,8 @@ def add_my_title(request):
                         'isbn13':str(obj['it']['attribute']['isbn13']),
                         'pages':int(obj['it']['attribute']['pages']),
                         'picture':str(obj['it']['attribute']['picture']),
-                        'description':desc[0:800]
+                        'description':desc[0:800],
+                        'id_google':obj['it']['attribute']['id_google']
                     }
                     name = str(obj['it']['attribute']['author'][0]).replace(' ','+')
                     query = ''
@@ -1009,7 +1010,8 @@ def add_my_title(request):
                     if len(response['result']) != 0:
                         if len(response['result'][0]['output']) != 0:
                             if len(response['result'][0]['output']['description']) != 0:
-                                biography = str(response['result'][0]['output']['description']['/common/topic/description'])
+                                biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
+
 
                         if len(biography) > 1000:
                             biography = biography[0:900]
@@ -1017,7 +1019,6 @@ def add_my_title(request):
                         if len(response['result'][0]['mid']) != 0:
                             picture = 'https://www.googleapis.com/freebase/v1/image' +\
                                       response['result'][0]['mid']
-
                         dict_author = {
                             'name':response['result'][0]['name'],
                             'picture':picture,

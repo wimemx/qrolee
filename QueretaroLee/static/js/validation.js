@@ -158,7 +158,7 @@ function type_add_list(csrf, id ,query){
     }
     if(type == 'T'){
         model = 'account.title';
-        fields = ['title', 'cover', 'id'];
+        fields = ['title', 'cover', 'id','id_google'];
         and = 0;
         join = {
             'tables':{

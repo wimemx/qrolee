@@ -222,7 +222,7 @@
         </span>
     </a>
     <div class="d-container_text_book grid-3 no-margin">
-        <a href="/qro_lee/profile/title/{{ key }}/"
+        <a title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/"
            class="title title_book alpha grid-4 ">
             {{ value.title|truncatechars:16 }}
         </a>
@@ -325,7 +325,7 @@
         </span>
         </a>
         <div class="d-container_text_book grid-3 no-margin">
-            <a href="/qro_lee/profile/title/{{ key }}/"
+            <a title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/"
                class="title title_book alpha grid-4 ">
                 {{ value.title|truncatechars:16 }}
             </a>
@@ -432,7 +432,7 @@
         </span>
             </a>
             <div class="d-container_text_book grid-3 no-margin">
-                <a href="/qro_lee/profile/title/{{ key }}/"
+                <a title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/"
                    class="title title_book alpha grid-4 ">
                     {{ value.title|truncatechars:16 }}
                 </a>
@@ -550,9 +550,9 @@
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/list/{{ key }}/"
-                                   class="title alpha title_book grid-4">{{ value.name }}</a>
+                                   class="title alpha title_book grid-4">{{ value.name|truncatechars:30 }}</a>
 
-                                <span class="container_btn grid-4 no-margin">
+                                <span class="grid-4 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
                                             <span class="green_btn size_btn_edit" >Editar</span>
@@ -646,7 +646,7 @@
                 <h3 class="title grid-3 fleft">Mis páginas</h3>
                 <span class="search fleft grid-4">
                     <input type="text" class="field_pag">
-                    <input type="hidden" value="{{ user_profile.user.id }}"/>
+                    <input type="hidden" value="{{ user_profile.user.id }}" class="profile_id_user"/>
                     <span class="top search_pages right dark_yello_btn">Buscar</span>
                 </span>
                 <a href="/accounts/users/registry_page/">
@@ -658,13 +658,13 @@
             <div id="scrollbar1" class="d-margin_group_user">
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
-                <div class="viewport overview_list">
+                <div class="viewport overview_page">
                     <div class="overview my_items_pages">
                         {% for key, value in pages.items %}
                             <div class="item_list d-list_{{ key }}" >
                                 <input class="name_list" type="hidden" value="{{ value.name }}">
                                 <input class="id_list" type="hidden" value="{{ key }}">
-                                <a href="/qro_lee/profile/list/{{ key }}/">
+                                <a href="/qro_lee/user/{{ value.id_user }}/page/{{ key }}/">
                                     <span class="wrapper_list" >
                                         {% if not value.picture %}
                                             <img src="/static/img/create.png" class="img_size_all" />
@@ -674,10 +674,10 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ key }}/"
-                                   class="title alpha title_book grid-4">{{ value.name }}</a>
+                                <a title="{{ value.name }}" href="/qro_lee/user/{{ value.id_user }}/page/{{ key }}/"
+                                   class="title alpha title_book grid-4">{{ value.name|truncatechars:26 }}</a>
 
-                                <span class="container_btn grid-4 no-margin">
+                                <span class="grid-4 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/accounts/users/update_page/{{ key }}">
                                             <span class="green_btn size_btn_edit" >Editar</span>
@@ -699,7 +699,7 @@
                                  </span>-->
                                 <span class="d-text_list grid-13 no-margin bottom_text"  >
                                     {% autoescape off %}
-                                        {{ value.coment }}
+                                        {{ value.coment|striptags|truncatechars:580 }}
                                     {% endautoescape %}
                                 </span>
                             </div>
