@@ -110,6 +110,7 @@ class EntityUser(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=0)
     is_member = models.BooleanField(default=0)
+    request = models.BooleanField(default=0)
     entity = models.ForeignKey(Entity)
     user = models.ForeignKey(User)
 

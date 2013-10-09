@@ -75,7 +75,7 @@ $(document).ready(function(){
     $('form p input').focus(function(){
         $(this).parent().find('.invalid').fadeOut(300);
         $(this).css({
-            'background': '#fff'
+            'background': '#FCF8EF'
         }).focusout(function(){
                 if($.trim($(this).val()) == ''){
                     $(this).css({
@@ -101,7 +101,7 @@ $(document).ready(function(){
                             $('.register .banner').css('color','#f69376');
                         }
                         if($form.hasClass('login')){
-                            $('.login .banner').html(data.url);
+                            $('.login .banner.error').html(data.url);
                         }
                     }
             });

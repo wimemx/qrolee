@@ -508,6 +508,7 @@ $(document).ready(function(){
             != '')
             header_search_entity = true;
     });
+
     if($.trim($('.sidebar-b input.entity').val()) != '')
         entity_search_events = true;
 
@@ -572,18 +573,23 @@ $(document).ready(function(){
             $(this).html('×');
     });
     $('.advanced_search_btn').click(function(){
+
         if($('.advanced_search').is(':visible'))
             $('.advanced_search').fadeOut(300);
         else{
             $('.advanced_search').fadeIn(300,function(){
-                if($(this).hasClass('map'))
-                    $('#map').fadeIn(300,initialize(20.600008,-100.388363));
+                if($(this).hasClass('map')){
+                    var map = $('<div id="map" class="clear"></div>');
+                    map.insertAfter($('.advanced_search.map'));
+                    map.fadeIn(300,initialize(20.600811424184588,-100.38887798413089));
+                }
             });
         }
     });
 
 
     $('.filter .checkbox').click(function(){
+        $('#map').remove();
         $('.filter .checkbox').each(function(){
             $(this).removeClass('active');
         });
@@ -710,7 +716,7 @@ $(document).ready(function(){
                     },
                     'fields':{
                         0: JSON.stringify(['picture']),
-                        1: JSON.stringify(['title'])
+                        1: JSON.stringify(['title', 'id'])
                     },
                     'type':{
                         0: JSON.stringify(search_lists)
@@ -794,6 +800,9 @@ $(document).ready(function(){
                     _in.push(_class[1]);
                 }
             });
+
+            if(_in.length == 0)
+                _in.push(-1);
             var s = {
                 'type': 'registry.entitycategory',
                 'fields': JSON.stringify(
@@ -854,6 +863,8 @@ $(document).ready(function(){
                     _in.push(parseInt(_class[1]));
                 }
             });
+            if(_in.length == 0)
+                _in.push(-1);
             query = {
                 'name__icontains': $.trim($('.advanced_filter .search').val()),
                 'type_id': 1,
@@ -942,19 +953,27 @@ $(document).ready(function(){
                 api = search_api(csrf, query);
             }else
                 result = advanced_search(search, csrf);
+
             if(result.response != 0){
                 $.each(result,function(i){
                     create_template(type, result, i, create_user);
                 });
             }else{
+               var p = $('<span class="item"><p class="center"> No se pudieron ' +
+                    'encontrar resultados para su búesqeda</p></span>');
+                $('.results').append(p);
 
             }
 
         }
     });
-    if($('.list_scroll').length>0){
-        $('#scrollbar1').tinyscrollbar();
-    }
+    $('#scrollbar1').tinyscrollbar();
+
+
+    $('.nav .btn:eq(0)').trigger('click');
+    $('.btn.no-ajax').click(function(){
+        $('.container_message').fadeIn(300);
+    });
 });
 
 function create_template(type, result,i, create_user){
@@ -1094,8 +1113,11 @@ function create_template(type, result,i, create_user){
         a_wrapper.append(wrapper_fleft);
         item.append(a_wrapper);
         var img = $('<img src="" attr="">');
-        var url = '/static/media/users/'+result[i].user_id+
-            '/entity/'+result[i].picture;
+        var url = '/static/img/create.png';
+        if(result[i].extras[1])
+            if(result[i].extras[1][0] != 'None')
+                url = '/static/media/users/'+result[i].id+
+                    '/profile/'+result[i].extras[1][0];
         wrapper_fleft.append(img);
         var h3 = $('<h3 class="title no-margin grid-4 fright"></h3>');
         if(type == 'account.author' || create_user){
@@ -1107,8 +1129,10 @@ function create_template(type, result,i, create_user){
             }else{
                 a_wrapper.attr('href','/accounts/users/profile/'+result[i].id);
                 a_title.attr('href','/accounts/users/profile/'+result[i].id);
-                h3.html(result[i].first_name);
-                url = '/static/media/users/' + result[i].id + '/profile/' + result[i].extras[1];
+                if (result[i].first_name != '')
+                    h3.html(result[i].first_name);
+                else
+                    h3.html(result[i].username);
             }
         }else if(type == 'account.title'){
             h3.html(result[i].title);
@@ -1116,8 +1140,6 @@ function create_template(type, result,i, create_user){
         }else{
             h3.html(result[i].name);
         }
-        if(result[i].picture == '')
-            url = '/static/img/create.png';
         img.attr('src', url);
 
         var p = $('<p class="fright no-margin grid-4"></p>');
@@ -1126,6 +1148,7 @@ function create_template(type, result,i, create_user){
         var entity_type = 'organization';
 
         if (type == 'registry.entity.2'){
+            p.addClass('category');
             entity_type = 'group';
             a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
             a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
@@ -1138,13 +1161,27 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }else if(type == 'registry.entity.1' ||
             type == 'registry.entity.3'){
+
+            if($.trim(result[i].picture) == '')
+                result[i].picture = 'None';
+            if(result[i].picture != 'None')
+                url = '/static/media/users/'+result[i].user_id+
+                    '/entity/'+result[i].picture;
+
+            img.attr('src', url);
             a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
             a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            p = $('<p class="category fright no-margin grid-4"></p>');
             $.each(result[i].extras,function(indx){
-                p = $('<p class="fright no-margin grid-4"></p>');
-                p.html(result[i].extras[indx]);
-                item.append(p);
+
+                $.each(result[i].extras[indx], function(indice){
+                    var category = result[i].extras[indx][indice];
+                    p.append($('<span style="margin-right:5px;font-size:11px;">'+category+'</span> '));
+
+                });
+
             });
+            item.append(p);
         }else if(type == 'account.list'){
             var text= 'Lista creada por ';
             if(result[i].extras[0] != 'None')
@@ -1157,12 +1194,12 @@ function create_template(type, result,i, create_user){
             p.html(result[i].extras[0].length+' Libros');
             item.append(p);
         }else if(type == 'account.title'){
+            img.attr('src',result[i].picture);
             a_wrapper.attr('href','/qro_lee/profile/title/'+result[i].id);
             a_title.attr('href','/qro_lee/profile/title/'+result[i].id);
             var text= '';
             p.html(text+result[i].extras[1][0]);
             item.append(p);
-
         }else if(type == 'registry.event'){
             a_wrapper.attr('href','/qro_lee/events/event_'+result[i].id);
             a_title.attr('href','/qro_lee/events/event_'+result[i].id);
@@ -1180,9 +1217,17 @@ function create_template(type, result,i, create_user){
             '/event/'+result[i].picture;
             img.attr('src', url);
         }else if(create_user){
-            p.html('Esta leyendo');
-            //item.append(p);
+            var a;
+            if(result[i].extras[0][0]){
+                a = $('<a class="spot" href="/qro_lee/profile/title/'+result[i].extras[0][1]+'">'+result[i].extras[0][0]+'</a>')
+                p.html('Esta leyendo ');
+            }
+            p.append(a);
+            item.append(p);
         }
+        var title = h3.html();
+        title = title.substring(0, 16);
+        h3.html(title+' ...');
         $('.results').append(item);
         return;
     }
@@ -1888,6 +1933,7 @@ function add_my_title(csrf, array_title, type){
                 //book_favorite
                 $.each(data,function(i){
                     title = data[i];
+
                     container_list = $('.'+i);
                         type = 0;
                     if(i=='book_read')
@@ -2040,6 +2086,7 @@ function get_titles_authors(list, csrf){
         }
 
         search = JSON.stringify(search);
+
         title = advanced_search(search,csrf);
         container_list = $('.add_my_list');
         container_list.find('.type').remove();
@@ -2176,6 +2223,7 @@ function get_titles_authors(list, csrf){
             }
         });
 
+
     }
 }
 
@@ -2267,6 +2315,7 @@ function show_dialog(){
                 span_text.append(p_text);
 
             }
+
             if(type=="delete_title"){
 
                 name_title = $(this).parent().parent().find('.name_title').val();
@@ -2407,6 +2456,7 @@ function show_dialog(){
             });
             closet(btn_acept);
         }
+
         if(($(this).find('.type_message').val()) == 'edit_read'){
             var id = $(this).parent().parent().find('.id_list_rel').val();
             $this = $(this);
@@ -2816,7 +2866,7 @@ function list_titles_and_author(data, type, $container, type_message){
 
     span_save.click(function(){
 
-        array_title = [];
+    array_title = [];
 
             var active_sel = false;
 

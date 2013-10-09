@@ -21,13 +21,24 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="wrapper_message " >
+<div class="wrapper_message " >
         <div class="container-16 container_message">
-            <div class="dialog-confirm" ></div>
+            <div class="alert-message gray">{% csrf_token %}
+                <p>Para poder ser miembro, tu solicitud será enviada al
+                administrador del group</p>
+                <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="follow_private" value="1"/>
+                    <input type="submit" class="accept green_btn" value="Acceptar">
+                </form>
+                <span class="reject fleft">Rechazar</span>
+                <input class="user" type="hidden"/>
+                <input class="entity" value="{{ entity.id }}" type="hidden"/>
+            </div>
         </div>
     </div>
 <div class="grid-16">
-<input type="hidden" class="d-entity_id" value="{{ entity.name|cut:" " }}_{{ entity.id }}"/>
+<input type="hidden" class="d-entity_id" value="entity_{{ entity.id }}"/>
 <input type="hidden" class="type" value="{{ entity.type }}"/>
 <input type="hidden" class="lat" value="{{ entity.lat }}"/>
 <input type="hidden" class="long" value="{{ entity.long }}"/>
@@ -41,33 +52,108 @@
             {% endif %}
             {% if entity_type.1 == 'group' %}
                 <span class="member grid-3">
-                    {% if member  %}
-                        <a href="/registry/unjoin_entity/{{ entity.name|cut:" " }}_{{ entity.id }}">
-                            <span class="btn ">Salir del grupo</span>
-                        </a>
+                <span class="grid-2 no-margin fright">
+                    {% if member and entity.privacy == 0 %}
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="membership" value="-1"/>
+                        <input type="submit" class="btn " value="Salir">
+                    </form>
+                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                {% elif member and entity.privacy != 0 %}
+
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="follow_private" value="-1"/>
+                            <input type="submit" class="btn" value="Salir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                {% else %}
+
+                    {% if entity.privacy == 1 %}
+                        <span class="btn no-ajax fleft">Seguir</span>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        <p class="private-icon fright">
+                            <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                        </p>
                     {% else %}
-                            <span class="btn message_alert">unirme</span>
+                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="membership" value="1"/>
+                            <input type="submit" class="btn " value="Seguir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                     {% endif %}
-                    <p class="din-r ">1,204 miembros</p>
+                {% endif %}
+                </span>
                 </span>
             {% endif %}
+
             {% if entity_type.1 == 'organization' %}
                 <span class="member grid-6 no-margin">
-                    <p class="follow no-margin">Para recibir notificaciones sobre eventos y
+                <span class="grid-2 no-margin fright">
+
+                {% if member and entity.privacy == 0 %}
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="membership" value="-1"/>
+                        <input type="submit" class="btn " value="Salir">
+                    </form>
+                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                {% elif member and entity.privacy != 0 %}
+
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="follow_private" value="-1"/>
+                            <input type="submit" class="btn" value="Salir">
+                        </form>
+                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                {% else %}
+
+                    {% if entity.privacy != 0 %}
+                        <span class="btn no-ajax fleft">Seguir</span>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        <p class="private-icon fright">
+                            <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                        </p>
+
+                    {% else %}
+                        <p class="follow no-margin">Para recibir notificaciones sobre eventos y
                         actividades referente a {{ entity.name }}, da click en el botón</p>
-                    <span class="btn fright">Seguir</span>
-                    <span class="followers">
+                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="membership" value="1"/>
+                            <input type="submit" class="btn " value="Seguir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        <span class="followers">
                         <p>Usarios siguiendo</p>
-                        {% for i in 'xxxxx' %}
+                        {% for follower, profile in followers %}
                             <span>
-                                <img src="" alt=""/>
-                                <span class="user">Nombre</span>
+                                {% if not profile.picture or profile.picture == '' %}
+                                    <img src="/static/img/create.png" alt=""/>
+                                {% else %}
+                                    <img src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
+                                {% endif %}
+                                <span class="user">
+                                    {% if follower.first_name != '' %}
+                                        {{ follower.first_name }} {{ follower.last_name }}
+                                    {% else %}
+                                        {{ follower.username }}
+                                    {% endif %}
+                                </span>
                             </span>
 
                         {% endfor %}
                     </span>
+                    {% endif %}
+
+                {% endif %}
+
+                </span>
                 </span>
             {% endif %}
+
         {% else %}
             {% block entity_menu %}
                 {% include 'blocks/entity_menu.html' %}
@@ -167,7 +253,7 @@
             {% endif %}
         </span>
         <span class="nav {{ entity_type.1 }} grid-8 no-margin">
-            <span class="btn active">Actividad</span>
+            <span class="btn">Actividad</span>
             <span class="btn">Información General</span>
             <span class="btn">Eventos</span>
             {% if entity_type.1  == 'group' %}
@@ -179,6 +265,7 @@
 
     <div class="grid-16 content single no-margin">
         <div class="grid-16 load no-margin" style="display: block">
+            {% if entity.privacy == 0 %}
             <div class="coments grid-10 no-margin">
                 {% load disqus_tags %}
                 {% set_disqus_identifier entity_type entity.id %}
@@ -191,7 +278,7 @@
                         </h3>
                         {% for title in list_titles %}
                             <span class="item_title grid-5 no-margin">
-                                <a href="/qro_lee/profile/title/{{ title.title|cut:" " }}_{{ title.id }}">
+                                <a href="/qro_lee/profile/title/title_{{ title.id }}">
                                     <span class="wrapper_title borde_author ">
                                         <img src="/static/media/author/create.png" />
                                     </span>
@@ -264,6 +351,11 @@
                 {% endif %}
             </div>
             </div>
+            {% else %}
+                <p class="private-message margin-50 center">Este grupo es privado,
+                    <br> para ver la información solicitada
+                    <br>necesitas ser miembro</p>
+            {% endif %}
         </div>
 
     {% if entity_type.1 == 'spot' %}
@@ -271,7 +363,7 @@
     {% else %}
         <div class="grid-16 load no-margin">
     {% endif %}
-
+            {% if entity.privacy == 0 %}
             <div class="sidebar-a grid-11">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
@@ -316,16 +408,12 @@
             {% if entity_type.1 == 'spot' %}
                 <div style="padding: 0px 40px 0px 40px;" class="overvieww no-margin fright grid-6 content">
                     <span class="ruler"></span>
-                    <p>{{ entity.description }}</p>
+                    <p >{{ entity.description }}</p>
                 </div>
 
             {% else %}
                 <div class="overvieww content">
-                    {% if entity_type.1 == 'organization' %}
-                        <p class="text_entity">{{ entity.description }}</p>
-                    {% else %}
-                        <p >{{ entity.description }}</p>
-                    {% endif %}
+                    <p style="width:90%;margin:0 auto !important;">{{ entity.description }}</p>
                 </div>
             {% endif %}
 
@@ -354,7 +442,7 @@
             {% if entity_type.1 == 'group' %}
                 <div class="more-info">
                     <span class="grid-3 alpha">
-                    <h3 class="title main">Miembros <span>{{ followers.1 }}</span></h3>
+                    <h3 class="title main">Miembros <span>{{ followers|total_members }}</span></h3>
                     </span>
                     <span class="grid-4">
                         <h3 class="title main">Contacto <span>{{ owner.email }}</span></h3>
@@ -377,7 +465,7 @@
             <div class="grid-4 sidebar-b">
                 <h3 class="title grid-4">{{ entity_type.0|capfirst }} similares</h3>
                 <div id="scrollbar1">
-                    <div style="right:-8px;width: 8px;" class="scrollbar"><div style="background:#fffcf5;" class="track"><div class="thumb" style="width: 9px;"><div class="end"></div></div></div></div>
+                    <div style="width: 5px;" class="scrollbar"><div class="track"><div class="thumb" style="width: 5px;"><div class="end"></div></div></div></div>
                     <div class="viewport" style="height:360px;">
                         <div class="overview" style="border:none;height:auto;">
                         {% for similar_entity, followers in similar_entities %}
@@ -401,8 +489,14 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+                <p class="private-message margin-50 center">Este grupo es privado,
+                    <br> para ver la información solicitada
+                    <br>necesitas ser miembro</p>
+            {% endif %}
         </div>
         <div class="grid-16 load no-margin">
+        {% if entity.privacy == 0 %}
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
@@ -453,6 +547,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+                <p class="private-message margin-50 center">Este grupo es privado,
+                    <br> para ver la información solicitada
+                    <br>necesitas ser miembro</p>
+            {% endif %}
         {% if entity_type.1 == 'group' %}
         <div class="grid-15 offset-1 members load no-margin">
             <div id="scrollbar1 ">

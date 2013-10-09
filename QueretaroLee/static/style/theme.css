@@ -50,6 +50,13 @@ input:not([type='submit']){
     width: 100%;
     text-indent: 5px;
 }
+.category{
+    color:#8B5627 !important;
+    text-decoration: underline;
+}
+.margin-50{
+    margin-top: 50px !important;
+}
 .container-16 .clear{
     clear: both;
     float: left;
@@ -77,13 +84,16 @@ input:not([type='submit']){
 .din-r{
     font-family: 'Conv_fontscore.com_d-dinproregular' !important;
 }
+.clear_fix{
+    clear: both;
+}
 .dark_yello_btn{
     background: #edde84;
     padding: 0px 10px 0px 10px;
 }
 .green_btn{
     background: #cccc66;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     cursor: pointer;
     padding: 2px 8px 2px 8px;font-size: 10px;
 
@@ -182,7 +192,7 @@ input:not([type='submit']){
         color: #fff;
         font-size: 13px;
         margin: 0px 13px 0px 0px;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         font-weight: 100;
     }
     .nav a.last{
@@ -244,9 +254,116 @@ input:not([type='submit']){
 
     }
 
+.news-feed{
+    height: 720px;
+    background: #fffcf5;
+    margin: 40px 10px 30px 10px;
+    display: block;
+}
+.news-feed .user{
+    min-height: 55px;
+    width: 100%;
+}
+.news-feed .user, .news-feed #scrollbar1{
+    margin-top: 30px;
+}
+.user .wrapper{
+    width: 35px !important;
+    height: 35px !important;
+    display: block;
+    border:none !important;
+}
+.news-feed .gray_text{
+    color: #8e8e8e;
+}
+.news-feed .title{
+    font-size: 15px;
+}
+.news-feed .main.title{
+    font-size: 12px;
+}
+
+.news-feed .element{
+    height: 110px;
+}
+    .news-feed .viewport{
+        width: 100%;
+        display: block;
+        height: 80px;
+        overflow:hidden;
+        position: relative;
+    }
+        .news-feed .viewport .overview{
+            width: 100%;
+            display: block;
+        }
+    .news-feed .item{
+        height: 40px !important;
+        width: 100%;
+        display: block;
+    }
+
+.news-feed .divider{
+    height: 720px;
+    display: block;
+}
+    .news-feed .divider span{
+        width: 1px;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+        background: #F4E5C8;
+    }
+
+.news-feed .feed{
+    min-height: 90px;
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid #F4E5C8;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+.rate{
+    width: 13px;
+    height: 12px;
+    display: block;
+    margin-right: 5px;
+    float: left;
+}
+.unrated{
+    background: url('../img/unrate.png') no-repeat 0px 0px;
+}
+.rated{
+    background: url('../img/rated.png') no-repeat 0px 0px;
+}
+    .feed .wrapper{
+        width: 70px;
+        height: 70px;
+        margin-right: 15px;
+    }
+    .feed .content span{
+        font-size: 14px;
+    }
+    .feed .action .wrapper{
+        width: 50px;
+        height: 50px;
+    }
+        .feed .action .din-m, .feed .action p, .feed .action p span{
+            font-size: 12px;
+        }
+        .feed .action .din-m{
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+        .feed .action p{
+            width: 100%;
+        }
+        .feed .action .wrap{
+            width: 215px;
+        }
 .entities{
     /*height: 720px;*/
-    margin: 40px 0px 30px 0px;
+    margin: 40px 10px 30px 10px;
     display: block;
 }
     .entities .grid-14{
@@ -280,7 +397,7 @@ input:not([type='submit']){
                 color: #000;
                 text-align: left;
                 margin-left: 0px;
-                font-family: 'Montserrat' sans-serif;
+                font-family: 'Raleway' sans-serif;
                 font-weight: 400;
                 text-decoration: none;
                 position: relative;
@@ -369,7 +486,7 @@ input:not([type='submit']){
             text-align: left;
             width: 100%;
             font-weight: 400;
-            font-family: 'Montserrat' sans-serif;
+            font-family: 'Raleway' sans-serif;
             margin-bottom: 0px;
             margin-top: 0px;
         }
@@ -386,8 +503,14 @@ input:not([type='submit']){
             color: #f89883 !important;
             float: none;
         }
+        span.spot{
+            color: #f89883 !important;
+        }
+        .bold{
+            font-weight: bold;
+        }
         a.color_btn{
-            font-family: 'montserrat' sans-serif;
+            font-family: 'Raleway' sans-serif;
             padding: 3px 8px 3px 8px;
             background: #cccc66;
             color: #000;
@@ -417,12 +540,27 @@ input:not([type='submit']){
     .entity .member{
         float: right;
         margin-top: 30px;
+        position: relative;
     }
+
+    .entity .member .private-icon{
+        clear: both;
+        margin: 80px 10px 0px 0px;
+    }
+        .private-icon span{
+            margin-left: 5px;
+            color: #334845;
+        }
         .entity .member .brown_btn,.events .member .brown_btn{
             width: 40px;
             height: 15px;
             position: relative;
             background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
+        }
+        .follower-fix{
+            float: right;
+            clear: both;
+            margin-right: 30px;
         }
             .member .brown_btn .sub-menu {
                 background: #e7cb92;
@@ -507,8 +645,7 @@ input:not([type='submit']){
             background: #edde84;
             padding:5px 15px 5px 15px;
             font-size: 12px;
-            font-family: 'Montserrat' sans-serif;
-            margin-right: 30px;
+            font-family: 'Raleway' sans-serif;
             cursor:pointer;
         }
             .entity .member p{
@@ -571,6 +708,9 @@ input:not([type='submit']){
         }
     .content.single .load{
         display: none;
+    }
+    .load.add.members{
+        margin-top: 50px;
     }
     .content.single .members.load{
         padding-top: 50px;
@@ -648,7 +788,7 @@ input:not([type='submit']){
             margin-top: 0px;
         }
         .content .sidebar-a .title.main{
-            font-family: 'Montserrat' sans-serif;
+            font-family: 'Raleway' sans-serif;
             font-weight: 400;
         }
         .content .sidebar-a .cover-picture{
@@ -700,7 +840,7 @@ input:not([type='submit']){
             }
         .content .sidebar-a .contact p{
             margin-bottom: 5px;
-            font-size: 13px;
+            font-size: 12px;
         }
         .content .content.overview p{
             height: 100px;
@@ -712,7 +852,7 @@ input:not([type='submit']){
             float: left;
         }
             .content .sidebar-a .info,.content .sidebar-a p,.content .sidebar-a span{
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 400;
                 margin-top: 0px;
             }
@@ -720,7 +860,7 @@ input:not([type='submit']){
                 width: 100%;
                 margin-bottom: 20px;
                 float: left;
-                font-size: 13px;
+                font-size: 12px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .content .sidebar-a .time,.content .sidebar-a .info{
@@ -775,7 +915,7 @@ input:not([type='submit']){
 
             .sidebar-b .title{
                 font-weight: 400;
-                font-family: 'Montserrat' sans-serif;
+                font-family: 'Raleway' sans-serif;
                 font-size: 14px;
                 text-align: left;
                 padding: 0px 0px 10px 25px;
@@ -798,7 +938,7 @@ input:not([type='submit']){
                 height: 70px;
                 display: block;
                 margin-right: 10px;
-                font-family: 'Montserrat' sans-serif;
+                font-family: 'Raleway' sans-serif;
                 overflow: hidden;
             }
                 .sidebar-b .wrapper .title{
@@ -890,7 +1030,7 @@ input:not([type='submit']){
                         height: 25px;
                         width: 25px;
                         background: #fffcf5;
-                        font-family: 'Montserrat' sans-serif;
+                        font-family: 'Raleway' sans-serif;
 
                     }
                         .sidebar-b .month .month{
@@ -904,7 +1044,7 @@ input:not([type='submit']){
                         height: 25px;
                         background: #f4e5c8;
                         width: 25px;
-                        font-family: 'Montserrat' sans-serif;
+                        font-family: 'Raleway' sans-serif;
 
                     }
                         .sidebar-b .active-event{
@@ -921,7 +1061,7 @@ input:not([type='submit']){
                 display: block;
                 background: #e2c388;
                 line-height: 25px;
-                font-family: 'Montserrat' sans-serif;
+                font-family: 'Raleway' sans-serif;
                 font-size: 20px;
                 width: 25px;
                 text-align: center;
@@ -967,10 +1107,10 @@ input:not([type='submit']){
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
-#scrollbar1 .scrollbar { position: absolute; right: -25px; width: 15px; z-index: 5 }
-#scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:8px; position: relative; padding: 0 1px; }
-#scrollbar1 .thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
-#scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 13px; }
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5 }
+#scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
+#scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+#scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 5px; }
 #scrollbar1 .disable{ display: none; }
 .noSelect { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
 
@@ -1065,7 +1205,7 @@ input:not([type='submit']){
     color:#222;
     font-size: 11px !important;
     padding: 2px 8px 2px 8px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
 }
 
 .d-title_edit_events{
@@ -1114,7 +1254,7 @@ input:not([type='submit']){
     margin: 70px auto !important;
     color: #f89883;
     font-size: 16px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-align: center;
 }
 
@@ -1305,7 +1445,7 @@ input:not([type='submit']){
 
 .d-add_book{
     height: 120px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-align: center;
     color: #000;
     width: 198px;
@@ -1359,7 +1499,7 @@ input:not([type='submit']){
 
 .d-add_text_book{
     margin-top: 52px !important;
-    font-family: 'Montserrat' sans-serif !important;
+    font-family: 'Raleway' sans-serif !important;
     color: #000000;
     font-weight: normal !important;
     font-size: 12px !important;
@@ -1390,7 +1530,7 @@ input:not([type='submit']){
     color: #222222 !important;
     padding: 5px 15px 5px 15px;
     font-size: 12px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
 }
 
 .dialog_text{
@@ -1399,7 +1539,7 @@ input:not([type='submit']){
     text-align: center;
     font-size: 14px;
     position: relative;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     padding: 0px 20px 20px 20px;
     box-shadow: 0px 6px 15px rgb(182, 176, 176);
     background: url('../img/register_form_bg.png');
@@ -1529,7 +1669,7 @@ input:not([type='submit']){
 
 .title_author{
     color: #b69035 !important;
-    text-decoration:underline !important;|
+    text-decoration:underline !important;
     margin-top: 10px !important;
 }
 
@@ -1596,7 +1736,7 @@ input:not([type='submit']){
 
 .all_book{
     font-weight: bold !important;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-transform: none;
     text-decoration: none !important;
     cursor: pointer;
@@ -1604,7 +1744,7 @@ input:not([type='submit']){
 
 .genre{
     color: #b99169 !important;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-align: left;
     padding: 5px 0px 0px 0px;
 
@@ -1646,7 +1786,7 @@ input:not([type='submit']){
 
 .btn_new{
     color: white;
-    font-family: 'montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     padding:  4px 9px;
     background: #d0a475;
     border: 1px solid #a77340
@@ -1803,7 +1943,7 @@ input:not([type='submit']){
 
 .text_rate{
     padding: 0px 4px 0px 4px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
 }
 
 .border_right{
@@ -1918,7 +2058,7 @@ input:not([type='submit']){
     height: 180px;
     display: none;
     height: 180px;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-align: center;
     color: #000;
     border: 1px dashed #acacac;
@@ -1940,7 +2080,7 @@ input:not([type='submit']){
             height: 12px;
             display: none;
             cursor: pointer;
-            background: url('../img/close.png') no-repeat 0px 0px;
+            background: url('../img/cclose.png') no-repeat 0px 0px;
             background-size: 10px;
             padding: 0px;
         }
@@ -2085,7 +2225,7 @@ input:not([type='submit']){
 .no_resuls{
     font-size: 18px !important;
     color: #fa907e;
-    font-family: 'montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     text-align: center;
     padding: 0px !important;
     margin-top: 70px!important;
@@ -2181,6 +2321,47 @@ form p .invalid_messa{
     display: none;
     font-weight: bold;
 }
+
+.alert-message{
+    padding: 20px 10px 20px 10px;
+    max-width: 200px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    margin: 200px auto;
+    background: #EBDCC0;
+    min-height: 90px;
+
+}
+.alert-message.gray{
+    background: #EFE8D6;
+}
+.message-header{
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: #C29E78;
+    text-align: left;
+    text-indent: 15px;
+    color: #F3E4C8;
+    font-family: 'Raleway' sans-serif;
+    line-height: 20px;
+}
+    .alert-message p{
+        font-family: 'Raleway' sans-serif;
+        text-align: center;
+    }
+    .alert-message .accept{
+        margin-left: 40px;
+    }
+    .alert-message form .accept{
+        margin:0px 15px 0px 35px;
+    }
+    .alert-message .accept,.alert-message .reject{
+        font-family: 'Raleway' sans-serif !important;
+    }
 
 .title_page{
     text-transform: none !important;

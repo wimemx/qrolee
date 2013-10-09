@@ -11,10 +11,8 @@ from django.db.models import Q
 from collections import namedtuple
 from account import models as account_models
 from registry import models,views,settings
-from registry.views import datetime_from_str
-from decimal import Decimal
-from django.utils.datastructures import SortedDict
 
+from decimal import Decimal
 import simplejson
 import calendar
 import HTMLParser
@@ -23,19 +21,26 @@ import ast
 import operator
 import math
 import urllib2
-import pprint
 
 
 @login_required(login_url='/')
 def index(request, **kwargs):
-
     template = kwargs['template_name']
     if request.user.is_authenticated():
         user = request.user
-        #profile = models.Profile.objects.get(user_id=user)
+        profile = models.Profile.objects.get(user_id=user)
+        activity = account_models.Activity.objects.filter(
+            user_id=user.id)
+    else:
+        return HttpResponseRedirect('/')
+
+    if not activity:
+        activity = 0
+
     context = {
         'user': user,
-        'profile': user
+        'profile': profile,
+        'activity': activity
     }
     return render(request, template, context)
 
@@ -188,10 +193,36 @@ def get_entities(request, **kwargs):
 def get_entity(request, **kwargs):
     template = kwargs['template_name']
     entity = kwargs['entity'].split('_', 1)
+
     id_entity = int(entity[1])
     entity = models.Entity.objects.get(id=id_entity)
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
+    if request.POST:
+        if 'membership' in request.POST:
+            membership = int(request.POST.get('membership'))
+            entityuser = models.EntityUser.objects.get_or_create(
+                user_id=request.user.id, entity_id=entity.id)
+            if membership == 1:
+                entityuser[0].is_member = True
+                entityuser[0].save()
+            else:
+                entityuser[0].is_member = False
+                entityuser[0].save()
+        elif 'follow_private' in request.POST:
+            membership = int(request.POST.get('follow_private'))
+            entityuser = models.EntityUser.objects.get_or_create(
+                user_id=request.user.id, entity_id=entity.id)
+            if membership == 1:
+                entityuser[0].request = True
+                entityuser[0].save()
+            else:
+                entityuser[0].request = False
+                entityuser[0].is_member = False
+                entityuser[0].save()
+    else:
+        entityuser = models.EntityUser.objects.filter(
+                user_id=request.user.id, entity_id=entity.id)
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -260,20 +291,19 @@ def get_entity(request, **kwargs):
     hc = hc.replace('Sat', 'S')
 
     if entity_type.name == 'group':
-        entity_type = ['grupos', 'group']
+        entity_type = ['grupos', 'group', 'grupo']
     elif entity_type.name == 'organization':
-        entity_type = ['organizaciones', 'organization']
+        entity_type = ['organizaciones', 'organization', 'organizacion']
     elif entity_type.name == 'spot':
         entity_type = ['spots', 'spot']
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
 
-    entity_user = models.EntityUser.objects.filter(entity=id_entity)
+    if not entityuser:
+        member = False
+    else:
+        member = entityuser[0].is_member
 
-    member = False
-
-    if len(entity_user) > 0:
-        member = True
     entity.address = entity.address.split('#')
     context = {
         'entity': entity,
@@ -338,7 +368,7 @@ def get_events(request, **kwargs):
                         location_id =request.POST['id_entity'])
 
         events = list()
-        for event in events_:            # Event date = Month, day, id
+        for event in events_:
             event_data = list()
             event_data.append(event.name)
             event_data.append(event.start_time.day)
@@ -455,13 +485,15 @@ def advanced_search(request, **kwargs):
         model = get_model(app_label, model_name)
         query_list = ast.literal_eval(data['value'])
         q_list = list()
+        all_objs = False
         for key in query_list:
-            print key
             if '__in' in key:
                 val = ast.literal_eval(query_list[key])
-                if len(val) > 0:
+                if int(val[0]) != -1:
                     t = (key, val)
                     q_list.append(t)
+                else:
+                    all_objs = True
             elif '__gt' in key:
                 if query_list[key] != '':
                     date = views.datetime_from_str(query_list[key])[1]
@@ -475,8 +507,8 @@ def advanced_search(request, **kwargs):
             elif 'distance' in key:
                 if query_list[key] != '':
                     distance = query_list[key].split('&')
-                    latitude = float(distance[1])
-                    longitude = float(distance[2])
+                    latitude = Decimal(distance[1])
+                    longitude = Decimal(distance[2])
                     distance = float(distance[0])
             else:
                 t = (key, query_list[key])
@@ -492,7 +524,10 @@ def advanced_search(request, **kwargs):
                 activity = join['activity']['0']
 
         if data['and'] == 0:
-            object = model.objects.filter(reduce(operator.or_, query))
+            if all_objs:
+                object = model.objects.all()
+            else:
+                object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
         if not object:
@@ -509,11 +544,11 @@ def advanced_search(request, **kwargs):
             filter_type = ast.literal_eval(join['type']['0'])
             filter_list_type = list()
             filter_default = list()
-            for type in filter_type:
-                if isinstance(type, int):
-                    filter_default.append(type)
+            for type_ in filter_type:
+                if isinstance(type_, int):
+                    filter_default.append(type_)
                 else:
-                    filter_list_type.append(type)
+                    filter_list_type.append(type_)
             q_list = [('user_id', request.user.id)]
             if filter_list_type:
                 for element in filter_list_type:
@@ -577,12 +612,15 @@ def advanced_search(request, **kwargs):
                     break
             if 'distance' in query_list:
                 if query_list['distance'] != '':
-                    lat = float(obj.lat)
-                    lng = float(obj.long)
-                    radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
-
-                    if radius > distance:
-                        break
+                    if obj.lat != '' and obj.long != '':
+                        print latitude
+                        print obj.lat
+                        lat = float(obj.lat)
+                        lng = float(obj.long)
+                        radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
+                        print radius
+                        if radius > distance:
+                            break
             context_fields = {'extras': list()}
             if data['join'] != 'none':
                 for ele in join['tables']:

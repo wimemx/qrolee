@@ -105,6 +105,7 @@ class AuthorTitle(models.Model):
 #    user = models.ForeignKey(User)
 #    list = models.ForeignKey(List)
 
+
 class Rate(models.Model):
     type = models.CharField(max_length=1)
     grade = models.FloatField()
@@ -131,7 +132,7 @@ class Activity(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=100)
-    coment = models.TextField(max_length=2000)
+    comment = models.TextField(max_length=2000)
     tags = models.TextField(max_length=1000)
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)

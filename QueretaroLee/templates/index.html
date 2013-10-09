@@ -21,7 +21,7 @@
     <div class="form-container center">
 
         <p class="title"><span></span>
-            <a style="right:0px" class="close right" href="#"></a>
+            <a class="close right" href="#"></a>
         </p>
         <form class="reset-password grid-4 center" action="#" >{% csrf_token %}
                         <span class="banner">Te enviaremos enseguida tus datos de ingreso</span>
@@ -51,13 +51,13 @@
         </p>
         <p class="social-login">
             Ingresa con
-            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
+            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -20px" class="twitter"></a>
             <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
 scope=publish_stream,email,publish_actions,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
 
         </p>
-
+            <span class="banner error"></span>
         </form>
         <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
             <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>
@@ -72,7 +72,7 @@ scope=publish_stream,email,publish_actions,manage_pages,status_update,create_eve
         </p>
 
         <p>
-            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Contraseña (otra vez)
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Verificar contraseña
             <input name="password_match" class="required match pass_match" type="password"/>
         </p>
         <p>
@@ -89,7 +89,7 @@ scope=publish_stream,email,publish_actions,manage_pages,status_update,create_eve
             <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
 scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
-            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -17px" class="twitter"></a>
+            <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -20px" class="twitter"></a>
 
 
         </p>
@@ -108,7 +108,7 @@ scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,us
         <span class="icon left">
             <span style="background: url('../static/img/welcome_icons_set1.png') no-repeat 0px 0px"></span>
         </span>
-        <p class="no-margin center">
+        <p style="letter-spacing: 1px;" class="no-margin center">
             <strong>La nueva</strong> forma de <br>
             intercambiar <strong>tus ideas</strong>
         </p>
@@ -122,7 +122,7 @@ scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,us
         </span>
     </span>
     <p class="grid-4 center caption">
-        “No es posible vivir sin libros” <br>
+        <span class="c">“Los libros tienen su orgullo: cuando se prestan, no vuelven nunca” </span>
         <span>Thomas Jefferson</span>
         <span class="left top"></span>
         <span class="right top"></span>

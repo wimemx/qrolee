@@ -102,8 +102,9 @@ $(document).ready(function(){
     $('.d-add_book').click(function(){
 
         var query = ' ';
-        type = 0;
-        if($(this).find('.list_typ').val() == 'title')
+        var type = 0;
+
+        if($(this).find('input').val() == 'title')
             type = 1;
         if($(this).find('.list_typ').val() == 'list')
             type = 4;
@@ -127,11 +128,14 @@ function type_add_list(csrf, id ,query){
     var and = 0;
     var join;
     var _query;
+
     var type = 'T';
+
     if($('.d_type_list').length > 0)
         type = $('.d_type_list').val();
     if($('.type_list').length > 0)
         type = $('.type_list').val();
+
 
     if(type =='A'){
 
