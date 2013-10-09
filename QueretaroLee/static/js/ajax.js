@@ -461,6 +461,7 @@ $(document).ready(function(){
             }).done(function(data) {
 
                     $('.d-results').empty();
+                    $('.d-results').append('<a class="user_profile person" >Personas</a>');
                     if(data){
                         var last_count = 0;
                         $.each(data,function(i){

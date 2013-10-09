@@ -1870,6 +1870,7 @@ input:not([type='submit']){
 
 .social_profile{
     padding-top: 35px;
+    margin-left: 35px !important;
 }
 
 .btn_fb_profile{
