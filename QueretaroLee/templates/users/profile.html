@@ -54,7 +54,7 @@
                     </a>
                 {% endif %}
             </span>
-            <p >{{ user_profile.city }}, México</p>
+            <p >{{ user_profile.city|cut:"#" }}</p>
             <p class="title_author" >
                 {% if count_titles == 1 %}
                     Un libro leído
@@ -177,7 +177,8 @@
     </div>
     <div class="viewport margin_top">
     <div class="overview ">
-    <div class="book_favorite d-paddin_bottom">
+    <div>
+    <div class="book_favorite grid-15 no-margin d-paddin_bottom">
     {% if user_profile.user.id == user.id %}
         <div class="d-container_add_book grid-5 no-margin">
             <div class="d-add_book" >
@@ -190,19 +191,7 @@
         </div>
     {% endif %}
     {% for key, value in list_titles.0.items %}
-        {% if user_profile.user.id == user.id %}
-            {% if forloop.counter <= 2 %}
-                <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-            {% else %}
-                <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-            {% endif %}
-        {% else %}
-            {% if forloop.counter <= 3 %}
-                <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-            {% else %}
-                <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-            {% endif %}
-        {% endif %}
+    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
 
     <input type="hidden" class="id_title"
            value="{{ key }}"/>
@@ -261,25 +250,25 @@
         {% endif %}
     </div>
     </div>
+    {% endfor %}
 
-    {% if forloop.counter > 2 and forloop.last %}
-        <span class="grid-15 no-margin">
-            <span class="place_pink fright all_book">
+    </div>
+        <span class="grid-15 line_divide no-margin">
+            {% if list_titles.0|length > 2 %}
+                <span class="place_pink fright all_book">
                 <span class="span_text">Ver todos</span>
                 <input type="hidden" value="0" />
             </span>
+
+            {% endif %}
         </span>
-    {% endif %}
-
-    {% endfor %}
-
-    <hr class="d-line_bottom">
     </div>
+    <div>
+    <h3 class="title title_book d-paddin_top_item grid-14 fleft">
+        Mis libros leídos
+    </h3>
+    <div class="book_read grid-15 no-margin d-paddin_bottom">
 
-    <div class="book_read d-paddin_bottom">
-        <h3 class="title title_book grid-14 fleft">
-            Mis libros leídos
-        </h3>
         {% if user_profile.user.id == user.id  %}
             <div class="d-container_add_book grid-5 no-margin">
                 <div class="d-add_book" >
@@ -293,20 +282,7 @@
             </div>
         {% endif %}
         {% for key, value in list_titles.1.items %}
-            {% if user_profile.user.id == user.id %}
-                {% if forloop.counter <= 2 %}
-                    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-                {% else %}
-                    <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-                {% endif %}
-            {% else %}
-                {% if forloop.counter <= 3 %}
-                    <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-                {% else %}
-                    <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-                {% endif %}
-            {% endif %}
-
+            <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
         <input type="hidden" class="id_title"
                value="{{ key }}"/>
         <input type="hidden" class="name_title"
@@ -369,24 +345,25 @@
         </div>
         </div>
 
-            {% if forloop.counter > 2 and forloop.last %}
-                <span class="grid-15 no-margin">
-            <span class="place_pink fright all_book">
-                <span class="span_text">Ver todos</span>
-                <input type="hidden" value="0" />
-            </span>
-        </span>
-            {% endif %}
 
         {% endfor %}
 
-        <hr class="d-line_bottom">
         </div>
+        <span class="grid-15 line_divide no-margin">
+            {% if list_titles.1|length > 2 %}
+                <span class="place_pink fright all_book">
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
+            {% endif %}
+        </span>
+        </div>
+        <div>
+        <h3 class="title title_book d-paddin_top_item grid-14 fleft">
+            Mis libros por leer
+        </h3>
+        <div class="book_for_reading grid-15 no-margin d-paddin_bottom">
 
-        <div class="book_for_reading d-paddin_bottom">
-            <h3 class="title title_book grid-14 fleft">
-                Mis libros por leer
-            </h3>
             {% if user_profile.user.id == user.id  %}
                 <div class="d-container_add_book grid-5 no-margin">
                     <div class="d-add_book" >
@@ -400,20 +377,7 @@
                 </div>
             {% endif %}
             {% for key, value in list_titles.2.items %}
-                {% if user_profile.user.id == user.id %}
-                    {% if forloop.counter <= 2 %}
-                        <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-                    {% else %}
-                        <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-                    {% endif %}
-                {% else %}
-                    {% if forloop.counter <= 3 %}
-                        <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
-                    {% else %}
-                        <div class="d-item_book disable_title d-item_{{ key }} grid-5 no-margin">
-                    {% endif %}
-               {% endif %}
-
+                <div class="d-item_book d-item_{{ key }} grid-5 no-margin">
             <input type="hidden" class="id_title"
                    value="{{ key }}"/>
             <input type="hidden" class="name_title"
@@ -472,20 +436,20 @@
             </div>
             </div>
 
-                {% if forloop.counter > 2 and forloop.last %}
-                    <span class="grid-15 no-margin">
-            <span class="place_pink fright all_book">
-                <span class="span_text">Ver todos</span>
-                <input type="hidden" value="0" />
-            </span>
-        </span>
-                {% endif %}
             {% endfor %}
 
-            <hr class="d-line_bottom">
             </div>
-            <div class="d-paddin_bottom">
-                <h3 class="title title_book grid-14 fleft">
+            <span class="grid-15 line_divide no-margin">
+                {% if list_titles.2|length > 2 %}
+                    <span class="place_pink fright all_book">
+                        <span class="span_text">Ver todos</span>
+                        <input type="hidden" value="0" />
+                    </span>
+                {% endif %}
+            </span>
+        </div>
+            <div >
+                <h3 class="title title_book d-paddin_top_item grid-14 fleft">
                     Mis géneros favoritos
                 </h3>
                 <div class="grid-5 no-margin">

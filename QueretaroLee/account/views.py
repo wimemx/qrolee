@@ -1,19 +1,21 @@
 import urlparse
 import urllib
 import ast
-from django.shortcuts import render
-from django.http import HttpResponseRedirect,HttpResponse
-from django.contrib import auth
-from django.core.context_processors import csrf
 import oauth2
 import hashlib
 import simplejson
 from account import models
 from registry import models as registry
-from django.contrib.auth.models import User
-from registry import views as registry_view
-from django.db import models as db_model
 from datetime import datetime
+from registry import views as registry_view
+
+from django.db import models as db_model
+from django.shortcuts import render
+from django.http import HttpResponseRedirect,HttpResponse
+from django.contrib import auth
+from django.core.context_processors import csrf
+from django.contrib.auth.models import User
+
 
 
 # Create your views here.
@@ -230,7 +232,6 @@ def user_profile(request, **kwargs):
                 author_name = 'autor anonimo'
 
                 author =  models.AuthorTitle.objects.filter(title=obj.title)
-
                 activity = models.Activity.objects.get(object=obj.title.id,
                                                        added_to_object=obj.list.id)
                 id_author = 0
@@ -423,6 +424,7 @@ def delete_account(request):
 def list_user(request):
 
     user = User.objects.filter(is_staff=False)
+
     author = models.Author.objects.all()
     org = registry.Entity.objects.filter(type__name='organization')
     group = registry.Entity.objects.filter(type__name='group')
@@ -430,10 +432,12 @@ def list_user(request):
     list_ = models.List.objects.filter(default_type=-1)
     title = models.Title.objects.all()
 
-
     if request.POST.get('field_value') != None:
         search = request.POST['field_value']
-        user = User.objects.filter(is_staff=False, first_name__icontains=search)
+        user = User.objects.filter(
+            db_model.Q(username__icontains=search) |
+            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)).filter(is_staff=False)
+
         author = models.Author.objects.filter(name__icontains=search)
         org = registry.Entity.objects.filter(name__icontains=search,
                                                            type__name='organization')
@@ -456,10 +460,19 @@ def list_user(request):
     for obj in user:
         list = {}
         list['id'] = int(obj.id)
-        list['name'] = str(obj.first_name)
+        name = ''
+        if not obj.first_name:
+            name = str(obj.username)
+        else:
+            name = str(obj.first_name)
+
+        list['name'] = name
         list['name_2'] = str(obj.last_name)
         profile = registry.Profile.objects.filter(user=obj)
-        list['picture'] = profile[0].picture
+        picture = ''
+        if profile[0].picture:
+           picture = profile[0].picture
+        list['picture'] = picture
         list_us[str(obj.id)] = list
 
     for obj in author:

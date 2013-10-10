@@ -443,110 +443,11 @@ $(document).ready(function(){
         overview.fadeIn(200);
         $('#scrollbar1').tinyscrollbar();
     });
-
+    $('.search_field').keyup(function(){
+        search_all_header($('.search_button'));
+    });
     $('.search_button').click(function(){
-        var url = '/accounts/list_users/';
-        var field_value = $('.search_field').val();
-        if($('.search_field').val().length==0)
-            field_value = '';
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                dataType: 'json',
-                data: {
-                    'csrfmiddlewaretoken': $(this).parent().find('div input').val(),
-                    'field_value':field_value
-                }
-            }).done(function(data) {
-
-                    $('.d-results').empty();
-                    $('.d-results').append('<a class="user_profile person" >Personas</a>');
-                    if(data){
-                        var last_count = 0;
-                        $.each(data,function(i){
-                            var obj = data[i];
-                            var count = 1;
-                            var text = '';
-                            if(i=="users" & Object.keys(data['users']).length>0)
-                                text = 'Personas';
-                            if(i=="author" & Object.keys(data['author']).length>0)
-                                text = 'Autores';
-                            if(i=="org" & Object.keys(data['org']).length>0)
-                                text = 'Organizaciones';
-                            if(i=="group" & Object.keys(data['group']).length>0)
-                                text = 'Grupos';
-                            if(i=="spot" & Object.keys(data['spot']).length>0)
-                                text = 'Spots';
-                            if(i=="list" & Object.keys(data['list']).length>0)
-                                text = 'Listas';
-                            if(i=="title" & Object.keys(data['title']).length>0)
-                                text = 'Títulos';
-
-                            $('.d-results').append('<a class="user_profile person" >' + text + '</a>');
-                            $.each(obj,function(i2){
-                                if(count<=3){
-                                    var href = '';
-                                    var src = '';
-                                    var name_user = '';
-
-                                    if(i=="users"){
-                                        href = '/accounts/users/profile/'+obj[i2].id;
-                                        src = '/static/media/users/'+obj[i2].id+'/profile/'+obj[i2].picture;
-                                        name_user = obj[i2].name + ' ' + obj[i2].name_2;
-                                    }
-                                    if(i=="author"){
-                                        href = '/qro_lee/profile/author/'+obj[i2].id;
-                                        src = obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-                                    if(i=="org"){
-                                        href = '/qro_lee/entity/organization/org_'+obj[i2].id;
-                                        src = '/static/media/users/'+obj[i2].id_user+'/entity/'+obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-                                    if(i=="group"){
-                                        href = '/qro_lee/entity/group/group_'+obj[i2].id;
-                                        src = '/static/media/users/'+obj[i2].id_user+'/entity/'+obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-                                    if(i=="spot"){
-                                        href = '/qro_lee/entity/spot/spot_'+obj[i2].id;
-                                        src = '/static/media/users/'+obj[i2].id_user+'/entity/'+obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-                                    if(i=="list"){
-                                        href = '/qro_lee/profile/list/'+obj[i2].id;
-                                        src = '/static/media/users/'+obj[i2].id_user+'/list/'+obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-                                    if(i=="title"){
-                                        href = '/qro_lee/profile/title/'+obj[i2].id;
-                                        src = obj[i2].picture;
-                                        name_user = obj[i2].name;
-                                    }
-
-                                    var a = $('<a title="' + name_user + '" href="' +
-                                        href + '" class="user_profile"></a>');
-                                    a.append('<img src='+src+' class="img_user" />');
-                                    var name = $('<span class="span_name_user" ></span>');
-                                    name.append(truncText(name_user,20));
-                                    a.append(name);
-                                    $('.d-results').append(a);
-                                }
-                                count++;
-                            });
-
-                            last_count++;
-                            if(last_count==Object.keys(data).length)
-                                $('.d-results').append('<a class="user_profile person link_search_all" ' +
-                                    'href="/qro_lee/advanced_search/" >ver todos</a>');
-                        });
-
-                    }
-                    $('.d-results').fadeIn(250);
-
-                });
+        search_all_header($(this));
     });
     if(entity_search_events){
 
@@ -809,6 +710,10 @@ $('.affiliate').each(function(i){
 
 $(document).click(function(){
     $('.search_result').fadeOut(250);
+    if(!set_act)
+        $('.sub-menu-h').fadeOut(250);
+    set_act = false;
+
 });
 
 function delete_title($btn_delete){
@@ -953,7 +858,6 @@ function search_list_authors_titles($this){
         }
         csrf = $('.csrf_header').find('input').val();
         my_list_type = parseInt($this.parent().find('.my_list_typ').val());
-
          $.ajax({
             type: "POST",
             url: '/qro_lee'+url,
@@ -974,7 +878,7 @@ function search_list_authors_titles($this){
                         overview = $('.overview');
                     }
 
-                    overview.fadeOut(200);
+                    overview.fadeOut(300,function(){
                     overview.empty();
 
                     if($('.type').val()=="List"){
@@ -1145,10 +1049,13 @@ function search_list_authors_titles($this){
 
                     $('#scrollbar1').tinyscrollbar();
                     overview.fadeIn(200);
+                    });
+
 
                 }else{
                     overview.fadeOut(200);
                 }
+
             });
 }
 
@@ -1285,7 +1192,8 @@ function search_entities($this){
                                             $('.overview').append(div);
                                             div.find('.title').html(entity_obj[i].name);
                                             div.find('p').html(truncText(entity_obj[i].
-                                                description,180));                                                                                        div.find('.img')
+                                                description,180));
+                                            div.find('.img');
                                             div.fadeIn(300);
                                         }
                                         });
@@ -1305,4 +1213,121 @@ function search_entities($this){
                         $('#scrollbar1').tinyscrollbar();
                 });
             }
+}
+
+function search_all_header($this){
+     var url = '/accounts/list_users/';
+        var field_value = $('.search_field').val();
+        if($('.search_field').val().length==0)
+            field_value = '';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': $this.parent().find('div input').val(),
+                    'field_value':field_value
+                }
+            }).done(function(data) {
+
+                    $('.d-results').empty();
+                    if(data){
+                        var last_count = 0;
+                        $.each(data,function(i){
+                            var obj = data[i];
+                            var count = 1;
+                            var text = '';
+                            if(i == "users" & Object.keys(data['users']).length>0)
+                                text = 'Personas';
+                            if(i == "author" & Object.keys(data['author']).length>0)
+                                text = 'Autores';
+                            if(i == "org" & Object.keys(data['org']).length>0)
+                                text = 'Organizaciones';
+                            if(i == "group" & Object.keys(data['group']).length>0)
+                                text = 'Grupos';
+                            if(i == "spot" & Object.keys(data['spot']).length>0)
+                                text = 'Spots';
+                            if(i == "list" & Object.keys(data['list']).length>0)
+                                text = 'Listas';
+                            if(i == "title" & Object.keys(data['title']).length>0)
+                                text = 'Títulos';
+                            if(Object.keys(data[i]).length>0)
+                                $('.d-results').append('<a class="user_profile person" >' + text + '</a>');
+                            $.each(obj,function(i2){
+                                if(count<=3){
+                                    var href = '';
+                                    var name_user = '';
+                                    var src = '/static/img/create.png';
+
+                                    if(i == "users"){
+                                        href = '/accounts/users/profile/' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = '/static/media/users/' + obj[i2].id +
+                                                '/profile/' + obj[i2].picture;
+                                        name_user = obj[i2].name + ' ' + obj[i2].name_2;
+                                    }
+                                    if(i == "author"){
+                                        href = '/qro_lee/profile/author/' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+                                    if(i == "org"){
+                                        href = '/qro_lee/entity/organization/org_' +
+                                            obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = '/static/media/users/' + obj[i2].id_user +
+                                                '/entity/' + obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+                                    if(i == "group"){
+                                        href = '/qro_lee/entity/group/group_' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = '/static/media/users/' + obj[i2].id_user +
+                                                '/entity/' + obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+                                    if(i == "spot"){
+                                        href = '/qro_lee/entity/spot/spot_' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = '/static/media/users/' + obj[i2].id_user +
+                                                '/entity/' + obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+                                    if(i == "list"){
+                                        href = '/qro_lee/profile/list/' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = '/static/media/users/' + obj[i2].id_user +
+                                                '/list/' + obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+                                    if(i == "title"){
+                                        href = '/qro_lee/profile/title/' + obj[i2].id;
+                                        if(obj[i2].picture!='')
+                                            src = obj[i2].picture;
+                                        name_user = obj[i2].name;
+                                    }
+
+                                    var a = $('<a title="' + name_user + '" href="' +
+                                        href + '" class="user_profile"></a>');
+                                    a.append('<img src=' + src + ' class="img_user" />');
+                                    var name = $('<span class="span_name_user" ></span>');
+                                    name.append(truncText(name_user,20));
+                                    a.append(name);
+                                    $('.d-results').append(a);
+                                }
+                                count++;
+                            });
+
+                            last_count++;
+                            if(last_count == Object.keys(data).length)
+                                $('.d-results').append('<a class="user_profile person link_search_all" ' +
+                                    'href="/qro_lee/advanced_search/" >ver todos</a>');
+                        });
+
+                    }
+                    $('.d-results').fadeIn(250);
+
+                });
 }

@@ -1069,10 +1069,10 @@ def add_my_title(request):
                             if len(activity)==0:
                                 activity_data = {
                                     'user_id': request.user.id,
-                                    'object':title.id,
-                                    'added_to_object':my_list.list.id,
+                                    'object': title.id,
+                                    'added_to_object': my_list.list.id,
                                     'type': 'T',
-                                    'added_to_type':'L',
+                                    'added_to_type': 'L',
                                     'activity_id': 1
                                 }
                                 update_activity(activity_data)
@@ -1085,10 +1085,11 @@ def add_my_title(request):
                 if obj['it']['id'] == -1:
                     desc = str(obj['it']['attribute']['biography'])
                     li ={
-                        'name':str(obj['it']['attribute']['name']),
-                        'picture':str(obj['it']['attribute']['picture']),
-                        'biography':desc[0:800],
-                        'birthday':datetime.datetime.today()
+                        'name': str(obj['it']['attribute']['name']),
+                        'picture': str(obj['it']['attribute']['picture']),
+                        'biography': desc[0:800],
+                        'birthday': datetime.datetime.today(),
+                        'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
                     author = account.Author.objects.create(**li)
@@ -1381,8 +1382,6 @@ def edit_title_read(request):
     if int(request.POST.get('type')) == 2:
         list_title = account.ListTitle.objects.get(id=id_list)
         lis = account.List.objects.get(user=list_title.list.user, default_type=1)
-        list_title.list = lis
-        list_title.save()
 
         if date == '':
             act_date = datetime.datetime.now().isoformat()
@@ -1392,8 +1391,12 @@ def edit_title_read(request):
 
         activity = account.Activity.objects.filter(object=list_title.title.id,
                                                 added_to_object=list_title.list.id)
+        list_title.list = lis
+        list_title.save()
+
         if len(activity)!=0:
             activity[0].date = act_date
+            activity[0].added_to_object = 1
             activity[0].save()
         else:
             activity_data = {
@@ -1404,7 +1407,7 @@ def edit_title_read(request):
                 'added_to_type':'L',
                 'activity_id': 9
             }
-            #update_activity(activity_data)
+            update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 1

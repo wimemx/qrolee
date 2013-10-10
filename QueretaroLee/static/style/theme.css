@@ -584,6 +584,29 @@ input:not([type='submit']){
                 display: none;
                 z-index: 6;
             }
+            .sub-menu-h{
+                background: #e7cb92;
+                position: absolute;
+                top: 23px;
+                right: 0px;
+                width: 105px;
+                padding-right: 5px;
+                padding-left: 5px;
+                display: none;
+                z-index: 6;
+            }
+            .sub-menu-h a{
+                    border-bottom: 1px solid #cdb090;
+                    color: #000;
+                    text-align: right;
+                    float: left;
+                    width: 100%;
+                    height: 25px;
+                    font-size: 11px;
+                    line-height: 25px;
+                    text-decoration: none;
+                    font-family: 'Conv_fontscore.com_d-dinproregular';
+                }
             .sub-menu a{
                     border-bottom: 1px solid #cdb090;
                     color: #000;
@@ -1455,8 +1478,18 @@ input:not([type='submit']){
     cursor: pointer;
 }
 
+.line_divide{
+    border-bottom: 1px solid #CCC !important;
+    padding-bottom: 10px;
+}
+
 .d-paddin_bottom{
-    display: inline-block;
+    overflow: hidden;
+    height: 141px;
+}
+
+.d-paddin_top_item{
+    margin-top: 20px !important;
 }
 
 .d-item_book{
@@ -1495,6 +1528,7 @@ input:not([type='submit']){
 .d-line_bottom{
     width: 100%;
     float: left;
+    margin-bottom: 20px;
 }
 
 .d-add_text_book{
@@ -2191,7 +2225,7 @@ input:not([type='submit']){
 }
 
 .scrollbar_add{
-    right: -20px !important;
+    right: -12px !important;
 }
 
 .text_profile{

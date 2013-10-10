@@ -36,6 +36,7 @@ class Author(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     biography = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
+    id_api = models.TextField()
 
     def __unicode__(self):
         return '%s' % (self.name)
@@ -132,7 +133,7 @@ class Activity(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=100)
-    comment = models.TextField(max_length=2000)
+    coment = models.TextField(max_length=2000)
     tags = models.TextField(max_length=1000)
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)
