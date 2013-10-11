@@ -437,6 +437,7 @@ def register_event(request, **kwargs):
 
     return render(request, template, context)
 
+
 def ajax_register_event(request):
     event = dict(request.POST)
     event['owner_id'] = int(request.user.id)
@@ -472,17 +473,29 @@ def ajax_register_event(request):
 
     event = copy
     event = models.Event.objects.create(**event)
-    post_event_fb(event, request.user, profile)
+    if event.share_fb == 1:
+        post_event_fb(event, request.user, profile)
     event.save()
     if event is not None:
         success = event.id
+        activity_data = {
+            'user_id': request.user.id,
+            'object': event.id,
+            'added_to_object': event.location.id,
+            'type': 'D',
+            'added_to_type': 'E',
+            'activity_id': 1
+        }
+        update_activity(activity_data)
     else:
         success = 'False'
+
     context = {
         'success': success
     }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
 
 def post_event_fb(event, user, profile):
     facebook_session = models.FacebookSession.objects.filter(
@@ -923,13 +936,13 @@ def add_rate(request):
 
 def create_default_list(user):
     dict_list = {
-                'name':'Mis libros leidos',
-                'type':'T',
-                'default_type':1,
-                'status':True,
-                'description':'texto',
-                'privacy':False,
-                'user':user,
+                'name': 'Mis libros leidos',
+                'type': 'T',
+                'default_type': 1,
+                'status': True,
+                'description': 'texto',
+                'privacy': False,
+                'user': user,
                 'picture':''
             }
 
@@ -1022,11 +1035,12 @@ def add_my_title(request):
                         if len(response['result'][0]['mid']) != 0:
                             picture = 'https://www.googleapis.com/freebase/v1/image' +\
                                       response['result'][0]['mid']
+
                         dict_author = {
-                            'name':response['result'][0]['name'],
-                            'picture':picture,
-                            'biography':biography,
-                            'birthday':datetime.datetime.today()
+                            'name': response['result'][0]['name'],
+                            'picture': picture,
+                            'biography': biography,
+                            'birthday': datetime.datetime.today()
                         }
 
                         author = account.Author.objects.create(**dict_author)
@@ -1056,8 +1070,8 @@ def add_my_title(request):
                         lista = account.List.objects.get(user=user, default_type=type)
 
                         list_ti = {
-                            'list':lista,
-                            'title':title
+                            'list': lista,
+                            'title': title
                         }
                         my_list = account.ListTitle.objects.filter(list=lista, title=title)
 
@@ -1066,7 +1080,7 @@ def add_my_title(request):
                             my_list.save()
                             activity = account.Activity.objects.filter(object=my_list.title.id,
                                                                        added_to_object=my_list.list.id)
-                            if len(activity)==0:
+                            if not activity:
                                 activity_data = {
                                     'user_id': request.user.id,
                                     'object': title.id,

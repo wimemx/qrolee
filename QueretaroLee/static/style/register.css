@@ -3,10 +3,10 @@
 }
     .grid-3 .main_btn{
         margin: 40px 0px 0px 10px;
-        font-family: "MS Reference Sans Serif";
+        font-family: "Raleway" sans-serif;
+
 
     }
-
 .welcome_banner{
    height: 40px;
 }
@@ -232,6 +232,11 @@ form.register{
             padding:7px 10px 7px 10px;
             float: right;
             font-family: 'Raleway', sans-serif;
+            transition: all .5s;
+            -webkit-transition: all .5s; /* Safari */
+        }
+        form p input[type='submit']:hover{
+            border-color: #d1a574;
         }
         form p .reset{
             float: left;

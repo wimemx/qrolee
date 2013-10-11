@@ -46,9 +46,11 @@ input{
     margin: 0px;
 }
 input:not([type='submit']){
-    height: 25px;
+    height: 27px;
     width: 100%;
-    text-indent: 5px;
+    line-height: 27px;
+    text-indent: 7px;
+    font-family: arial !important;
 }
 .category{
     color:#8B5627 !important;
@@ -67,13 +69,19 @@ input:not([type='submit']){
 }
 
 .main_btn{
-    background: url('../img/main_btn.png') repeat 0px 0px;
+    background: #F4E5C8;
     height: 21px;
     line-height: 21px;
     display: inline-block;
     padding: 0px 10px 0px 10px;
     cursor: pointer;
+    transition: all .5s;
+    -webkit-transition: all .5s; /* Safari */
+    font-weight: 500;
 }
+.main_btn:hover{
+        background: #F0D6A7;
+    }
 .din-m{
     font-family: 'Conv_DINPro-Medium';
     color: #000;
@@ -103,10 +111,11 @@ input:not([type='submit']){
     color: #fff;
     font-size: 12px;
     text-decoration: none;
-    padding: 3px 15px 3px 8px;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    padding: 4px 9px;
+    font-family: 'Raleway' sans-serif;
     cursor: pointer;
     border:1px solid #a77340;
+    text-align: center;
 }
 .left{
     left: 0px;
@@ -164,7 +173,10 @@ input:not([type='submit']){
         font-size: 10px;
         cursor: pointer;
         background: #f89883;
-    }
+}
+p{
+    line-height: 14px;
+}
 .header{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
 }
@@ -173,6 +185,8 @@ input:not([type='submit']){
         left: 0px;
         position: relative;
         left: -30px;
+        position: relative;
+        z-index: 2;
     }
         .logo span{
             width: 100%;
@@ -193,7 +207,7 @@ input:not([type='submit']){
         font-size: 13px;
         margin: 0px 13px 0px 0px;
         font-family: 'Raleway' sans-serif;
-        font-weight: 100;
+        font-weight: 400;
     }
     .nav a.last{
         margin: 0px;
@@ -201,6 +215,8 @@ input:not([type='submit']){
 
 .header .search{
     margin-top: 35px;
+    position: relative;
+    left: -25px;
 }
     .header .search span{
         width: 100%;
@@ -226,6 +242,7 @@ input:not([type='submit']){
 .account-settings{
     height: 20px;
     margin-top: 37px;
+    width: 150px;
 }
     .account-settings .settings{
         width: 20px;
@@ -235,6 +252,8 @@ input:not([type='submit']){
     }
     .account-settings .profile{
         text-decoration: none;
+        width: 120px;
+        display: block;
     }
 
     .account-settings .settings{
@@ -251,6 +270,8 @@ input:not([type='submit']){
         line-height: 20px;
         color: #fff;
         margin-left: 5px;
+        float: left;
+        width: 90px;
 
     }
 
@@ -340,6 +361,7 @@ input:not([type='submit']){
         width: 70px;
         height: 70px;
         margin-right: 15px;
+        overflow: hidden;
     }
     .feed .content span{
         font-size: 14px;
@@ -347,6 +369,7 @@ input:not([type='submit']){
     .feed .action .wrapper{
         width: 50px;
         height: 50px;
+        margin-top: 10px;
     }
         .feed .action .din-m, .feed .action p, .feed .action p span{
             font-size: 12px;
@@ -382,7 +405,7 @@ input:not([type='submit']){
                 height: 140px;
                 display: block;
                 float: left;
-                border:3px solid #fae8bd;
+                border:3px solid #f9e8bc;
                 margin-right: 20px;
                 overflow:hidden;
                 position: relative;
@@ -393,17 +416,17 @@ input:not([type='submit']){
                     right: 0px;
                 }
             .title{
-                font-size: 18px;
+                font-size: 17px;
                 color: #000;
                 text-align: left;
                 margin-left: 0px;
                 font-family: 'Raleway' sans-serif;
-                font-weight: 400;
+                font-weight: 500;
                 text-decoration: none;
                 position: relative;
             }
             .entities .content{
-                margin-bottom: 35px;
+                margin: 25px 0px 35px 0px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .entities .members{
@@ -422,6 +445,8 @@ input:not([type='submit']){
         float: left;
         margin-top: 0px;
         text-transform: capitalize;
+        font-weight: 500;
+        font-size: 20px;
     }
 
     .heading .search{
@@ -435,6 +460,7 @@ input:not([type='submit']){
             cursor: pointer;
             height: 100%;
             line-height: 25px;
+            font-family: 'Raleway' sans-serif;
         }
 
 .dsearch{
@@ -556,6 +582,21 @@ input:not([type='submit']){
             height: 15px;
             position: relative;
             background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
+            text-align: left;
+            padding-right: 11px;
+        }
+        .entities .wrapper .green_btn{
+            background-image: none;
+            padding-right: 9px;
+            position: relative;
+            float: right;
+            top: -24px;
+            font-size: 12px;
+            padding: 4px 9px;
+            color: #222;
+        }
+        .entities a.title{
+            margin-top: 25px;
         }
         .follower-fix{
             float: right;
@@ -1103,12 +1144,15 @@ input:not([type='submit']){
     }
         .footer .nav a{
             margin: 0px 10px 0px 10px;
-            color: #000;
-            text-decoration: underline;
+            color: #444;
+            text-decoration: none;
             font-size: 11px;
             display: inline-block;
-            font-family: 'Conv_fontscore.com_d-dinproregular';
-
+            font-family: sans-serif;
+        }
+        .footer .nav a:hover{
+            color: #000;
+            text-decoration: underline;
         }
         .footer .nav .first{
            margin-left: 0px;
@@ -1673,6 +1717,10 @@ input:not([type='submit']){
     float: left;
 }
 
+.list_scroll .entities .grid-15{
+    padding-left: 20px;
+    padding-right: 20px;
+}
 .entities .grid-15 {
     height: 640px;
     padding: 40px 40px 40px 40px;
@@ -1735,7 +1783,7 @@ input:not([type='submit']){
     font-size: 11px;
     line-height: 25px;
     text-decoration: none;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: sans-serif;
 }
 
 .profile .btn:hover{
@@ -2163,6 +2211,7 @@ input:not([type='submit']){
     width: 25px;
     height: 25px;
     margin-top: -2px;
+    float: left;
 }
 
 .link_search_all{
@@ -2193,11 +2242,12 @@ input:not([type='submit']){
 
 }
 
-.search_entities:focus{
-    background-color:  #FCF8EF !important;
-
+.heading .search_entities:focus{
+    background: #FCF8EF;
 }
-
+.heading .search_entities{
+    background: #faf3e1;
+}
 .desc_group{
     margin-top: 0px;
 }

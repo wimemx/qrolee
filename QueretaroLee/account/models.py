@@ -22,8 +22,8 @@ class Title(models.Model):
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
-    description = models.TextField(max_length=255)
     id_google = models.TextField(max_length=30)
+    description = models.TextField()
 
     def __unicode__(self):
         return '%s, %s' % (self.title, self.type)
@@ -133,7 +133,7 @@ class Activity(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=100)
-    coment = models.TextField(max_length=2000)
+    comment = models.TextField(max_length=2000)
     tags = models.TextField(max_length=1000)
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)

@@ -17,17 +17,15 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="erase"></div>
-    <div class="grid-16 entities list_scroll">
-        <div class="grid-15">
+        <div class="grid-16 entities">
+        <div class="grid-14">
             <div class="heading">
                 <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
                 <span class="search fleft grid-4">{% csrf_token %}
-                    <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
-                    <input class="my_list_typ" type="hidden" value="1"/>
+                    <input class="type" type="hidden" value="{{ type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
-                    <input type="text" class="field_list search_entities"/>
-                    <span class="search_list top right dark_yello_btn">Buscar</span>
+                    <input type="text" class="search_entities"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
                 </span>
                     <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
                         Búsqueda avanzada

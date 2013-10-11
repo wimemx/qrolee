@@ -443,6 +443,12 @@ $(document).ready(function(){
         overview.fadeIn(200);
         $('#scrollbar1').tinyscrollbar();
     });
+    $('.search_field').focusin(function(){
+        $(this).css('background','#e7e7e7');
+    });
+    $('.search_field').focusout(function(){
+        $(this).css('background','#98a4a3');
+    });
     $('.search_field').keyup(function(){
         search_all_header($('.search_button'));
     });
