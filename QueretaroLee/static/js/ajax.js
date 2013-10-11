@@ -43,7 +43,7 @@ function populateCal(curr_month,$item){
             type: "POST",
             url: url,
             data: {
-                'csrfmiddlewaretoken': $('.sidebar-b div input[type=hidden]').val(),
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                 'curr_month': curr_month,
                 'field_search':$('.d_field_search').val(),
                 'id_entity':edit_events
@@ -206,7 +206,7 @@ function update_obj(field, value, $this){
                 type: "POST",
                 url: '/registry/update/'+$('input.entity').val()+'/',
                 data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'field': field,
                     'value': value
                 },
@@ -478,7 +478,7 @@ $(document).ready(function(){
             type: "POST",
             url: '/qro_lee/entity/events/'+$('.sidebar-b input.entity').val()+'/',
             data: {
-                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                 'curr_month': -1,
                 'id_entity':edit_events
             },
@@ -581,7 +581,7 @@ $(document).ready(function(){
                 type: "POST",
                 url: '/qro_lee/entities/spot/',
                 data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'post': 2
                 },
                 dataType: 'json'
@@ -600,7 +600,7 @@ $(document).ready(function(){
                 type: "POST",
                 url: '/qro_lee/events/'+name_event+'_'+id_event+'/',
                 data: {
-                    'csrfmiddlewaretoken': $('.search div input[type=hidden]').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'post': 1
                 },
                 dataType: 'json'
@@ -609,9 +609,6 @@ $(document).ready(function(){
                 });
         }
     }
-
-
-
 
 $('.affiliate').each(function(i){
         if(i == counter){
@@ -669,7 +666,7 @@ $('.affiliate').each(function(i){
                 type: "POST",
                 url: '/registry/add_rate/',
                 data: {
-                    'csrfmiddlewaretoken': $('.search div input[type=hidden]').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'grade': parseInt($(this).find('.grade').val()) + 1 ,
                     'type':$(this).find('.type').val(),
                     'element_id':$(this).find('.element_id').val()
@@ -726,7 +723,7 @@ function delete_title($btn_delete){
         type: "POST",
         url: '/registry/delete_title/',
         data: {
-        'csrfmiddlewaretoken':$('.csrf_token').find('div input').val(),
+        'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
         'id_title':$btn_delete.find('.id_title').val(),
         'type':$btn_delete.find('.type_list').val(),
         'type_list':$('.type_my_list').val(),
@@ -745,7 +742,7 @@ function delete_list($btn_delete){
         type: "POST",
         url: '/registry/delete_list/',
         data: {
-        'csrfmiddlewaretoken': $('.content  div input[type=hidden]').val(),
+        'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
         'id_list':$btn_delete.find('.id_list').val()
         },
         dataType: 'json'
@@ -1072,6 +1069,7 @@ function search_list_authors_titles($this){
 
 function search_entities($this){
 
+
      //if(content_search_entity){
             if($this.parent().find('.type').val()=='Event'){
 
@@ -1105,7 +1103,7 @@ function search_entities($this){
                 url: url,
                 dataType: 'json',
                 data: {
-                    'csrfmiddlewaretoken': $this.parent().find('div input').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'field_search_entity': field_search
                 }
                 }).done(function(data) {

@@ -115,7 +115,7 @@ $(document).ready(function(){
         if($(this).find('.list_typ').val() == 'list')
             type = 4;
 
-        crsf = $('.csrf_token').find('div input').val();
+        crsf = $('.csrf_header').find('input').val();
 
         if($(this).find('.add_type').val() == 'add')
             type_add_list(crsf, type, query);

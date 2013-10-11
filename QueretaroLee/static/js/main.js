@@ -355,7 +355,7 @@ function fb_obj_search(search, type){
                             type: "POST",
                             url: '/registry/media/upload/',
                             data: {
-                                'csrfmiddlewaretoken': $('#picture div input[type=hidden]').val(),
+                                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                                 'fb_img': span_wrapper.find('img').attr('src'),
                                 'folder': folder
                             },
@@ -943,7 +943,7 @@ $(document).ready(function(){
             $('.results .item').each(function(){
                 $(this).remove();
             });
-            var csrf = $('.advanced_filter').find('div input[type=hidden]').val();
+            var csrf = $('.csrf_header').find('input').val();
             var api = false;
             if(type == 'account.title' || type == 'account.author'){
                 result = advanced_search(search, csrf);
@@ -1255,7 +1255,7 @@ function get_genre($div_text){
             type: "POST",
             url: '/qro_lee/list_genre/',
             data: {
-                'csrfmiddlewaretoken': $('.csrf_token').find('div input').val()
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val()
             },
             dataType: 'json'
         }).done(function(data){
@@ -1303,7 +1303,7 @@ function add_genre($span){
     type: "POST",
     url: '/registry/add_genre/',
     data: {
-    'csrfmiddlewaretoken': $('.csrf_token').find('div input').val(),
+    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
     'id_genre':$span.find('input').val()
     },
     dataType: 'json'
@@ -1368,7 +1368,7 @@ function dialog_titles(csrf, data, id){
                 if(id!=4)
                     type = 2;
 
-                type_add_list($('.csrf_token').find('div input').val(), type, words);
+                type_add_list($('.csrf_header').find('input').val(), type, words);
             });
         }
 
@@ -2644,7 +2644,7 @@ function d_show_dialog(type_message){
     input.keyup(function(){
 
         if($(this).val().length%2){
-            csrf = $('.csrf_token').find('div input').val();
+            csrf = $('.csrf_header').find('input').val();
             words = $(this).val();
             data = search_titles_and_author_in_api_bd('T', csrf, words);
             list_titles_and_author(data, 'T', div_text, type_message);
@@ -2938,7 +2938,7 @@ function list_titles_and_author(data, type, $container, type_message){
                 }
             }
 
-        var csrf = $('.csrf_token').find('div input').val();
+        var csrf = $('.csrf_header').find('input').val();
         if(active_sel)
             add_my_title(csrf,array_title,5);
     });
