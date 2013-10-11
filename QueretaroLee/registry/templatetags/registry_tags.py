@@ -97,8 +97,12 @@ def feed_type(feed_id):
         elif feed.type == 'E':
             if obj_list[1].type_id == 1:
                 action = u'creó un grupo'
-            else:
+            elif obj_list[1].type_id == 2:
                 action = u'creó una organización'
+            elif obj_list[1].type_id == 3:
+                action = u'creó un spot'
+            else:
+                action = u'realizo un rating'
         else:
             action = ''
         ret_value = u"""<span class="create feed">
@@ -129,17 +133,22 @@ def feed_type(feed_id):
             content, extra_content, date, action)
 
     elif feed.activity_id == 5:
-
-        url = '/static/media/users/'+str(obj_list[0].id)+'/profile/'+str(profile.picture)
-        ret = '<span class="follow feed">' \
-              '<span class="wrapper fleft">' \
-              '<img src="'+str(url)+'" alt=""/></span>' \
-              '<span class="grid-6 content no-margin fleft">' \
-              '<span class="trigger din-b">'+str(name)+' </span>' \
-              '<span class="verb din-r">empezó a seguir a </span>' \
-              '<span class="verb din-b">'+str(obj_name)+' </span></span>' \
-              '<p class="gray_text no-margin fleft">hace '+str(date)+' </p></span>'
-
+        if feed.type == 'E':
+            if obj_list[1].type_id == 1:
+                action = u'se unió al grupo'
+            else:
+                action = u'empezó a seguir a'
+        ret_value = u"""<span class="follow feed">
+              <span class="wrapper fleft">
+              <img src="{2}" alt=""/></span>
+              <span class="grid-6 content no-margin fleft">
+              <span class="trigger din-b">{0} </span>
+              <span class="verb din-r">{4} </span>
+              <span class="verb din-b">{1} </span></span>
+              <p class="gray_text no-margin fleft">hace  {3}</p></span>"""
+        ret = ret_value.format(
+            name, obj_name, img_url, date,
+            action)
 
     return ret
 
