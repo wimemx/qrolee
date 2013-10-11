@@ -1554,6 +1554,7 @@ p{
 
 .title_book{
     margin-bottom: 0px !important;
+    margin-top: 20px !important;
 
 }
 
@@ -2271,7 +2272,7 @@ p{
 }
 
 .text_biography{
-    height: 85px;
+    height: 62px;
 }
 
 .scrollbar_add{
@@ -2530,4 +2531,26 @@ form p .invalid_messa{
     margin-top: 20px !important;
     text-decoration: none!important;
     text-transform: none !important;
+}
+
+.list_{
+    margin: 40px 10px 30px 10px;
+    display: block;
+}
+
+.list_ .grid-15 {
+    height: 640px;
+    padding: 40px 0px 40px 0px;
+    background: #fffcf5;
+    display: block;
+    margin: 0px;
+
+}
+
+.overview_page{
+    height: 435px !important;
+}
+
+.item_tit{
+    width: 272px !important;
 }

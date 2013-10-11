@@ -963,7 +963,7 @@ function search_list_authors_titles($this){
 
                     $.each(data,function(i){
                         href = '/qro_lee/profile/title/'+data[i].id;
-                        div = $('<div class="grid-5 fleft results margin_bottom' +
+                        div = $('<div class="grid-5 item_tit fleft results margin_bottom' +
                             ' no-margin"></div>');
                         div_item = $('<div class="item"></div>');
                         a_wrapper = $('<a href="' + href + '" ></a>');

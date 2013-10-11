@@ -241,7 +241,7 @@ def get_entity(request, **kwargs):
                 entityuser[0].save()
     else:
         entityuser = models.EntityUser.objects.filter(
-                user_id=request.user.id, entity_id=entity.id)
+                user_id=request.user.id, entity_id=entity.id, entity__status=True)
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -255,11 +255,11 @@ def get_entity(request, **kwargs):
         user_id=owner.id)
     entities = models.Entity.objects.filter(
         type_id=entity_type.id,
-        entitycategory__category_id__in=categories_ids).exclude(
+        entitycategory__category_id__in=categories_ids, status=True).exclude(
             id=entity.id).distinct()
     followers_list = list()
     entity_followers = models.User.objects.filter(
-        entityuser__is_member=1, entityuser__entity_id=entity.id)
+        entityuser__is_member=1, entityuser__entity_id=entity.id, entityuser__entity__status=True)
     user_pictures = list()
     for follower in entity_followers:
         profile = models.Profile.objects.get(

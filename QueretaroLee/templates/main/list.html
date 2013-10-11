@@ -22,10 +22,11 @@
             <div class="heading">
                 <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
                 <span class="search fleft grid-4">{% csrf_token %}
-                    <input class="type" type="hidden" value="{{ type.1 }}"/>
+                    <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
+                    <input class="my_list_typ" type="hidden" value="1"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
-                    <input type="text" class="search_entities"/>
-                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                    <input type="text" class="field_list search_entities"/>
+                    <span class="search_list top right dark_yello_btn">Buscar</span>
                 </span>
                     <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
                         Búsqueda avanzada
@@ -87,7 +88,7 @@
                             </div>
                      {% endfor %}
                      {% for key, value in book.items %}
-                            <div class="grid-5 fleft results margin_bottom no-margin">
+                            <div class="grid-5 fleft item_tit results margin_bottom no-margin">
                                 <div class="item">
                                     <a href="/qro_lee/profile/title/{{ key }}">
                                         <span class="wrapper wrapper_book borde_author fleft no_margin-right">

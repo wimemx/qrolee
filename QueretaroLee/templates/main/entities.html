@@ -51,9 +51,9 @@
                     <span class="wrapper {{ classimage }}">
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/">
                         {% if not entity.picture %}
-                            <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                            <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
                         {% else %}
-                            <img src="/static/media/users/{{ entity.user_id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                            <img class="img_size_all" src="/static/media/users/{{ entity.user_id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
                         {% endif %}
                     </a>
                     <a class="green_btn" href="/registry/edit/entity_{{ entity.id }}/">Editar</a>
@@ -97,9 +97,9 @@
 
                     <span class="wrapper {{ classimage }}">
                         {% if not entity.picture %}
-                            <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                            <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
                         {% else %}
-                            <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                            <img class="img_size_all" src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
 
                         {% endif %}
                     </span>
