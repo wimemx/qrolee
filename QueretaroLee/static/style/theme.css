@@ -2511,3 +2511,26 @@ form p .invalid_messa{
     width: 25px;
     height: 25px;
 }
+
+.btn_edit_pg{
+    margin-left: 10px !important;
+    margin-top: 6px;
+    font-weight: bold;
+}
+
+.btn_edit_biew{
+    margin-left: 38px;
+    margin-top: 20px!important;
+}
+
+.line_div_pg{
+    border-bottom: 1px solid #acacac;
+    margin-top: 30px !important;
+    width: 191px !important;
+    margin-bottom: 30px !important;
+}
+.tex_pink{
+    margin-top: 20px !important;
+    text-decoration: none!important;
+    text-transform: none !important;
+}

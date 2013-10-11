@@ -286,6 +286,7 @@ def user_profile(request, **kwargs):
             else:
                 items[field] = obj.__getattribute__(str(field))
         items['id_user'] = obj.id_user.id
+        items['name_user'] = obj.id_user.username
         dict_pages[int(obj.id)] = items
 
 

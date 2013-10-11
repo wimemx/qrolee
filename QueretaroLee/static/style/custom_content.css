@@ -1,0 +1,17 @@
+body,p,div,li,ol,dl,td,em,pre,td{
+        font-size: 11px !important;
+        font-family: Arial, Helvetica, sans-serif;
+        }
+h1,h2,h3,h4,h5,h6 { color: #000000;}
+
+/* Custom heading colors and sizes */
+h1 {font-size:24px; }
+h2 {font-size:18px; }
+h3 {font-size:16px; }
+h4 {font-size:14px; }
+h5 {font-size:12px; }
+h6 {font-size:11px; }
+
+.mce-btn button {
+    padding: 0px 5px !important;
+}
