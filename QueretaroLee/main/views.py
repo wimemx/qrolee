@@ -308,6 +308,17 @@ def get_entity(request, **kwargs):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
+    hc = hc.replace('January', 'Enero')
+    hc = hc.replace('February', 'Febrero')
+    hc = hc.replace('March', 'Marzo')
+    hc = hc.replace('April', 'Abril')
+    hc = hc.replace('May', 'Mayo')
+    hc = hc.replace('June', 'Junio')
+    hc = hc.replace('July', 'Julio')
+    hc = hc.replace('August', 'Agosto')
+    hc = hc.replace('September', 'Septiembre')
+    hc = hc.replace('November', 'Noviembre')
+    hc = hc.replace('December', 'Diciembre')
 
     if entity_type.name == 'group':
         entity_type = ['grupos', 'group', 'grupo']

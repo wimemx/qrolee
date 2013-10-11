@@ -519,27 +519,30 @@ $(document).ready(function(){
            $(this).removeClass('active');
         });
         $(this).addClass('active');
-        if($('#map').length > 0){
-            if($('.lat').val() != ''){
-                if(!init_map)
-                    init(parseFloat($('.lat').val()),parseFloat($('.long').val()));
-                init_map = true;
-            }else{
-                init(-100.4057373,20.6144226);
-            }
-        }
+
         var index = $(this).index();
         var len = $('.load').length;
         $('.load').each(function(i){
             if((len-1) == i){
                 $(this).fadeOut(300,function(){
                     $('.load:eq('+index+')').fadeIn(300,function(){
+
+                        if($(this).find('#map').length > 0){
+                            if($('.lat').val() != ''){
+                                if(!init_map)
+                                    init(parseFloat($('.lat').val()),parseFloat($('.long').val()));
+                                init_map = true;
+                            }else{
+                                init(-100.4057373,20.6144226);
+                            }
+                        }
                         if($(this).find("*[class*='user']").length >0)
                             $(this).find("*[class*='user']").each(function(){
                                 $(this).fadeIn(300);
                             });
                     $('.load:eq('+index+') #scrollbar1').tinyscrollbar();
                     });
+
                 });
             }else{
                 $(this).fadeOut(300);

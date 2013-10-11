@@ -318,13 +318,14 @@ def edit_entity(request, **kwargs):
         return not_found(request)
 
 
-def delete_entity(request,**kwargs):
+def delete_entity(request, **kwargs):
 
-    id_entity = kwargs['entity'].split('_', 1)
-    entity = models.Entity.objects.get(id=id_entity[1])
+    id_entity = int(kwargs['entity'])
+    print id_entity
+    entity = models.Entity.objects.get(id=id_entity)
     entity.status = False
     entity.save()
-    list_events = models.Event.objects.filter(location_id=id_entity[1]).\
+    list_events = models.Event.objects.filter(location_id=id_entity).\
         update(status=False)
 
     return HttpResponseRedirect("/qro_lee/entities/"+kwargs['entity_type'])
@@ -506,8 +507,7 @@ def post_event_fb(event, user, profile):
 
 def event(request, **kwargs):
     template = kwargs['template_name']
-    id_entity =  kwargs['entity'].split('_', 1)
-    id_entity = id_entity[1]
+    id_entity = int(kwargs['entity'])
     events = models.Event.objects.filter(location_id=id_entity)
     name = models.Entity.objects.get(id=id_entity)
     entity_type = models.Type.objects.get(
@@ -619,9 +619,9 @@ def edit_event(request, **kwargs):
 
 def admin_users(request, **kwargs):
     template = kwargs['template_name']
-    obj = kwargs['entity'].split('_', 1)
+    obj = int(kwargs['entity'])
     obj = models.Entity.objects.get(
-        pk=int(obj[1]))
+        pk=obj)
     entity_type = models.Type.objects.get(
         entity__id=obj.id)
     members = models.EntityUser.objects.filter(

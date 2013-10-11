@@ -767,6 +767,9 @@ p{
             background: #f89883 !important;
             cursor: pointer;
         }
+        .noday{
+            background: #DBC8A2 !important;
+        }
         .content.single.events .apply{
             background: #f89883 !important;
         }

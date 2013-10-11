@@ -493,15 +493,11 @@ $(document).ready(function(){
                         $table = $('.sidebar-b table');
                         $table.find('.month:odd').each(function(index){
                             if((month-1) == index){
-                                console.log($(this).html());
                                 $table = $(this).parent().parent().parent();
-                                //console.log($table.html());
+
                                 $table.find('tr').each(function(){
                                     $(this).find('td').each(function(){
-                                        if($(this).html() == '&nbsp;')
-                                            $(this).css({
-                                                'background': '#DBC8A2'
-                                            })
+
                                         if($(this).html() == day){
                                             $(this).addClass('active-event');
                                             $(this).click(function(){
@@ -704,10 +700,7 @@ $('.affiliate').each(function(i){
             });
     });
 
-    if($('#map').length>0){
-        initialize(20,100);
 
-    }
     $('.text_act').click(function(){
         show_title_act($(this));
     });
