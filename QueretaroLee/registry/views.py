@@ -619,9 +619,9 @@ def edit_event(request, **kwargs):
 
 def admin_users(request, **kwargs):
     template = kwargs['template_name']
-    obj = kwargs['entity'].split('_', 1)
+    obj = int(kwargs['entity'])
     obj = models.Entity.objects.get(
-        pk=int(obj[1]))
+        pk=obj)
     entity_type = models.Type.objects.get(
         entity__id=obj.id)
     members = models.EntityUser.objects.filter(
