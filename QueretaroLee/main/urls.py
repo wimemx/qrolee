@@ -28,6 +28,8 @@ urlpatterns = patterns('',
         {'template_name': 'main/advanced_search.html'},name='advanced_search'),
     url(r'^search_api/$', views.search_api ,name='search_api'),
     url(r'^load_picture/$', views.load_picture_profile ,name='load_picture_profile'),
+    url(r'^user/(?P<user_id>[0-9]+)/page/(?P<page_id>[0-9]+)/$', views.get_page ,
+        {'template_name': 'main/page.html'},name='page'),
 
 
 )

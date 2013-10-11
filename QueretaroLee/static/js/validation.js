@@ -1,5 +1,11 @@
 var valid_form = false;
 $(document).ready(function(){
+
+    $('.input_val').keyup(function(){
+        if($(this).val().length>0)
+            $(this).parent().find('.invalid_messa').remove();
+    });
+
     $('form').attr('autocomplete', 'off');
     $('.pass_match').keyup(function(){
         if($(this).val()!=$('.pass').val()){
@@ -140,7 +146,7 @@ function type_add_list(csrf, id ,query){
     if(type =='A'){
 
         model = 'account.author';
-        fields = ['name','id','picture'];
+        fields = ['name','id','picture','id_api'];
         and = 0;
         join = {
             'tables':{
@@ -162,7 +168,7 @@ function type_add_list(csrf, id ,query){
     }
     if(type == 'T'){
         model = 'account.title';
-        fields = ['title', 'cover', 'id'];
+        fields = ['title', 'cover', 'id','id_google'];
         and = 0;
         join = {
             'tables':{
@@ -330,7 +336,7 @@ function invalid_f(form){
     form.find('textarea').each(function(i){
         if($(this).val().length<1){
             var span = $('<span class="invalid_messa" ></span>');
-            span.append('pon el ' + names[$(this).attr('name')]);
+            span.append('Agrega ' + names[$(this).attr('name')] + ' a tu página');
             $(this).parent().append(span);
             invalid = false;
         }
@@ -339,7 +345,7 @@ function invalid_f(form){
         if($(this).attr('type')=='text'){
             if($(this).val().length<1){
                 var span = $('<span class="invalid_messa" ></span>');
-                span.append('pon el ' + names[$(this).attr('name')]);
+                span.append('Agrega ' + names[$(this).attr('name')] + ' a tu página' );
                 $(this).parent().append(span);
                 invalid = false;
             }

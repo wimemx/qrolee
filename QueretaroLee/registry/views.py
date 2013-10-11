@@ -994,20 +994,21 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['description'])
 
                     li ={
-                        'title': str(obj['it']['attribute']['title']),
-                        'subtitle': '',
-                        'edition': '',
-                        'published_date': date_time,
-                        'cover': str(obj['it']['attribute']['cover']),
-                        'publisher': str(obj['it']['attribute']['publisher']),
-                        'language': str(obj['it']['attribute']['language']),
-                        'country': str(obj['it']['attribute']['country']),
-                        'type': 'T',
-                        'isbn': str(obj['it']['attribute']['isbn']),
-                        'isbn13': str(obj['it']['attribute']['isbn13']),
-                        'pages': int(obj['it']['attribute']['pages']),
-                        'picture': str(obj['it']['attribute']['picture']),
-                        'description': desc[0:800]
+                        'title':str(obj['it']['attribute']['title']),
+                        'subtitle':'',
+                        'edition':'',
+                        'published_date':date_time,
+                        'cover':str(obj['it']['attribute']['cover']),
+                        'publisher':str(obj['it']['attribute']['publisher']),
+                        'language':str(obj['it']['attribute']['language']),
+                        'country':str(obj['it']['attribute']['country']),
+                        'type':'T',
+                        'isbn':str(obj['it']['attribute']['isbn']),
+                        'isbn13':str(obj['it']['attribute']['isbn13']),
+                        'pages':int(obj['it']['attribute']['pages']),
+                        'picture':str(obj['it']['attribute']['picture']),
+                        'description':desc[0:800],
+                        'id_google':obj['it']['attribute']['id_google']
                     }
                     name = str(obj['it']['attribute']['author'][0]).replace(' ','+')
                     query = ''
@@ -1025,7 +1026,8 @@ def add_my_title(request):
                     if len(response['result']) != 0:
                         if len(response['result'][0]['output']) != 0:
                             if len(response['result'][0]['output']['description']) != 0:
-                                biography = str(response['result'][0]['output']['description']['/common/topic/description'])
+                                biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
+
 
                         if len(biography) > 1000:
                             biography = biography[0:900]
@@ -1044,7 +1046,6 @@ def add_my_title(request):
                         author = account.Author.objects.create(**dict_author)
                         author.save()
 
-                    print li['description']
                     title = account.Title.objects.create(**li)
                     title.save()
 
@@ -1101,7 +1102,8 @@ def add_my_title(request):
                         'name': str(obj['it']['attribute']['name']),
                         'picture': str(obj['it']['attribute']['picture']),
                         'biography': desc[0:800],
-                        'birthday': datetime.datetime.today()
+                        'birthday': datetime.datetime.today(),
+                        'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
                     author = account.Author.objects.create(**li)
@@ -1394,8 +1396,6 @@ def edit_title_read(request):
     if int(request.POST.get('type')) == 2:
         list_title = account.ListTitle.objects.get(id=id_list)
         lis = account.List.objects.get(user=list_title.list.user, default_type=1)
-        list_title.list = lis
-        list_title.save()
 
         if date == '':
             act_date = datetime.datetime.now().isoformat()
@@ -1405,19 +1405,23 @@ def edit_title_read(request):
 
         activity = account.Activity.objects.filter(object=list_title.title.id,
                                                 added_to_object=list_title.list.id)
-        if len(activity) != 0:
+        list_title.list = lis
+        list_title.save()
+
+        if len(activity)!=0:
             activity[0].date = act_date
+            activity[0].added_to_object = 1
             activity[0].save()
         else:
             activity_data = {
                 'user_id': request.user.id,
                 'object': list_title.title.id,
-                'added_to_object': list_title.list.id,
+                'added_to_object':list_title.list.id,
                 'type': 'T',
-                'added_to_type': 'L',
+                'added_to_type':'L',
                 'activity_id': 9
             }
-            #update_activity(activity_data)
+            update_activity(activity_data)
 
         context['succes'] = 'True'
         context['type'] = 1

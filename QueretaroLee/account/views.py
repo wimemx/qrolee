@@ -1,19 +1,21 @@
 import urlparse
 import urllib
 import ast
-from django.shortcuts import render
-from django.http import HttpResponseRedirect,HttpResponse
-from django.contrib import auth
-from django.core.context_processors import csrf
 import oauth2
 import hashlib
 import simplejson
 from account import models
 from registry import models as registry
-from django.contrib.auth.models import User
-from registry import views as registry_view
-from django.db import models as db_model
 from datetime import datetime
+from registry import views as registry_view
+
+from django.db import models as db_model
+from django.shortcuts import render
+from django.http import HttpResponseRedirect,HttpResponse
+from django.contrib import auth
+from django.core.context_processors import csrf
+from django.contrib.auth.models import User
+
 
 
 # Create your views here.
@@ -229,10 +231,9 @@ def user_profile(request, **kwargs):
 
                 author_name = 'autor anonimo'
 
-                author = models.AuthorTitle.objects.filter(title=obj.title)
-
-                activity = models.Activity.objects.get(
-                    object=obj.title.id, added_to_object=obj.list.id)
+                author =  models.AuthorTitle.objects.filter(title=obj.title)
+                activity = models.Activity.objects.get(object=obj.title.id,
+                                                       added_to_object=obj.list.id)
                 id_author = 0
                 if len(author) != 0:
                     author_name = author[0].author.name
@@ -423,36 +424,111 @@ def delete_account(request):
 def list_user(request):
 
     user = User.objects.filter(is_staff=False)
-    author = models.Author.objects.all()
 
+    author = models.Author.objects.all()
+    org = registry.Entity.objects.filter(type__name='organization')
+    group = registry.Entity.objects.filter(type__name='group')
+    spot = registry.Entity.objects.filter(type__name='spot')
+    list_ = models.List.objects.filter(default_type=-1)
+    title = models.Title.objects.all()
 
     if request.POST.get('field_value') != None:
         search = request.POST['field_value']
-        user = User.objects.filter(is_staff=False, first_name__icontains=search)
+        user = User.objects.filter(
+            db_model.Q(username__icontains=search) |
+            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)).filter(is_staff=False)
+
         author = models.Author.objects.filter(name__icontains=search)
+        org = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='organization')
+        group = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='group')
+        spot = registry.Entity.objects.filter(name__icontains=search,
+                                                           type__name='spot')
+        list_ = models.List.objects.filter(name__icontains=search, default_type=-1)
+        title = models.Title.objects.filter(title__icontains=search)
+
 
     list_us = {}
     list_author = {}
+    list_org = {}
+    list_group = {}
+    list_spot = {}
+    list_lis = {}
+    list_title = {}
 
     for obj in user:
         list = {}
         list['id'] = int(obj.id)
-        list['first_name'] = str(obj.first_name)
-        list['last_name'] = str(obj.last_name)
+        name = ''
+        if not obj.first_name:
+            name = str(obj.username)
+        else:
+            name = str(obj.first_name)
+
+        list['name'] = name
+        list['name_2'] = str(obj.last_name)
         profile = registry.Profile.objects.filter(user=obj)
-        list['picture'] = profile[0].picture
+        picture = ''
+        if profile[0].picture:
+           picture = profile[0].picture
+        list['picture'] = picture
         list_us[str(obj.id)] = list
 
     for obj in author:
         list = {}
         list['id'] = int(obj.id)
-        list['first_name'] = str(obj.name)
-        list_author[str(obj.id)] = list
+        list['name'] = str(obj.name)
         list['picture'] = obj.picture
+        list_author[str(obj.id)] = list
+
+    for obj in org:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_org[str(obj.id)] = list
+
+    for obj in group:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_group[str(obj.id)] = list
+
+    for obj in spot:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_spot[str(obj.id)] = list
+
+    for obj in list_:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list['id_user'] = obj.user.id
+        list_lis[str(obj.id)] = list
+
+    for obj in title:
+        list = {}
+        list['id'] = int(obj.id)
+        list['name'] = (obj.title).encode('utf-8', 'ignore')
+        list['picture'] = obj.picture
+        list_title[str(obj.id)] = list
 
     context = {
         'users':list_us,
-        'author':list_author
+        'author':list_author,
+        'org':list_org,
+        'group':list_group,
+        'spot':list_spot,
+        'list':list_lis,
+        'title':list_title
     }
 
     context = simplejson.dumps(context)
@@ -479,7 +555,7 @@ def registry_ajax_page(request):
     del pages['csrfmiddlewaretoken']
     copy = pages
     for e, val in pages.iteritems():
-            copy[e] = str(val[0])
+            copy[e] = str(val[0].encode('utf-8', 'ignore'))
     pages = copy
     pages['id_user'] = user
     pages['date'] = datetime.today()

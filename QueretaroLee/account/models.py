@@ -22,6 +22,7 @@ class Title(models.Model):
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
+    id_google = models.TextField(max_length=30)
     description = models.TextField()
 
     def __unicode__(self):
@@ -35,6 +36,7 @@ class Author(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     biography = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
+    id_api = models.TextField()
 
     def __unicode__(self):
         return '%s' % (self.name)

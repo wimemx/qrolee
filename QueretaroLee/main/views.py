@@ -550,7 +550,6 @@ def advanced_search(request, **kwargs):
                 object = model.objects.filter(reduce(operator.or_, query))
         else:
             object = model.objects.filter(reduce(operator.and_, query))
-
         if not object:
             context = {
                 'response': 0
@@ -719,7 +718,7 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
-
+                    print q_list
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
@@ -1170,7 +1169,7 @@ def get_profile(request, **kwargs):
 
     if type == 'title':
         profile = account_models.Title.objects.get(id=profile)
-        list_user = account_models.ListTitle.objects.filter(list__default_type=0,
+        list_user = account_models.ListTitle.objects.filter(list__default_type=1,
                                                           title=profile, list__status=True,                                                          )
         list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
                                                        list__default_type=-1)
@@ -1387,12 +1386,32 @@ def load_picture_profile(request):
     user = request.user
 
     profile = models.Profile.objects.get(user=user)
-
+    picture = ''
+    if profile.picture:
+        picture = profile.picture
     context = {
         'id_user':user.id,
-        'picture': profile.picture
+        'picture': picture
     }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
+
+def get_page(request, **kwargs):
+
+    template = kwargs['template_name']
+    page_id = kwargs['page_id']
+    user_id = kwargs['user_id']
+    page = account_models.Page.objects.get(id=page_id)
+    list_pages = account_models.Page.objects.filter(id_user__id=user_id).\
+        exclude(id=page_id)
+    profile = models.Profile.objects.get(user__id=user_id)
+    context = {
+        'page':page,
+        'list_pages':list_pages,
+        'type':'page',
+        'profile':profile
+    }
+
+    return render(request, template, context)

@@ -43,7 +43,8 @@
                                 <a href="/qro_lee/profile/list/{{ value.id }}">
                                     <span class="wrapper_list" >
                                         {% if not value.picture %}
-                                            <img class="img_size_all" src="/static/img/create.png" alt="" />
+                                            <img class="img_size_all"
+                                                 src="/static/img/create.png" alt="" />
                                         {% else %}
                                             <img class="img_size_all"
                                                  src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}" alt="" />
@@ -52,7 +53,7 @@
                                 </a>
                                 <span class="container_data grid-13 no-margin">
                                     <span class=" grid-9 no-margin">
-                                        <a href="/qro_lee/profile/list/{{ value.id }}"
+                                        <a title="{{ value.name }}" href="/qro_lee/profile/list/{{ value.id }}"
                                             class="title alpha title_book">
                                             {{ value.name }}
                                         </a>
@@ -90,11 +91,12 @@
                                 <div class="item">
                                     <a href="/qro_lee/profile/title/{{ key }}">
                                         <span class="wrapper wrapper_book borde_author fleft no_margin-right">
-                                            <img class="img_size_all" src="{{ value.cover }}" alt=""/>
+                                            <img class="img_size_all"
+                                                 src="{{ value.cover }}" alt=""/>
                                         </span>
                                     </a>
                                     <a href="/qro_lee/profile/title/{{ key }}">
-                                        <h3 class="title title_book margin_left no-margin grid-2 fleftt">
+                                        <h3 title="{{ value.title }}" class="title title_book margin_left no-margin grid-2 fleftt">
                                             {{ value.title|truncatechars:10 }}
                                         </h3>
                                     </a>
@@ -121,9 +123,11 @@
                                         <span>
                                             {% for x in 'xxxxx' %}
                                                 {% if forloop.counter < value.grade %}
-                                                    <img class="starts_mini" src="/static/img/comunityStar.png" />
+                                                    <img class="starts_mini"
+                                                         src="/static/img/comunityStar.png" />
                                                 {% else %}
-                                                    <img class="starts_mini" src="/static/img/backgroundStar.png" />
+                                                    <img class="starts_mini"
+                                                         src="/static/img/backgroundStar.png" />
                                                 {% endif %}
                                             {% endfor %}
                                         </span>
@@ -142,7 +146,9 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/author/{{ key }}" class="title alpha grid-4">
+                                <a title="{{ value.name }}"
+                                   href="/qro_lee/profile/author/{{ key }}"
+                                   class="title alpha grid-4">
                                     {{ value.name|truncatechars:20 }}</a>
                                 <p class="grid-4 no-margin text_biography">
                                     {{ value.biography|truncatechars:180 }}

@@ -35,11 +35,11 @@
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
-            <span class="general-info no-margin grid-7">
+            <span class="general-info no-margin grid-9">
                 <h3 class="title d-title_profile">
                         {{ profile.name|title }}
                 </h3>
-                <span class="grid-7 no-margin container_rate">
+                <span class="grid-9 no-margin container_rate">
                       <span class="container_starts_rate fleft">
                         {% if grade == 0 %}
                             {% for x in range %}
@@ -66,13 +66,13 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
                         {% if grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ grade }} </span>
                         {% endif %}
                     </span>
                 </span>
-                <span class="grid-7 no-margin">
+                <span class="grid-9 no-margin">
                     <p >
                         {% if count == 0 %}
                             no tiene títulos
@@ -99,7 +99,7 @@
                          alt="{{ profile.cover }}"/>
                 {% endif %}
             </span>
-            <span class="general-info no-margin grid-7">
+            <span class="general-info no-margin grid-9">
                 <h3 class="title d-title_profile">
                         {{ profile.title|title|truncatechars:25 }}
                 </h3>
@@ -115,7 +115,7 @@
                         </a>
                     {% endif %}
                 </p>
-                <span class="grid-7 no-margin container_rate text_profile">
+                <span class="grid-9 no-margin container_rate text_profile">
                       <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
                             {% for x in range %}
@@ -142,13 +142,13 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
                         {% if grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ grade }} </span>
                         {% endif %}
                     </span>
                 </span>
-                <span class="grid-7 no-margin ">
+                <span class="grid-9 no-margin ">
                     <p class="text_profile">
                         {% if count == 0 %}
                             nadie está
@@ -162,9 +162,9 @@
                         leyendo este libro
                     </p>
                 </span>
-                <span class="grid-7 no-margin ">
+                <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                        {{ profile.description|truncatechars:200 }}
+                        {{ profile.description|truncatechars:420 }}
                     </p>
                 </span>
             </span>
@@ -178,7 +178,7 @@
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
-            <span class="general-info no-margin grid-7">
+            <span class="general-info no-margin grid-9">
                 <h3 class="title d-title_profile">
                         {{ profile.name|title }}
                 </h3>
@@ -191,7 +191,7 @@
                         </span>
                     </a>
                 </p>
-                <span class="grid-7 no-margin container_rate">
+                <span class="grid-9 no-margin container_rate">
                       <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
                             {% for x in range %}
@@ -218,23 +218,23 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count }} votaciones </span>
+                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
                         {% if grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ grade }} </span>
                         {% endif %}
                     </span>
                </span>
                 <p class="descrip_list">
-                    {{ profile.description }}
+                    {{ profile.description|truncatechars:420 }}
                 </p>
             </span>
         {% endif %}
-        <span class="grid-5 no-margin social_profile">
-            <span class="icon_social btn_fb_profile fright">
-                <img src="/static/img/icon_twitter_foll.png"/>
-            </span>
-            <span class="icon_social fright">
+        <span class="grid-3 no-margin social_profile">
+            <span class="icon_social btn_fb_profile">
                 <img src="/static/img/icon_fb_foll.png"/>
+            </span>
+            <span class="icon_social">
+                <img src="/static/img/icon_twitter_foll.png"/>
             </span>
             </span>
     </div>
@@ -395,13 +395,17 @@
                         </h3>
                         {% for obj in list_user %}
                             <span class="item_title grid-5 no-margin">
-                                <span class="wrapper_title borde_author ">
-                                        <img class="img_size_all"
-                                        src="/static/media/users/{{ obj.list.user.id }}/profile/{% for pict in list_picture %}{% if pict.user == obj.list.user %}{{ pict.picture }}{% endif %}{% endfor %}" />
-                                </span>
-                                <h3 class="title grid-3 title_mini text_name_user">
-                                   {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
-                                </h3>
+                                <a href="/accounts/users/profile/{{ obj.list.user.id }}">
+                                    <span class="wrapper_title borde_author ">
+                                            <img class="img_size_all"
+                                            src="/static/media/users/{{ obj.list.user.id }}/profile/{% for pict in list_picture %}{% if pict.user == obj.list.user %}{{ pict.picture }}{% endif %}{% endfor %}" />
+                                    </span>
+                                </a>
+                                <a href="/accounts/users/profile/{{ obj.list.user.id }}">
+                                    <h3 class="title grid-3 title_mini text_name_user">
+                                       {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
+                                    </h3>
+                                </a>
                             </span>
                         {% endfor %}
                         <span class="place_pink link_all fright all_book">ver todos</span>

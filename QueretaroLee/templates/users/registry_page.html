@@ -13,7 +13,11 @@
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
     <script>
-        tinymce.init({selector:'.textarea_tinymce'});
+        tinymce.init({
+            selector:'.textarea_tinymce',
+            content_css : "{% static "style/custom_content.css" %}"
+        });
+
     </script>
 {% endblock %}
 
@@ -37,12 +41,12 @@
                 <p>
                     Introduce el nombre de tu página
                     <p>
-                        <input name="name" type="text" class="search_entities">
+                        <input name="name" type="text" class="input_val search_entities">
                     </p>
                 <p>
                     Escribe el contenido de tu página
                     <p>
-                        <textarea name="coment" class="textarea_tinymce textarea_page "></textarea>
+                        <textarea name="coment" class="input_val textarea_tinymce textarea_page "></textarea>
                     </p>
                 </p>
                 <p>
@@ -52,7 +56,7 @@
                     </span>
                 </p>
                 <p>
-                    <textarea name="tags" class="textarea_tags"></textarea>
+                    <textarea name="tags" class="input_val textarea_tags"></textarea>
                 </p>
                 <p>
                     Compartir en redes sociales
