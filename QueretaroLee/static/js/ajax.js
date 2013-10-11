@@ -126,7 +126,7 @@ function removeUser($ele,user_id, remove, entity){
         url: '/registry/remove_add_user/'+user_id+'/',
         dataType: 'json',
         data: {
-            'csrfmiddlewaretoken': $ele.find('div input').val(),
+            'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
             'user_id': user_id,
             'remove': remove,
             'entity': entity
@@ -395,14 +395,18 @@ $(document).ready(function(){
             'join': join
         }
         search = JSON.stringify(search);
-        var csrf = $('.csrf_token').find('div input').val();
+        var csrf = $('.csrf_header').find('div input').val();
         data = advanced_search(search, csrf);
 
         overview = $('.overview_page');
         overview.fadeOut(200);
         overview.empty();
 
+        if('response' in data)
+            delete data['response'];
+
         $.each(data,function(i){
+
             var href = '/qro_lee/user/' + id_user + '/page/'+ data[i].id;
             div = $('<div class="item_list grid-15 no-margin" ></div>');
             a_wrapper = $('<a href="' + href + '"></a>');
@@ -419,7 +423,7 @@ $(document).ready(function(){
             a_title.append(truncText(data[i].name,26));
             p_text = $('<span class="d-text_list grid-13 no-margin" ></span>');
             img_coment = $('<div></div>');
-            img_coment.append(data[i].coment)
+            img_coment.append(data[i].coment);
             var img_exist = false;
             var count_img = 0;
             $.each(img_coment,function(){
@@ -474,7 +478,7 @@ $(document).ready(function(){
             type: "POST",
             url: '/qro_lee/entity/events/'+$('.sidebar-b input.entity').val()+'/',
             data: {
-                'csrfmiddlewaretoken': $('.sidebar-b div input[type=hidden]').val(),
+                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
                 'curr_month': -1,
                 'id_entity':edit_events
             },
@@ -577,7 +581,7 @@ $(document).ready(function(){
                 type: "POST",
                 url: '/qro_lee/entities/spot/',
                 data: {
-                    'csrfmiddlewaretoken': $('.search div input[type=hidden]').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
                     'post': 2
                 },
                 dataType: 'json'
@@ -877,6 +881,7 @@ function search_list_authors_titles($this){
                         overview = $('.overview');
                     }
 
+
                     overview.fadeOut(300,function(){
                     overview.empty();
 
@@ -884,20 +889,22 @@ function search_list_authors_titles($this){
 
                     $.each(data,function(i){
                         var href = '/qro_lee/profile/list/'+ data[i].id;
-                        div = $('<div class="item_list grid-15 no-margin" ></div>');
+                        div = $('<div class="item_list grid-14 no-margin" ></div>');
                         a_wrapper = $('<a href="' + href + '"></a>');
                         span = $('<span class="wrapper_list" ></span>');
                         a_wrapper.append(span);
                         div.append(a_wrapper);
-                        img = $('<img class="img_size_all" src="/static/media/users/'
-                            + data[i].id_user + '/list/' +
-                            data[i].picture + '"/>');
+                        var src = '/static/img/create.png';
+                        if(data[i].picture != '')
+                            src = '/static/media/users/' + data[i].id_user + '/list/' +
+                                    data[i].picture ;
+                        img = $('<img class="img_size_all" src="' + src + '"/>');
                         span.append(img);
-                        span_data = $('<span class="container_data grid-13 no-margin">'+
+                        span_data = $('<span class="container_data grid-12 no-margin">'+
                             '</span>');
                         if(my_list_type==0){
 
-                            span_title = $('<span class="grid-4 no-margin"></span>');
+                            span_title = $('<span class="grid-3 no-margin"></span>');
                             span_btn = $('<span class="container_btn grid-4 no-margin"></span>');
                             edit_list = $('<a href="/registry/edit_list/' + data[i].type +
                                 '/' + data[i].id + '"></a>');
@@ -920,7 +927,7 @@ function search_list_authors_titles($this){
                         if(my_list_type==0)
                             p_stars = $('<span class="fright"></span>');
                         else
-                            p_stars = $('<span class="grid-4 no-margin"></span>');
+                            p_stars = $('<span class="grid-3 no-margin"></span>');
 
                         span_stars = $('<span class="fright" ></span>');
                         for(ind = 0;ind<5;ind++){
@@ -934,13 +941,13 @@ function search_list_authors_titles($this){
                         else
                             type = 'autores';
 
-                        p_by = $('<span class="d-text_list grid-13 d-text_opacity no-margin" >'+
+                        p_by = $('<span class="d-text_list grid-12 d-text_opacity no-margin" >'+
                                 'Lista con ' + data[i].count +' ' + type + ' creada por </span>');
                         text_by = $('<a href="/accounts/users/profile/' +
                             data[i].id_user + '" class="d-pink"></a>');
                         text_by.append(data[i].user);
                         p_by.append(text_by);
-                        p_text = $('<span class="d-text_list grid-13 no-margin" ></span>');
+                        p_text = $('<span class="d-text_list grid-12 no-margin" ></span>');
                         p_text.append(truncText(data[i].description,520));
                         span_title.append(a_title);
                         p_stars.append(span_stars);
@@ -994,7 +1001,7 @@ function search_list_authors_titles($this){
                                     genre[index] + '</span>');
                             }
                         });
-                        p_stars = $('<p class="fleft margin_left no-margin grid-2"></p>');
+                        p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2"></p>');
                         for(ind = 0;ind<5;ind++){
                             if(ind<data[i].grade)
                                 p_stars.append('<img class="starts_mini" src="/static/img/comunityStar.png">');
@@ -1225,7 +1232,7 @@ function search_all_header($this){
                 url: url,
                 dataType: 'json',
                 data: {
-                    'csrfmiddlewaretoken': $this.parent().find('div input').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
                     'field_value':field_value
                 }
             }).done(function(data) {

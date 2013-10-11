@@ -40,7 +40,7 @@
                 <div class="overview ">
 
                      {% for key, value in list.items %}
-                            <div class="item_list grid-15 no-margin" >
+                            <div class="item_list grid-14 no-margin" >
                                 <a href="/qro_lee/profile/list/{{ value.id }}">
                                     <span class="wrapper_list" >
                                         {% if not value.picture %}
@@ -52,14 +52,14 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                <span class="container_data grid-13 no-margin">
+                                <span class="container_data grid-12 no-margin">
                                     <span class=" grid-9 no-margin">
                                         <a title="{{ value.name }}" href="/qro_lee/profile/list/{{ value.id }}"
                                             class="title alpha title_book">
                                             {{ value.name }}
                                         </a>
                                     </span>
-                                    <p class="grid-4 no-margin">
+                                    <p class="grid-3 no-margin">
                                         <span class="fright">
                                             {% for x in 'xxxxx' %}
                                                 {% if forloop.counter < value.grade %}
@@ -70,7 +70,7 @@
                                             {% endfor %}
                                         </span>
                                     </p>
-                                    <p class="d-text_list grid-13 d-text_opacity no-margin" >
+                                    <p class="d-text_list grid-12 d-text_opacity no-margin" >
                                         Lista con {{ value.count }}
                                         {% if value.type == 'T' %}
                                             libros
@@ -82,7 +82,7 @@
                                             <span class="d-pink">{{ value.user }}</span>
                                         </a>
                                     </p>
-                                    <p class="d-text_list grid-13 no-margin" >
+                                    <p class="d-text_list grid-12 no-margin" >
                                         {{ value.description|truncatechars:520 }}</p>
                                 </span>
                             </div>
@@ -120,7 +120,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </p>
-                                    <p class="fleft margin_left no-margin grid-2 ">
+                                    <p class="fleft margin_left stars_title no-margin grid-2 ">
                                         <span>
                                             {% for x in 'xxxxx' %}
                                                 {% if forloop.counter < value.grade %}

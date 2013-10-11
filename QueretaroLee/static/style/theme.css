@@ -208,6 +208,7 @@ p{
         margin: 0px 13px 0px 0px;
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
+        padding-bottom: 2px;
     }
     .nav a.last{
         margin: 0px;
@@ -1767,13 +1768,13 @@ p{
 .sub-menu-book{
     background: #e7cb92;
     position: absolute;
-    top: 23px;
-    right: 0px;
-    width: 105px;
+    top: 18px;
+    right: 6px;
+    width: 98px;
     padding-right: 5px;
     padding-left: 5px;
     display: none;
-    z-index: 4;
+    z-index: 10;
 }
 
 .sub-menu-book a{
@@ -2017,6 +2018,7 @@ p{
 }
 .link_book{
     cursor: pointer;
+    padding-bottom: 2px;
 }
 
 .text_title{
@@ -2556,4 +2558,13 @@ form p .invalid_messa{
 
 .item_tit{
     width: 272px !important;
+}
+
+.stars_title{
+    height: 20px;
+}
+
+.link_book:hover .sub-menu-book{
+    display: block;
+
 }

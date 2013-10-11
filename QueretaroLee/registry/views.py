@@ -1022,36 +1022,37 @@ def add_my_title(request):
 
                     biography = ' '
                     picture = ' '
+                    if str(obj['it']['attribute']['author']) != 'autor anonimo':
+                        if len(response['result']) != 0:
+                            if len(response['result'][0]['output']) != 0:
+                                if len(response['result'][0]['output']['description']) != 0:
+                                    biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
-                    if len(response['result']) != 0:
-                        if len(response['result'][0]['output']) != 0:
-                            if len(response['result'][0]['output']['description']) != 0:
-                                biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
+                            if len(biography) > 1000:
+                                biography = biography[0:900]
 
-                        if len(biography) > 1000:
-                            biography = biography[0:900]
+                            if len(response['result'][0]['mid']) != 0:
+                                picture = 'https://www.googleapis.com/freebase/v1/image' +\
+                                          response['result'][0]['mid']
 
-                        if len(response['result'][0]['mid']) != 0:
-                            picture = 'https://www.googleapis.com/freebase/v1/image' +\
-                                      response['result'][0]['mid']
+                            dict_author = {
+                                'name': response['result'][0]['name'],
+                                'picture': picture,
+                                'biography': biography,
+                                'birthday': datetime.datetime.today()
+                            }
 
-                        dict_author = {
-                            'name': response['result'][0]['name'],
-                            'picture': picture,
-                            'biography': biography,
-                            'birthday': datetime.datetime.today()
-                        }
-
-                        author = account.Author.objects.create(**dict_author)
-                        author.save()
+                            author = account.Author.objects.create(**dict_author)
+                            author.save()
 
                     title = account.Title.objects.create(**li)
                     title.save()
 
-                    if len(response['result']) != 0:
-                        list_author_title = account.AuthorTitle.objects.create(title=title,                                                                           author=author)
-                        list_author_title.save()
+                    if str(obj['it']['attribute']['author']) != 'autor anonimo':
+                        if len(response['result']) != 0:
+                            list_author_title = account.AuthorTitle.objects.create(title=title,                                                                           author=author)
+                            list_author_title.save()
 
                 else:
                     title = account.Title.objects.get(id=obj['it']['id'])

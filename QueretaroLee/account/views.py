@@ -463,12 +463,12 @@ def list_user(request):
         list['id'] = int(obj.id)
         name = ''
         if not obj.first_name:
-            name = str(obj.username)
+            name = (obj.username).encode('utf-8', 'ignore')
         else:
-            name = str(obj.first_name)
+            name = (obj.first_name).encode('utf-8', 'ignore')
 
         list['name'] = name
-        list['name_2'] = str(obj.last_name)
+        list['name_2'] = (obj.last_name).encode('utf-8', 'ignore')
         profile = registry.Profile.objects.filter(user=obj)
         picture = ''
         if profile[0].picture:
@@ -479,7 +479,7 @@ def list_user(request):
     for obj in author:
         list = {}
         list['id'] = int(obj.id)
-        list['name'] = str(obj.name)
+        list['name'] = (obj.name).encode('utf-8', 'ignore')
         list['picture'] = obj.picture
         list_author[str(obj.id)] = list
 

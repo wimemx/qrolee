@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Profile(models.Model):
-    picture = models.CharField(max_length=255, null=True)
+    picture = models.CharField(max_length=255)
     phone = models.CharField(max_length=60, null=True)
     twitter_id = models.CharField(max_length=255, null=True)
     twitter_username = models.CharField(max_length=255, null=True)

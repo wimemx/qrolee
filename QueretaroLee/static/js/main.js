@@ -174,12 +174,6 @@ $(document).ready(function(){
         else
             $(this).find('.sub-menu').fadeIn(300);
     });
-    $('span.link_book').click(function(){
-        if($(this).find('.sub-menu-book').is(':visible'))
-            $(this).find('.sub-menu-book').fadeOut(300);
-        else
-            $(this).find('.sub-menu-book').fadeIn(300);
-    });
 
 
     $('p.fb').click(function(){
@@ -1578,9 +1572,13 @@ function list_title(csrf, data, div_text, type){
                     if('country' in attribute)
                         country = attribute_access['country'];
 
+                    var name_author = 'autor anonimo';
+                    if('authors' in attribute)
+                        name_author = attribute['authors'];
+
                     var obj = {
                         'title':attribute['title'],
-                        'author':attribute['authors'],
+                        'author':name_author,
                         'cover':url,
                         'description':desc,
                         'publisher':publisher,
@@ -1593,6 +1591,7 @@ function list_title(csrf, data, div_text, type){
                         'picture':url_mini,
                         'id_google':titles[i].id
                     }
+                    console.log(obj);
                     array.push(obj);
 
                     img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
