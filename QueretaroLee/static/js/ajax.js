@@ -126,7 +126,7 @@ function removeUser($ele,user_id, remove, entity){
         url: '/registry/remove_add_user/'+user_id+'/',
         dataType: 'json',
         data: {
-            'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
             'user_id': user_id,
             'remove': remove,
             'entity': entity
@@ -1227,7 +1227,7 @@ function search_entities($this){
 
 function search_all_header($this){
      var url = '/accounts/list_users/';
-        console.log($('.csrf_header').find('div input').val());
+
         var field_value = $('.search_field').val();
         if($('.search_field').val().length==0)
             field_value = '';
@@ -1237,7 +1237,7 @@ function search_all_header($this){
                 url: url,
                 dataType: 'json',
                 data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'field_value': field_value
                 }
             }).done(function(data) {
