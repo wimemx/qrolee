@@ -4,14 +4,15 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from registry.models import Entity,Type,Event
 from django.db.models.loading import get_model
 from django.db import models as db_model
 from django.db.models import Q
-from collections import namedtuple
+
+from registry.models import Entity,Type,Event
 from account import models as account_models
 from registry import models,views,settings
 
+from collections import namedtuple
 from decimal import Decimal
 import simplejson
 import calendar
@@ -27,15 +28,24 @@ import urllib2
 def index(request, **kwargs):
     template = kwargs['template_name']
     if request.user.is_authenticated():
+        activity_list = list()
         user = request.user
         profile = models.Profile.objects.get(user_id=user)
+
+        following = account_models.Activity.objects.filter(
+            user_id=user.id, activity_id=5)
+        following_list = list()
+        for follow in following:
+            following_list.append(follow.object)
+
         activity = account_models.Activity.objects.filter(
-            user_id=user.id)
+            added_to_object__in=following_list).order_by('-date')
+
+        for feed in activity:
+            activity_list.append(feed)
+
     else:
         return HttpResponseRedirect('/')
-
-    if not activity:
-        activity = 0
 
     context = {
         'user': user,
@@ -206,6 +216,15 @@ def get_entity(request, **kwargs):
             if membership == 1:
                 entityuser[0].is_member = True
                 entityuser[0].save()
+                activity_data = {
+                    'user_id': request.user.id,
+                    'object': request.user.id,
+                    'added_to_object': entity.id,
+                    'type': 'U',
+                    'added_to_type': 'E',
+                    'activity_id': 5
+                }
+                views.update_activity(activity_data)
             else:
                 entityuser[0].is_member = False
                 entityuser[0].save()
@@ -389,6 +408,7 @@ def get_events(request, **kwargs):
     context = {
         'events': list(events)
     }
+
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 

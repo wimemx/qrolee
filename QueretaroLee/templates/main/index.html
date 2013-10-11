@@ -7,9 +7,8 @@
 {% endblock %}
 
 {% block js %}
+   <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.11&sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="/static/js/ajax.js"></script>
 {% endblock %}
 
@@ -94,26 +93,18 @@
         </div>
 
         <div class="grid-8 left">
-            {% if activiy %}
-                {% for news_feed in activity %}
-                    {{ news_feed.id|feed_type }}
-                {% endfor %}
+            {% if activity  %}
             <h3 style="margin-top: 30px;" class="title">Actividad receinte</h3>
             <div id="scrollbar1">
                 <div class="scrollbar" style="right: -35px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">
                     <div class="overview">
-                        <span class="follow feed">
-                            <span class="wrapper fleft">
-                                <img src="" alt=""/>
-                            </span>
-                            <span class="grid-6 content no-margin fleft">
-                                    <span class="trigger din-b">Laura Rodirguez</span>
-                                    <span class="verb din-r">empezó a seguir a </span>
-                                    <span class="verb din-b">Cafe algo</span>
-                            </span>
-                            <p class="gray_text no-margin fleft">hace 2 horas</p>
-                        </span>
+                        {% for news_feed in activity %}
+                            {% autoescape off %}
+                                {{ news_feed.id|feed_type }}
+                            {% endautoescape %}
+                        {% endfor %}
+
                         <span class="create feed">
                             <span class="wrapper fleft">
                                 <img src="" alt=""/>

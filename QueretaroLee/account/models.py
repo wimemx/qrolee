@@ -22,7 +22,7 @@ class Title(models.Model):
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
-    description = models.TextField(max_length=255)
+    description = models.TextField()
 
     def __unicode__(self):
         return '%s, %s' % (self.title, self.type)

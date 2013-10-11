@@ -11,12 +11,13 @@
     #registry p{
         font-size: 12px;
         font-family: 'Montserrat' sans-serif;
-        height: 20px;
-        line-height: 20px;
+        height: 27px;
+        line-height: 27px;
         float: left;
         width: 100%;
         display: inline-block;
         position: relative;
+        margin-top: 10px;
     }
     #registry .invalid{
         top: -35px !important;
@@ -40,7 +41,7 @@
         }
         #registry .select{
             padding: 0px;
-            height: 20px;
+            height: 27px;
         }
             #registry .select .text{
                 text-transform: capitalize;
@@ -48,7 +49,7 @@
                 height: 100%;
                 display: block;
                 color: #424242;
-                font-family: 'Conv_fontscore.com_d-dinproregular';
+                font-family: Arial, sans-serif;
             }
             #registry .select .dropdown{
                 position: absolute;
@@ -69,7 +70,7 @@
             margin:0px !important;
             background: #fff;
             text-indent: 5px;
-            font-family: 'Conv_fontscore.com_d-dinproregular';
+            font-family: Arial, sans-serif;
         }
         .multi_select{
             height: 100%;
@@ -82,12 +83,13 @@
                 width: 100%;
                 height: 20px;
                 line-height: 20px;
-                text-align: center;
+                text-align: left;
                 display: block;
                 margin-top: 5px;
                 cursor: pointer;
                 font-size: 11px;
-                font-family: 'Conv_fontscore.com_d-dinproregular';
+                text-indent: 7px;
+                font-family: Arial, sans-serif;
             }
             .multi_select .active{
                 background: #cccc66;
@@ -101,7 +103,7 @@
             padding: 2px 8px 2px 8px;
         }
         .filename{
-            font-family: 'Conv_fontscore.com_d-dinproregular';
+            font-family: Arial, sans-serif;
             line-height: 26px;
         }
         input.picture{

@@ -716,10 +716,13 @@ $(document).ready(function(){
                 }
             });
     });
-    $('.search_pages').click(function(){
-        console.log($('.field_pag').val());
-    });
 
+    $('.search_field').focusin(function(){
+        $(this).css('background','#e7e7e7');
+    });
+    $('.search_field').focusout(function(){
+        $(this).css('background','#98a4a3');
+    });
     $('.search_button').click(function(){
         if($('.search_field').val().length>0){
             var url = '/accounts/list_users/';

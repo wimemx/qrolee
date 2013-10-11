@@ -221,18 +221,18 @@ def user_profile(request, **kwargs):
                 grade_title = 0
                 rate_title = models.Rate.objects.filter(element_id=obj.title.id).\
                     values('element_id').\
-                annotate(count = db_model.Count('element_id'),
-                         score = db_model.Avg('grade'))
+                annotate(
+                    count=db_model.Count('element_id'), score=db_model.Avg('grade'))
 
                 if len(rate_title) != 0:
                     grade_title = rate_title[0]['score']
 
                 author_name = 'autor anonimo'
 
-                author =  models.AuthorTitle.objects.filter(title=obj.title)
+                author = models.AuthorTitle.objects.filter(title=obj.title)
 
-                activity = models.Activity.objects.get(object=obj.title.id,
-                                                       added_to_object=obj.list.id)
+                activity = models.Activity.objects.get(
+                    object=obj.title.id, added_to_object=obj.list.id)
                 id_author = 0
                 if len(author) != 0:
                     author_name = author[0].author.name
