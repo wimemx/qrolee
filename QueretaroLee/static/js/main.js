@@ -1591,7 +1591,6 @@ function list_title(csrf, data, div_text, type){
                         'picture':url_mini,
                         'id_google':titles[i].id
                     }
-                    console.log(obj);
                     array.push(obj);
 
                     img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');

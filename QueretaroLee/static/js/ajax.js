@@ -841,15 +841,18 @@ function show_title_act($this){
             d_show_dialog(0);
         }
     }
-
 }
 
 function search_list_authors_titles($this){
+
         var url = '';
         var text = '';
+        var id_profile = 0;
+
         if($('.type').val()=="List"){
             url = '/list/';
             text = ' Listas ';
+            id_profile = $('.id_profile').val();
         }
         if($('.type').val()=="Title"){
             url = '/book/titles/';
@@ -868,7 +871,8 @@ function search_list_authors_titles($this){
             data: {
                 'csrfmiddlewaretoken': csrf,
                 'field_value':$('.field_list').val(),
-                'type_list':my_list_type
+                'type_list':my_list_type,
+                'id_profile':id_profile
             }
             }).done(function(data) {
 
@@ -1223,6 +1227,7 @@ function search_entities($this){
 
 function search_all_header($this){
      var url = '/accounts/list_users/';
+        console.log($('.csrf_header').find('div input').val());
         var field_value = $('.search_field').val();
         if($('.search_field').val().length==0)
             field_value = '';
@@ -1233,7 +1238,7 @@ function search_all_header($this){
                 dataType: 'json',
                 data: {
                     'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
-                    'field_value':field_value
+                    'field_value': field_value
                 }
             }).done(function(data) {
 
