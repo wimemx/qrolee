@@ -328,7 +328,7 @@
                             <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/title/{{ key }}">
                                     <span class="wrapper_title borde_author ">
-                                        {% if not value.picture %}
+                                        {% if not value.picture or value.picture == 'None' %}
                                         <img class="img_size_all"
                                              src="/static/img/create.png" />
                                         {% else %}
@@ -363,7 +363,7 @@
                             <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/list/{{ obj.list.id }}">
                                     <span class="wrapper_title borde_author ">
-                                        {% if not obj.list.picture %}
+                                        {% if not obj.list.picture or obj.list.picture == 'None' %}
                                             <img class="img_size_all"
                                                  src="/static/img/create.png"/>
                                         {% else %}

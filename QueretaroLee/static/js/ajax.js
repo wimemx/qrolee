@@ -352,10 +352,10 @@ $(document).ready(function(){
     var $item = $('.sidebar-a .item').clone();
 
     $('.heading .search span.search_btn').click(function(){
-       search_entities($(this));
+        search_entities($(this));
     });
     $('.search_ent_field').keyup(function(){
-       search_entities($('.heading .search span.search_btn'));
+        search_entities($('.heading .search span.search_btn'));
     });
     $('.search_list').click(function(){
         search_list_authors_titles($(this));
@@ -1110,18 +1110,10 @@ function search_entities($this){
 
                         if(data){
 
-                            var no_found = 0;
-                            $.each(data,function(index){
-                                var inde = data[index];
-                                $.each(inde,function(index2){
-                                    no_found++;
-                                });
-                            });
-
                             var counter = $('.overview .grid-7').size()-1;
-                            $('.overview .grid-7').each(function(){
-                                if(counter == 0){
-                                $(this).fadeOut(300,function(){
+                            $('.overview').fadeOut(250,function(){
+
+                            $('.overview').empty();
                                     $.each(data,function(index){
                                         entity_obj = data[index];
                                         $.each(entity_obj,function(i){
@@ -1206,18 +1198,13 @@ function search_entities($this){
                                         }
                                         });
                                     });
-                                });
-                            }else
-                                    $(this).fadeOut(300,function(){
-                                        $(this).remove();
-                                    });
-                                counter--;
+                                $(this).fadeIn(250);
                             });
                         }
                         $('.d-not_found').remove();
-                        if(no_found==0){
-                            text_no_found();
-                        }
+
+                        //text_no_found();
+
                         $('#scrollbar1').tinyscrollbar();
                 });
             }

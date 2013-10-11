@@ -149,22 +149,23 @@ function type_add_list(csrf, id ,query){
         fields = ['name','id','picture','id_api'];
         and = 0;
         join = {
-            'tables':{
-                0: JSON.stringify(['account.author','account.authortitle']),
-                1: JSON.stringify(['account.rate'])
-            },
-            'quieres':{
-                0: JSON.stringify(['title_id']),
-                1: JSON.stringify(['element_id'])
-            },
-            'fields':{
-                0: JSON.stringify(['first_name','last_name']),
-                1: JSON.stringify(['grade'])
-            },
-            'activity':{
-                0:JSON.stringify(['A'])
+                'tables':{
+                    0: JSON.stringify(['account.title','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
+
+                },
+                'quieres':{
+                    0: JSON.stringify(['author_id']),
+                    1: JSON.stringify(['element_id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['title']),
+                    1: JSON.stringify(['grade'])
+                },
+                'activity':{
+                    0:JSON.stringify(['A'])
+                }
             }
-        }
     }
     if(type == 'T'){
         model = 'account.title';

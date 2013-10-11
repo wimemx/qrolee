@@ -1,6 +1,7 @@
 var content_search_entity = false;
 var header_search_entity = false;
 var entity_search_events = false;
+var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var date = new Date();
@@ -1656,7 +1657,8 @@ function list_title(csrf, data, div_text, type){
 
     author_l = data[0];
     var array_ids_apis = [];
-    delete author_l['response'];
+    if('response' in author_l)
+        delete author_l['response'];
 
     if(type !=1){
 
@@ -2561,6 +2563,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         _query = {
             'name__icontains': words
         }
+
         model = 'account.author';
         fields = ['name','id','picture'];
         and = 0;
