@@ -64,8 +64,11 @@
                 <p>
                     <span class="grid-12 content_check">
                         {% if profile.social_session %}
+                            <input type="hidden" value="1" class="fb_session"/>
                             <input type="checkbox" class="chec_pag fleft" />
                             <span class="text_check">Compartir con facebook</span>
+                        {% else %}
+                            <input type="hidden" value="0" class="fb_session"/>
                         {% endif %}
                     </span>
                     <span class="grid-12 content_check">
@@ -105,21 +108,27 @@
                     }).done(function(data) {
 
                                 if(data.success == 'True'){
-                                    FB.ui(
-                                            {
-                                                method: 'feed',
-                                                name: 'Qro_lee',
-                                                link: 'http://localhost:8000/',
-                                                caption: page_name,
-                                                description: $('.user_name').val()
-                                                        + ' ha creado la pagina ' + page_name,
-                                                message: content
-                                            },
-
-                                            function(response) {
-                                                window.location.href = site_url+'/qro_lee/';
-
-                                            });
+                                    if($('.fb_session').val()=='1'){
+                                        FB.ui(
+                                                {
+                                                    method: 'feed',
+                                                    name: 'Qro_lee',
+                                                    link: 'http://localhost:8000/',
+                                                    caption: page_name,
+                                                    description: $('.user_name').val()
+                                                            + ' ha creado la pagina ' + page_name,
+                                                    message: content
+                                                },
+                                                function(response) {
+                                                    window.location.href = site_url +
+                                                            '/qro_lee/user/' + data.user_id +
+                                                            '/page/'+data.page_id;
+                                                });
+                                    }else{
+                                        window.location.href = site_url +
+                                                            '/qro_lee/user/' + data.user_id +
+                                                            '/page/'+data.page_id;
+                                    }
                                 }else{
                                     $('.message').addClass('fail');
                                     $('.message').html('Hubo un error, favor de verificar sus datos');

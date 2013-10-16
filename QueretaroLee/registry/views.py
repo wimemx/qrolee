@@ -809,7 +809,7 @@ def register_ajax_list(request):
 
     copy = list
     for e, val in list.iteritems():
-            copy[e] = str(val[0])
+            copy[e] = val[0]
 
     list = copy
     user = request.user
@@ -1169,15 +1169,18 @@ def add_my_title(request):
                     if len(my_grade) != 0:
                         fields_title['user'] = int(my_grade[0].user.id)
 
-            activity = account.Activity.objects.get(object=obj.title.id,
+            activity = account.Activity.objects.filter(object=obj.title.id,
                                                     added_to_object=obj.list.id)
 
             fields_title['author'] = name_author
             fields_title['id_author'] = id_author
-            fields_title['id_list'] = obj.list.id
-            fields_title['date'] = str(activity.date.day) + ' de ' \
-                               + str(array_date[(activity.date.month-1)]) + ' ' \
-                              + str(activity.date.year)
+            fields_title['id_list'] = obj.id
+            date = ''
+            if len(activity) != 0:
+                atc_date = str(activity[0].date.day) + ' de ' \
+                               + str(array_date[(activity[0].date.month-1)]) + ' ' \
+                              + str(activity[0].date.year)
+            fields_title['date'] = date
             my_list[int(obj.id)] = fields_title
 
         type = ''
@@ -1296,7 +1299,7 @@ def edit_list(request, **kwargs):
 
             #--------------date------------------------#
             items['default_type'] = obj.list.default_type
-            items['id_list'] = obj.list.id
+            items['id_list'] = obj.id
             items['author'] = author_name
             items['grade'] = grade_title
             dict_items[int(obj.title.id)] = items
@@ -1336,7 +1339,7 @@ def edit_list(request, **kwargs):
             items['id_list'] = obj.list.id
             dict_items[int(obj.author.id)] = items
 
-    rate = account.Rate.objects.filter(element_id=96).values('element_id').\
+    rate = account.Rate.objects.filter(element_id=list.id).values('element_id').\
             annotate(count = db_model.Count('element_id'),
                      score = db_model.Avg('grade'))
 
@@ -1376,6 +1379,8 @@ def edit_title_read(request):
     id_list = int(request.POST.get('id_list'))
     date = request.POST.get('date')
     context = {}
+    array_date = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
     if int(request.POST.get('type')) == 1:
         list_title = account.ListTitle.objects.get(id=id_list)
@@ -1386,10 +1391,12 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        activity = account.Activity.objects.get(object=list_title.title.id,
+        activity = account.Activity.objects.filter(object=list_title.title.id,
                                                 added_to_object=list_title.list.id)
-        activity.date = act_date
-        activity.save()
+        if len(activity)!=0:
+            activity[0].date = act_date
+            activity[0].save()
+
         context['succes'] = 'True'
         context['type'] = 2
         context['date'] = date
@@ -1411,7 +1418,7 @@ def edit_title_read(request):
 
         if len(activity)!=0:
             activity[0].date = act_date
-            activity[0].added_to_object = 1
+            activity[0].added_to_object = list_title.list.id
             activity[0].save()
         else:
             activity_data = {
@@ -1424,9 +1431,73 @@ def edit_title_read(request):
             }
             update_activity(activity_data)
 
+        dict_list = {}
+
+        list_read = account.ListTitle.objects.filter(list__default_type=1,
+                                                     list__user=request.user)
+
+        fields_related_objects = account.Title._meta.get_all_related_objects(
+            local_only=True)
+        fields = account.Title._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        dict_items = {}
+        for obj in list_read:
+            items = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    items[field] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    if field == 'published_date':
+                        items[field] = str(obj.title.__getattribute__(str(field)))
+                    else:
+                        items[field] = obj.title.__getattribute__(str(field))
+
+                grade_title = 0
+                rate_title = account.Rate.objects.filter(element_id=obj.title.id).\
+                    values('element_id').\
+                annotate(
+                    count=db_model.Count('element_id'), score=db_model.Avg('grade'))
+
+                if len(rate_title) != 0:
+                    grade_title = rate_title[0]['score']
+
+                author_name = 'autor anonimo'
+
+                author =  account.AuthorTitle.objects.filter(title=obj.title)
+                activity = account.Activity.objects.filter(object=obj.title.id,
+                                                       added_to_object=obj.list.id)
+                id_author = 0
+                if len(author) != 0:
+                    author_name = author[0].author.name
+                    id_author = author[0].author.id
+
+                #--------------date------------------------#
+                items['default_type'] = obj.list.default_type
+                items['id_list'] = obj.id
+                items['id_author'] = id_author
+                if len(activity) != 0:
+                    items['date'] = str(activity[0].date.day) + ' de ' \
+                                + str(array_date[(activity[0].date.month-1)]) + ' ' \
+                                + str(activity[0].date.year)
+                items['author'] = author_name
+                items['grade'] = grade_title
+                items['id_user'] = obj.list.user.id
+                dict_items[int(obj.title.id)] = items
+
+            dict_list[int(obj.list.default_type)] = dict_items
+
         context['succes'] = 'True'
         context['type'] = 1
         context['date'] = date
+        context['list_read'] = dict_list
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
@@ -1441,3 +1512,25 @@ def update_activity(data):
     """
     activity = account.Activity.objects.create(**data)
     activity.save()
+
+
+def delete_picture(request):
+    type = request.POST.get('type')
+
+    if type == 'profile':
+        id_user = int(request.POST.get('id_user'))
+        profile = models.Profile.objects.get(user__id=id_user)
+
+        if profile:
+            succes = 'True'
+            profile.picture = ''
+            profile.save()
+        else:
+            succes = 'False'
+
+        context = {
+                'succes': succes
+            }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')

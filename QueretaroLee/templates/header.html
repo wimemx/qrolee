@@ -28,7 +28,7 @@
     <div class="account-settings omega alpha fright">
         <a href="/accounts/users/profile/{{ user.id }}" class="profile fleft">
             {% if not user_profile.picture %}
-                <img class="img_profile_mini" src="{% static "img/no_profile.png" %}" alt=""/>
+                <img class="img_profile_mini" src="/static/img/create.png"/>
             {% else %}
                 <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}

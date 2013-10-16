@@ -94,7 +94,7 @@
                     <div class="end"></div></div></div></div>
                 <div class="viewport overview_list">
                     <div class="overview ">
-                        <div class="add_my_list d-paddin_bottom">
+                        <div class="add_my_list ">
                             <div class="d-container_add_book grid-5 no-margin">
                                 <div class="d-add_book" >
                                     <input type="hidden" value="list" class="list_typ" />
@@ -157,6 +157,7 @@
                                     $('#registry').find('input[type=submit]').val('Ok');
                                     $('#registry').find('input[type=submit]').addClass('msg-ok');
                                     add_titles_list($('.csrf_token').find('div input').val(),data.id_list);
+                                    window.location.href = site_url + '/qro_lee/profile/list/' + data.id_list;
 
                                 }else{
                                     $('.message').addClass('fail');

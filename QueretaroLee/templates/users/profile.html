@@ -36,7 +36,13 @@
             {% endif %}
         </span>
         <span class="general-info no-margin grid-7">
-            <h3 class="title d-title_profile">{{ user_profile.user.first_name|title }} {{ user_profile.user.last_name|title }}</h3>
+            <h3 class="title d-title_profile">
+                {% if user_profile.user.first_name %}
+                    {{ user_profile.user.first_name|title }} {{ user_profile.user.last_name|title }}
+                {% else %}
+                    {{ user.username|title }}
+                {% endif %}
+            </h3>
             <span class="social">
                 {% if user_profile.fb_username %}
                 <a href="http://facebook.com/{{ user_profile.fb_username }}">
@@ -54,8 +60,12 @@
                     </a>
                 {% endif %}
             </span>
-            <p >{{ user_profile.city|cut:"#" }}</p>
-            <p class="title_author" >
+            <p>
+                {% if city %}
+                    {{ city }}
+                {% endif %}
+            </p>
+            <p class="title_author count_titles_read" >
                 {% if count_titles == 1 %}
                     Un libro leído
                 {% else %}
@@ -64,23 +74,31 @@
             </p>
             <p class='title_act_read'>
                 {% if act_title == 0 %}
-                    <span class='text_act' >
-                        ¿Qué estás leyendo?
-                        <input type="hidden" class="type_message"
-                               value="show_titles" />
-                    </span>
+                    {% if user_profile.user.id == user.id %}
+                        <span class='text_act' >
+                            ¿Qué estás leyendo?
+                            <input type="hidden" class="type_message"
+                                   value="show_titles" />
+                        </span>
+                    {% else %}
+                        No está leyendo nada en este momento
+                    {% endif %}
                 {% else %}
-                    Acualmente está leyendo <a class="title_author">
-                    {{ act_title.title.title|truncatechars:17 }}</a>
-                    <span class="green_btn message_alert">
-                        Editar
-                        <input class="type_message"
-                        type="hidden" value="edit_title_read"/>
-                        <input class="id_list"
-                        type="hidden" value="{{ act_title.id }}"/>
-                        <input class="name_title"
-                        type="hidden" value="{{ act_title.title.title }}"/>
-                    </span>
+                    Acualmente está leyendo
+                    <a class="title_author">
+                            {{ act_title.title.title|truncatechars:17 }}
+                        </a>
+                    {% if user_profile.user.id == user.id %}
+                        <span class="green_btn message_alert">
+                            Editar
+                            <input class="type_message"
+                            type="hidden" value="edit_title_read"/>
+                            <input class="id_list"
+                            type="hidden" value="{{ act_title.id }}"/>
+                            <input class="name_title"
+                            type="hidden" value="{{ act_title.title.title }}"/>
+                        </span>
+                    {% endif %}
                 {% endif %}
             </p>
         </span>
@@ -98,6 +116,7 @@
         {% csrf_token %}
     </div>
     <input type="hidden" class="type_list" value="T" />
+    <input type="hidden" class="session_user" value="{{ user.id }}" />
     <div class="grid-16 load no-margin" style="display: block;" >
         <div class="coments grid-10 no-margin">
 
@@ -171,7 +190,7 @@
     <div class="heading">
         <h3 class="title grid-3 fleft title_header_list">Mis libros favoritos</h3>
                 <span class="search fleft grid-4">
-                    <input type="text"/>
+                    <input type="text" class="oo"/>
                     <span class="top right search_btn dark_yello_btn">Buscar</span>
                 </span>
     </div>
@@ -245,7 +264,7 @@
         {% if value.id_user == user.id %}
             <span class="pink_btn size_btn_edit message_alert">
                <input class="type_message" type="hidden" value="delete_title"/>
-                                                    -
+                -
             </span>
         {% endif %}
     </div>
@@ -256,10 +275,14 @@
         <span class="grid-15 line_divide no-margin">
             {% if list_titles.0 and list_titles.0|length > 2 %}
                 <span class="place_pink fright all_book">
-                <span class="span_text">Ver todos</span>
-                <input type="hidden" value="0" />
-            </span>
-
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
+            {% else %}
+                <span class="place_pink fright all_book disable_all">
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
             {% endif %}
         </span>
     </div>
@@ -330,7 +353,7 @@
             </span>
             </p>
             <p class="p-d-text d-text_opacity">
-                añadido {{ value.date }}
+                leido {{ value.date }}
             </p>
             {% if value.id_user == user.id %}
                 <span class="pink_btn size_btn_edit message_alert">
@@ -339,6 +362,7 @@
                 </span>
                 <span class="green_btn message_alert size_btn_edit">
                     <input class="type_message" type="hidden" value="edit_read"/>
+                    <input class="name_title" type="hidden" value="{{ value.title }}">
                     Editar
                 </span>
             {% endif %}
@@ -352,6 +376,11 @@
         <span class="grid-15 line_divide no-margin">
             {% if list_titles.1 and list_titles.1|length > 2 %}
                 <span class="place_pink fright all_book">
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
+            {% else %}
+                <span class="place_pink fright all_book disable_all">
                     <span class="span_text">Ver todos</span>
                     <input type="hidden" value="0" />
                 </span>
@@ -441,11 +470,16 @@
             </div>
             <span class="grid-15 line_divide no-margin">
                 {% if list_titles.2 and list_titles.2|length > 2 %}
-                    <span class="place_pink fright all_book">
-                        <span class="span_text">Ver todos</span>
-                        <input type="hidden" value="0" />
-                    </span>
-                {% endif %}
+                <span class="place_pink fright all_book">
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
+            {% else %}
+                <span class="place_pink fright all_book disable_all">
+                    <span class="span_text">Ver todos</span>
+                    <input type="hidden" value="0" />
+                </span>
+            {% endif %}
             </span>
         </div>
             <div >
@@ -518,7 +552,7 @@
                                 <a href="/qro_lee/profile/list/{{ key }}/"
                                    class="title alpha title_book grid-4">{{ value.name|truncatechars:30 }}</a>
 
-                                <span class="grid-4 no-margin">
+                                <span class="container_btn grid-4 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
                                             <span class="green_btn size_btn_edit" >Editar</span>
@@ -529,7 +563,7 @@
                                         </span>
                                 {% endif %}
                                 </span>
-                                <span class="fright">
+                                <span class="fright margin_top">
                                             {% for x in 'xxxxx' %}
                                                 {% if forloop.counter < value.grade %}
                                                     <img src="/static/img/comunityStar.png" />
@@ -562,7 +596,7 @@
     </div>
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15 no-margin">
-            <h3 class="title main">Grupos a los que pertenezco</h3>
+            <h3 class="title ">Grupos a los que pertenezco</h3>
             <div id="scrollbar1" class="d-margin_group_user" >
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
@@ -576,12 +610,13 @@
                                 <div class="grid-7 alpha">
                             {% endif %}
 
-                        <span class="wrapper d-group_user">
+                        <span class="wrapper d-group_user fleft">
                         <a href="/qro_lee/entity/group/{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}/">
                             {% if not obj.entity.picture %}
-                                <img src="" alt="{{ obj.entity.name }}"/>
+                                <img src="" class="img_group"  alt="{{ obj.entity.name }}"/>
                             {% else %}
-                                <img src="/static/media/users/{{ obj.entity.user.id }}/entity/{{ obj.entity.picture }}" alt="{{ entity.name }}"/>
+                                <img src="/static/media/users/{{ obj.entity.user.id }}/entity/{{ obj.entity.picture }}"
+                                     class="img_group" />
 
                             {% endif %}
                         </a>
@@ -594,10 +629,10 @@
                         <p class="d-text_group_user" >1,024 usuarios inscritos
                             <input type="hidden" class="name"
                                    value="{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}"/>
-                            <input class="type_message" type="hidden" value="out_group"/>
-                            {% if obj.list.user.id == user.id %}
+                            {% if obj.user.id == user.id %}
                                 <span class="d-pink_buttom message_alert fright">
                                 Abandonar
+                                <input class="type_message" type="hidden" value="out_group"/>
                             </span>
                             {% endif %}
                         </p>
@@ -615,11 +650,13 @@
                     <input type="hidden" value="{{ user_profile.user.id }}" class="profile_id_user"/>
                     <span class="top search_pages right dark_yello_btn">Buscar</span>
                 </span>
-                <a href="/accounts/users/registry_page/">
-                    <span class="d-pink_buttom d-brown-btn fright">
-                        Crear nueva página
-                    </span>
-                </a>
+                {% if user_profile.user.id == user.id %}
+                    <a href="/accounts/users/registry_page/">
+                        <span class="d-pink_buttom d-brown-btn fright">
+                            Crear nueva página
+                        </span>
+                    </a>
+                {% endif %}
             </div>
             <div id="scrollbar1" class="d-margin_group_user">
                 <div class="scrollbar"><div class="track"><div class="thumb">
@@ -640,8 +677,10 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                <a title="{{ value.name }}" href="/qro_lee/user/{{ value.id_user }}/page/{{ key }}/"
-                                   class="title alpha title_book grid-9">{{ value.name|truncatechars:26 }}</a>
+                                <span class="grid-9 no-margin">
+                                    <a title="{{ value.name }}" href="/qro_lee/user/{{ value.id_user }}/page/{{ key }}/"
+                                    class="title alpha title_book ">{{ value.name|truncatechars:26 }}</a>
+                                </span>
 
                                 <span class="grid-4 no-margin">
                                     {% if value.id_user == user.id %}
