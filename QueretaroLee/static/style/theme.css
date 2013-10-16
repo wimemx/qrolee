@@ -1739,7 +1739,7 @@ p{
     padding-right: 20px;
 }
 .entities .grid-15 {
-    height: 640px;
+    min-height: 640px;
     padding: 40px 40px 40px 40px;
     background: #fffcf5;
     display: block;
@@ -2369,6 +2369,7 @@ p{
 
 .textarea_page{
     height: 250px !important;
+    width: 99%;
 }
 
 .page p{
@@ -2420,7 +2421,7 @@ p{
 .btn_save_pag{
     background: #7ca680;
     margin-right: 10px;
-    padding-bottom: 3px !important;
+    padding-bottom: 1px !important;
 }
 
 form p .invalid_messa{
@@ -2620,5 +2621,20 @@ form p .invalid_messa{
 }
 
 .disable_all{
+    display: none;
+}
+
+.span_all{
+    padding-left: 4px;
+    cursor: pointer;
+}
+
+textarea{
+    resize: none;
+}
+
+.container_message_2{
+    position: fixed;
+    z-index: 10;
     display: none;
 }

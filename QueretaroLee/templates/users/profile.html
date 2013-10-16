@@ -40,7 +40,7 @@
                 {% if user_profile.user.first_name %}
                     {{ user_profile.user.first_name|title }} {{ user_profile.user.last_name|title }}
                 {% else %}
-                    {{ user.username|title }}
+                    {{ user_profile.user.username|title }}
                 {% endif %}
             </h3>
             <span class="social">
@@ -146,11 +146,11 @@
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
                          </h3>
-                         <span class="container_items grid-4 no-margin">
+                         <span class="container_items grid-5 no-margin">
                              {% for key, value in list_titles.0.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
-                                     {% if not forloop.last and forloop.counter != 3 %}
+                                     {% if not forloop.last and forloop.counter <= 3 %}
                                         border_right
                                     {% endif %}
                                     ">
@@ -158,29 +158,53 @@
                                             {{ value.title|truncatechars:12 }}
                                         </a>
                                      </span>
-                                 {% endif %}
-                             {% endfor %}
-                         </span>
-                         <h3 class="title grid-4 no-margin title_my_list">
-                             Libros leídos
-                         </h3>
-                         <span class="container_items grid-4 no-margin">
-                             {% for key, value in list_titles.1.items %}
-                                 {% if forloop.counter <= 3 %}
-                                    <span class=" my_items
-                                    {% if not forloop.last and forloop.counter != 3 %}
-                                        border_right
-                                    {% endif %}
-                                        ">
+                                 {% else %}
+                                    <span class=" my_items border_right" style="display: none;">
                                         <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
                                             {{ value.title|truncatechars:12 }}
                                         </a>
                                      </span>
                                  {% endif %}
                              {% endfor %}
+                             {% if list_titles.0|length > 3 %}
+                                 <span class="place_pink span_all">
+                                     <span>Ver más</span>
+                                    <input type="hidden" value="1" />
+                                 </span>
+                            {% endif %}
                          </span>
-                     </span>
-
+                         <h3 class="title grid-4 no-margin title_my_list">
+                             Libros leídos
+                         </h3>
+                         <span class="container_items grid-4 no-margin">
+                            <span class="container_items grid-5 no-margin">
+                                {% for key, value in list_titles.1.items %}
+                                 {% if forloop.counter <= 3 %}
+                                    <span class=" my_items
+                                     {% if not forloop.last and forloop.counter <= 3 %}
+                                        border_right
+                                    {% endif %}
+                                    ">
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:12 }}
+                                        </a>
+                                     </span>
+                                 {% else %}
+                                    <span class=" my_items border_right" style="display: none;">
+                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:12 }}
+                                        </a>
+                                     </span>
+                                 {% endif %}
+                             {% endfor %}
+                             {% if list_titles.1|length > 3 %}
+                                 <span class="place_pink span_all">
+                                     <span>Ver más</span>
+                                    <input type="hidden" value="1" />
+                                 </span>
+                            {% endif %}
+                            </span>
+                        </span>
             </div>
         </div>
     </div>
@@ -188,11 +212,24 @@
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
-        <h3 class="title grid-3 fleft title_header_list">Mis libros favoritos</h3>
-                <span class="search fleft grid-4">
-                    <input type="text" class="oo"/>
-                    <span class="top right search_btn dark_yello_btn">Buscar</span>
-                </span>
+        <h3 class="title grid-4 fleft title_header_list">
+            {% if user_profile.user.id == user.id %}
+                Mis libros favoritos
+            {% else %}
+                Libros favoritos de
+                {% if user_profile.user.first_name %}
+                    {{ user_profile.user.first_name }}
+                {% else %}
+                    {{ user_profile.user.username }}
+                {% endif %}
+            {% endif %}
+        </h3>
+        {% if user_profile.user.id == user.id %}
+            <span class="search fleft grid-4">
+                <input type="text" />
+                <span class="top right search_btn dark_yello_btn">Buscar</span>
+            </span>
+        {% endif %}
     </div>
     <div class="viewport margin_top">
     <div class="overview ">
@@ -288,7 +325,16 @@
     </div>
     <div>
     <h3 class="title title_book d-paddin_top_item grid-14 fleft">
-        Mis libros leídos
+        {% if user_profile.user.id == user.id %}
+            Mis libros leídos
+        {% else %}
+            Libros que ha leído
+            {% if user_profile.user.first_name %}
+                {{ user_profile.user.first_name }}
+            {% else %}
+                {{ user_profile.user.username }}
+            {% endif %}
+        {% endif %}
     </h3>
     <div class="book_read grid-15 no-margin d-paddin_bottom">
 
@@ -389,7 +435,16 @@
         </div>
         <div>
         <h3 class="title title_book d-paddin_top_item grid-14 fleft">
-            Mis libros por leer
+            {% if user_profile.user.id == user.id %}
+                Mis libros por leer
+            {% else %}
+                Libros que desea leer
+                {% if user_profile.user.first_name %}
+                    {{ user_profile.user.first_name }}
+                {% else %}
+                    {{ user_profile.user.username }}
+                {% endif %}
+            {% endif %}
         </h3>
         <div class="book_for_reading grid-15 no-margin d-paddin_bottom">
 
@@ -484,7 +539,16 @@
         </div>
             <div >
                 <h3 class="title title_book d-paddin_top_item grid-14 fleft">
-                    Mis géneros favoritos
+                    {% if user_profile.user.id == user.id %}
+                        Mis géneros favoritos
+                    {% else %}
+                        Géneros favoritos de
+                        {% if user_profile.user.first_name %}
+                            {{ user_profile.user.first_name }}
+                        {% else %}
+                            {{ user_profile.user.username }}
+                        {% endif %}
+                    {% endif %}
                 </h3>
                 <div class="grid-5 no-margin">
                     <div class="grid-5 no-margin container_genres">

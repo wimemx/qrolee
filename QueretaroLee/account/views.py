@@ -595,8 +595,6 @@ def registry_ajax_page(request):
             'success': 'False'
         }
 
-
-
     context = simplejson.dumps(context)
 
     return HttpResponse(context, mimetype='application/json')
@@ -623,7 +621,7 @@ def update_ajax_page(request):
     del pages['csrfmiddlewaretoken']
     copy = pages
     for e, val in pages.iteritems():
-            copy[e] = str(val[0])
+            copy[e] = val[0]
     pages = copy
     id_page = pages['id_page']
     del pages['id_page']
