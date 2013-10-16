@@ -80,6 +80,7 @@
                             <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                         {% endif %}
                     {% endif %}
+                {% endif %}
                 </span>
                 </span>
         {% endif %}
@@ -110,7 +111,7 @@
                         <span class="btn no-ajax fleft">Seguir</span>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                         <p class="private-icon fright">
-                            <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                         </p>
 
                     {% else %}
@@ -510,10 +511,10 @@
                             </a>
                         </span>
                         {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     {% else %}
         <p class="private-message margin-50 center">Este grupo es privado,
             <br> para ver la información solicitada

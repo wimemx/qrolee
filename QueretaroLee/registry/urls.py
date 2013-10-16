@@ -58,4 +58,5 @@ urlpatterns = patterns('',
     url(r'^update_list/(?P<list_id>[0-9]+)/$', views.update_list,
     name='update_list'),
     url(r'^edit_title_read/', views.edit_title_read, name='edit_title_read'),
+    url(r'^delete_picture/', views.delete_picture, name='delete_picture'),
 )

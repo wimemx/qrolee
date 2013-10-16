@@ -1,6 +1,7 @@
 var content_search_entity = false;
 var header_search_entity = false;
 var entity_search_events = false;
+var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var date = new Date();
@@ -129,6 +130,28 @@ function clear_input(no_clear){
 
 $(document).ready(function(){
 
+    $('.span_all').click(function(){
+        show_index_items($(this));
+    });
+
+    $('.d-add_book').click(function(){
+
+        var query = ' ';
+        var type = 0;
+
+        if($(this).find('input').val() == 'title')
+            type = 1;
+        if($(this).find('.list_typ').val() == 'list')
+            type = 4;
+
+        crsf = $('.csrf_header').find('input').val();
+
+        if($(this).find('.add_type').val() == 'add')
+            type_add_list(crsf, type, query);
+        if($(this).find('.add_type').val() == 'edit')
+            type_add_list(crsf, type, query);
+
+    });
     $('.heading .search .search_btn').click(function(){
         if($.trim($(this).parent().find('input[type=text]').val())
             != '')
@@ -215,6 +238,10 @@ $(document).ready(function(){
         $('.d-paddin_top').tinyscrollbar();
     if($('#scrollbar1').length>0)
         $('#scrollbar1').tinyscrollbar();
+
+    $('.show_upload').click(function(){
+       show_upload($(this));
+    });
 });
 
 function fb_obj_search(search, type){
@@ -374,6 +401,7 @@ function fb_obj_search(search, type){
 }
 
 function update_dir_info(loc_address, lat_long, type){
+
     if(type){
         var latlng = new google.maps.LatLng(lat_long[0],lat_long[1]);
         marker.position = latlng;
@@ -400,6 +428,7 @@ function update_dir_info(loc_address, lat_long, type){
                     results[0].address_components[2].long_name +'#'+
                     results[0].address_components[3].long_name;
                 $('.address').val(address);
+                $('.address_user').val(address.replace('#',' '));
             });
         }
     }
@@ -1527,6 +1556,7 @@ function list_title(csrf, data, div_text, type){
         if(data.length > 1 & data[1] != null){
 
             data = data[1];
+
             var titles = data['result_api']['items'];
             $.each(titles,function(i){
                 var id_google_exist = false;
@@ -1676,7 +1706,8 @@ function list_title(csrf, data, div_text, type){
 
     author_l = data[0];
     var array_ids_apis = [];
-    delete author_l['response'];
+    if('response' in author_l)
+        delete author_l['response'];
 
     if(type !=1){
 
@@ -2059,6 +2090,7 @@ function add_my_title(csrf, array_title, type){
                     });
                     container_list.find('.grid-15').find('.all_book').find('input').val(1);
                 });
+                disable_link_all(true);
             }
 
             if(type==4)
@@ -2173,13 +2205,11 @@ function get_titles_authors(list, csrf){
                         truncText(title[i2].extras[1][0],12)+'</a></p>';
 
                 p_author = $(name_author);
-                span_rate = $('<span></span>');
-                p_date = $('<p class="p-d-text d-text_opacity">' +
-                    title[i2].published_date + '</p>');
+                span_rate = $('<span class="grid-3 no-margin "></span>');
                 btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
-                span_stars = $('<span></span>');
+                span_stars = $('<span class="grid-3 no-margin marg_bot"></span>');
                 for(ind = 0;ind<5;ind++){
                     if(ind<title[i2].extras[0][0])
                         span_stars.append('<img src="/static/img/comunityStar.png">');
@@ -2195,7 +2225,6 @@ function get_titles_authors(list, csrf){
                 div_text.append(a_t);
                 div_text.append(p_author);
                 div_text.append(span_stars);
-                div_text.append(p_date);
                 div_text.append(btn_del);
                 btn_del.append(input_type);
                 div_add = container_list.find('.d-container_add_book');
@@ -2261,7 +2290,7 @@ function get_titles_authors(list, csrf){
                 a_t = $('<a class="title title_book alpha grid-4 "></a>');
                 a_t.append(truncText(title[i2].name,15));
                 p_author = $('<p class="p-d-text" > </p>');
-                span_rate = $('<span></span>');
+                span_rate = $('<span class="grid-3 no-margin"></span>');
                 btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
@@ -2297,9 +2326,9 @@ function show_titles($this){
     var decimal = ((count+1)/3) - int;
     var item_height = 1;
     if(decimal > 0 )
-        item_height = (Math.round(((count+2)/3))) * 155;
+        item_height = (Math.round(((count+2)/3))) * 160;
     else
-        item_height = (Math.round(((count+1)/3))) * 155;
+        item_height = (Math.round(((count+1)/3))) * 160;
 
     $this.find('.span_text').empty();
     if(disable_value==0){
@@ -2308,8 +2337,39 @@ function show_titles($this){
     }else{
         $this.find('input').val(0);
         $this.find('.span_text').append('Ver todos');
-        item_height = 148;
+        item_height = 152;
     }
+    div_container.animate({
+        'height': item_height
+    },250, function() {
+        // Animation complete.
+    });
+}
+function show_items($this){
+
+    div_container = $this.parent().parent().find('.over_items');
+    var name = div_container.attr('class');
+    name = name.replace('over_items','');
+    var disable_value =  parseInt($this.find('input').val());
+    var count = div_container.find('.item_title').length;
+    var item_height = count * 170;
+
+    $this.find('.span_text').empty();
+
+    if(disable_value==0){
+
+        $this.find('input').val(1);
+        $this.find('.span_text').append('Ver menos');
+    }else{
+
+        $this.find('input').val(0);
+        $this.find('.span_text').append('Ver todos');
+        if(count > 3)
+            item_height = 494;
+        else
+            item_height = count * 170;
+    }
+
     div_container.animate({
         'height': item_height
     },250, function() {
@@ -2348,8 +2408,7 @@ function show_dialog(){
                     group[0] + ' ?';
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
-                href = 'href="/registry/unjoin_entity/'+ $(this).parent().
-                    find('input').val()+'"';
+                href = 'href="#"';
             }
 
             if(type=="add_genre"){
@@ -2392,13 +2451,14 @@ function show_dialog(){
                 span_text.append(p_text);
 
             }
+
             if(type=="edit_read"){
                 name_title = $(this).find('.name_title').val();
                 text = 'Editar libro leído';
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
                 text2 = ' Fecha en que leíste ' + name_title;
-                p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
+                p_text2 = $('<p class="p_text_mini2">' + text2 + '</p>');
                 span_text.append(p_text2);
                 input_date = $('<input type="text" class="date_read"/>');
                 var date = new Date();
@@ -2407,6 +2467,7 @@ function show_dialog(){
                 span_text.append(input_date);
                 input_date.datepicker({
                 dateFormat: 'yy-mm-dd',
+                minDate: '0D',
                 onSelect: function(dateText) {
                     $('p').find('input.hour-init').val('00:00:00');
                 },
@@ -2417,12 +2478,15 @@ function show_dialog(){
             }
             if(type=="edit_title_read"){
                 name_title = $(this).find('.name_title').val();
-                text = 'Editar libro leído';
+                text = 'Editar qué estoy leyendo actualmente';
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
-                text2 = ' Fecha en que leíste ' + name_title;
+                text2 = '¿ Terminaste de leer ' + name_title + '?';
                 p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
                 span_text.append(p_text2);
+                p_text3 = $('<p class="p_text_mini2">Fecha en que terminaste de leer' +
+                    name_title + '</p>');
+                span_text.append(p_text3);
                 input_date = $('<input type="text" class="date_read"/>');
                 var date = new Date();
                 input_date.val(date.getFullYear() + '-' + (date.getMonth()+1) +
@@ -2430,6 +2494,7 @@ function show_dialog(){
                 span_text.append(input_date);
                 input_date.datepicker({
                     dateFormat: 'yy-mm-dd',
+                    minDate: '0D',
                     onSelect: function(dateText) {
                         $('p').find('input.hour-init').val('00:00:00');
                     },
@@ -2560,7 +2625,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
             'title__icontains':words
         }
         model = 'account.title';
-        fields = ['title', 'cover', 'id'];
+        fields = ['title', 'cover', 'id','id_google'];
         and = 0;
         join = {
             'tables':{
@@ -2584,6 +2649,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         _query = {
             'name__icontains': words
         }
+
         model = 'account.author';
         fields = ['name','id','picture'];
         and = 0;
@@ -2707,9 +2773,13 @@ function list_titles_and_author(data, type, $container, type_message){
     if(type == 'T'){
 
         titles_l = data[0];
-        delete titles_l['response'];
+        if('response' in titles_l)
+            delete titles_l['response'];
+        var array_ids_google = [];
+
 
         $.each(titles_l,function(i){
+            array_ids_google.push(titles_l[i].id_google);
             item_title = $('<span class="item_ti item_title_'+count+' "></span>')
 
             type_add = 'grid-4 selec_item d-item_mini_list';
@@ -2776,120 +2846,129 @@ function list_titles_and_author(data, type, $container, type_message){
         });
 
         data = data[1];
+
         var titles = data['result_api']['items'];
         $.each(titles,function(i){
-            attribute = titles[i]['volumeInfo'];
-            attribute_access = titles[i]['accessInfo'];
-            item_title = $('<span class="item_ti item_title_'+count+'"></span>')
-
-            type_add = 'grid-4 selec_item d-item_mini_list';
-
-            div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
-            item_title.append(div_item);
-            item_title.append('<input type="hidden" class="title_inte" value="0"/>');
-            item_title.append('<input type="hidden" class="active" value="0"/>');
-            span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
-            div_item.append(span_wrapper);
-            url = '/static/img/create.png';
-            url_mini = '/static/img/create.png';
-
-            if( "imageLinks" in attribute ){
-                url_mini = ''+attribute['imageLinks']['smallThumbnail'];
-                url = ''+attribute['imageLinks']['thumbnail'];
-            }
-
-            pages = 0;
-            if('pageCount' in attribute)
-                pages  = attribute['pageCount'];
-            desc = '';
-            if('description' in attribute)
-                desc  = ''+attribute['description'];
-
-            isbn = '';
-            isbn13 = '';
-            if('industryIdentifiers' in attribute){
-                if('identifier' in attribute['industryIdentifiers'][0])
-                    isbn = attribute['industryIdentifiers'][0]['identifier'];
-                if(attribute['industryIdentifiers'].length >1){
-                    if('identifier' in attribute['industryIdentifiers'][1])
-                        isbn13 = attribute['industryIdentifiers'][1]['identifier'];
+            var id_google_exist = false;
+            $.each(array_ids_google,function(ind){
+                if(array_ids_google[ind]==titles[i].id){
+                    id_google_exist = true;
                 }
-            }
+            });
+            if(!id_google_exist){
+                attribute = titles[i]['volumeInfo'];
+                attribute_access = titles[i]['accessInfo'];
+                item_title = $('<span class="item_ti item_title_'+count+'"></span>')
 
-            publisher = '';
-            if('publisher' in attribute)
-                publisher = attribute['publisher'];
+                type_add = 'grid-4 selec_item d-item_mini_list';
 
-            publishedDate = '2013';
-            if('publishedDate' in attribute)
-                publisher = attribute['publishedDate'];
+                div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
+                item_title.append(div_item);
+                item_title.append('<input type="hidden" class="title_inte" value="0"/>');
+                item_title.append('<input type="hidden" class="active" value="0"/>');
+                span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
+                div_item.append(span_wrapper);
+                url = '/static/img/create.png';
+                url_mini = '/static/img/create.png';
 
-            language = '';
-            if('language' in attribute)
-                language = attribute['language'];
-
-            country = '';
-            if('country' in attribute)
-                country = attribute_access['country'];
-
-            var obj = {
-                'title': attribute['title'],
-                'author': attribute['authors'],
-                'cover': url,
-                'description': desc,
-                'publisher': publisher,
-                'publishedDate': publishedDate ,
-                'language': language,
-                'country': country,
-                'isbn': isbn,
-                'isbn13': isbn13,
-                'pages': pages,
-                'picture': url_mini,
-                'id_google': titles[i].id
-            }
-
-            array.push(obj);
-
-            img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
-            span_wrapper.append(img_wrapper);
-
-            type_add = 'grid-2';
-
-            div_container_text = $('<div class="d-container_text_book ' +
-                type_add + ' no-margin"></div>');
-            div_item.append(div_container_text);
-            item_title.append(div_item);
-            a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-            a.append((attribute['title']).substring(0,12));
-            div_container_text.append(a);
-            p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
-                ' no-margin" ></p>');
-            a_author = $('<a " class="title_author" ></a>');
-            var author_att = 'autor anonimo';
-            if('authors' in attribute)
-                author_att = attribute['authors'];
-
-            a_author.append(truncText(author_att[0],13));
-            p_text_author.append('De ');
-            p_text_author.append(a_author);
-            div_container_text.append(p_text_author);
-            container_stars = $('<span class="grid-3 no-margin"></span>');
-
-            var grade = 5;
-            for(var index = 0;index<5;index++){
-                if(index<grade){
-                    container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
-                }else{
-                    container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                if( "imageLinks" in attribute ){
+                    url_mini = ''+attribute['imageLinks']['smallThumbnail'];
+                    url = ''+attribute['imageLinks']['thumbnail'];
                 }
+
+                pages = 0;
+                if('pageCount' in attribute)
+                    pages  = attribute['pageCount'];
+                desc = '';
+                if('description' in attribute)
+                    desc  = ''+attribute['description'];
+
+                isbn = '';
+                isbn13 = '';
+                if('industryIdentifiers' in attribute){
+                    if('identifier' in attribute['industryIdentifiers'][0])
+                        isbn = attribute['industryIdentifiers'][0]['identifier'];
+                    if(attribute['industryIdentifiers'].length >1){
+                        if('identifier' in attribute['industryIdentifiers'][1])
+                            isbn13 = attribute['industryIdentifiers'][1]['identifier'];
+                    }
+                }
+
+                publisher = '';
+                if('publisher' in attribute)
+                    publisher = attribute['publisher'];
+
+                publishedDate = '2013';
+                if('publishedDate' in attribute)
+                    publisher = attribute['publishedDate'];
+
+                language = '';
+                if('language' in attribute)
+                    language = attribute['language'];
+
+                country = '';
+                if('country' in attribute)
+                    country = attribute_access['country'];
+
+                var obj = {
+                    'title': attribute['title'],
+                    'author': attribute['authors'],
+                    'cover': url,
+                    'description': desc,
+                    'publisher': publisher,
+                    'publishedDate': publishedDate ,
+                    'language': language,
+                    'country': country,
+                    'isbn': isbn,
+                    'isbn13': isbn13,
+                    'pages': pages,
+                    'picture': url_mini,
+                    'id_google': titles[i].id
+                }
+
+                array.push(obj);
+
+                img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
+                span_wrapper.append(img_wrapper);
+
+                type_add = 'grid-2';
+
+                div_container_text = $('<div class="d-container_text_book ' +
+                    type_add + ' no-margin"></div>');
+                div_item.append(div_container_text);
+                item_title.append(div_item);
+                a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
+                a.append((attribute['title']).substring(0,12));
+                div_container_text.append(a);
+                p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
+                    ' no-margin" ></p>');
+                a_author = $('<a " class="title_author" ></a>');
+                var author_att = 'autor anonimo';
+                if('authors' in attribute)
+                    author_att = attribute['authors'];
+
+                a_author.append(truncText(author_att[0],13));
+                p_text_author.append('De ');
+                p_text_author.append(a_author);
+                div_container_text.append(p_text_author);
+                container_stars = $('<span class="grid-3 no-margin"></span>');
+
+                var grade = 5;
+                for(var index = 0;index<5;index++){
+                    if(index<grade){
+                        container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+                    }else{
+                        container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                    }
+                }
+                div_container_text.append(container_stars);
+
+                container.append(item_title);
+
+                count++;
+                if(i > 6)
+                    bar = true;
             }
-            div_container_text.append(container_stars);
-
-            container.append(item_title);
-
-            count++;
-            if(i > 6)
-                bar = true;
         });
     }
 
@@ -2966,4 +3045,79 @@ function list_titles_and_author(data, type, $container, type_message){
             add_my_title(csrf,array_title,5);
     });
     $container.append();
+}
+
+function show_upload($this){
+
+    $.ajax({
+        type: "POST",
+        url: '/registry/delete_picture/',
+        data: {
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'type': $('.type').val(),
+            'id_user': $('.id_user').val()
+        },
+        dataType: 'json'
+    }).done(function(data){
+            if(data.succes == 'True')
+                load_img_profile();
+        });
+
+    $this.fadeOut(250, function(){
+
+        $('.wrapper_picture_user').fadeOut(250,function(){
+            $('.dropzone_user').fadeIn(250);
+        });
+    });
+}
+
+function disable_link_all(user_active){
+    var count = 3;
+    if(user_active)
+        count = 2;
+    $.each($('.overview  div .d-paddin_bottom'),function(){
+
+        if($(this).hasClass('book_read'))
+            $('.count_titles_read').html($(this).find('.d-item_book').length +
+                ' libros leídos');
+
+        if($(this).find('.d-item_book').length>count){
+            $(this).parent().find('.all_book').fadeIn(250);
+            $(this).parent().find('.all_book').find('.span_text').html('Ver todos');
+            $(this).parent().find('.all_book').find('input').val(0);
+        }else{
+            $(this).parent().find('.all_book').find('.span_text').html('Ver todos');
+            $(this).parent().find('.all_book').find('input').val(0);
+            $(this).parent().find('.all_book').fadeOut(250);
+        }
+        $(this).animate({
+            'height': 152
+        },250, function() {
+            // Animation complete.
+        });
+    });
+}
+
+function show_index_items($this){
+    var count = 1;
+
+    $.each($this.parent().find('.my_items'),function(){
+
+        if($this.find('input').val() == '1'){
+            $(this).fadeIn(250);
+        }else{
+            if(count > 3)
+                $(this).fadeOut(250);
+        }
+        count++;
+
+    });
+
+    if($this.find('input').val() == '1'){
+        $this.find('input').val('0');
+        $this.find('span').html('Ver menos');
+    }else{
+        $this.find('input').val('1');
+        $this.find('span').html('Ver más');
+    }
 }

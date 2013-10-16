@@ -260,7 +260,7 @@ def user_profile(request, **kwargs):
                 author_name = 'autor anonimo'
 
                 author =  models.AuthorTitle.objects.filter(title=obj.title)
-                activity = models.Activity.objects.get(object=obj.title.id,
+                activity = models.Activity.objects.filter(object=obj.title.id,
                                                        added_to_object=obj.list.id)
                 id_author = 0
                 if len(author) != 0:
@@ -271,9 +271,10 @@ def user_profile(request, **kwargs):
                 items['default_type'] = obj.list.default_type
                 items['id_list'] = obj.id
                 items['id_author'] = id_author
-                items['date'] = str(activity.date.day) + ' de ' \
-                                + str(array_date[(activity.date.month-1)]) + ' ' \
-                                + str(activity.date.year)
+                if len(activity) != 0:
+                    items['date'] = str(activity[0].date.day) + ' de ' \
+                                + str(array_date[(activity[0].date.month-1)]) + ' ' \
+                                + str(activity[0].date.year)
                 items['author'] = author_name
                 items['grade'] = grade_title
                 items['id_user'] = obj.list.user.id
@@ -316,9 +317,20 @@ def user_profile(request, **kwargs):
         items['name_user'] = obj.id_user.username
         dict_pages[int(obj.id)] = items
 
+    city = profile.city
+    if city:
+        city = city.split('#')
+        if len(city) > 1:
+            city = city[1]
 
     activity = models.Activity.objects.filter(
         added_to_object=profile.user_id, added_to_type='U').order_by('-date')
+    birthday = profile.birthday
+    if birthday:
+        birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\
+              '-' + str(birthday.year)
+
+
     context = {
         'user_profile': profile,
         'entities': entity_user,
@@ -331,7 +343,9 @@ def user_profile(request, **kwargs):
         'pages': dict_pages,
         'member': member,
         'followers': followers,
-        'activity': activity
+        'activity': activity,
+        'city': city,
+        'birthday': birthday
     }
 
     return render(request, template, context)
@@ -597,19 +611,22 @@ def registry_ajax_page(request):
     page.save()
 
     if list is not None:
-        succuess = 'True'
+        context = {
+            'success': 'True',
+            'page_id': page.id,
+            'user_id': page.id_user.id
+        }
         activity_data = {
             'user_id': request.user.id,
-            'object':page.id,
+            'object': page.id,
             'type': 'P',
             'activity_id': 1
         }
         registry_view.update_activity(activity_data)
     else:
-        succuess = 'False'
-    context = {
-        'success': succuess
-    }
+        context = {
+            'success': 'False'
+        }
 
     context = simplejson.dumps(context)
 
@@ -637,7 +654,7 @@ def update_ajax_page(request):
     del pages['csrfmiddlewaretoken']
     copy = pages
     for e, val in pages.iteritems():
-            copy[e] = str(val[0])
+            copy[e] = val[0]
     pages = copy
     id_page = pages['id_page']
     del pages['id_page']

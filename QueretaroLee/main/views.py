@@ -780,7 +780,6 @@ def get_list(request,**kwargs):
     template = kwargs['template_name']
 
     type = ['listas', 'list']
-    user = request.user
     list = account_models.List.objects.filter(default_type=-1,status=True)
 
     if request.POST.get('field_value')!=None:
@@ -789,6 +788,7 @@ def get_list(request,**kwargs):
             list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True)
         else:
+            user = models.User.objects.get(id=request.POST.get('id_profile'))
             list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True, user=user)
 
@@ -1190,7 +1190,32 @@ def get_profile(request, **kwargs):
     if type == 'title':
         profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=1,
-                                                          title=profile, list__status=True,                                                          )
+                                                          title=profile, list__status=True)
+        fields_related_objects = models.Profile._meta.get_all_related_objects(
+            local_only=True)
+        fields = models.Profile._meta.get_all_field_names()
+
+        fields_foreign = []
+
+        for related_object in fields_related_objects:
+            fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = [item for item in fields if item not in fields_foreign]
+
+        dict_users = {}
+
+        for obj in list_user:
+            att = {}
+            obj_pro = models.Profile.objects.get(user=obj.list.user)
+            for field in fields:
+                if isinstance(obj_pro.__getattribute__(str(field)), unicode):
+                    att[field] = obj_pro.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    att[field] = obj_pro.__getattribute__(str(field))
+
+            dict_users[int(obj_pro.user.id)] = att
+
         list = account_models.ListTitle.objects.filter(title=profile, list__status=True,
                                                        list__default_type=-1)
         author = account_models.AuthorTitle.objects.filter(title=profile)
@@ -1216,17 +1241,17 @@ def get_profile(request, **kwargs):
             grade_rate = int(round(count_grade,0))
 
         context = {
-            'list_user':list_user,
-            'list':list,
-            'count':len(list_user),
-            'grade':grade,
-            'grade_rate':grade_rate,
-            'range':range(5),
-            'count_vot':len(count_rate),
-            'count_grade':count_grade,
-            'list_picture':list_picture,
-            'name_author':name_author,
-            'id_author':id_author
+            'list_user': dict_users,
+            'list': list,
+            'count': len(list_user),
+            'grade': grade,
+            'grade_rate': grade_rate,
+            'range': range(5),
+            'count_vot': len(count_rate),
+            'count_grade': count_grade,
+            'list_picture': list_picture,
+            'name_author': name_author,
+            'id_author': id_author
         }
 
 
@@ -1235,7 +1260,7 @@ def get_profile(request, **kwargs):
         dict_authors = {}
         profile = account_models.List.objects.get(id=profile)
         list = account_models.List.objects.filter(user=profile.user, default_type=-1,
-                                                  status=True)
+                                                  status=True).exclude(id=profile.id)
         titles = account_models.ListTitle.objects.filter(list=profile, list__status=True)
         authors = account_models.ListAuthor.objects.filter(list=profile, list__status=True)
 

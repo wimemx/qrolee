@@ -23,6 +23,14 @@
             <div class="dialog-confirm" ></div>
         </div>
     </div>
+    <div class="wrapper_message " >
+        <div class="container-16 container_message_2">
+            <div class="alert-message gray">
+                <p>La lista debe tener al menos un título o un autor</p>
+                <span class="green_btn accept_messa">Aceptar</span>
+            </div>
+        </div>
+    </div>
     <div class="lightbox-wrapper register">
         <div class="container-16">
             <div class="fb-objs grid-5 center lightbox">
@@ -94,7 +102,7 @@
                     <div class="end"></div></div></div></div>
                 <div class="viewport overview_list">
                     <div class="overview ">
-                        <div class="add_my_list d-paddin_bottom">
+                        <div class="add_my_list ">
                             <div class="d-container_add_book grid-5 no-margin">
                                 <div class="d-add_book" >
                                     <input type="hidden" value="list" class="list_typ" />
@@ -142,7 +150,7 @@
 
                 if($(this).find('input[type=submit]').hasClass('msg-ok'))
                     window.location.href = site_url;
-                if(valid_form && upload_valid){
+                if(valid_form_list($(this)) && upload_valid){
 
                     $.ajax({
                         type: "POST",
@@ -150,13 +158,11 @@
                         data: $(this).serialize(),
                         dataType: 'json'
                     }).done(function(data) {
+
                                 if(data.success == 'True'){
 
-                                    $('.message').addClass('success');
-                                    $('.message').html('Se ha creado exitosamente!');
-                                    $('#registry').find('input[type=submit]').val('Ok');
-                                    $('#registry').find('input[type=submit]').addClass('msg-ok');
                                     add_titles_list($('.csrf_token').find('div input').val(),data.id_list);
+                                    window.location.href = site_url + '/qro_lee/profile/list/' + data.id_list;
 
                                 }else{
                                     $('.message').addClass('fail');
@@ -167,6 +173,7 @@
                             });
                 }
                 return false;
+
             });
 
 

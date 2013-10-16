@@ -104,26 +104,6 @@ $(document).ready(function(){
             valid_form = true;
     });
 
-
-    $('.d-add_book').click(function(){
-
-        var query = ' ';
-        var type = 0;
-
-        if($(this).find('input').val() == 'title')
-            type = 1;
-        if($(this).find('.list_typ').val() == 'list')
-            type = 4;
-
-        crsf = $('.csrf_header').find('input').val();
-
-        if($(this).find('.add_type').val() == 'add')
-            type_add_list(crsf, type, query);
-        if($(this).find('.add_type').val() == 'edit')
-            type_add_list(crsf, type, query);
-
-    });
-
 });
 
 function type_add_list(csrf, id ,query){
@@ -149,22 +129,23 @@ function type_add_list(csrf, id ,query){
         fields = ['name','id','picture','id_api'];
         and = 0;
         join = {
-            'tables':{
-                0: JSON.stringify(['account.author','account.authortitle']),
-                1: JSON.stringify(['account.rate'])
-            },
-            'quieres':{
-                0: JSON.stringify(['title_id']),
-                1: JSON.stringify(['element_id'])
-            },
-            'fields':{
-                0: JSON.stringify(['first_name','last_name']),
-                1: JSON.stringify(['grade'])
-            },
-            'activity':{
-                0:JSON.stringify(['A'])
+                'tables':{
+                    0: JSON.stringify(['account.title','account.authortitle']),
+                    1: JSON.stringify(['account.rate'])
+
+                },
+                'quieres':{
+                    0: JSON.stringify(['author_id']),
+                    1: JSON.stringify(['element_id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['title']),
+                    1: JSON.stringify(['grade'])
+                },
+                'activity':{
+                    0:JSON.stringify(['A'])
+                }
             }
-        }
     }
     if(type == 'T'){
         model = 'account.title';
@@ -294,7 +275,7 @@ function validate_regex(input, type){
     }else if(type == 'social'){
         if(input.search(social_regex) == -1)
                 ret[0] = true;
-        ret[1] = 'Solo el usario, no incluya "@ o /"';
+        ret[1] = 'Solo el usuario, no incluya "@ o /"';
     }
     return ret;
 }
@@ -309,7 +290,6 @@ function selec_item(){
             $(this).find('input').val(0);
         }
     });
-
 }
 
 function aling_message(){
@@ -357,4 +337,24 @@ function invalid_f(form){
         return true;
     else
         return false;
+}
+
+function valid_form_list(form){
+    $('.container_message_2').fadeOut(300);
+    $('.invalid').remove();
+    var succe = true;
+    if(form.find('input[name=name]').val().length==0){
+        form.find('input[name=name]').parent().append('<span class="invalid" style="display: inline;">Ingresa el nombre</span>');
+        succe = false;
+    }
+
+    if($('.add_my_list .d-item_book').length==0){
+        $('.container_message_2').fadeIn(300);
+        $('.accept_messa').click(function(){
+            $('.container_message_2').fadeOut(300);
+        });
+        succe = false
+    }
+
+    return succe;
 }

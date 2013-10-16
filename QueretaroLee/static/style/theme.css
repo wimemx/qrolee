@@ -1292,6 +1292,7 @@ p{
     font-size: 11px !important;
     padding: 2px 8px 2px 8px;
     font-family: 'Raleway' sans-serif;
+    margin-right: 5px;
 }
 
 .d-title_edit_events{
@@ -1379,6 +1380,16 @@ p{
 
 .d-picture_profile{
     margin: 30px auto !important;
+}
+.d-picture_profile .dz-message{
+    width: 200px !important;
+}
+
+.d-picture_profile .dz-message span{
+    line-height: 15px !important;
+    float: left;
+    margin-left: 40px;
+    margin-top: 76px;
 }
 
 .d-text_picture{
@@ -1480,7 +1491,7 @@ p{
     width: 255px !important;
     height: 50px;
     font-size: 12px !important;
-
+    margin-bottom: 5px!important;
 }
 
 .d-pink_buttom{
@@ -1500,6 +1511,7 @@ p{
 .d-group_user{
     width: 120px !important;
     height: 120px !important;
+    margin-right: 20px;
 }
 
 .d-margin_group_user{
@@ -1548,7 +1560,7 @@ p{
 
 .d-paddin_bottom{
     overflow: hidden;
-    height: 141px;
+    height: 152px;
 }
 
 .d-paddin_top_item{
@@ -1742,7 +1754,7 @@ p{
     padding-right: 20px;
 }
 .entities .grid-15 {
-    height: 640px;
+    min-height: 640px;
     padding: 40px 40px 40px 40px;
     background: #fffcf5;
     display: block;
@@ -1875,7 +1887,12 @@ p{
 
 .p_text_mini{
     font-size: 11px !important;
-    margin-top: 0px;
+    margin-top: 5px;
+}
+.p_text_mini2{
+    width: 155px;
+    min-height: 30px;
+    font-size: 15px;
 }
 
 .genre_name{
@@ -2218,6 +2235,10 @@ p{
     border: 1px solid;
     background-color: wheat;
     cursor: pointer;
+    margin-top: -36px;
+    text-align: center;
+    line-height: 0px !important;
+    text-indent: 0px !important;
 }
 
 .text_act{
@@ -2363,6 +2384,7 @@ p{
 
 .textarea_page{
     height: 250px !important;
+    width: 99%;
 }
 
 .page p{
@@ -2414,7 +2436,7 @@ p{
 .btn_save_pag{
     background: #7ca680;
     margin-right: 10px;
-    padding-bottom: 3px !important;
+    padding-bottom: 1px !important;
 }
 
 form p .invalid_messa{
@@ -2582,4 +2604,52 @@ form p .invalid_messa{
 .link_book:hover .sub-menu-book{
     display: block;
 
+}
+.all_items{
+    cursor: pointer;
+}
+.over_items{
+    overflow: hidden;
+    height: 494px;
+}
+.marg_bot{
+    margin-bottom: 8px !important;
+}
+
+.wrapper_picture_user{
+    height: 200px;
+    width: 200px;
+}
+.del_pict{
+    color: red;
+    float: right;
+    cursor: pointer;
+    padding-right: 18px;
+}
+.disable_upload{
+    display: none;
+}
+
+.img_group{
+    height: 120px!important;
+    width: 120px!important;
+}
+
+.disable_all{
+    display: none;
+}
+
+.span_all{
+    padding-left: 4px;
+    cursor: pointer;
+}
+
+textarea{
+    resize: none;
+}
+
+.container_message_2{
+    position: fixed;
+    z-index: 10;
+    display: none;
 }
