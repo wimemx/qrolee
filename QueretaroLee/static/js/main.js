@@ -12,25 +12,13 @@ var days = ['lunes','martes','miercoles',
     'jueves','viernes','sabado','domingo'];
 var site_url = window.location.origin;
 
-function text_no_found(){
+function text_no_found(message){
     $('.d-not_found').fadeOut(250,function(){
         $(this).remove();
     });
-    type = '';
-    div_width = 'grid-13';
-    if($('.type').val()=='organization')
-        type = 'organizaciones';
-    if($('.type').val()=='group')
-        type = 'grupos';
-    if($('.type').val()=='spot'){
-        type = 'spots';
-        div_width = 'grid-7';
-    }
 
-    div = $('<div class="d-not_found ' + div_width + '" ></div> ');
-    div.append('No encontraron ' + type);
-    $('.overview').append(div);
-    div.fadeIn(300);
+    var error_msg = $('<p class="center grid-3 d-not_found" >No se pudieron encontrar '+message+'</div> ');
+    $('.error').append(error_msg);
 }
 
 function init(lat,long) {
@@ -593,6 +581,38 @@ $(document).ready(function(){
         }
     });
 
+    var view_more = true;
+    $('.news-feed .more').click(function(){
+        var $this = $(this);
+        var elements = $(this).parent().find('.viewport .overview .item').length - 2;
+        var height = $(this).parent().outerHeight(true);
+        if(view_more){
+            $(this).parent().animate({
+                'height': height+(elements * 40)
+            }, function(){
+                var h = $(this).find('.viewport').outerHeight(true);
+                $(this).find('.viewport').animate({
+                    'height': h+(elements*40)
+                }, function(){
+                    $this.html('ver menos');
+                    view_more = false;
+                });
+            });
+        }else{
+            var h = $(this).parent().find('.viewport').outerHeight(true);
+            $(this).parent().find('.viewport').animate({
+                'height': h-(elements*40)
+            }, function(){
+                $(this).parent().animate({
+                    'height': height-(elements * 40)
+                },function(){
+                    $this.html('ver más');
+                    view_more = true;
+                })
+            });
+
+        }
+    });
 
     $('.filter .checkbox').click(function(){
         $('#map').remove();
@@ -978,7 +998,7 @@ $(document).ready(function(){
         $('#scrollbar1').tinyscrollbar();
 
 
-    $('.nav .btn:eq(0)').trigger('click');
+    //$('.nav .btn:eq(0)').trigger('click');
     $('.btn.no-ajax').click(function(){
         $('.container_message').fadeIn(300);
     });
@@ -2067,7 +2087,10 @@ function add_my_title(csrf, array_title, type){
             $('.dialog-confirm').fadeOut(250);
             $('.container_message').fadeOut(250);
             show_dialog();
+
     });
+
+
 }
 
 function get_titles_authors(list, csrf){

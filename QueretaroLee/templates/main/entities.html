@@ -33,7 +33,7 @@
             <p class="content">{{ content }}</p>
             <div id="scrollbar1" {{ classspot }} >
             <div class="scrollbar" style="right:-40px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
-            <div class="viewport">
+            <div class="viewport error">
                 <div class="overview">
                 {% for entity in user_entities %}
 
@@ -56,11 +56,11 @@
                             <img class="img_size_all" src="/static/media/users/{{ entity.user_id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
                         {% endif %}
                     </a>
-                    <a class="green_btn" href="/registry/edit/entity_{{ entity.id }}/">Editar</a>
+                    <a class="green_btn" href="/registry/edit/{{ entity.id }}/">Editar</a>
                     </span>
 
                 {% if entity_type.1 == 'spot' %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
                         <img src="/static/img/markers/marker{{ forloop.counter0 }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
                     <div class="d-text_spot ">
                     <p>
@@ -70,12 +70,12 @@
                             Querétaro
                         {% endif %}
                         <br>Teléfonos:442 290 8989
-                        <br>
+
                         <a class="d-pink" href="" >Biblioteca</a>
                     </p>
                     </div>
                 {% else %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/"
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
                        class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:28 }}</a>
                     <p>{{ entity.description|truncatewords:21 }}</p>
                 {% endif %}
@@ -105,18 +105,21 @@
                     </span>
 
                 {% if entity_type.1 == 'spot' %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
                         <img src="" class="d-icon_m ap" /> {{ entity.name|capfirst }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {{ entity.address }}
-                        <br>Teléfonos:442 290 8989
-                        <br>
+                        {% if entity.address.0 != '' %}
+                            {{ entity.address.0 }} {{ entity.address.1 }}
+                        {% else %}
+                            Querétaro
+                        {% endif %}
+                        <span>Teléfonos:442 290 8989</span>
                         <a class="d-pink" href="" >Biblioteca</a>
                     </p>
                     </div>
                 {% else %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst }}</a>
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst }}</a>
                     <p>{{ entity.description|truncatewords:21 }}</p>
                 {% endif %}
                 </div>

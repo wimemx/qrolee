@@ -113,6 +113,7 @@ def login(request, **kwargs):
     context.update(csrf(request))
     return render(request, template, context)
 
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
@@ -120,11 +121,39 @@ def logout(request):
 
 def user_profile(request, **kwargs):
     template = kwargs['template_name']
-    id_user =  kwargs['id_user']
-    dict_list = {}
+    id_user = kwargs['id_user']
 
+    if request.POST:
+        membership = registry.MemberToObject.objects.get_or_create(
+            user_id=request.user.id, object_type='U', object=id_user)[0]
+        activity_id = 5
+        if int(request.POST.get('membership')) == -1:
+            membership.is_member = False
+            activity_id = 10
+        else:
+            membership.is_member = True
+
+        activity_data = {
+            'user_id': request.user.id,
+            'object': id_user,
+            'added_to_object': request.user.id,
+            'type': 'U',
+            'added_to_type': 'U',
+            'activity_id': activity_id
+        }
+        registry_view.update_activity(activity_data)
+
+        membership.save()
+
+    member = registry.MemberToObject.objects.filter(
+        user=request.user.id, is_member=True, object_type='U', object=id_user)
+    followers = registry.MemberToObject.objects.filter(
+        is_member=True, object_type='U', object=id_user)
+
+    dict_list = {}
     profile = registry.Profile.objects.get(user=id_user)
-    entity_user = registry.EntityUser.objects.filter(user=id_user, is_member=True)
+    entity_user = registry.MemberToObject.objects.filter(
+        user=id_user, is_member=True, object_type='E')
     list = models.List.objects.filter(user=id_user, default_type=-1, status=True)
 
     fields_related_objects = models.List._meta.get_all_related_objects(
@@ -177,7 +206,7 @@ def user_profile(request, **kwargs):
                 user[str(field)] = obj.__getattribute__(str(field)).\
                     encode('utf-8', 'ignore')
             else:
-                if field=='user':
+                if field =='user':
                     value = str(obj.__getattribute__(str(field)))
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
@@ -185,7 +214,6 @@ def user_profile(request, **kwargs):
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
-
 
     user = registry.User.objects.get(id=id_user)
     list_genre = models.ListGenre.objects.filter(list__user=user, status=True)
@@ -253,13 +281,12 @@ def user_profile(request, **kwargs):
 
             dict_list[int(obj.list.default_type)] = dict_items
 
-
-    act_title = models.ListTitle.objects.filter(list__user=user,
-                                                list__default_type=5)
+    act_title = models.ListTitle.objects.filter(
+        list__user=user, list__default_type=5)
 
     if len(act_title) != 0:
-        act_title = models.ListTitle.objects.get(list__user=user,
-                                                list__default_type=5)
+        act_title = models.ListTitle.objects.get(
+            list__user=user, list__default_type=5)
     else:
         act_title = 0
 
@@ -275,7 +302,7 @@ def user_profile(request, **kwargs):
 
     fields = [item for item in fields if item not in fields_foreign]
 
-    pages = models.Page.objects.filter(id_user=user)
+    pages = models.Page.objects.filter(user_id=user)
 
     dict_pages = {}
     for obj in pages:
@@ -290,16 +317,21 @@ def user_profile(request, **kwargs):
         dict_pages[int(obj.id)] = items
 
 
+    activity = models.Activity.objects.filter(
+        added_to_object=profile.user_id, added_to_type='U').order_by('-date')
     context = {
-        'user_profile':profile,
-        'entities':entity_user,
-        'type':'profile',
-        'list':dictionary,
-        'list_genre':list_genre,
-        'list_titles':dict_list,
-        'count_titles':len(titles_read),
-        'act_title':act_title,
-        'pages':dict_pages
+        'user_profile': profile,
+        'entities': entity_user,
+        'type': 'profile',
+        'list': dictionary,
+        'list_genre': list_genre,
+        'list_titles': dict_list,
+        'count_titles': len(titles_read),
+        'act_title': act_title,
+        'pages': dict_pages,
+        'member': member,
+        'followers': followers,
+        'activity': activity
     }
 
     return render(request, template, context)

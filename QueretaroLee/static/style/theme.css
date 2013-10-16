@@ -45,10 +45,15 @@ input{
     padding: 0px;
     margin: 0px;
 }
+input, textarea{
+    outline: none;
+}
+.search input.search_entities{
+    width: 161px;
+}
 input:not([type='submit']){
     height: 27px;
     width: 100%;
-    line-height: 27px;
     text-indent: 7px;
     font-family: arial !important;
 }
@@ -221,7 +226,7 @@ p{
 }
     .header .search span{
         width: 100%;
-        height: 25px;
+        height: 27px;
         position: relative;
         display: block;
 
@@ -231,9 +236,10 @@ p{
     }
     .header .search input{
         background: #98a4a3;
+        width: 133px;
     }
     .header .search span .icon{
-        width: 25px;
+        width: 27px;
         height: 100%;
         position: absolute;
         background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
@@ -277,7 +283,6 @@ p{
     }
 
 .news-feed{
-    height: 720px;
     background: #fffcf5;
     margin: 40px 10px 30px 10px;
     display: block;
@@ -294,6 +299,8 @@ p{
     height: 35px !important;
     display: block;
     border:none !important;
+    overflow: hidden;
+    margin-right: 5px;
 }
 .news-feed .gray_text{
     color: #8e8e8e;
@@ -307,6 +314,7 @@ p{
 
 .news-feed .element{
     height: 110px;
+    display: block;
 }
     .news-feed .viewport{
         width: 100%;
@@ -324,14 +332,19 @@ p{
         width: 100%;
         display: block;
     }
-
+        .news-feed .item .gray_text{
+            margin-top: 5px;
+        }
+.more{
+    cursor: pointer;
+}
 .news-feed .divider{
-    height: 720px;
+    min-height: 720px;
     display: block;
 }
     .news-feed .divider span{
         width: 1px;
-        height: 100%;
+        min-height: 720px;
         display: block;
         margin: 0 auto;
         background: #F4E5C8;
@@ -460,8 +473,9 @@ p{
             position: absolute;
             cursor: pointer;
             height: 100%;
-            line-height: 25px;
+            line-height: 27px;
             font-family: 'Raleway' sans-serif;
+            font-weight: 500;
         }
 
 .dsearch{
@@ -731,6 +745,7 @@ p{
             border: 1px solid #d8bfa3;
             margin-right: 10px;
             font-family: 'MS Reference Sans Serif';
+            color:#454545 !important;
         }
         .entity .nav .btn:hover,.entity .nav .btn.active{
             background: #cccc66;
@@ -777,6 +792,7 @@ p{
     .content.single .load{
         display: none;
     }
+
     .load.add.members{
         margin-top: 50px;
     }
@@ -1239,8 +1255,7 @@ p{
 }
 
 .d-title_spot{
-
-    margin-top: 0px;
+    margin-top: 0px !important;
     margin-bottom: 5px;
     text-transform: none !important;
 
@@ -1322,9 +1337,9 @@ p{
 }
 
 .d-not_found{
-    margin: 70px auto !important;
+    margin: 50px auto !important;
     color: #f89883;
-    font-size: 16px;
+    font-size: 12px;
     font-family: 'Raleway' sans-serif;
     text-align: center;
 }

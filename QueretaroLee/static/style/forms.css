@@ -17,7 +17,7 @@
         width: 100%;
         display: inline-block;
         position: relative;
-        margin-top: 10px;
+        margin-top: 0px;
     }
     #registry .invalid{
         top: -35px !important;
@@ -25,6 +25,9 @@
     }
     #registry .textarea{
         height: 100px;
+    }
+    .textarea textarea.fix{
+        height:90px !important;
     }
         .textarea textarea{
             padding: 10px 0px 0px 0px !important;

@@ -273,7 +273,9 @@ def register(request):
         activity_data = {
             'user_id': request.user.id,
             'object': entity.id,
+            'added_to_object': request.user.id,
             'type': 'E',
+            'added_to_type': 'U',
             'activity_id': 1
         }
         update_activity(activity_data)
@@ -288,13 +290,13 @@ def register(request):
 
 def edit_entity(request, **kwargs):
     template = kwargs['template_name']
-    id_entity = kwargs['entity'].split('_', 1)
+    id_entity = int(kwargs['entity'])
     user = request.user
-    entity = models.Entity.objects.filter(id=int(id_entity[1]))
+    entity = models.Entity.objects.filter(id=id_entity)
     if len(entity) != 0:
 
         entity = models.Entity.objects.get(
-            pk=int(id_entity[1]))
+            pk=id_entity)
 
         if entity.user == user:
 
@@ -334,6 +336,8 @@ def delete_entity(request, **kwargs):
 def update_entity(request, **kwargs):
     field = request.POST.get('field')
     value = request.POST.get('value')
+    print field
+    print value
     if field == 'privacy':
         if value == 'publica':
             value = 0
@@ -350,6 +354,8 @@ def update_entity(request, **kwargs):
         event = models.Event.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
     else:
+        print kwargs['entity_id']
+        print dictionary
         entity = models.Entity.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
 
@@ -624,8 +630,8 @@ def admin_users(request, **kwargs):
         pk=obj)
     entity_type = models.Type.objects.get(
         entity__id=obj.id)
-    members = models.EntityUser.objects.filter(
-        entity_id=obj.id)
+    members = models.MemberToObject.objects.filter(
+        object=obj.id, object_type='E')
     admins = members.filter(is_admin=True)
     requests = members.filter(request=True)
     users = list()
@@ -651,18 +657,28 @@ def admin_users(request, **kwargs):
     }
     return render(request, template, context)
 
+
 def remove_add_user(request, **kwargs):
     if 'user_email' in request.POST:
-        members = models.EntityUser.objects.filter(
-            entity_id=int(request.POST.get('entity')),
-            is_admin=1)
+        members = models.MemberToObject.objects.filter(
+            object=int(request.POST.get('entity')),
+            object_type='E', is_admin=1)
         users = list()
         users.append(request.user.id)
         for member in members:
             users.append(member.user_id)
         if request.POST.get('user_email') == '-1':
-            members = models.EntityUser.objects.filter(
-                entity_id=int(request.POST.get('entity'))).filter(is_admin=True)
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_admin=True)
+            users = list()
+            for member in members:
+                users.append(member.user_id)
+            objs = models.User.objects.filter(
+                id__in=users)
+        elif request.POST.get('user_email') == '-2':
+            print 7
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(request=True)
             users = list()
             for member in members:
                 users.append(member.user_id)
@@ -693,14 +709,20 @@ def remove_add_user(request, **kwargs):
         return HttpResponse(context, mimetype='application/json')
     else:
         obj = kwargs['user_id']
-        obj = models.EntityUser.objects.get_or_create(
-            user_id=int(obj),
-            entity_id=int(request.POST.get('entity')))[0]
+        obj = models.MemberToObject.objects.get_or_create(
+            user_id=int(obj), object_type='E',
+            object=int(request.POST.get('entity')))[0]
 
         if int(request.POST.get('remove')) == 1:
             obj.is_admin = 0
+            obj.request = 0
         else:
-            obj.is_admin = 1
+            if obj.request:
+                obj.is_member = True
+                obj.request = 0
+            else:
+                obj.is_admin = True
+                obj.request = 0
         obj.save()
     context = {}
     context = simplejson.dumps(context)
@@ -768,39 +790,13 @@ def datetime_from_str(time_str):
             % (time_str, "', '".join(s for s,p,f in formats)))
 
 
-def join_entity(request, **kwargs):
-    id_entity =  kwargs['entity'].split("_")
-    id_user = int(request.user.id)
-    entity = models.Entity.objects.get(id=int(id_entity[1]))
-    user = models.User.objects.get(id=id_user)
-    dictionary = {'entity':entity, 'user':user,
-                  'is_admin':False, 'is_member':True}
-    #entity_user = models.EntityUser.objects.create(**dictionary)
-
-    return HttpResponseRedirect('/qro_lee/entity/group/'+kwargs['entity'])
-
-
-def unjoin_entity(request, **kwargs):
-    id_entity =  kwargs['entity'].split("_")
-    id_user = int(request.user.id)
-    entity = models.Entity.objects.get(id=int(id_entity[1]))
-    user = models.User.objects.get(id=id_user)
-    entity_user = models.EntityUser.objects.get(entity=entity)
-    entity_user.is_member = False
-    entity_user.save()
-
-    return HttpResponseRedirect('/qro_lee/entity/group/'+kwargs['entity'])
-
-
-def registry_list(request,**kwargs):
-    id_user = int(request.user.id)
+def registry_list(request, **kwargs):
     template = kwargs['template_name']
     context = {}
     return render(request, template, context)
 
 
 def register_ajax_list(request):
-    user = request.user
     list = dict(request.POST)
     type = list['type_list'][0]
     del list['type_list']
@@ -843,11 +839,11 @@ def add_genre(request):
     genre = account.Genre.objects.get(id=int(id_genre))
     genre_status = account.ListGenre.objects.filter(genre=genre,list__type='G',
                                                     list__user=user)
-    if len(genre_status)==0:
+    if len(genre_status) == 0:
         list = account.List.objects.get(user=user, type='G')
         dictionary = {
-            'genre':genre,
-            'list':list
+            'genre': genre,
+            'list': list
         }
         genre_user = account.ListGenre.objects.create(**dictionary)
         genre_user.save()
@@ -860,60 +856,63 @@ def add_genre(request):
             genre_user.status = True
         genre_user.save()
 
-    context =  {}
+    context = {}
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
 
 def delete_title(request):
-
-    user = request.user
     id_title = request.POST.get('id_title')
-    type = request.POST.get('type')
-    id_list =  request.POST.get('id_list')
+    id_list = request.POST.get('id_list')
     type_list = request.POST.get('type_list')
+
     if type_list == 'T':
         title_favorite = account.ListTitle.objects.get(id=id_list)
         title_favorite.delete()
     else:
-        title_favorite = account.ListAuthor.objects.get(author__id=id_title,
-                                                   list__id=id_list)
+        title_favorite = account.ListAuthor.objects.get(
+            author__id=id_title, list__id=id_list)
         title_favorite.delete()
 
     context = {}
     context = simplejson.dumps(context)
-    return  HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, mimetype='application/json')
 
 
 def delete_list(request):
-
     id_list = request.POST.get('id_list')
     list = account.List.objects.get(id=id_list)
     list.status = False
     list.save()
-
     context = {}
     context = simplejson.dumps(context)
-    return  HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, mimetype='application/json')
 
 
 def add_rate(request):
-
     user = request.user
     type = request.POST.get('type')
     grade = request.POST.get('grade')
     element_id = request.POST.get('element_id')
 
     list = {
-        'type':str(type),
-        'grade':int(grade),
-        'user':user,
-        'element_id':int(element_id)
+        'type': str(type),
+        'grade': int(grade),
+        'user': user,
+        'element_id': int(element_id)
     }
-
 
     rate_user = account.Rate.objects.create(**list)
     rate_user.save()
+    activity_data = {
+        'user_id': request.user.id,
+        'object': int(element_id),
+        'added_to_object': request.user.id,
+        'type': str(type),
+        'added_to_type': 'U',
+        'activity_id': 6
+    }
+    update_activity(activity_data)
 
     count_rate = account.Rate.objects.filter(element_id=element_id)
     my_count = account.Rate.objects.get(user=user, element_id=element_id)
@@ -925,9 +924,9 @@ def add_rate(request):
     count_grade = Decimal(count)/(len(count_rate))
 
     context = {
-        'count':len(count_rate),
-        'count_grade':str(count_grade),
-        'my_count_grade':my_count.grade
+        'count': len(count_rate),
+        'count_grade': str(count_grade),
+        'my_count_grade': my_count.grade
     }
 
     context = simplejson.dumps(context)
@@ -943,7 +942,7 @@ def create_default_list(user):
                 'description': 'texto',
                 'privacy': False,
                 'user': user,
-                'picture':''
+                'picture': ''
             }
 
     list1 = account.List.objects.create(**dict_list)
@@ -1417,9 +1416,9 @@ def edit_title_read(request):
             activity_data = {
                 'user_id': request.user.id,
                 'object': list_title.title.id,
-                'added_to_object':list_title.list.id,
+                'added_to_object': list_title.list.id,
                 'type': 'T',
-                'added_to_type':'L',
+                'added_to_type': 'L',
                 'activity_id': 9
             }
             update_activity(activity_data)
@@ -1439,5 +1438,22 @@ def update_activity(data):
     Type = E (entity) T (title) L (list) etc...
     Verb = action Actualizo Creo etc...
     """
-    activity = account.Activity.objects.create(**data)
-    activity.save()
+    if data['activity_id'] == 10:
+        activity = account.Activity.objects.get(
+            user_id=data['user_id'], object=data['object'],
+            added_to_object=data['added_to_object'], added_to_type='U',
+            activity_id=5)
+        activity.activity_id = 10
+        activity.save()
+    else:
+        activity = account.Activity.objects.filter(
+            user_id=data['user_id'], object=data['object'],
+            added_to_object=data['added_to_object'], added_to_type='U',
+            activity_id=10)
+        if activity:
+            activity[0].activity_id = 5
+            activity[0].save()
+            return
+        else:
+            activity = account.Activity.objects.create(**data)
+            activity.save()

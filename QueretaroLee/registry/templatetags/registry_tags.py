@@ -30,7 +30,12 @@ def member_since(date):
 
 @register.filter
 def total_members(followers):
-    print followers
+    return len(followers)
+
+@register.filter
+def get_num_followers(entity):
+    followers = rmodels.MemberToObject.objects.filter(
+        object_type='E', is_member=True, object=entity.id)
     return len(followers)
 
 @register.filter
@@ -91,6 +96,7 @@ def feed_type(feed_id):
         content = obj_list[1].description[:100]
         extra_content = ''
     date = member_since(feed.date)
+
     if feed.activity_id == 1:
         if feed.type == 'D':
             action = u'creó un evento'
@@ -138,6 +144,8 @@ def feed_type(feed_id):
                 action = u'se unió al grupo'
             else:
                 action = u'empezó a seguir a'
+        else:
+            action = u'empezó a seguir a'
         ret_value = u"""<span class="follow feed">
               <span class="wrapper fleft">
               <img src="{2}" alt=""/></span>
@@ -149,7 +157,50 @@ def feed_type(feed_id):
         ret = ret_value.format(
             name, obj_name, img_url, date,
             action)
+    elif feed.activity_id == 6:
+        action = u'calificó a'
+        rate = models.Rate.objects.filter(
+            type='E', element_id=feed.object)
+        sum = 0
+        for value in rate:
+            sum += int(value.grade)
 
+        grade = sum/len(rate)
+        rating = ''
+        for i in range(1, 6):
+            if i <= grade:
+                rating += '<span class="rate rated"></span>'
+            else:
+                rating += '<span class="rate unrated"></span>'
+
+        ret_value = u"""<span class="create feed">
+                            <span class="wrapper fleft">
+                                <img src="{2}" alt=""/>
+                            </span>
+                            <span class="grid-6 content no-margin fleft">
+                                    <span class="trigger din-b">{0} </span>
+                                    <span class="verb din-r">{4} </span>
+                                    <span class="verb din-b">{1} </span>
+                                <span class="action grid-5 no-margin">
+                                    <span class="wrapper fleft">
+                                        <img src="{5}" alt=""/>
+                                    </span>
+                                    <span class="wrap fleft">
+                                        <span class="din-m fleft">{1} </span>
+                                    <p class="gray_text no-margin fleft">
+                                        <span style="margin-top:5px;display:block;" class="entry">{6}</span>
+                                        <span class="time"></span></p>
+                                    </span>
+                                    <p style="margin-top:10px;" class="gray_text no-margin fleft">hace {3}</p>
+                                </span>
+                            </span>
+
+                        </span>"""
+        ret = ret_value.format(
+            name, obj_name, img_url, date,
+            action, added_to_img_url, rating)
+    else:
+        ret = ''
     return ret
 
 def get_objects(object, type):

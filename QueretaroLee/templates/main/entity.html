@@ -21,12 +21,12 @@
 {% endblock %}
 
 {% block main_site %}
-<div class="wrapper_message " >
+    <div class="wrapper_message " >
         <div class="container-16 container_message">
             <div class="alert-message gray">{% csrf_token %}
                 <p>Para poder ser miembro, tu solicitud será enviada al
-                administrador del group</p>
-                <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                    administrador del group</p>
+                <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="follow_private" value="1"/>
                     <input type="submit" class="accept green_btn" value="Acceptar">
@@ -37,64 +37,60 @@
             </div>
         </div>
     </div>
-<div class="grid-16">
-<input type="hidden" class="d-entity_id" value="entity_{{ entity.id }}"/>
-<input type="hidden" class="type" value="{{ entity.type }}"/>
-<input type="hidden" class="lat" value="{{ entity.lat }}"/>
-<input type="hidden" class="long" value="{{ entity.long }}"/>
+    <div class="grid-16">
+    <input type="hidden" class="d-entity_id" value="entity_{{ entity.id }}"/>
+    <input type="hidden" class="type" value="{{ entity.type }}"/>
+    <input type="hidden" class="lat" value="{{ entity.lat }}"/>
+    <input type="hidden" class="long" value="{{ entity.long }}"/>
     <div class="grid-16 entity no-margin">
-        {% if owner.id != user.id %}
+    {% if owner.id != user.id %}
 
-            {% if entity_type.1 == 'spot' %}
-                <span class="member grid-2">
-                    <span class="btn ">Seguir</span>
-                </span>
-            {% endif %}
-            {% if entity_type.1 == 'group' %}
-                <span class="member grid-3">
+        {% if entity_type.1 == 'group' or entity_type.1 == 'spot' %}
+            <span class="member grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member and entity.privacy == 0 %}
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="membership" value="-1"/>
-                        <input type="submit" class="btn " value="Salir">
-                    </form>
-                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
-                {% elif member and entity.privacy != 0 %}
+                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="membership" value="-1"/>
+                            <input type="submit" class="btn " value="Salir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                    {% elif member and entity.privacy != 0 %}
 
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="follow_private" value="-1"/>
                             <input type="submit" class="btn" value="Salir">
                         </form>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
-                {% else %}
-
-                    {% if entity.privacy == 1 %}
-                        <span class="btn no-ajax fleft">Seguir</span>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
-                        <p class="private-icon fright">
-                            <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
-                        </p>
                     {% else %}
-                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="membership" value="1"/>
-                            <input type="submit" class="btn " value="Seguir">
-                        </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
-                    {% endif %}
-                {% endif %}
-                </span>
-                </span>
-            {% endif %}
 
-            {% if entity_type.1 == 'organization' %}
-                <span class="member grid-6 no-margin">
+                        {% if entity.privacy == 1 %}
+                            <span class="btn no-ajax fleft">Seguir</span>
+                            <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                            <p class="private-icon fright">
+                                <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            </p>
+                        {% else %}
+                            <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="membership" value="1"/>
+                                <input type="submit" class="btn " value="Seguir">
+                            </form>
+                            <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        {% endif %}
+                    {% endif %}
+                </span>
+                </span>
+        {% endif %}
+
+        {% if entity_type.1 == 'organization' %}
+            <span class="member grid-6 no-margin">
+
                 <span class="grid-2 no-margin fright">
 
                 {% if member and entity.privacy == 0 %}
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
                         <input type="submit" class="btn " value="Salir">
@@ -102,11 +98,11 @@
                     <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% elif member and entity.privacy != 0 %}
 
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="follow_private" value="-1"/>
-                            <input type="submit" class="btn" value="Salir">
-                        </form>
+                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="follow_private" value="-1"/>
+                        <input type="submit" class="btn" value="Salir">
+                    </form>
                     <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% else %}
 
@@ -118,24 +114,31 @@
                         </p>
 
                     {% else %}
-                        <p class="follow no-margin">Para recibir notificaciones sobre eventos y
-                        actividades referente a {{ entity.name }}, da click en el botón</p>
-                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" method="post">
+
+                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn " value="Seguir">
                         </form>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
-                        <span class="followers">
+
+                    {% endif %}
+
+                {% endif %}
+
+                </span>
+            <p class="follow no-margin">Para recibir notificaciones sobre eventos y
+                            actividades referente a {{ entity.name }}, da click en el botón</p>
+            <span class="followers">
                         <p>Usarios siguiendo</p>
-                        {% for follower, profile in followers %}
-                            <span>
+                            {% for follower, profile in followers %}
+                                <span>
                                 {% if not profile.picture or profile.picture == '' %}
                                     <img src="/static/img/create.png" alt=""/>
                                 {% else %}
                                     <img src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
                                 {% endif %}
-                                <span class="user">
+                                    <span class="user">
                                     {% if follower.first_name != '' %}
                                         {{ follower.first_name }} {{ follower.last_name }}
                                     {% else %}
@@ -144,22 +147,17 @@
                                 </span>
                             </span>
 
-                        {% endfor %}
+                            {% endfor %}
                     </span>
-                    {% endif %}
-
-                {% endif %}
-
                 </span>
-                </span>
-            {% endif %}
-
-        {% else %}
-            {% block entity_menu %}
-                {% include 'blocks/entity_menu.html' %}
-            {% endblock %}
         {% endif %}
-        <span class="wrapper fleft">
+
+    {% else %}
+        {% block entity_menu %}
+            {% include 'blocks/entity_menu.html' %}
+        {% endblock %}
+    {% endif %}
+    <span class="wrapper fleft">
             {% if entity.picture == '' %}
                 <img src="/static/img/create.png" alt="{{ entity.name }}"/>
             {% else %}
@@ -174,55 +172,55 @@
             <h3 class="title {{ entity_type.1 }}">{{ entity.name|capfirst }}</h3>
             <span class="social grid-7 no-margin">
                 {% if entity.fb != '' %}
-                <a href="https://facebook.com/{{ entity.fb }}" target="_blank">
-                    {% if entity_type.1 == 'group' %}
-                        <img src="/static/img/single_fb.png" alt=""/>
-                    {% elif entity_type.1 == 'spot' %}
-                        <img src="/static/img/ssingle_fb.png" alt=""/>
-                    {% else %}
-                        <img src="/static/img/gsingle_fb.png" alt=""/>
-                    {% endif %}
-                </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
+                    <a href="https://facebook.com/{{ entity.fb }}" target="_blank">
+                        {% if entity_type.1 == 'group' %}
+                            <img src="/static/img/single_fb.png" alt=""/>
+                        {% elif entity_type.1 == 'spot' %}
+                            <img src="/static/img/ssingle_fb.png" alt=""/>
+                        {% else %}
+                            <img src="/static/img/gsingle_fb.png" alt=""/>
+                        {% endif %}
+                    </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
                 {% endif %}
                 {% if entity.twitter != '' %}
-                <a href="http://twitter.com/{{ entity.twitter }}" target="_blank">
-                    {% if entity_type.1 == 'group' %}
-                        <img src="/static/img/single_twitter.png" alt=""/>
-                    {% elif entity_type.1 == 'spot' %}
-                        <img src="/static/img/ssingle_twitter.png" alt=""/>
-                    {% else %}
-                        <img src="/static/img/gsingle_twitter.png" alt=""/>
-                    {% endif %}
-                </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
+                    <a href="http://twitter.com/{{ entity.twitter }}" target="_blank">
+                        {% if entity_type.1 == 'group' %}
+                            <img src="/static/img/single_twitter.png" alt=""/>
+                        {% elif entity_type.1 == 'spot' %}
+                            <img src="/static/img/ssingle_twitter.png" alt=""/>
+                        {% else %}
+                            <img src="/static/img/gsingle_twitter.png" alt=""/>
+                        {% endif %}
+                    </a> <img src="{% static "img/social_divider.png" %}" alt=""/>
                 {% endif %}
                 {% if entity.website != '' %}
-                <a href="{{ entity.website }}" target="_blank">
-                    {% if entity_type.1 == 'group' %}
-                        <img src="/static/img/single_world.png" alt=""/>
-                    {% elif entity_type.1 == 'spot' %}
-                        <img src="/static/img/ssingle_world.png" alt=""/>
-                    {% else %}
-                        <img src="/static/img/gsingle_world.png" alt=""/>
-                    {% endif %}
-                </a>
+                    <a href="{{ entity.website }}" target="_blank">
+                        {% if entity_type.1 == 'group' %}
+                            <img src="/static/img/single_world.png" alt=""/>
+                        {% elif entity_type.1 == 'spot' %}
+                            <img src="/static/img/ssingle_world.png" alt=""/>
+                        {% else %}
+                            <img src="/static/img/gsingle_world.png" alt=""/>
+                        {% endif %}
+                    </a>
                 {% endif %}
             </span>
             {% if entity_type.1 != 'group' %}
                 <span class="grid-7 no-margin container_rate">
                     <span class="container_starts_rate fleft">
                     {% if grade == 0 %}
-                            {% for x in range %}
-                                <span class="rate">
+                        {% for x in range %}
+                            <span class="rate">
                                     {% if x < grade_rate %}
                                         <img src="/static/img/comunityStar.png" />
                                     {% else %}
                                         <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
-                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                <input class="grade" type="hidden" value="{{ x }}"/>
                                     <input class="type" type="hidden" value="E"/>
                                     <input class="element_id" type="hidden" value="{{ entity.id }}"/>
                                 </span>
-                            {% endfor %}
+                        {% endfor %}
                     {% else %}
                         {% for x in range %}
                             {% if x < grade %}
@@ -236,9 +234,9 @@
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
                     <span class="text_rate border_right"> {{ count }} votaciones </span>
-                        {% if grade >= 1 %}
-                            <span class="text_rate"> mi voto: {{ grade }} </span>
-                        {% endif %}
+                    {% if grade >= 1 %}
+                        <span class="text_rate"> mi voto: {{ grade }} </span>
+                    {% endif %}
                     </span>
                </span>
             {% endif %}
@@ -257,27 +255,47 @@
             <span class="btn">Información General</span>
             <span class="btn">Eventos</span>
             {% if entity_type.1  == 'group' %}
-            <span class="btn">Miembros</span>
+                <span class="btn">Miembros</span>
             {% endif %}
         </span>
 
     </div>
 
     <div class="grid-16 content single no-margin">
-        <div class="grid-16 load no-margin" style="display: block">
-            {% if entity.privacy == 0 %}
+    <div class="grid-16 news-feed load no-margin" style="display: block">
+        {% if entity.privacy == 0 or member %}
+
+        <div style="margin: 30px; 0px 0px 30px;" class="grid-8 left">
+            {% if activity  %}
+            <h3 class="title">Actividad</h3>
+            <div style="margin:0px;" id="scrollbar1">
+                <div class="scrollbar" style="right: -35px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                <div class="viewport">
+                    <div class="overview">
+                        {% for news_feed in activity %}
+                            {% autoescape off %}
+                                {{ news_feed.id|feed_type }}
+                            {% endautoescape %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <p>No hay actividad reciente</p>
+            {% endif %}
+        </div>
             <div class="coments grid-10 no-margin">
                 {% load disqus_tags %}
                 {% set_disqus_identifier entity_type entity.id %}
                 {% disqus_show_comments %}
                 <div class="titles_author grid-5 border_left">
-                {% if type == 'author' %}
-                    <div class="container_titles grid-5 no-margin border_bottom">
-                        <h3 class="title my_titles">
-                            Titulos de este autor
-                        </h3>
-                        {% for title in list_titles %}
-                            <span class="item_title grid-5 no-margin">
+                    {% if type == 'author' %}
+                        <div class="container_titles grid-5 no-margin border_bottom">
+                            <h3 class="title my_titles">
+                                Titulos de este autor
+                            </h3>
+                            {% for title in list_titles %}
+                                <span class="item_title grid-5 no-margin">
                                 <a href="/qro_lee/profile/title/title_{{ title.id }}">
                                     <span class="wrapper_title borde_author ">
                                         <img src="/static/media/author/create.png" />
@@ -289,82 +307,82 @@
                                     </h3>
                                 </a>
                             </span>
-                        {% endfor %}
-                        <span class="place_pink link_all fright all_book">ver todos</span>
-                    </div>
-                    <div class="container_titles grid-5 no-margin ">
-                        <h3 class="title my_titles">
-                            Lista que contiene este autor
-                        </h3>
-                        {% for obj in list %}
-                            <span class="item_title grid-5 no-margin">
+                            {% endfor %}
+                            <span class="place_pink link_all fright all_book">ver todos</span>
+                        </div>
+                        <div class="container_titles grid-5 no-margin ">
+                            <h3 class="title my_titles">
+                                Lista que contiene este autor
+                            </h3>
+                            {% for obj in list %}
+                                <span class="item_title grid-5 no-margin">
                                 <span class="wrapper_title borde_author ">
                                     <img src="/static/media/author/create.png" />
                                 </span>
                                 <h3 class="title grid-3 title_mini">
-                                   {{ obj.list.name|truncatechars:25 }}
+                                    {{ obj.list.name|truncatechars:25 }}
                                 </h3>
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
                                     <span class="d-pink">{{ obj.list.user.first_name }} </span>
                                 </p>
                             </span>
-                        {% endfor %}
-                        <span class="place_pink link_all fright all_book">ver todos</span>
-                    </div>
-                {% endif %}
-                {% if type == 'title' %}
-                    <div class="container_titles grid-5 no-margin border_bottom">
-                        <h3 class="title my_titles">
-                            Personas que han leído este libro
-                        </h3>
-                        {% for obj in list_user %}
-                            <span class="item_title grid-5 no-margin">
+                            {% endfor %}
+                            <span class="place_pink link_all fright all_book">ver todos</span>
+                        </div>
+                    {% endif %}
+                    {% if type == 'title' %}
+                        <div class="container_titles grid-5 no-margin border_bottom">
+                            <h3 class="title my_titles">
+                                Personas que han leído este libro
+                            </h3>
+                            {% for obj in list_user %}
+                                <span class="item_title grid-5 no-margin">
                                 <span class="wrapper_title borde_author ">
                                     <img src="/static/media/users/{{ obj.list.user.id }}/profile/create.jpg" />
                                 </span>
                                 <h3 class="title grid-3 title_mini text_name_user">
-                                   {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
+                                    {{ obj.list.user.first_name|truncatechars:12 }} {{ obj.list.user.last_name|truncatechars:12 }}
                                 </h3>
                             </span>
-                        {% endfor %}
-                        <span class="place_pink link_all fright all_book">ver todos</span>
-                    </div>
-                    <div class="container_titles grid-5 no-margin ">
-                        <h3 class="title my_titles">
-                            Lista que contienen este libro
-                        </h3>
-                        {% for obj in list %}
-                            <span class="item_title grid-5 no-margin">
+                            {% endfor %}
+                            <span class="place_pink link_all fright all_book">ver todos</span>
+                        </div>
+                        <div class="container_titles grid-5 no-margin ">
+                            <h3 class="title my_titles">
+                                Lista que contienen este libro
+                            </h3>
+                            {% for obj in list %}
+                                <span class="item_title grid-5 no-margin">
                                 <span class="wrapper_title borde_author ">
                                     <img src="/static/media/author/create.png" />
                                 </span>
                                 <h3 class="title grid-3 title_mini">
-                                   {{ obj.list.name|truncatechars:25 }}
+                                    {{ obj.list.name|truncatechars:25 }}
                                 </h3>
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
                                     <span class="d-pink">{{ obj.list.user.first_name }} </span>
                                 </p>
                             </span>
-                        {% endfor %}
-                        <span class="place_pink link_all fright all_book">ver todos</span>
-                    </div>
-                {% endif %}
+                            {% endfor %}
+                            <span class="place_pink link_all fright all_book">ver todos</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-            </div>
-            {% else %}
-                <p class="private-message margin-50 center">Este grupo es privado,
-                    <br> para ver la información solicitada
-                    <br>necesitas ser miembro</p>
-            {% endif %}
-        </div>
+        {% else %}
+            <p class="private-message margin-50 center">Este grupo es privado,
+                <br> para ver la información solicitada
+                <br>necesitas ser miembro</p>
+        {% endif %}
+    </div>
 
     {% if entity_type.1 == 'spot' %}
         <div class="grid-16 spot load no-margin">
     {% else %}
         <div class="grid-16 load no-margin">
     {% endif %}
-            {% if entity.privacy == 0 %}
-            <div class="sidebar-a grid-11">
+    {% if entity.privacy == 0 or member %}
+        <div class="sidebar-a grid-11">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
@@ -383,7 +401,7 @@
 
             {% if entity_type.1 == 'spot' %}
                 <div class="grid-3 contact omega">
-                <span class="ruler"></span>
+                    <span style="right:-15px;" class="ruler"></span>
                     <span class="contact">
                         <h3 class="title main">Ubicacion</h3>
                         <p>
@@ -406,25 +424,25 @@
             {% endif %}
 
             {% if entity_type.1 == 'spot' %}
-                <div style="padding: 0px 40px 0px 40px;" class="overvieww no-margin fright grid-6 content">
+                <div style="padding: 0px 40px 0px 40px;" class="overvieww no-margin fright grid-7 content">
                     <span class="ruler"></span>
                     <p >{{ entity.description }}</p>
                 </div>
 
             {% else %}
                 <div class="overvieww content">
-                    <p style="width:90%;margin:0 auto !important;">{{ entity.description }}</p>
+                    <p {% ifequal entity_type.1 "organization"%} style="width:90%;margin:0 auto !important;"{% endifequal %}>{{ entity.description }}</p>
                 </div>
             {% endif %}
 
             {% if entity_type.1 == 'organization' %}
-            </div>
+                </div>
 
             {% endif %}
 
             {% if entity_type.1 == 'organization' %}
                 <div class="grid-4 contact fright no-margin">
-                <span class="ruler"></span>
+                    <span class="ruler"></span>
                     <span class="contact">
                         <h3 class="title main">Contacto</h3>
 
@@ -433,7 +451,7 @@
                         <p>{{ entity.website }}</p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
                         <p>{{ entity.address.0 }} <br>
-                        <span>{{ entity.address.1 }}</span></p>
+                            <span>{{ entity.address.1 }}</span></p>
                     </span>
                 </div>
             {% endif %}
@@ -461,19 +479,26 @@
                     </span>
                 </div>
             {% endif %}
-            </div>
-            <div class="grid-4 sidebar-b">
-                <h3 class="title grid-4">{{ entity_type.0|capfirst }} similares</h3>
-                <div id="scrollbar1">
-                    <div style="width: 5px;" class="scrollbar"><div class="track"><div class="thumb" style="width: 5px;"><div class="end"></div></div></div></div>
-                    <div class="viewport" style="height:360px;">
-                        <div class="overview" style="border:none;height:auto;">
+        </div>
+        <div class="grid-4 sidebar-b">
+            <h3 class="title grid-4">{{ entity_type.0|capfirst }} similares</h3>
+            <div id="scrollbar1">
+                <div style="width: 5px;" class="scrollbar"><div class="track"><div class="thumb" style="width: 5px;"><div class="end"></div></div></div></div>
+                <div class="viewport" style="height:360px;">
+                    <div class="overview" style="border:none;height:auto;">
                         {% for similar_entity, followers in similar_entities %}
-                        <span class="wrapper">
+                            <span class="wrapper">
                             <span class="fleft">
-                                <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt=""/>
+                                {% if entity.picture == '' %}
+                                    <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                                {% else %}
+                                    {% if owner.id == user.id %}
+                                        <span class="brown_btn edit"></span>
+                                    {% endif %}
+                                    <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                                {% endif %}
                             </span>
-                            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.name|cut:" " }}_{{ similar_entity.id }}">
+                            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.id }}">
                                 <h3 class="title fleft">{{ similar_entity.name }}
                                     {% if entity_type.1 == 'spot' %}
                                         <span class="view">Ver spot</span>
@@ -485,24 +510,24 @@
                             </a>
                         </span>
                         {% endfor %}
-                        </div>
                     </div>
                 </div>
             </div>
-            {% else %}
-                <p class="private-message margin-50 center">Este grupo es privado,
-                    <br> para ver la información solicitada
-                    <br>necesitas ser miembro</p>
-            {% endif %}
         </div>
-        <div class="grid-16 load no-margin">
-        {% if entity.privacy == 0 %}
+    {% else %}
+        <p class="private-message margin-50 center">Este grupo es privado,
+            <br> para ver la información solicitada
+            <br>necesitas ser miembro</p>
+    {% endif %}
+    </div>
+    <div class="grid-16 load no-margin">
+        {% if entity.privacy == 0 or member %}
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
                 <div id="scrollbar1">
                     <div  class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
-                    <div class="viewport">
+                    <div class="viewport error">
                         <div class="overview">
                             <span class="item">
                                 <span class="no-margin grid-6">
@@ -534,8 +559,8 @@
                 </div>
             </div>
             <div class="grid-4 sidebar-b d-margin_calendar fleft">
-            <h3 class="title">Calendario</h3>
-            <input class="entity" type="hidden" value="{{ entity.id }}"/>{% csrf_token %}
+                <h3 class="title">Calendario</h3>
+                <input class="entity" type="hidden" value="{{ entity.id }}"/>{% csrf_token %}
                 <div class="overview">
                     {% autoescape off %}
                         {{ calendar }}
@@ -546,20 +571,20 @@
                     <span class="next fright">></span>
                 </div>
             </div>
-        </div>
+            </div>
         {% else %}
-                <p class="private-message margin-50 center">Este grupo es privado,
-                    <br> para ver la información solicitada
-                    <br>necesitas ser miembro</p>
-            {% endif %}
-        {% if entity_type.1 == 'group' %}
+            <p class="private-message margin-50 center">Este grupo es privado,
+                <br> para ver la información solicitada
+                <br>necesitas ser miembro</p>
+        {% endif %}
+    {% if entity_type.1 == 'group' %}
         <div class="grid-15 offset-1 members load no-margin">
             <div id="scrollbar1 ">
-                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
-                    <div class="viewport">
-                        <div class="overview">
-                            {% for follower, profile in followers %}
-                                <span class="wrapper grid-5 no-margin">
+                <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                <div class="viewport">
+                    <div class="overview">
+                        {% for follower, profile in followers %}
+                            <span class="wrapper grid-5 no-margin">
                                     <span class="fleft">
                                         {% if not profile.picture or profile.picture == '' %}
                                             <img src="/static/img/create.png" alt=""/>
@@ -569,7 +594,7 @@
                                     </span>
                                     <h3 class="title fleft">
                                         {% if follower.first_name != '' %}
-                                        {{ follower.first_name }} {{ follower.last_name }}
+                                            {{ follower.first_name }} {{ follower.last_name }}
                                         {% else %}
                                             {{ follower.username }}
                                         {% endif %}
@@ -579,13 +604,13 @@
                                         <a class="fleft spot din-r" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
                                     </h3>
                                 </span>
-                            {% endfor %}
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
+            </div>
         </div>
-        {% endif %}
+    {% endif %}
     </div>
 
-</div>
+    </div>
 {% endblock %}

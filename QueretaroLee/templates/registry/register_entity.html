@@ -48,11 +48,11 @@
                 <input type="hidden" name="fb_id" class="fb_id"/>
                 <div class="grid-8 no-margin fleft">
                 <input type="hidden" value="{{ entity_type.1 }}" name="entity_type"/>
-                <p>Nombre*
+                <p>Nombre
                     <input class="required regex_alpha_numeric grid-5 fright no-margin" type="text" value="" name="name"/>
                 </p>
-                <p class="textarea">Descripción*
-                    <textarea class="grid-5 fright no-margin" name="description"></textarea>
+                <p class="textarea">Descripción
+                    <textarea class="grid-5 fix fright no-margin" name="description"></textarea>
                 </p>
                 <!--<p>Photo de portada
                 <span class="grid-5 fright no-margin">
@@ -144,9 +144,12 @@
         </div>
 
     </div>
+    <div class="some-div">Div</div>
     <script type="text/javascript">
     Dropzone.options.picture = {
         maxFiles: 1,
+        dictRemoveFile: 'Eliminar',
+        addRemoveLinks: true,
         dictDefaultMessage: 'Arrastre aquí el logotipo',
         init: function() {
             this.on("addedfile", function(file) {
@@ -154,22 +157,26 @@
             });
         },
         success: function(file) {
-            console.log(file);
             $('.profile-pic').val(file.name);
         }
-    }
+    };
     Dropzone.options.cover = {
         maxFiles:1,
+        dictRemoveFile: 'Eliminar',
+        addRemoveLinks: true,
         dictDefaultMessage: 'Arrastre aquí el cover photo',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#cover .dz-message').fadeOut(300);
             });
+             this.on("removedfile", function(file) {
+                alert();
+              });
         },
         success: function(file) {
             $('.cover-pic').val(file.name);
         }
-    }
+    };
 
     $(document).ready(function(){
 
@@ -215,8 +222,8 @@
                         var name = $('input[name=name]').val().charCodeAt(0)+''+
                                 $('input[name=name]').val().charCodeAt(1)+''+
                                 $('input[name=name]').val().charCodeAt(2);
-                        window.location.href = site_url+'/qro_lee/entity/'+$('input[name=entity_type]').val()+'/'+
-                                name+'_'+data.success;
+                        window.location.href = site_url+'/qro_lee/entity/'+
+                                $('input[name=entity_type]').val()+'/'+data.success;
                         /*
                         $('.message').addClass('success');
                         $('.message').html('Se ha creado exitosamente!');

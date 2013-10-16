@@ -137,4 +137,4 @@ class Page(models.Model):
     tags = models.TextField(max_length=1000)
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)
-    id_user = models.ForeignKey(User)
+    user = models.ForeignKey(User)

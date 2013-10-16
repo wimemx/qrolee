@@ -37,82 +37,104 @@ hyu
             {% endif %}
         </span>
         {% if type == 'profile' %}
-            <span style="border: none" class="data grid-9 fleft no-margin">
+            <span style="border: none" class="data grid-8 fleft no-margin">
             <p>Nombre
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="first_name" type="text" value="{{ user_profile.user.first_name }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.user.first_name }}</span>
             </p>
              <p>Apellido
+                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                     </span>
                 <span class="close right"></span>
                 <input name="last_name" type="text" value="{{ user_profile.user.last_name }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.user.last_name }}</span>
             </p>
             <p>Email
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="email" type="text" value="{{ user_profile.user.email }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.user.email }}</span>
             </p>
             <p>telefono
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="phone" type="text" value="{{ user_profile.phone }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.phone }}</span>
             </p>
             <p>Biografía
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="biography" type="text" value="{{ user_profile.biography }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.biography }}</span>
             </p>
             <p>Fecha de nacimiento
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="birthday" type="text" value="{{ user_profile.birthday }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.birthday }}</span>
             </p>
             <p>Ciudad
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="city" class="map address value" value="{{ user_profile.city }}" />
                 <span class="value map">{{ user_profile.city }}</span>
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
             <p>codigo postal
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="postal_code" type="text" value="{{ user_profile.postal_code }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.postal_code }}</span>
             </p>
             <p>Facebook
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="fb_username" type="text" value="{{ user_profile.fb_username }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.fb_username }}</span>
             </p>
             <p>Twitter
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="twitter_username" type="text" value="{{ user_profile.twitter_username }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.twitter_username }}</span>
             </p>
             <p>Sitio web
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
                 <span class="close right"></span>
+                    </span>
                 <input name="website" type="text" value="{{ user_profile.website }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_profile.website }}</span>
             </p>
@@ -126,15 +148,19 @@ hyu
         {% if type == 'account' %}
             <span style="border: none" class="data grid-9 fleft no-margin">
             <p>Nombre
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                    </span>
                 <span class="close right"></span>
                 <input name="username" type="text" value="{{ user_account.username }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">{{ user_account.username }}</span>
             </p>
              <p>Contraseña
+                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
+                     </span>
                 <span class="close right"></span>
                 <input name="password" type="password" value="{{ password }}" class="grid-5 alpha fright value "/>
                 <span class="value grid-5 alpha fright">*********</span>

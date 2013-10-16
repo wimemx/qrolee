@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -54,7 +55,7 @@
                     </a>
                 {% endif %}
             </span>
-            <p >{{ user_profile.city|cut:"#" }}</p>
+            <p>{{ user_profile.city|cut:"#" }}</p>
             <p class="title_author" >
                 {% if count_titles == 1 %}
                     Un libro leído
@@ -84,8 +85,30 @@
                 {% endif %}
             </p>
         </span>
+
+            <span class="member grid-3">
+                <span class="grid-2 no-margin fright">
+                    {% if member %}
+                        <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="membership" value="-1"/>
+                            <input type="submit" class="btn " value="Salir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+
+                    {% else %}
+                        <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="membership" value="1"/>
+                            <input type="submit" class="btn " value="Seguir">
+                        </form>
+                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                    {% endif %}
+                </span>
+                </span>
+
         <span class="nav profile grid-8 no-margin">
-            <span class="btn active">Actividad</span>
+            <span class="btn">Actividad</span>
             <span class="btn">Libros</span>
             <span class="btn">Listas</span>
             <span class="btn">Grupos</span>
@@ -98,11 +121,27 @@
         {% csrf_token %}
     </div>
     <input type="hidden" class="type_list" value="T" />
-    <div class="grid-16 load no-margin" style="display: block;" >
-        <div class="coments grid-10 no-margin">
-
+    <div class="grid-16 news-feed load no-margin" style="display: block;" >
+        <div style="margin: 30px; 0px 0px 30px;" class="grid-8 left">
+            {% if activity  %}
+            <h3 class="title">Actividad</h3>
+            <div style="margin:0px;" id="scrollbar1">
+                <div class="scrollbar" style="right: -35px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                <div class="viewport">
+                    <div class="overview">
+                        {% for news_feed in activity %}
+                            {% autoescape off %}
+                                {{ news_feed.id|feed_type }}
+                            {% endautoescape %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <p>No hay actividad reciente</p>
+            {% endif %}
         </div>
-        <div class="titles_author grid-5 border_left">
+        <div class="titles_author grid-5 fright border_left">
             <div class="container_titles grid-5 no-margin ">
                 <h3 class="title info_profile">
                     Información
