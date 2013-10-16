@@ -890,6 +890,26 @@ def delete_list(request):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
+def delete_picture(request):
+    type = request.POST.get('type')
+
+    if type == 'profile':
+        id_user = int(request.POST.get('id_user'))
+        profile = models.Profile.objects.get(user__id=id_user)
+
+        if profile:
+            succes = 'True'
+            profile.picture = ''
+            profile.save()
+        else:
+            succes = 'False'
+
+        context = {
+                'succes': succes
+            }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
 
 def add_rate(request):
 

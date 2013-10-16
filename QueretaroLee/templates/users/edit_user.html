@@ -133,13 +133,13 @@ hyu
                     </span>
                 <span class="close right"></span>
                 {% if user_profile.city %}
-                    <textarea name="city" style="resize: none" readonly='true' class="map address value" >{{ user_profile.city }} </textarea>
-                    <textarea readonly='true' style="resize: none"  class="map address_user value" >{{ user_profile.city }} </textarea>
+                    <textarea name="city" style="resize: none" readonly='true' class="map address area value" >{{ user_profile.city }} </textarea>
+                    <textarea readonly='true' style="resize: none"  class="map area address_user value" >{{ user_profile.city }} </textarea>
                     <span class="value map">{{ user_profile.city|cut:'#' }}</span>
                 {% else %}
-                    <textarea readonly='true' style="resize: none"  class="map address_user value" ></textarea>
-                    <textarea name="city"  readonly='true' class="map address value" ></textarea>
-                    <span class="value map"></span>
+                    <textarea readonly='true' style="resize: none"  class="map address_user area value" ></textarea>
+                    <textarea name="city"  readonly='true' class="map address area value" ></textarea>
+                    <span class="value map area"></span>
                 {% endif %}
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
@@ -273,9 +273,6 @@ hyu
                 changeYear: true,
                 yearRange: "-50:+0",
                 onSelect: function(dateText) {
-                },
-                onClose: function( selectedDate ) {
-                    $(this).datepicker( "option", "minDate", selectedDate );
                 }
             });
 
@@ -283,8 +280,8 @@ hyu
                 initialize();
             }
             $('.green_btn').click(function(){
-                $this = $(this);
-                $(this).parent().find('span.value').fadeOut(300,
+                $this = $(this).parent();
+                $this.parent().find('span.value').fadeOut(300,
                 function(){
                     if($this.parent().find('input.value').length > 0){
                         $this.parent().find('input.value').fadeIn(300,function(){
@@ -322,8 +319,8 @@ hyu
 
             });
             $('.close').click(function(){
-                $(this).parent().find('.d-invalid').remove();
-                $this = $(this);
+                $this = $(this).parent();
+                $(this).parent().parent().find('.d-invalid').remove();
                 $(this).fadeOut(300,
                     function(){
                         $this.parent().find('span.yellow_btn').fadeOut(300,function(){
@@ -348,15 +345,15 @@ hyu
                 });
             });
             $('.yellow_btn').click(function(){
-
-                var field = $(this).parent().find('input.value').attr('name');
-                var value = $(this).parent().find('input.value').val();
-                if($(this).parent().find('textarea.value').length > 0){
-                    value = $(this).parent().find('textarea.value').val();
-                    field = $(this).parent().find('textarea.value').attr('name');
+                var $this_ = $(this).parent().parent();
+                var field = $this_.find('input.value').attr('name');
+                var value = $this_.find('input.value').val();
+                if($this_.find('textarea.value').length > 0){
+                    value = $this_.find('textarea.value').val();
+                    field = $this_.find('textarea.value').attr('name');
                 }else if($(this).parent().find('.select_wrapper').length > 0){
-                    value = $(this).parent().find('select.value').val();
-                    field = $(this).parent().find('select.value').attr('name');
+                    value = $this_.find('select.value').val();
+                    field = $this_.find('select.value').attr('name');
                 }
                 if(value.length>0){
                 url = '';
@@ -367,7 +364,7 @@ hyu
                     url = '/accounts/users/update_account/';
                 }
 
-                $this = $(this);
+                $this = $(this).parent();
                 $.ajax({
                 type: "POST",
                 url: url,
@@ -397,7 +394,7 @@ hyu
                         $this.parent().find('span.value').html($this.parent().find('select.value').val());
                     }
                     $this.parent().find('.close').fadeOut(300,function(){
-                    $this.fadeOut(300,function(){
+                    $this.find('.yellow_btn').fadeOut(300,function(){
                             $this.parent().find('span.green_btn').fadeIn(300,
                             function(){
                                 if($this.parent().find('input.value').length > 0){
@@ -421,7 +418,7 @@ hyu
                 }else{
                     var span = $('<span class="d-invalid"></span>');
                     span.html("campo vacio");
-                    $(this).parent().append(span);
+                    $(this).parent().parent().append(span);
                 }
             });
         });
