@@ -106,14 +106,15 @@ class Event(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.name, self.description)
 
-class EntityUser(models.Model):
+
+class MemberToObject(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=0)
     is_member = models.BooleanField(default=0)
     request = models.BooleanField(default=0)
-    entity = models.ForeignKey(Entity)
+    object = models.IntegerField()
+    object_type = models.CharField(max_length=1)
     user = models.ForeignKey(User)
-
 
 
 class FacebookSessionError(Exception):

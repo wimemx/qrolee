@@ -22,67 +22,100 @@
         <div class="grid-4 fleft no-margin">
             <span class="user fleft">
                 <span class="wrapper fleft">
-                    <img src="" alt=""/>
+                    {% if profile.picture %}
+                        <img src="/static/media/users/{{ user.id }}/profile/{{ profile.picture }}" alt=""/>
+                    {% else %}
+                        <img src="/static/img/create.png" alt=""/>
+                    {% endif %}
                 </span>
-                 <h3 class="title">Fernando Avalos</h3>
+                 <h3 class="title">
+                     {% if user.first_name != '' %}
+                         {{ user.first_name }} {{ user.last_name }}
+                     {% else %}
+                         {{ user.username }}
+                     {% endif %}
+                 </h3>
             </span>
             <h3 class="title din-r"><img src="" alt=""/>Próximos eventos</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
-                    {% for i in 'xxxxxxxxxx' %}
+                {% if events %}
+                    {% for event in events %}
                         <span class="item">
-                        <p class="main title no-margin">Festival de Lectura estatal</p>
+                        <p class="main title no-margin">{{ event.name }}</p>
                         <a class="category spot din-r" href="#">Biblioteca Gómez Morín</a>
                         </span>
                     {% endfor %}
+                {% else %}
+                    <p>Aún no tienes eventos, crea una
+                        <a class="organization" href="/registry/register_entity/organization/">organización</a> ,
+                        <a class="group" href="/registry/register_entity/group/">grupo</a> o
+                        <a class="spot" href="/registry/register_entity/spot/">spot</a> para crear un evento </p>
+                {% endif %}
                 </span>
             </span>
-                <span class="spot bold fright">ver todos</span>
+            {% if events|length > 2 %}
+                <span class="spot more bold fright">ver todos</span>
+            {% endif %}
             </span>
 
             <h3 class="title din-r"><img src="" alt=""/>Mis grupos</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
-                    {% for i in 'xxxxxxxxxx' %}
+                {% if groups %}
+                    {% for group in groups %}
                         <span class="item">
-                            <p class="main title no-margin">Festival de Lectura estatal</p>
-                            <p class="no-margin gray_text"><span>24</span> miembros</p>
+                            <p class="main title no-margin">{{ group.name }}</p>
+                            <p class="no-margin gray_text"><span>{{ group|get_num_followers }}</span> miembros</p>
                         </span>
                     {% endfor %}
+                {% else %}
+                    <p>Aún no tienes grupos <a class="group" href="/registry/register_entity/group/">crea</a> uno </p>
+                {% endif %}
                 </span>
             </span>
-            <span class="spot bold fright">ver todos</span>
+            {% if groups|length > 2 %}
+            <span class="spot bold more fright">ver todos</span>
+            {% endif %}
             </span>
 
             <h3 class="title din-r"><img src="" alt=""/>Mis organizaciones</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
-                    {% for i in 'xxxxxxxxxx' %}
+                    {% if organizations %}
+                    {% for organization in organizations %}
                         <span class="item">
-                            <p class="main title no-margin">Festival de Lectura estatal</p>
-                            <p class="no-margin gray_text"><span>24</span> miembros</p>
+                            <p class="main title no-margin">{{ organization.name }}</p>
+                            <p class="no-margin gray_text"><span>{{ organization|get_num_followers }}</span> miembros</p>
                         </span>
                     {% endfor %}
+                    {% else %}
+                        <p>Aún no tienes grupos <a class="organization" href="/registry/register_entity/organization/">crea</a> una </p>
+                    {% endif %}
                 </span>
             </span>
-            <span class="spot bold fright">ver todos</span>
+            {% if organizations|length > 2 %}
+                <span class="spot bold more fright">ver todos</span>
+            {% endif %}
             </span>
 
             <h3 class="title din-r"><img src="" alt=""/>Mis páginas</h3>
-            <span class="element">
+            <span style="padding-bottom: 50px;" class="element">
             <span class="viewport">
                 <span class="overview">
-                    {% for i in 'xxxxxxxxxx' %}
+                    {% for page in pages %}
                         <span class="item">
-                            <p class="main title no-margin">Festival de Lectura estatal</p>
+                            <p class="main title no-margin">{{ page.name }}</p>
                         </span>
                     {% endfor %}
                 </span>
             </span>
-            <span class="spot bold fright">ver todos</span>
+            {% if pages|length > 2 %}
+            <span class="spot bold more fright">ver todos</span>
+            {% endif %}
             <span style="clear:both;" class="brown_btn fleft">Crear página</span>
             </span>
 
@@ -101,37 +134,9 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id }}
+                                {{ news_feed.id|feed_type }}
                             {% endautoescape %}
                         {% endfor %}
-
-                        <span class="create feed">
-                            <span class="wrapper fleft">
-                                <img src="" alt=""/>
-                            </span>
-                            <span class="grid-6 content no-margin fleft">
-                                    <span class="trigger din-b">Laura Rodirguez</span>
-                                    <span class="verb din-r">accion de </span>
-                                    <span class="verb din-b">Cear</span>
-                                <span class="action grid-5 no-margin">
-                                    <span class="wrapper fleft">
-                                        <img src="" alt=""/>
-                                    </span>
-                                    <span class="wrap fleft">
-                                        <span class="din-m fleft">Reunión Anual Gandhi</span>
-                                    <p class="gray_text no-margin fleft">
-                                        <span class="entry">
-                                            <span class="rate rated"></span><span class="rate rated"></span><span
-                                                class="rate unrated"></span><span class="rate unrated"></span><span
-                                                class="rate unrated"></span>
-                                        </span>
-                                        <span class="time"></span></p>
-                                    </span>
-                                    <p class="gray_text no-margin fleft">hace 2 horas</p>
-                                </span>
-                            </span>
-
-                        </span>
                     </div>
                 </div>
             </div>

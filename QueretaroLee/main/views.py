@@ -27,29 +27,35 @@ import urllib2
 @login_required(login_url='/')
 def index(request, **kwargs):
     template = kwargs['template_name']
-    if request.user.is_authenticated():
-        activity_list = list()
-        user = request.user
-        profile = models.Profile.objects.get(user_id=user)
-
-        following = account_models.Activity.objects.filter(
-            user_id=user.id, activity_id=5)
-        following_list = list()
-        for follow in following:
-            following_list.append(follow.object)
-
-        activity = account_models.Activity.objects.filter(
-            added_to_object__in=following_list).order_by('-date')
-
-        for feed in activity:
-            activity_list.append(feed)
-
-    else:
+    if not request.user.is_authenticated():
         return HttpResponseRedirect('/')
+
+    user = request.user
+    profile = models.Profile.objects.get(user_id=user)
+
+    following = account_models.Activity.objects.filter(
+        user_id=user.id, activity_id=5)
+    following_list = list()
+    for follow in following:
+        following_list.append(follow.object)
+
+    activity = account_models.Activity.objects.filter(
+        added_to_object__in=following_list).order_by('-date')
+
+    entities = models.Entity.objects.filter(
+        user_id=user)
+    groups = entities.filter(type__name='group')
+    organizations = entities.filter(type__name='organization')
+    pages = account_models.Page.objects.filter(user_id=user)
+    events = models.Event.objects.filter(owner_id=user)
 
     context = {
         'user': user,
         'profile': profile,
+        'groups': groups,
+        'organizations': organizations,
+        'pages': pages,
+        'events': events,
         'activity': activity
     }
     return render(request, template, context)
@@ -182,6 +188,7 @@ def get_entities(request, **kwargs):
             e.address = e.address.split('#')
         for e in user_entities:
             e.address = e.address.split('#')
+
         context = {
             'entities': entity,
             'entity_type': entity_type,
@@ -202,26 +209,24 @@ def get_entities(request, **kwargs):
 
 def get_entity(request, **kwargs):
     template = kwargs['template_name']
-    entity = kwargs['entity'].split('_', 1)
-
-    id_entity = int(entity[1])
+    id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
     if request.POST:
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
-            entityuser = models.EntityUser.objects.get_or_create(
-                user_id=request.user.id, entity_id=entity.id)
+            entityuser = models.MemberToObject.objects.get_or_create(
+                user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
                 entityuser[0].is_member = True
                 entityuser[0].save()
                 activity_data = {
                     'user_id': request.user.id,
-                    'object': request.user.id,
-                    'added_to_object': entity.id,
-                    'type': 'U',
-                    'added_to_type': 'E',
+                    'object': entity.id,
+                    'added_to_object': request.user.id,
+                    'type': 'E',
+                    'added_to_type': 'U',
                     'activity_id': 5
                 }
                 views.update_activity(activity_data)
@@ -230,8 +235,8 @@ def get_entity(request, **kwargs):
                 entityuser[0].save()
         elif 'follow_private' in request.POST:
             membership = int(request.POST.get('follow_private'))
-            entityuser = models.EntityUser.objects.get_or_create(
-                user_id=request.user.id, entity_id=entity.id)
+            entityuser = models.MemberToObject.objects.get_or_create(
+                user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
                 entityuser[0].request = True
                 entityuser[0].save()
@@ -240,15 +245,13 @@ def get_entity(request, **kwargs):
                 entityuser[0].is_member = False
                 entityuser[0].save()
     else:
-        entityuser = models.EntityUser.objects.filter(
-                user_id=request.user.id, entity_id=entity.id, entity__status=True)
+        entityuser = models.MemberToObject.objects.filter(
+            user_id=request.user.id, object=entity.id, object_type='E')
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
     entity_type = models.Type.objects.get(
         entity__id=entity.id)
-    users = models.User.objects.filter(
-        entityuser__entity__id=entity.id)
     owner = models.User.objects.get(
         id=entity.user_id)
     profile = models.Profile.objects.get(
@@ -259,19 +262,20 @@ def get_entity(request, **kwargs):
             id=entity.id).distinct()
     followers_list = list()
     entity_followers = models.User.objects.filter(
-        entityuser__is_member=1, entityuser__entity_id=entity.id, entityuser__entity__status=True)
+        membertoobject__is_member=1, membertoobject__object=entity.id, membertoobject__object_type='E')
     user_pictures = list()
     for follower in entity_followers:
         profile = models.Profile.objects.get(
             user_id=follower.id)
         user_pictures.append(profile.picture)
     entity_admins = models.User.objects.filter(
-        entityuser__is_admin=1, entityuser__entity_id=entity.id)
+        membertoobject__is_admin=1, membertoobject__object=entity.id,
+        membertoobject__object_type='E')
     admins = User.objects.filter(id=entity_admins)
 
     for ent in entities:
-        followers = models.EntityUser.objects.filter(
-            entity_id=ent.id)
+        followers = models.MemberToObject.objects.filter(
+            object=ent.id, object_type='E')
         followers_list.append(len(followers))
 
     user = request.user
@@ -317,13 +321,14 @@ def get_entity(request, **kwargs):
     hc = hc.replace('July', 'Julio')
     hc = hc.replace('August', 'Agosto')
     hc = hc.replace('September', 'Septiembre')
+    hc = hc.replace('October', 'Octubre')
     hc = hc.replace('November', 'Noviembre')
     hc = hc.replace('December', 'Diciembre')
 
     if entity_type.name == 'group':
         entity_type = ['grupos', 'group', 'grupo']
     elif entity_type.name == 'organization':
-        entity_type = ['organizaciones', 'organization', 'organizacion']
+        entity_type = ['organizaciones', 'organization', 'organización']
     elif entity_type.name == 'spot':
         entity_type = ['spots', 'spot']
     html_parser = HTMLParser.HTMLParser()
@@ -335,6 +340,8 @@ def get_entity(request, **kwargs):
         member = entityuser[0].is_member
 
     entity.address = entity.address.split('#')
+    activity = account_models.Activity.objects.filter(
+        added_to_object=entity.id, added_to_type='E').order_by('-date')
     context = {
         'entity': entity,
         'calendar': unescaped,
@@ -349,10 +356,12 @@ def get_entity(request, **kwargs):
         'count': len(count_rate),
         'count_grade': count_grade,
         'followers': zip(entity_followers, user_pictures),
-        'admins': admins
+        'admins': admins,
+        'activity': activity
     }
 
     return render(request, template, context)
+
 
 def get_events(request, **kwargs):
     status = True
@@ -1323,7 +1332,7 @@ def get_profile(request, **kwargs):
                     items[field] = obj.author.__getattribute__(str(field))
 
             count_titles = account_models.AuthorTitle.objects.filter(author=obj.author).values('author').\
-            annotate(count = db_model.Count('title'))
+            annotate(count=db_model.Count('title'))
 
             count = 0
             if len(count_titles) != 0:
@@ -1346,21 +1355,6 @@ def get_profile(request, **kwargs):
                 count = count + obj.grade
             count_grade = Decimal(Decimal(count)/(len(count_rate)))
             grade_rate = int(round(count_grade,0))
-
-        context = {
-            'titles':dict_titles,
-            'authors':dict_authors,
-            'list':list,
-            'grade':grade,
-            'grade_rate':grade_rate,
-            'range':range(5),
-            'count_vot':len(count_rate),
-            'count_grade':count_grade
-        }
-
-
-    context['type'] = type
-    context['profile'] = profile
 
     return render(request, template, context)
 

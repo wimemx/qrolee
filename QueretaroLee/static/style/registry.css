@@ -18,16 +18,18 @@
     height: 135px;
     margin-bottom: 20px;
 }
-
+.relative{
+    position: relative !important;
+}
 .edit{
-    margin:20px 0px 20px 0px;
+    margin:40px 10px 20px 10px;
     background: #fffcf5 !important;
-    padding: 20px 10px 50px 10px;
+    padding: 40px 0px 50px 0px;
     min-height: 500px;
     border-bottom: 0px;
 }
-.title{
-    width: 100%;
+.edit .title{
+    font-size: 20px;
     display: block;
 }
 .title .heading{
@@ -51,8 +53,13 @@
 }
 span.green_btn,span.yellow_btn{
     padding:2px 8px 2px 8px;
-    font-size: 10px;
     cursor: pointer;
+    font-size: 11px;
+    height: 17px;
+    line-height: 17px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
 .yellow_btn{
     background: #e8d76b;
@@ -64,19 +71,28 @@ span.green_btn,span.yellow_btn{
     padding-bottom: 20px;
     border-bottom: 1px solid #9d9c97;
 }
+
 .data p{
     font-family: 'Raleway' sans-serif;
     color: #000;
     position: relative;
+    line-height: 27px;
 }
     .data p .value{
         font-family: 'Conv_fontscore.com_d-dinproregular';
         color: #454545;
     }
+    .data p .controllers_wrapper{
+        position: relative;
+        top: 3px;
+        right: 0px;
+        display: inline-block;
+        float: right;
+    }
     .data p input:not([type=submit]){
         background: #fbf6ea;
-        height: 17px;
-        line-height: 17px;
+        height: 27px;
+        line-height: 27px;
         display: none;
     }
     .data p textarea{
@@ -121,15 +137,16 @@ span.green_btn,span.yellow_btn{
 }
 
 .close{
-    width: 9px;
-    height: 8px;
+    width: 15px;
+    height: 15px;
     display: none;
-    background: #c19160 url('../img/register_close.png') no-repeat 50% 50%;
+    background: #c19160 url('../img/light_close.png') no-repeat 50% 50%;
     position: absolute;
-    top: 2px;
+    top: 3px;
     padding: 3px;
-    right: -20px;
+    right: -84px;
     cursor: pointer;
+    background-size: 9px;
 }
 
 .select_wrapper{
@@ -181,6 +198,9 @@ select{
     .data p{
         float: left;
         width: 100%;
+    }
+    .data p .area{
+        line-height: 15px;
     }
         .edit.register .data input:not([type=submit]), .edit.register .data textarea{
             display: block;
@@ -322,6 +342,7 @@ select{
 }
 .affiliate{
     display: none;
+    margin-top: 40px !important;
 }
     .affiliate .title{
         font-size: 13px;
@@ -358,12 +379,18 @@ select{
         color: #000;
         cursor: pointer;
     }
-    .add .affiliate .remove{
+    .add .affiliate .remove, .request .remove{
         width: auto;
         padding:0px 8px 0px 8px;
         font-size: 10px;
         display: none;
         margin-top: 10px;
+    }
+    .request .remove{
+        display: block;
+        margin: 8px 5px 0px 0px;
+        height: 21px;
+        line-height: 21px;
     }
     .affiliate.no-margin.margin{
         margin:0px 20px 0px 20px;

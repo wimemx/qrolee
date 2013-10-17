@@ -85,7 +85,7 @@ function populateCal(curr_month,$item){
                             }
                             $('.sidebar-a .overview').append($ditem);
                             var name = e[0].split(' ');
-                            var edit_url = '/registry/edit/event/'+name[0]+'_'+e[6];
+                            var edit_url = '/registry/edit/event/'+e[6];
                             if($ditem.find('.green_btn').length > 0){
                                 $ditem.find('.date').html(e[1]+' de '+months[e[9]-1]);
                                 $ditem.find('.green_btn').attr('href', edit_url);
@@ -107,9 +107,9 @@ function populateCal(curr_month,$item){
                     });
                 });
 
-                $('.d-not_found').remove();
+
                 if(counter==0){
-                    text_no_found();
+                    text_no_found('eventos para este mes');
                 }
 
 
@@ -153,7 +153,6 @@ function findUser($ele, userEmail, entity, $parent){
                 $.each(user,function(i){
                     var span = $item.clone();
                     span.removeClass('affiliate margin').addClass('affiliate user_'+user[i][1]);
-
                     if(span.hasClass('user_'+user[i][1])){
                         var img_url;
                         if(user[i][0])
@@ -183,6 +182,26 @@ function findUser($ele, userEmail, entity, $parent){
                    removeUser($('.alert-message'),
                        $(this).parent().parent().find('.user-id').val(), 0,
                        $('.alert-message input.entity').val());
+                   if($(this).parent().parent().parent().hasClass('request')){
+                       $this = $(this).parent().parent();
+                       var user = $this.find('input.user-id').val();
+
+                        $('.affiliate').each(function(index){
+                            $(this).removeClass('margin');
+                            if($(this).hasClass('user_'+user)){
+                                $(this).fadeOut(300,function(){
+                                    $(this).remove();
+                                    $('.affiliate').each(function(i){
+                                        if(i == counter){
+                                            $(this).addClass('margin');
+                                            counter += 3;
+                                        }
+                                    });
+                                });
+                            }
+
+                        });
+                   }
                });
                $(this).find('.remove').click(function(){
                    if(!$(this).hasClass('add')){
@@ -550,20 +569,29 @@ $('.affiliate').each(function(i){
     $('.alert-message .reject').click(function(){
         $('.container_message').fadeOut(300);
     });
-    $('.entity .nav .btn:eq(0)').click(function(){
+    $('.entity .admin_nav.nav .btn:eq(0)').click(function(){
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
     });
-    $('.entity .nav .btn:eq(2)').click(function(){
+    $('.entity .admin_nav.nav .btn:eq(2)').click(function(){
+        $('.admin').find("*[class*='user_']").each(function(){
+            $(this).remove();
+        });
+        findUser($('.alert-message'), '-2',
+            $('.alert-message').find('.entity').val(), $('.request'));
+    });
+
+
+    /*$('.entity .nav .btn:eq(2)').click(function(){
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
-    });
+    });*/
 
     $('.all_book').click(function(){
         show_titles($(this));
@@ -616,13 +644,11 @@ $('.affiliate').each(function(i){
         show_title_act($(this));
     });
 
-});
-
-$(document).click(function(){
     $('.search_result').fadeOut(250);
     if(!set_act)
         $('.sub-menu-h').fadeOut(250);
     set_act = false;
+    $('.nav .btn:eq(0)').trigger('click');
 
 });
 
@@ -1058,56 +1084,58 @@ function search_list_authors_titles($this){
 
 
 function search_entities($this){
+    var $item = $('.sidebar-a .item').clone();
 
+    //if(content_search_entity){
+    if($this.parent().find('.type').val()=='Event'){
 
-     //if(content_search_entity){
-            if($this.parent().find('.type').val()=='Event'){
+        $('.sidebar-a .item').each(function(){
+            $(this).remove();
+        });
+        populateCal(100,$item);
 
-                $('.sidebar-a .item').each(function(){
-                    $(this).remove();
-                });
-                populateCal(100,$item);
+    }else{
+        var url = '/qro_lee/entities/'+
+            $this.parent().find('.type').val()+'/';
 
-            }else{
-                var url = '/qro_lee/entities/'+
-                $this.parent().find('.type').val()+'/';
+        var field_search;
+        if($('.alert-message').length > 0 ){
+            $('.load').find("*[class*='user_']").each(function(){
+                $(this).remove();
+            });
+            var $email = $('.alert-message input.user').val(
+                $this.parent().find('input.search').val());
+            var entity = $('.alert-message input.entity').val();
+            findUser($('.alert-message'), $email.val(), entity,$('.load.add'));
+            return;
+        }else if($this.parent().find('input[type=text]').val().length>=1){
+            field_search = $this.parent().find('input[type=text]').val();
+        }else{
+            field_search = "*";
+        }
 
-                var field_search;
-                if($('.alert-message').length > 0 ){
-                    $('.load').find("*[class*='user_']").each(function(){
-                        $(this).remove();
-                    });
-                    var $email = $('.alert-message input.user').val(
-                        $this.parent().find('input.search').val());
-                    var entity = $('.alert-message input.entity').val();
-                    findUser($('.alert-message'), $email.val(), entity,$('.load.add'));
-                    return;
-                }else if($this.parent().find('input[type=text]').val().length>=1){
-                    field_search = $this.parent().find('input[type=text]').val();
-                }else{
-                    field_search = "*";
-                }
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            data: {
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                'field_search_entity': field_search
+            }
+        }).done(function(data) {
 
-                $.ajax({
-                type: "POST",
-                url: url,
-                dataType: 'json',
-                data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
-                    'field_search_entity': field_search
-                }
-                }).done(function(data) {
+                if(data){
 
-                        if(data){
+                    var counter = $('.overview .grid-7').size()-1;
+                    var len = 0;
+                    $('.overview .grid-7').each(function(){
+                        if(counter == 0){
+                            $(this).fadeOut(300,function(){
+                                $.each(data,function(index){
+                                    var entity_obj = data[index];
 
-                            var counter = $('.overview .grid-7').size()-1;
-                            $('.overview').fadeOut(250,function(){
-
-                            $('.overview').empty();
-                                    $.each(data,function(index){
-                                        entity_obj = data[index];
-                                        $.each(entity_obj,function(i){
-                                            var img_src;
+                                    $.each(entity_obj,function(i){
+                                        var img_src;
                                         if(entity_obj[i].type=='spot'){
 
                                             div = $('<div class="grid-7 omega d-spot"></div>');
@@ -1147,8 +1175,14 @@ function search_entities($this){
 
                                         }else{
 
-                                            div = $('<div class="grid-7 omega">' +
-                                                '</div>');
+                                            var div;
+                                            console.log(len);
+                                            if(len%2 == 0)
+                                                div = $('<div class="grid-7 alpha">' +
+                                                    '</div>');
+                                            else
+                                                div = $('<div class="grid-7 omega">' +
+                                                    '</div>');
                                             var d_name = entity_obj[i].name;
                                             d_name = d_name.replace(/\s/g,'');
                                             var href = '/qro_lee/entity/organization/'+
@@ -1165,8 +1199,8 @@ function search_entities($this){
                                                 img_src ='/static/img/create.png';
 
                                             img = $('<img src="'+img_src+'" atr="" >');
-                                            href_edit = '/registry/edit/'+d_name+'_'+entity_obj[i].id+'/';
-                                            btn = $('<a class="brown_btn" href="' +
+                                            href_edit = '/registry/edit/'+entity_obj[i].id+'/';
+                                            btn = $('<a class="green_btn" href="' +
                                                 href_edit + '">Editar</a>');
                                             div.append(a.append(img));
 
@@ -1186,8 +1220,9 @@ function search_entities($this){
                                             div.find('.img');
                                             div.fadeIn(300);
                                         }
-                                        });
+                                        len++;
                                     });
+                                });
                                 $(this).fadeIn(250);
                             });
                         }
@@ -1195,8 +1230,13 @@ function search_entities($this){
 
                         //text_no_found();
 
+                        if(no_found==0){
+                            text_no_found('organizaciones');
+                            //$('.viewport').append(error_msg);
+                        }
                         $('#scrollbar1').tinyscrollbar();
-                });
+                    });
+                }});
             }
 }
 

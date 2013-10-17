@@ -24,7 +24,7 @@
                 <span class="message-header">Administración</span>
                 <p>Estas apunto de eliminar a <span class="name"></span> <br>
                     como administrador</p>
-                <span class="accept green_btn">Acceptar</span>
+                <span class="accept relative green_btn">Acceptar</span>
                 <span class="reject">Rechazar</span>
                 <input class="user" type="hidden"/>
                 <input class="entity" value="{{ entity.id }}" type="hidden"/>
@@ -43,7 +43,7 @@
         </span>
 
         <span style="border:none;" class="data grid-15 center">
-            <span class="nav {{ entity_type.1 }} grid-9 no-margin">
+            <span class="nav admin_nav {{ entity_type.1 }} grid-9 no-margin">
                 <span class="btn">Administradores</span>
                 <span class="btn">Nuevo administrador</span>
                 {% if requests %}
@@ -79,11 +79,24 @@
                     </span>
                     <span class="title grid-3 no-margin">
                         <span class="name"></span>
-                        <span class="green_btn fleft">Nuevo administrador</span>
-                        <span class="remove add fleft">Administrador</span>
+                        <span class="green_btn relative fleft">Nuevo administrador</span>
+                        <span class="remove add relative fleft">Administrador</span>
                     </span>
                 </span>
 
+        </div>
+        <div class="grid-15 clear request load members center">
+            <span class="grid-5 affiliate no-margin">
+                <input type="hidden" class="user-id" value=""/>
+                    <span class="wrapper fleft">
+                        <img src="" alt=""/>
+                    </span>
+                    <span class="title grid-3 no-margin">
+                        <span class="name"></span>
+                        <span class="remove relative fleft">-</span>
+                        <span class="green_btn relative fleft">Aceptar</span>
+                    </span>
+                </span>
         </div>
     </div>
     </div>
