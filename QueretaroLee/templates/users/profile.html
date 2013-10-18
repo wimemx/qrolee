@@ -149,7 +149,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
@@ -184,7 +184,7 @@
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
                          </h3>
-                         <span class="container_items grid-5 no-margin">
+                         <span class="container_items grid-4 no-margin">
                              {% for key, value in list_titles.0.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
@@ -193,18 +193,18 @@
                                     {% endif %}
                                     ">
                                         <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:12 }}
+                                            {{ value.title|truncatechars:9 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:12 }}
+                                            {{ value.title|truncatechars:9 }}
                                         </a>
                                      </span>
                                  {% endif %}
                              {% endfor %}
-                             {% if list_titles.0|length > 3 %}
+                             {% if list_titles.0 and list_titles.0|length > 3 %}
                                  <span class="place_pink span_all">
                                      <span>Ver más</span>
                                     <input type="hidden" value="1" />
@@ -215,7 +215,7 @@
                              Libros leídos
                          </h3>
                          <span class="container_items grid-4 no-margin">
-                            <span class="container_items grid-5 no-margin">
+                            <span class="container_items grid-4 no-margin">
                                 {% for key, value in list_titles.1.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
@@ -224,18 +224,18 @@
                                     {% endif %}
                                     ">
                                         <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:12 }}
+                                            {{ value.title|truncatechars:9 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:12 }}
+                                            {{ value.title|truncatechars:9 }}
                                         </a>
                                      </span>
                                  {% endif %}
                              {% endfor %}
-                             {% if list_titles.1|length > 3 %}
+                             {% if list_titles.1 and list_titles.1|length > 3 %}
                                  <span class="place_pink span_all">
                                      <span>Ver más</span>
                                     <input type="hidden" value="1" />
@@ -272,7 +272,13 @@
     <div class="viewport margin_top">
     <div class="overview ">
     <div>
-    <div class="book_favorite grid-15 no-margin d-paddin_bottom">
+    {% if list_titles.0.items|length <= 2 %}
+        <div class="book_favorite grid-15 no-margin d-paddin_bottom min_height">
+    {% elif list_titles.0.items|length %}
+        <div class="book_favorite grid-15 no-margin d-paddin_bottom">
+    {% else %}
+        <div class="book_favorite grid-15 no-margin d-paddin_bottom min_height">
+    {% endif %}
     {% if user_profile.user.id == user.id %}
         <div class="d-container_add_book grid-5 no-margin">
             <div class="d-add_book" >
@@ -344,11 +350,21 @@
         {% endif %}
     </div>
     </div>
+    {% empty %}
+        {% if user_profile.user.id == user.id  %}
+            <span class="grid-9 place_pink no_title">
+                Añade tus libros favoritos
+            </span>
+        {% else %}
+            <span class="grid-14 place_pink no_title">
+                {{ user_profile.user.username }} aun no añade libros favoritos
+            </span>
+        {% endif %}
     {% endfor %}
 
     </div>
         <span class="grid-15 line_divide no-margin">
-            {% if list_titles.0 and list_titles.0|length > 2 %}
+            {% if list_titles.0 and list_titles.0|length > 5 %}
                 <span class="place_pink fright all_book">
                     <span class="span_text">Ver todos</span>
                     <input type="hidden" value="0" />
@@ -374,8 +390,13 @@
             {% endif %}
         {% endif %}
     </h3>
-    <div class="book_read grid-15 no-margin d-paddin_bottom">
-
+    {% if list_titles.1.items and list_titles.1.items|length <= 2 %}
+        <div class="book_read grid-15 no-margin d-paddin_bottom min_height">
+    {% elif list_titles.1.items %}
+        <div class="book_read grid-15 no-margin d-paddin_bottom">
+    {% else %}
+        <div class="book_read grid-15 no-margin d-paddin_bottom min_height">
+    {% endif %}
         {% if user_profile.user.id == user.id  %}
             <div class="d-container_add_book grid-5 no-margin">
                 <div class="d-add_book" >
@@ -452,13 +473,21 @@
             {% endif %}
         </div>
         </div>
-
-
+        {% empty %}
+            {% if user_profile.user.id == user.id  %}
+                <span class="grid-9 place_pink no_title">
+                    Añade tus libros por leer
+                </span>
+            {% else %}
+                <span class="grid-14 place_pink no_title">
+                    {{ user_profile.user.username }} aun no añade libros leídos
+                </span>
+            {% endif %}
         {% endfor %}
 
         </div>
         <span class="grid-15 line_divide no-margin">
-            {% if list_titles.1 and list_titles.1|length > 2 %}
+            {% if list_titles.1 and list_titles.1|length > 5 %}
                 <span class="place_pink fright all_book">
                     <span class="span_text">Ver todos</span>
                     <input type="hidden" value="0" />
@@ -484,8 +513,13 @@
                 {% endif %}
             {% endif %}
         </h3>
-        <div class="book_for_reading grid-15 no-margin d-paddin_bottom">
-
+        {% if list_titles.2.items|length <= 2 %}
+            <div class="book_for_reading grid-15 no-margin d-paddin_bottom min_height">
+        {% elif list_titles.2.items %}
+            <div class="book_for_reading grid-15 no-margin d-paddin_bottom">
+        {% else %}
+            <div class="book_for_reading grid-15 no-margin d-paddin_bottom min_height">
+        {% endif %}
             {% if user_profile.user.id == user.id  %}
                 <div class="d-container_add_book grid-5 no-margin">
                     <div class="d-add_book" >
@@ -509,13 +543,13 @@
             <input type="hidden" value="{{ value.id_list }}"
                    class="id_list_rel" />
             <a href="/qro_lee/profile/title/{{ key }}/" >
-        <span class="wrapper_list borde_author" >
-            {% if not value.cover %}
-                <img src="/static/img/create.png" class="img_size_all" />
-            {% else %}
-                <img class="img_size_all" src="{{ value.cover }}"/>
-            {% endif %}
-        </span>
+                <span class="wrapper_list borde_author" >
+                    {% if not value.cover %}
+                        <img src="/static/img/create.png" class="img_size_all" />
+                    {% else %}
+                        <img class="img_size_all" src="{{ value.cover }}"/>
+                    {% endif %}
+                </span>
             </a>
             <div class="d-container_text_book grid-3 no-margin">
                 <a title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/"
@@ -557,12 +591,21 @@
                 {% endif %}
             </div>
             </div>
-
+            {% empty %}
+                {% if user_profile.user.id == user.id  %}
+                    <span class="grid-9 place_pink no_title">
+                        Añade tus libros por leer
+                    </span>
+                {% else %}
+                    <span class="grid-14 place_pink no_title">
+                        {{ user_profile.user.username }} aun no añade libros que desea leer
+                    </span>
+                {% endif %}
             {% endfor %}
 
             </div>
             <span class="grid-15 line_divide no-margin">
-                {% if list_titles.2 and list_titles.2|length > 2 %}
+                {% if list_titles.2 and list_titles.2|length > 5 %}
                 <span class="place_pink fright all_book">
                     <span class="span_text">Ver todos</span>
                     <input type="hidden" value="0" />
@@ -615,7 +658,13 @@
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-3 fleft">Mis listas</h3>
+                <h3 class="title grid-3 fleft">
+                    {% if user_profile.user.id == user.id %}
+                        Mis listas
+                    {% else %}
+                        Listas de {{ user_profile.user.username }}
+                    {% endif %}
+                </h3>
                 <span class="search fleft grid-4">
                     <input class="type" type="hidden" value="List"/>
                     <input class="my_list_typ" type="hidden" value="0"/>
@@ -698,7 +747,13 @@
     </div>
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15 no-margin">
-            <h3 class="title ">Grupos a los que pertenezco</h3>
+            <h3 class="title ">
+                {% if user_profile.user.id == user.id %}
+                        Grupos a los que pertenezco
+                    {% else %}
+                        Grupos a los que pertenece {{ user_profile.user.username }}
+                    {% endif %}
+            </h3>
             <div id="scrollbar1" class="d-margin_group_user" >
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
@@ -746,7 +801,13 @@
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-3 fleft">Mis páginas</h3>
+                <h3 class="title grid-3 fleft">
+                    {% if user_profile.user.id == user.id %}
+                        Mis páginas
+                    {% else %}
+                        Paginas de {{ user_profile.user.username }}
+                    {% endif %}
+                </h3>
                 <span class="search fleft grid-4">
                     <input type="text" class="field_pag">
                     <input type="hidden" value="{{ user_profile.user.id }}" class="profile_id_user"/>
@@ -791,7 +852,7 @@
                                         </a>
                                         <span class="pink_btn size_btn_edit message_alert" >
                                             -
-                                            <input class="type_message" type="hidden" value="delete_list">
+                                            <input class="type_message" type="hidden" value="delete_page">
                                         </span>
                                 {% endif %}
                                 </span>

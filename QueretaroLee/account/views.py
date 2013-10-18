@@ -9,6 +9,7 @@ from registry import models as registry
 from datetime import datetime
 from registry import views as registry_view
 
+from django.contrib.auth.decorators import login_required
 from django.db import models as db_model
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
@@ -119,6 +120,7 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 
+@login_required(login_url='/')
 def user_profile(request, **kwargs):
     template = kwargs['template_name']
     id_user = kwargs['id_user']
@@ -303,7 +305,7 @@ def user_profile(request, **kwargs):
 
     fields = [item for item in fields if item not in fields_foreign]
 
-    pages = models.Page.objects.filter(user_id=user)
+    pages = models.Page.objects.filter(user_id=user, status=True)
 
     dict_pages = {}
     for obj in pages:
@@ -313,8 +315,8 @@ def user_profile(request, **kwargs):
                 items[field] = obj.__getattribute__(str(field)).encode('utf-8', 'ignore')
             else:
                 items[field] = obj.__getattribute__(str(field))
-        items['id_user'] = obj.id_user.id
-        items['name_user'] = obj.id_user.username
+        items['id_user'] = obj.user.id
+        items['name_user'] = obj.user.username
         dict_pages[int(obj.id)] = items
 
     city = profile.city
@@ -351,6 +353,7 @@ def user_profile(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def user_account(request, **kwargs):
     template = kwargs['template_name']
     id_user =  request.user.id
@@ -360,6 +363,7 @@ def user_account(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def update_account(request,**kwargs):
 
     id_user =  request.user.id
@@ -414,8 +418,9 @@ def update_profile(request, **kwargs):
                     .encode('utf-8', 'ignore')
         else:
             if dictionary.has_key(str(field_type)):
+
                 if field_type == 'city':
-                    dictionary_profile[str(field_type)] = (dictionary[str(field_type)]).encode('utf-8', 'ignore')
+                    dictionary_profile[str(field_type)] = (dictionary[str(field_type)])[0].encode('utf-8', 'ignore')
                 else:
                     dictionary_profile[str(field_type)] = str(dictionary[str(field_type)])
 
@@ -583,6 +588,7 @@ def list_user(request):
     return HttpResponse(context, mimetype='application/json')
 
 
+@login_required(login_url='/')
 def registry_page(request, **kwargs):
     template_name = kwargs['template_name']
     user = request.user
@@ -604,7 +610,7 @@ def registry_ajax_page(request):
     for e, val in pages.iteritems():
             copy[e] = str(val[0].encode('utf-8', 'ignore'))
     pages = copy
-    pages['id_user'] = user
+    pages['user'] = user
     pages['date'] = datetime.today()
 
     page = models.Page.objects.create(**pages)
@@ -614,15 +620,15 @@ def registry_ajax_page(request):
         context = {
             'success': 'True',
             'page_id': page.id,
-            'user_id': page.id_user.id
+            'user_id': page.user.id
         }
-        activity_data = {
+        '''activity_data = {
             'user_id': request.user.id,
             'object': page.id,
             'type': 'P',
             'activity_id': 1
         }
-        registry_view.update_activity(activity_data)
+        registry_view.update_activity(activity_data)'''
     else:
         context = {
             'success': 'False'
@@ -633,6 +639,7 @@ def registry_ajax_page(request):
     return HttpResponse(context, mimetype='application/json')
 
 
+@login_required(login_url='/')
 def update_page(request, **kwargs):
     template_name = kwargs['template_name']
     id_page = kwargs['id_page']
@@ -674,7 +681,7 @@ def update_ajax_page(request):
                 'type': 'P',
                 'activity_id': 2
             }
-            registry_view.update_activity(activity_data)
+            #registry_view.update_activity(activity_data)
         else:
             activity.update(date=datetime.today())
 

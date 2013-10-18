@@ -1560,9 +1560,11 @@ p{
 
 .d-paddin_bottom{
     overflow: hidden;
+    height: 320px;
+}
+.min_height{
     height: 152px;
 }
-
 .d-paddin_top_item{
     margin-top: 20px !important;
 }
@@ -1974,6 +1976,8 @@ p{
 
 .container_titles{
     margin-left: 18px !important;
+    overflow: hidden;
+    height: 336px;
 }
 
 .my_titles{
@@ -2094,7 +2098,7 @@ p{
 }
 
 .btn_search_book{
-    padding: 3px 10px 5px 10px !important;
+    padding: 5px 10px 6px 10px !important;
     cursor: pointer;
 }
 
@@ -2652,4 +2656,65 @@ textarea{
     position: fixed;
     z-index: 10;
     display: none;
+}
+
+.no_title{
+    text-align: center;
+    margin-top: 40px!important;
+    text-transform: none;
+    text-decoration: none;
+    font-size: 20px!important;
+
+}
+.edit_list .green_btn{
+    position: relative!important;
+}
+.edit_list .yellow_btn{
+    position: relative!important;
+}
+.edit_list .close{
+    padding: 3px!important;
+    right: -27px!important;
+    top: 0px!important;
+}
+
+.container_message .green_btn{
+    position: relative!important;
+    padding: 5px 15px 5px 15px!important;
+}
+.container_message .btn_save{
+    margin-top: 11px;
+}
+
+.list__ .scrollbar{
+    right: -40px !important;
+}
+
+.all_list{
+    cursor: pointer;
+}
+.loading{
+    height: 200px;
+}
+
+.icon_loading{
+    height: 140px;
+    width: 140px;
+    margin-top: 35px;
+    margin-left: 153px;
+}
+
+.ui-datepicker-title select{
+    opacity: 1!important;
+    width: 67px!important;
+    top: 2px!important;
+    left: 132px!important;
+}
+
+.List .viewport{
+    height: 430px !important;
+}
+
+.Title .viewport{
+    height: 448px !important;
 }

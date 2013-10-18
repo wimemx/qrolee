@@ -175,7 +175,7 @@ def account_register(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             auth.login(request, user)
             success = 'True'
-            url = main_settings.SITE_URL+'qro_lee/'
+            url = main_settings.SITE_URL+'accounts/users/edit_profile/' + str(user.id)
 
     context = {
         'success': success,
@@ -890,6 +890,19 @@ def delete_list(request):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
+
+def delete_page(request):
+
+    id_page = request.POST.get('id_list')
+    page = account.Page.objects.get(id=id_page)
+    page.status = False
+    page.save()
+
+    context = {}
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
 def delete_picture(request):
     type = request.POST.get('type')
 
@@ -925,18 +938,24 @@ def add_rate(request):
         'element_id': int(element_id)
     }
 
+    rate = account.Rate.objects.filter(user=user, type=str(type),
+                                       element_id=int(element_id))
+    if rate:
+        rate[0].grade = int(grade)
+        rate[0].save()
 
-    rate_user = account.Rate.objects.create(**list)
-    rate_user.save()
-    activity_data = {
-        'user_id': request.user.id,
-        'object': int(element_id),
-        'added_to_object': request.user.id,
-        'type': str(type),
-        'added_to_type': 'U',
-        'activity_id': 6
-    }
-    update_activity(activity_data)
+    else:
+        rate_user = account.Rate.objects.create(**list)
+        rate_user.save()
+        activity_data = {
+            'user_id': request.user.id,
+            'object': int(element_id),
+            'added_to_object': request.user.id,
+            'type': str(type),
+            'added_to_type': 'U',
+            'activity_id': 6
+        }
+        update_activity(activity_data)
 
     count_rate = account.Rate.objects.filter(element_id=element_id)
     my_count = account.Rate.objects.get(user=user, element_id=element_id)
@@ -948,9 +967,11 @@ def add_rate(request):
     count_grade = Decimal(count)/(len(count_rate))
 
     context = {
+        'element_id': my_count.element_id,
         'count': len(count_rate),
         'count_grade': str(count_grade),
-        'my_count_grade': my_count.grade
+        'my_count_grade': my_count.grade,
+        'type': my_count.type
     }
 
     context = simplejson.dumps(context)
@@ -1089,7 +1110,6 @@ def add_my_title(request):
                 type_li = int(request.POST.get('type'))
 
                 if type_li == 1 or type_li == 3 or type_li == 5:
-
                     for type in obj['it']['default_type']:
                         lista = account.List.objects.get(user=user, default_type=type)
 
@@ -1097,6 +1117,7 @@ def add_my_title(request):
                             'list': lista,
                             'title': title
                         }
+
                         my_list = account.ListTitle.objects.filter(list=lista, title=title)
 
                         if len(my_list) == 0:
@@ -1116,6 +1137,7 @@ def add_my_title(request):
                                 update_activity(activity_data)
                             else:
                                 activity[0].date = datetime.datetime.today()
+                                activity[0].save()
 
         if request.POST.get('type_list') == 'A':
             for obj in list:
@@ -1198,12 +1220,12 @@ def add_my_title(request):
             fields_title['author'] = name_author
             fields_title['id_author'] = id_author
             fields_title['id_list'] = obj.id
-            date = ''
+            act_date = ''
             if len(activity) != 0:
-                atc_date = str(activity[0].date.day) + ' de ' \
+                act_date = str(activity[0].date.day) + ' de ' \
                                + str(array_date[(activity[0].date.month-1)]) + ' ' \
                               + str(activity[0].date.year)
-            fields_title['date'] = date
+            fields_title['date'] = act_date
             my_list[int(obj.id)] = fields_title
 
         type = ''
@@ -1275,6 +1297,7 @@ def add_titles_author_list(request):
     return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')
 
 
+@login_required(login_url='/')
 def edit_list(request, **kwargs):
 
     id_list = kwargs['id_list']

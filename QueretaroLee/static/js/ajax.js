@@ -519,20 +519,12 @@ $(document).ready(function(){
 
     if($('#map').length>0 ){
         if(!$('#map').hasClass('map')){
-            var name_event = ""+$('.name_event').val();
-            name_event = name_event.replace(/\s/g,'');
-            var id_event = $('.id_event').val();
-            $.ajax({
-                type: "POST",
-                url: '/qro_lee/events/'+name_event+'_'+id_event+'/',
-                data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
-                    'post': 1
-                },
-                dataType: 'json'
-            }).done(function(data){
-                    initialize(data['lat'],data['long']);
-                });
+            if($('.d-latlon').length>0){
+                var lattong = $('.d-latlon').val();
+                lattong.split(',');
+                if(lattong.length>1)
+                    initialize(lattong[0], lattong[1]);
+            }
         }
     }
 
@@ -600,43 +592,7 @@ $('.affiliate').each(function(i){
         show_items($(this));
     });
     $('.rate').click(function(){
-         $.ajax({
-                type: "POST",
-                url: '/registry/add_rate/',
-                data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
-                    'grade': parseInt($(this).find('.grade').val()) + 1 ,
-                    'type':$(this).find('.type').val(),
-                    'element_id':$(this).find('.element_id').val()
-                },
-                dataType: 'json'
-            }).done(function(data){
-                div = $('.container_rate').fadeOut(250);
-                div.empty();
-                count_rate = parseFloat(data.count_grade);
-                count =  parseInt(data.count_grade);
-                if((count_rate-count)<=0.6)
-                   count = count_rate - (count_rate-count);
-                else
-                   count++;
-
-                for(var x = 0;x<5;x++){
-
-                    if(x<data.my_count_grade){
-                        div.append('<img src="/static/img/starUser.png" />');
-                    }else{
-                        div.append('<img src="/static/img/backgroundStar.png" />');
-                    }
-                }
-                span_count = $('<span class="text_rate border_right"> Total: ' + parseFloat(data.count_grade).toFixed(1) + ' </span>');
-                span_vote = $('<span class="text_rate border_right"> ' + data.count + ' votaciones</span>');
-                span_my_vote = $('<span class="text_rate "> mi voto: ' +
-                    data.my_count_grade +'</span>');
-                div.append(span_count);
-                div.append(span_vote);
-                div.append(span_my_vote);
-                div.fadeIn(250);
-            });
+         add_rate($(this));
     });
 
 
@@ -674,19 +630,24 @@ function delete_title($btn_delete){
         });
 }
 
-function delete_list($btn_delete){
-        $.ajax({
+function delete_item($btn_delete, type){
+    var url = '';
+    if(type == 'P')
+        url = '/registry/delete_page/';
+    if(type == 'L')
+        url = '/registry/delete_list/';
+    $.ajax({
         type: "POST",
-        url: '/registry/delete_list/',
+        url: url,
         data: {
-        'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
-        'id_list':$btn_delete.find('.id_list').val()
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'id_list':$btn_delete.find('.id_list').val()
         },
         dataType: 'json'
-        }).done(function(data){
-           $btn_delete.fadeOut(250,function(){
+    }).done(function(data){
+            $btn_delete.fadeOut(250,function(){
                 $(this).remove();
-           });
+            });
         });
 }
 
@@ -856,7 +817,7 @@ function search_list_authors_titles($this){
             url = '/list/';
             text = ' Listas ';
             id_profile = parseInt($('.id_profile').val());
-            session_user = parseInt($('.session_user').val());
+            session_user = parseInt($('.sesion_user').val());
         }
         if($('.type').val()=="Title"){
             url = '/book/titles/';
@@ -897,10 +858,14 @@ function search_list_authors_titles($this){
 
                     $.each(data,function(i){
                         var href = '/qro_lee/profile/list/'+ data[i].id;
-                        div = $('<div class="item_list " ></div>');
+                        div = $('<div class="item_list d-list_' + data[i].id + ' " ></div>');
                         a_wrapper = $('<a href="' + href + '"></a>');
                         span = $('<span class="wrapper_list" ></span>');
                         a_wrapper.append(span);
+                        input_name = $('<input class="name_list" type="hidden" value="'+data[i].name+'">');
+                        input_id_rel = $('<input class="id_list" type="hidden" value="'+data[i].id+'">');
+                        div.append(input_name);
+                        div.append(input_id_rel);
                         div.append(a_wrapper);
                         var grid = 'grid-13';
                         if(my_list_type==1)
@@ -911,8 +876,6 @@ function search_list_authors_titles($this){
                                     data[i].picture ;
                         img = $('<img class="img_size_all" src="' + src + '"/>');
                         span.append(img);
-                        span_data = $('<span class="container_data ' + grid + ' no-margin">'+
-                            '</span>');
                         if(my_list_type==0){
 
                             span_title = $('<span class="title alpha title_book grid-4"></span>');
@@ -920,17 +883,22 @@ function search_list_authors_titles($this){
                             edit_list = $('<a href="/registry/edit_list/' + data[i].type +
                                 '/' + data[i].id + '"></a>');
                             span_save = $('<span class="green_btn size_btn_edit marg_edit" >Editar</span>')
-                            del_list = $('<span class="pink_btn size_btn_edit message_alert" >-</span>');
+                            del_list = $('<span class="pink_btn size_btn_edit message_alert" >-'+
+                                '<input class="type_message" type="hidden" value="delete_list"></span>');
                             edit_list.append(span_save);
                             span_btn.append(edit_list);
                             span_btn.append(del_list);
-                            span_data.append(span_title);
+                            div.append(span_title);
                             if(session_user==id_profile)
-                                span_data.append(span_btn);
+                                div.append(span_btn);
 
                         }else{
+
+                            span_data = $('<span class="container_data ' + grid + ' no-margin">'+
+                            '</span>');
                             span_title = $('<span class="grid-9 no-margin"></span>');
                             span_data.append(span_title);
+                            div.append(span_data);
                         }
 
                         a_title =  $('<a title="' + data[i].name + '" href="' +
@@ -967,10 +935,15 @@ function search_list_authors_titles($this){
                         p_text.append(truncText(data[i].description,350));
                         span_title.append(a_title);
                         p_stars.append(span_stars);
-                        span_data.append(p_stars);
-                        span_data.append(p_by);
-                        span_data.append(p_text);
-                        div.append(span_data);
+                        if(my_list_type==0){
+                            div.append(p_stars);
+                            div.append(p_by);
+                            div.append(p_text);
+                        }else{
+                            span_data.append(p_stars);
+                            span_data.append(p_by);
+                            span_data.append(p_text);
+                        }
                         overview.append(div);
 
                   });
@@ -1071,6 +1044,7 @@ function search_list_authors_titles($this){
                     }
 
                     overview.fadeIn(200);
+                    show_dialog();
                     });
                     if($('#scrollbar1').length>0)
                         $('#scrollbar1').tinyscrollbar();
@@ -1381,12 +1355,14 @@ function load_img_profile(){
 function search_pages(){
 
     var id_user = parseInt($('.profile_id_user').val());
+    var id_user_sesion = parseInt($('.sesion_user').val());
     field_value = $('.field_pag').val();
     query = {
         'name__icontains':field_value,
-        'id_user__in':JSON.stringify([id_user])
+        'user__in':JSON.stringify([id_user]),
+        'status':1
     }
-    fields = ['name','id','coment','id_user'];
+    fields = ['name','id','coment','user'];
     and = 1;
     join = {
         'tables':{
@@ -1396,7 +1372,7 @@ function search_pages(){
             0: JSON.stringify(['id'])
         },
         'fields':{
-            0: JSON.stringify(['id'])
+            0: JSON.stringify(['id','username'])
         }
     }
     join = JSON.stringify(join);
@@ -1415,7 +1391,6 @@ function search_pages(){
     overview = $('.overview_page');
     overview.fadeOut(200);
     overview.empty();
-
     if('response' in data)
         delete data['response'];
 
@@ -1426,6 +1401,10 @@ function search_pages(){
         a_wrapper = $('<a href="' + href + '"></a>');
         span = $('<span class="wrapper_list" ></span>');
         a_wrapper.append(span);
+        input_name = $('.<input class="name_list" type="hidden" value="'+data[i].name+'">');
+        input_id_rel = $('.<input class="id_list" type="hidden" value="'+data[i]+'">');
+        div.append(input_name);
+        div.append(input_id_rel);
         div.append(a_wrapper);
         img = $('<img class="img_size_all" src="/static/img/create.png"/>');
         span_data = $('<span class="container_data grid-13 no-margin">'+
@@ -1436,18 +1415,21 @@ function search_pages(){
             href + '" class="title alpha title_book"></a>');
         a_title.append(truncText(data[i].name,26));
         span_btn = $('<span class="grid-4 no-margin"></span>');
-        a_edit = $('<a href="/accounts/users/update_page/6">' +
+        a_edit = $('<a href="/accounts/users/update_page/'+data[i].id+'">' +
             '<span class="green_btn size_btn_edit">Editar</span></a>')
         span_del = $('<span class="pink_btn size_btn_edit message_alert">-'+
-            '<input class="type_message" type="hidden" value="delete_list"></span>'+
+            '<input class="type_message" type="hidden" value="delete_page"></span>'+
             '</span>');
-        span_btn.append(a_edit);
-        span_btn.append(span_del);
+
+        if(id_user == id_user_sesion){
+            span_btn.append(a_edit);
+            span_btn.append(span_del);
+        }
         span_data.append(span_btn);
         span_by = $('<span class="grid-10 no-margin"></span>');
         text_by = $('<span class="d-text_opacity">De </span>');
         user = $('<a href="/accounts/users/profile/' + id_user + '">' +
-            '<span class="place_pink">'+ data[i].id_user +'</span></a>');
+            '<span class="place_pink">'+ data[i].user +'</span></a>');
         span_by.append(text_by);
         text_by.append(user);
         span_data.append(span_by);
@@ -1477,4 +1459,63 @@ function search_pages(){
     overview.fadeIn(200);
     if($('#scrollbar1').length>0)
         $('#scrollbar1').tinyscrollbar();
+
+    show_dialog();
+}
+
+$(document).click(function(){
+    $('.search_result').fadeOut(250);
+    if(!set_act)
+        $('.sub-menu-h').fadeOut(250);
+    set_act = false;
+
+});
+
+function add_rate($this){
+
+    $.ajax({
+        type: "POST",
+        url: '/registry/add_rate/',
+        data: {
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'grade': parseInt($this.find('.grade').val()) + 1 ,
+            'type':$this.find('.type').val(),
+            'element_id':$this.find('.element_id').val()
+        },
+        dataType: 'json'
+    }).done(function(data){
+            div = $('.container_rate').fadeOut(250);
+            div.empty();
+            count_rate = parseFloat(data.count_grade);
+            count =  parseInt(data.count_grade);
+            if((count_rate-count)<=0.5)
+                count = count_rate - (count_rate-count);
+            else
+                count++;
+
+            for(var x = 0;x<5;x++){
+                span_str = $('<span class="rate"></span>');
+                div.append(span_str);
+                if(x<data.my_count_grade){
+                    span_str.append('<img src="/static/img/starUser.png" />');
+                }else{
+                    span_str.append('<img src="/static/img/backgroundStar.png" />');
+                }
+                span_str.append('<input class="grade" type="hidden" value="'+ x + '"/>');
+                span_str.append('<input class="type" type="hidden" value="'+data.type+'"/>');
+                span_str.append('<input class="element_id" type="hidden" value="'+data.element_id+'"/>');
+
+            }
+            span_count = $('<span class="text_rate border_right"> Total: ' + parseFloat(data.count_grade).toFixed(1) + ' </span>');
+            span_vote = $('<span class="text_rate border_right"> ' + data.count + ' votaciones</span>');
+            span_my_vote = $('<span class="text_rate "> mi voto: ' +
+                data.my_count_grade +'</span>');
+            div.append(span_count);
+            div.append(span_vote);
+            div.append(span_my_vote);
+            div.fadeIn(250);
+            $('.rate').click(function(){
+                add_rate($(this));
+            });
+        });
 }

@@ -138,3 +138,4 @@ class Page(models.Model):
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)
     user = models.ForeignKey(User)
+    status = models.BooleanField(default=True)
