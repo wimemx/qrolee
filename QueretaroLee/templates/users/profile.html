@@ -103,7 +103,7 @@
                 {% endif %}
             </p>
         </span>
-
+        {% if user_profile.user_id != user.id %}
             <span class="member grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member %}
@@ -123,7 +123,8 @@
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                     {% endif %}
                 </span>
-                </span>
+            </span>
+        {% endif %}
 
         <span class="nav profile grid-8 no-margin">
             <span class="btn">Actividad</span>
@@ -149,7 +150,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id }}
+                                {{ news_feed.id|feed_type }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
