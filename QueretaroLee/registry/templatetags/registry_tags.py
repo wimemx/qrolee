@@ -48,7 +48,8 @@ def feed_type(feed_id):
     obj_list.append(get_objects(feed.object, feed.type))
     img_url = '/static/media/users/'+str(feed.user_id)+'/'
     added_to_img_url = '/static/media/users/'+str(feed.user_id)+'/'
-
+    name = ''
+    obj_name = ''
     if feed.added_to_type == 'U':
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)

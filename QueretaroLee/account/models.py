@@ -95,6 +95,7 @@ class ListTitle(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.title.title, self.list.name)
 
+
 class AuthorTitle(models.Model):
     title = models.ForeignKey(Title)
     author = models.ForeignKey(Author)
@@ -139,3 +140,14 @@ class Page(models.Model):
     meta = models.TextField(max_length=1000)
     user = models.ForeignKey(User)
     status = models.BooleanField(default=True)
+    
+    
+class Discussion(models.Model):
+    name = models.CharField(max_length=255)
+    content = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    meta = models.CharField(max_length=1)
+    entity = models.ForeignKey(registry_models.Entity)
+    user = models.ForeignKey(User)
+    parent_discussion = models.ForeignKey('self', blank=True, null=True)
+    

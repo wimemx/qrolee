@@ -606,7 +606,54 @@ $('.affiliate').each(function(i){
     set_act = false;
     $('.nav .btn:eq(0)').trigger('click');
 
+    if($('.discussion.load').length > 0){
+        $('.discussion.load a.title').click(function(e){
+            e.preventDefault();
+                var query = {
+                    'id': $(this).attr('id'),
+                    'parent_discussion_id': $(this).attr('id')
+                }
+                var fields = ['name','id','content','user_id'];
+                var join = {
+                    'tables':{
+                        0: JSON.stringify(['registry.profile', 'auth.user']),
+                        1: JSON.stringify(['auth.user'])
+                    },
+                    'quieres':{
+                        0: JSON.stringify(['id']),
+                        1: JSON.stringify(['id'])
+                    },
+                    'fields':{
+                        0: JSON.stringify(['picture']),
+                        1: JSON.stringify(['username','first_name','last_name'])
+
+                    }
+                }
+                join = JSON.stringify(join);
+
+                var search = {
+                    'type': 'account.Discussion',
+                    'fields': JSON.stringify(fields),
+                    'value': JSON.stringify(query),
+                    'and': 0,
+                    'join': join
+                }
+                search = JSON.stringify(search);
+                var csrf = $('.csrf_header').find('div input').val();
+                var response = advanced_search(search, csrf);
+                discussions(response);
+            return false;
+        });
+    }
+
 });
+
+function discussion(response){
+    $.each(response, function(){
+
+    });
+}
+
 
 function delete_title($btn_delete){
 
@@ -1377,7 +1424,7 @@ function search_pages(){
     }
     join = JSON.stringify(join);
 
-    search = {
+    var search = {
         'type': 'account.Page',
         'fields': JSON.stringify(fields),
         'value': JSON.stringify(query),
@@ -1386,9 +1433,9 @@ function search_pages(){
     }
     search = JSON.stringify(search);
     var csrf = $('.csrf_header').find('div input').val();
-    data = advanced_search(search, csrf);
+    var data = advanced_search(search, csrf);
 
-    overview = $('.overview_page');
+    var overview = $('.overview_page');
     overview.fadeOut(200);
     overview.empty();
     if('response' in data)
