@@ -138,7 +138,6 @@ def account_register(request):
     url = ''
     user_exits = auth_models.User.objects.filter(
         Q(email=user['email'][0]) | Q(username=user['username'][0]))
-    print user_exits
 
     if user['password'] != user['password_match']:
         success = 'False'
@@ -323,7 +322,6 @@ def edit_entity(request, **kwargs):
 def delete_entity(request, **kwargs):
 
     id_entity = int(kwargs['entity'])
-    print id_entity
     entity = models.Entity.objects.get(id=id_entity)
     entity.status = False
     entity.save()
@@ -336,8 +334,7 @@ def delete_entity(request, **kwargs):
 def update_entity(request, **kwargs):
     field = request.POST.get('field')
     value = request.POST.get('value')
-    print field
-    print value
+
     if field == 'privacy':
         if value == 'publica':
             value = 0
@@ -354,8 +351,6 @@ def update_entity(request, **kwargs):
         event = models.Event.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
     else:
-        print kwargs['entity_id']
-        print dictionary
         entity = models.Entity.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
 
@@ -367,6 +362,7 @@ def update_entity(request, **kwargs):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
+
 
 def media_upload(request):
 
@@ -676,7 +672,6 @@ def remove_add_user(request, **kwargs):
             objs = models.User.objects.filter(
                 id__in=users)
         elif request.POST.get('user_email') == '-2':
-            print 7
             members = models.MemberToObject.objects.filter(
                 object=int(request.POST.get('entity')), object_type='E').filter(request=True)
             users = list()

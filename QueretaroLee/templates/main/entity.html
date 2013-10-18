@@ -4,7 +4,7 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
-
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
 {% endblock %}
 
 {% block js %}
@@ -250,12 +250,15 @@
                 </p>
             {% endif %}
         </span>
-        <span class="nav {{ entity_type.1 }} grid-8 no-margin">
+        <span class="nav {{ entity_type.1 }} grid-9 no-margin">
             <span class="btn">Actividad</span>
             <span class="btn">Información General</span>
             <span class="btn">Eventos</span>
             {% if entity_type.1  == 'group' %}
                 <span class="btn">Miembros</span>
+            {% endif %}
+            {% if entity_type.1  == 'group' %}
+                <span class="btn">Discusiones</span>
             {% endif %}
         </span>
 
@@ -263,7 +266,7 @@
 
     <div class="grid-16 content single no-margin">
     <div class="grid-16 news-feed load no-margin" style="display: block">
-        {% if entity.privacy == 0 or member %}
+        {% if entity.privacy == 0 or member or owner.id == user.id %}
 
         <div style="margin: 30px; 0px 0px 30px;" class="grid-8 left">
             {% if activity  %}
@@ -377,11 +380,11 @@
     </div>
 
     {% if entity_type.1 == 'spot' %}
-        <div class="grid-16 spot load no-margin">
+    <div class="grid-16 spot load no-margin">
     {% else %}
-        <div class="grid-16 load no-margin">
+    <div class="grid-16 load no-margin">
     {% endif %}
-    {% if entity.privacy == 0 or member %}
+    {% if entity.privacy == 0 or member or owner.id == user.id %}
         <div class="sidebar-a grid-11">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
@@ -510,18 +513,19 @@
                             </a>
                         </span>
                         {% endfor %}
-                        </div>
                     </div>
-                </div>
             </div>
+        </div>
+    </div>
     {% else %}
         <p class="private-message margin-50 center">Este grupo es privado,
             <br> para ver la información solicitada
             <br>necesitas ser miembro</p>
     {% endif %}
     </div>
+
     <div class="grid-16 load no-margin">
-        {% if entity.privacy == 0 or member %}
+        {% if entity.privacy == 0 or member or owner.id == user.id %}
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
@@ -571,14 +575,16 @@
                     <span class="next fright">></span>
                 </div>
             </div>
-            </div>
         {% else %}
             <p class="private-message margin-50 center">Este grupo es privado,
                 <br> para ver la información solicitada
                 <br>necesitas ser miembro</p>
         {% endif %}
+    </div>
+
     {% if entity_type.1 == 'group' %}
-        <div class="grid-15 offset-1 members load no-margin">
+        <div class="grid-16 members load no-margin">
+        {% if entity.privacy == 0 or member or owner.id == user.id %}
             <div id="scrollbar1 ">
                 <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">
@@ -603,14 +609,100 @@
                                         </span>
                                         <a class="fleft spot din-r" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
                                     </h3>
-                                </span>
+                            </span>
                         {% endfor %}
                     </div>
                 </div>
             </div>
+
+        {% else %}
+            <p class="private-message margin-50 center">Este grupo es privado,
+                <br> para ver la información solicitada
+                <br>necesitas ser miembro</p>
+        {% endif %}
+        </div>
+    {% endif %}
+    {% if entity_type.1 == 'group' %}
+        <div class="grid-16 discussion load no-margin">
+        <div class="grid-15 center">
+        {% if entity.privacy == 0 or member or owner.id == user.id %}
+            <div class="grid-5 fleft alpha">
+            <h3 class="title main">Discusiones
+                <span class="select_wrapper grid-2 alpha fright">
+                <span class="grid-2 select no-margin">
+                            <span class="text">Publica</span>
+                            <span class="dropdown"></span>
+                            <select class="change value" name="privacy">
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                </span>
+                </span>
+            </h3>
+            <div class="heading">
+                <span class="search advanced_filter center alpha grid-4">{% csrf_token %}
+                    <input type="hidden" class="model" value="auth.user"/>
+                    <input class="search" type="text"/>
+                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                </span>
+            </div>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                    <div class="viewport" style="height:460px;">
+                        <div class="overview">
+                        {% if discussions %}
+                            {% for discussion in discussions %}
+                                <span class="item">
+                                    <a href="#" id="{{ discussion.id }}" style="margin-top: 5px;" class="title no-margin">{{  discussion.name }}</a>
+                                    <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.username }}</a></p>
+                                    <p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p>
+                                </span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="center">Este grupos no cuenta con discusiones.</p>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-9 discuss fleft">
+                <h3 class="title no-margin">Title</h3>
+                <p class="no-margin fleft gray_text">Por <a class="spot category" href="#">Alguien</a></p>
+                <p class="gray_text no-margin fright">20 de oct de 2013</p>
+                <p style="margin-bottom: 20px;" class="fleft">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+                <span class="respond main fleft">
+                    <span class="wrapper no-margin fleft grid-1">
+                        <img src="/static/img/create.png" alt=""/>
+                    </span>
+                    <textarea class="grid-8 din-r fright no-margin">Escribe un comentario...</textarea>
+                </span>
+                <span class="discussion_response fleft">
+                    <span class="respond main fleft">
+                    <span class="wrapper no-margin fleft grid-1">
+                        <img src="/static/img/create.png" alt=""/>
+                    </span>
+                    <span class="grid-8 din-r answer fright no-margin">
+                        <span class="name title">Laura Rodríguez <span class="gray_text">hace 3 semanas</span></span>
+                        <p>Pellentesque habitant morbi tristique senectus et netus et
+                        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
+                        ultricies eget, tempor sit amet, ante. Donec eu libero sit
+                        amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                        Quisque sit amet est et sapien ullamcorper pharetra.
+                        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
+                        <span class="respond_btn btn">responder</span>
+                        <span class="share_btn btn">compartir</span>
+                        <span class="erase_btn btn">eliminar</span>
+                    </span>
+                </span>
+            </div>
+        {% else %}
+            <p class="private-message margin-50 center">Este grupo es privado,
+                <br> para ver la información solicitada
+                <br>necesitas ser miembro</p>
+        {% endif %}
+        </div>
         </div>
     {% endif %}
     </div>
-
     </div>
 {% endblock %}

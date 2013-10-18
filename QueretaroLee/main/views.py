@@ -342,6 +342,10 @@ def get_entity(request, **kwargs):
     entity.address = entity.address.split('#')
     activity = account_models.Activity.objects.filter(
         added_to_object=entity.id, added_to_type='E').order_by('-date')
+
+    discussions = account_models.Discussion.objects.filter(
+        entity__id=entity.id, parent_discussion_id=None)
+
     context = {
         'entity': entity,
         'calendar': unescaped,
@@ -357,7 +361,8 @@ def get_entity(request, **kwargs):
         'count_grade': count_grade,
         'followers': zip(entity_followers, user_pictures),
         'admins': admins,
-        'activity': activity
+        'activity': activity,
+        'discussions': discussions
     }
 
     return render(request, template, context)
@@ -633,8 +638,8 @@ def advanced_search(request, **kwargs):
                             list_elements.append(o.name)
             filtered_users = list()
 
-
         fields = ast.literal_eval(str(data['fields']))
+
         for obj in object:
             if activity and model_name == 'activity':
                 is_reading = account_models.Activity.objects.filter(user_id=obj.id, type='T')
@@ -715,7 +720,10 @@ def advanced_search(request, **kwargs):
                                         filtered_users.append(obj.id)
 
                     models = ast.literal_eval(join['tables'][str(ele)])
-                    related_object = obj.id
+                    if 'user_id' in data['fields']:
+                        related_object = obj.user_id
+                    else:
+                        related_object = obj.id
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
                     model_name = parent[1]
@@ -728,6 +736,7 @@ def advanced_search(request, **kwargs):
                         child_model = get_model(app_label, model_name)
 
                     join_field = ast.literal_eval(join['quieres'][str(ele)])
+
                     if len(models) > 1:
                         q_list = [(model_name+'__'+str(join_field[0]), related_object)]
                     else:
@@ -738,7 +747,6 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
-                    print q_list
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
@@ -773,7 +781,6 @@ def advanced_search(request, **kwargs):
         context = simplejson.dumps(value)
         return HttpResponse(context, mimetype='application/json')
     return render(request, template, context)
-
 
 
 def get_list(request,**kwargs):

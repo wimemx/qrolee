@@ -77,6 +77,9 @@ span.green_btn,span.yellow_btn{
     color: #000;
     position: relative;
     line-height: 27px;
+    margin-top: 0px;
+    margin-bottom: 12px;
+    font-weight: 500;
 }
     .data p .value{
         font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -90,7 +93,7 @@ span.green_btn,span.yellow_btn{
         float: right;
     }
     .data p input:not([type=submit]){
-        background: #fbf6ea;
+        background: #faf3e1;
         height: 27px;
         line-height: 27px;
         display: none;

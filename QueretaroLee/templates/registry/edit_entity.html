@@ -58,7 +58,7 @@
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
-                <input name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha fright value"/>
+                <input placeholder="Usuario de facebook" name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.fb }}</span>
             </p>
             <p>Twitter
@@ -86,7 +86,7 @@
                     </span>
                 <span class="close right"></span>
                 <textarea name="description" class="grid-5 alpha fright value">{{ entity.description }}</textarea>
-                <span class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
+                <span style="height: 100px;" class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
             </p>
         </span>
         <span class="data grid-9 fleft no-margin">
@@ -98,7 +98,7 @@
                 <span class="close right"></span>
                 <span class="value grid-5 alpha fright">
                     {% if entity.privacy == 0 %}
-                        Públic
+                        Público
                     {% else %}
                         Privado
                     {% endif %}
@@ -148,7 +148,7 @@
             </span>Compartir publicaciones de Twitter en Querétaro Lee</p>
         {% endif %}
         {% else %}
-            <span style="border: none;" class="fb-connect no-margin fleft grid-14" style="">
+            <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-14" style="">
             <input type="hidden" name="fb_id" class="fb_id"/>
                 {% if entity_type.1 == 'group' %}
                 <p>¿Cuentas ya con un grupo en Facebook?</p>
@@ -166,40 +166,28 @@
     <script type="text/javascript">
         $(document).ready(function(){
             initialize();
+            var timeout = 200;
             $('.green_btn').click(function(){
                 $this = $(this).parent();
-                $this.parent().find('span.value').fadeOut(300,
-                function(){
+                $this.parent().find('span.value').fadeOut(timeout, function(){
                     if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
+                        $this.parent().find('input.value').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                            $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                            $this.parent().find('.close').fadeIn(timeout);
 
                         });
                     }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
-
+                        $this.parent().find('textarea.value').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                                     $this.parent().find('.close').fadeIn(timeout);
                         });
                     }else{
-                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-
-                                 });
-                            });
-
+                        $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                                     $this.parent().find('.close').fadeIn(timeout);
                         });
                     }
                 });
@@ -207,27 +195,25 @@
             });
             $('.close').click(function(){
                 $this = $(this);
-                $(this).fadeOut(300,
-                    function(){
-                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
+                $(this).fadeOut(timeout);
+                $this.parent().find('span.yellow_btn').fadeOut(timeout,function(){
+                    $this.parent().find('span.green_btn').fadeIn(timeout,
                             function(){
                                 if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
+                                    $this.parent().find('input.value').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
+                                    });
                                 }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
+                                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
                                     });
                                 }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
+                                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
                                     });
                                 }
                             });
 
-                        });
                 });
             });
             $('.yellow_btn').click(function(){
@@ -243,6 +229,26 @@
                 }
                 $this = $(this);
                 update_obj(field,value,$this);
+                $this = $(this).parent();
+                $(this).fadeOut(timeout);
+                $this.parent().find('.close').fadeOut(timeout);
+                $this.parent().find('span.green_btn').fadeIn(timeout);
+
+                if($this.parent().find('input.value').length > 0){
+                    $this.parent().find('input.value').fadeOut(timeout,function(){
+                        console.log($this.parent().find('input.value').val());
+                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                        $this.parent().find('span.value').fadeIn(timeout);
+                    });
+                }else if($this.parent().find('textarea.value').length > 0){
+                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
+                        $this.parent().find('span.value').fadeIn(timeout);
+                    });
+                }else{
+                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
+                        $this.parent().find('span.value').fadeIn(timeout);
+                    });
+                }
             });
             $('.checkbox span').click(function(){
                 var field;
