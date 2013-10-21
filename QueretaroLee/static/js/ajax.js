@@ -707,7 +707,6 @@ function delete_item($btn_delete, type){
 function add_titles_list(csrf, id_list){
 
     var title_ids = [];
-
     $.each($('.add_my_list .d-item_book'),function(i){
         title_ids.push(parseInt($(this).find('.id_title').val()));
     });

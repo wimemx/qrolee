@@ -2029,6 +2029,7 @@ function add_my_title(csrf, array_title, type){
         },
         dataType: 'json'
     }).done(function(data){
+            console.log(data);
             if(type == 1 | type == 3){
                 //book_favorite
                 $.each(data,function(i){
@@ -2263,7 +2264,7 @@ function get_titles_authors(list, csrf){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
             },
             'activity':{

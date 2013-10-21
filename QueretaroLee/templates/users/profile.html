@@ -886,7 +886,7 @@
                                     </a>
                                 </span>
                                 <span class="d-text_list grid-13 no-margin bottom_text"  >
-                                    {% autoescape off %}
+                                    {% autoescape off %}{{ value.coment|img_autoescape }}
                                         {{ value.coment|striptags|truncatechars:580 }}
                                     {% endautoescape %}
                                 </span>

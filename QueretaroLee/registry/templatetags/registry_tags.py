@@ -237,6 +237,8 @@ def get_objects(object, type):
 
 
 @register.filter
-def img_autoescape(img):
-    print 123
+def img_autoescape(text):
+    t = str(text)
+    a = t.find('<img')
+    print a
 
