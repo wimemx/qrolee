@@ -641,6 +641,7 @@ def advanced_search(request, **kwargs):
         fields = ast.literal_eval(str(data['fields']))
 
         for obj in object:
+            flag = False
             if activity and model_name == 'activity':
                 is_reading = account_models.Activity.objects.filter(user_id=obj.id, type='T')
                 if not is_reading:
@@ -658,12 +659,9 @@ def advanced_search(request, **kwargs):
             if 'distance' in query_list:
                 if query_list['distance'] != '':
                     if obj.lat != '' and obj.long != '':
-                        print latitude
-                        print obj.lat
                         lat = float(obj.lat)
                         lng = float(obj.long)
                         radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
-                        print radius
                         if radius > distance:
                             break
             context_fields = {'extras': list()}
@@ -720,10 +718,13 @@ def advanced_search(request, **kwargs):
                                         filtered_users.append(obj.id)
 
                     models = ast.literal_eval(join['tables'][str(ele)])
-                    if 'user_id' in data['fields']:
+
+                    if 'user_id' in data['fields'] and not flag:
                         related_object = obj.user_id
+                        flag = True
                     else:
                         related_object = obj.id
+
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
                     model_name = parent[1]
@@ -747,6 +748,9 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
+
+                    print related_object
+                    print q_list
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
@@ -1416,6 +1420,33 @@ def search_api(request, **kwargs):
     }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
+
+def get_a_discussion(request):
+    discussion = account_models.Discussion.objects.get(
+        pk=1)
+    response = ''
+    get_discussion(discussion=discussion)
+    context = {
+        'disucssion': response
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def get_discussion(discussion):
+    print discussion.id
+    discussion_list = list()
+    discussion = account_models.Discussion.objects.filter(
+        parent_discussion_id=discussion.id)
+    if discussion:
+        discussion_list.append(get_discussion(discussion[0]))
+    else:
+        discussion = account_models.Discussion.objects.get(
+            id=discussion.id)
+        return discussion
+
+    print discussion_list
 
 
 def load_picture_profile(request):

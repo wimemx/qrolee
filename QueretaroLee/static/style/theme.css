@@ -839,9 +839,13 @@ p{
         margin-top: 80px;
         width: 100%;
     }
-    .discussion .respond, .discussion .discussion_response{
+    .discussion .respond{
         display: block;
         width: 100%;
+    }
+    .discussion .discussion_response{
+        display: block;
+        margin-bottom: 30px;
     }
         .respond .wrapper{
             width: 35px;
@@ -852,11 +856,16 @@ p{
         .discussion textarea, .discussion .answer{
             padding: 8px;
             border: 1px solid #D3A373;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-radius: 5px;
             background: #F7EFD8;
             color: #454545;
             position: relative;
+
+        }
+        .discussion .answer{
+            border-radius: 0px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
 
         }
 
@@ -867,7 +876,7 @@ p{
 
         }
         .discussion .answer .title{
-            font-size: 12px;
+            font-size: 13px;
             width: 100%;
             float: left;
             margin: 5px 0px 5px 0px;
@@ -875,17 +884,20 @@ p{
         }
             .answer .gray_text{
                 margin-left: 15px;
+                font-size: 11px;
+                font-weight: 400;
             }
         .answer .btn{
             position: absolute;
             background: #D4A174;
-            padding: 1px 3px 1px 3px;
+            padding: 1px 4px 1px 4px;
             bottom: -18px;
             color: #fff;
             line-height: 16px;
             font-size: 10px;
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
+            cursor: pointer;
         }
         .answer .respond_btn{
             left: -1px;

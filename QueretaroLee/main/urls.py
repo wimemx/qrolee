@@ -30,6 +30,5 @@ urlpatterns = patterns('',
     url(r'^load_picture/$', views.load_picture_profile ,name='load_picture_profile'),
     url(r'^user/(?P<user_id>[0-9]+)/page/(?P<page_id>[0-9]+)/$', views.get_page ,
         {'template_name': 'main/page.html'},name='page'),
-
-
+    url(r'^get_a_discussion/$', views.get_a_discussion, name='get_discussion'),
 )

@@ -576,7 +576,14 @@ $('.affiliate').each(function(i){
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
     });
-    $('.entity .admin_nav.nav .btn:eq(2)').click(function(){
+    $('.entity .admin_nav.nav .btn.members').click(function(){
+        $('.admin').find("*[class*='user_']").each(function(){
+            $(this).remove();
+        });
+        findUser($('.alert-message'), '2',
+            $('.alert-message').find('.entity').val(), $('.mmembers'));
+    });
+    $('.entity .admin_nav.nav .btn.request').click(function(){
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
@@ -653,47 +660,23 @@ $('.affiliate').each(function(i){
     if($('.discussion.load').length > 0){
         $('.discussion.load a.title').click(function(e){
             e.preventDefault();
-                var query = {
-                    'id': $(this).attr('id'),
-                    'parent_discussion_id': $(this).attr('id')
-                }
-                var fields = ['name','id','content','user_id'];
-                var join = {
-                    'tables':{
-                        0: JSON.stringify(['registry.profile', 'auth.user']),
-                        1: JSON.stringify(['auth.user'])
-                    },
-                    'quieres':{
-                        0: JSON.stringify(['id']),
-                        1: JSON.stringify(['id'])
-                    },
-                    'fields':{
-                        0: JSON.stringify(['picture']),
-                        1: JSON.stringify(['username','first_name','last_name'])
-
-                    }
-                }
-                join = JSON.stringify(join);
-
-                var search = {
-                    'type': 'account.Discussion',
-                    'fields': JSON.stringify(fields),
-                    'value': JSON.stringify(query),
-                    'and': 0,
-                    'join': join
-                }
-                search = JSON.stringify(search);
-                var csrf = $('.csrf_header').find('div input').val();
-                var response = advanced_search(search, csrf);
-                discussions(response);
+                var response = discussion($(this).attr('id'));
             return false;
         });
     }
 
 });
 
-function discussion(response){
-    $.each(response, function(){
+function discussion(id){
+    $.ajax({
+        type: "POST",
+        url: '/qro_lee/get_a_discussion/',
+        data: {
+            'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
+            'id': id
+        },
+        dataType: 'json'
+    }).done(function(data){
 
     });
 }
@@ -703,16 +686,16 @@ function delete_title($btn_delete){
 
 
         $.ajax({
-        type: "POST",
-        url: '/registry/delete_title/',
-        data: {
-        'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
-        'id_title':$btn_delete.find('.id_title').val(),
-        'type':$btn_delete.find('.type_list').val(),
-        'type_list':$('.type_my_list').val(),
-        'id_list':$btn_delete.find('.id_list_rel').val()
-        },
-        dataType: 'json'
+            type: "POST",
+            url: '/registry/delete_title/',
+            data: {
+            'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
+            'id_title':$btn_delete.find('.id_title').val(),
+            'type':$btn_delete.find('.type_list').val(),
+            'type_list':$('.type_my_list').val(),
+            'id_list':$btn_delete.find('.id_list_rel').val()
+            },
+            dataType: 'json'
         }).done(function(data){
            $btn_delete.fadeOut(250,function(){
                 $(this).remove();

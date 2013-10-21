@@ -36,7 +36,7 @@
     <div class="grid-15 center">
         <input type="hidden" class="users entity" value="{{ entity.id }}"/>{% csrf_token %}
         <span class="title main">Administradores de
-            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.name|cut:" " }}_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
+            <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
              {% block entity_menu %}
                 {% include 'blocks/entity_menu.html' %}
             {% endblock %}
@@ -46,8 +46,9 @@
             <span class="nav admin_nav {{ entity_type.1 }} grid-9 no-margin">
                 <span class="btn">Administradores</span>
                 <span class="btn">Nuevo administrador</span>
+                <span class="btn members">Miembros</span>
                 {% if requests %}
-                  <span class="btn">Solicitudes</span>
+                  <span class="btn request">Solicitudes</span>
                 {% endif %}
             </span>
             <span class="heading fright">
@@ -84,6 +85,18 @@
                     </span>
                 </span>
 
+        </div>
+        <div class="grid-15 clear mmembers load members center">
+            <span class="grid-5 affiliate no-margin">
+                <input type="hidden" class="user-id" value=""/>
+                    <span class="wrapper fleft">
+                        <img src="" alt=""/>
+                    </span>
+                    <span class="title grid-3 no-margin">
+                        <span class="name"></span>
+                        <span class="remove relative fleft">-</span>
+                    </span>
+                </span>
         </div>
         <div class="grid-15 clear request load members center">
             <span class="grid-5 affiliate no-margin">

@@ -711,6 +711,8 @@ def remove_add_user(request, **kwargs):
         if int(request.POST.get('remove')) == 1:
             obj.is_admin = 0
             obj.request = 0
+        elif int(request.POST.get('remove')) == 1:
+            pass
         else:
             if obj.request:
                 obj.is_member = True
