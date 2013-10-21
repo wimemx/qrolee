@@ -133,6 +133,9 @@ $(document).ready(function(){
     $('.span_all').click(function(){
         show_index_items($(this));
     });
+    $('.all_list').click(function(){
+        show_items_left($(this));
+    });
 
     $('.d-add_book').click(function(){
 
@@ -1982,15 +1985,23 @@ function list_title(csrf, data, div_text, type){
                 }
             }
 
-            if(active_sel)
+            if(active_sel){
+                div_btn_save.fadeOut(200);
+                div_scroll.empty();
+                container_loading = $('<div class="loading grid-8"></div>');
+                icon_loading = $('<div class="icon_loading"></div>');
+                div_scroll.append(container_loading);
+                container_loading.append(icon_loading);
+                icon_loading.append('<img src="/static/img/loading.gif" class="img_size_all" />');
                 add_my_title(csrf,array_title,type);
+            }
         });
         $('.dialog-confirm').fadeIn(100);
         $('.container_message').fadeIn(100);
         aling_message();
         selec_item();
-        if($('#scrollbar1').length>0)
-            $('#scrollbar1').tinyscrollbar();
+        if($('.dialog_text #scrollbar1').length>0)
+            $('.dialog_text #scrollbar1').tinyscrollbar();
 
 }
 function add_my_title(csrf, array_title, type){
@@ -2050,7 +2061,7 @@ function add_my_title(csrf, array_title, type){
                         img = $('<img class="img_size_all" src="'+title[i2].cover +
                             '"/>');
                         div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
-                        a_t = $('<a href="' + href +
+                        a_t = $('<a title="' + title[i2].title +'" href="' + href +
                             '" class="title title_book alpha grid-4 "></a>');
                         a_t.append(truncText(title[i2].title,15));
                         href_author = '/qro_lee/profile/author/'+title[i2].id_author;
@@ -2061,7 +2072,10 @@ function add_my_title(csrf, array_title, type){
                                 '</a>';
                         p_author = $('<p class="p-d-text" >' + name_author +'</p>');
                         span_rate = $('<span></span>');
-                        p_date = $('<p class="p-d-text d-text_opacity"> añadido ' +
+                        text_com = 'añadido ';
+                        if(i=='book_read')
+                            text_com = 'leído ';
+                        p_date = $('<p class="p-d-text d-text_opacity">' + text_com +
                             title[i2].date + '</p>');
                         btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
                         input_type = $('<input class="type_message" type="hidden" ' +
@@ -2200,7 +2214,7 @@ function get_titles_authors(list, csrf){
                 img = $('<img class="img_size_all" src="'+title[i2].cover +
                     '"/>');
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
-                a_t = $('<a class="title title_book alpha grid-4 "></a>');
+                a_t = $('<a title="' + title[i2].title + '" class="title title_book alpha grid-4 "></a>');
                 a_t.append(truncText(title[i2].title,15));
                 name_author = '<p class="p-d-text place_pink" >anonimo</a>';
                 if(title[i2].extras[1].length!=0)
@@ -2290,7 +2304,7 @@ function get_titles_authors(list, csrf){
                 img = $('<img class="img_size_all" src="'+title[i2].picture +
                     '"/>');
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
-                a_t = $('<a class="title title_book alpha grid-4 "></a>');
+                a_t = $('<a title="'+title[i2].name+'" class="title title_book alpha grid-4 "></a>');
                 a_t.append(truncText(title[i2].name,15));
                 p_author = $('<p class="p-d-text" > </p>');
                 span_rate = $('<span class="grid-3 no-margin"></span>');
@@ -2315,8 +2329,6 @@ function get_titles_authors(list, csrf){
 
     if($('.d-paddin_top').length>0)
         $('.d-paddin_top').tinyscrollbar();
-    if($('#scrollbar1').length>0)
-        $('#scrollbar1').tinyscrollbar();
 }
 
 function show_titles($this){
@@ -2340,7 +2352,7 @@ function show_titles($this){
     }else{
         $this.find('input').val(0);
         $this.find('.span_text').append('Ver todos');
-        item_height = 152;
+        item_height = 320;
     }
     div_container.animate({
         'height': item_height
@@ -2367,10 +2379,39 @@ function show_items($this){
 
         $this.find('input').val(0);
         $this.find('.span_text').append('Ver todos');
-        if(count > 3)
+        if(count > 5)
             item_height = 494;
         else
             item_height = count * 170;
+    }
+
+    div_container.animate({
+        'height': item_height
+    },250, function() {
+        // Animation complete.
+    });
+}
+function show_items_left($this){
+
+    div_container = $this.parent().find('.container_titles');
+    var disable_value =  parseInt($this.find('input').val());
+    var count = div_container.find('.item_title').length;
+    var item_height = count * 110;
+
+    $this.find('span').empty();
+
+    if(disable_value==0){
+
+        $this.find('input').val(1);
+        $this.find('span').append('Ver menos');
+    }else{
+
+        $this.find('input').val(0);
+        $this.find('span').append('Ver todos');
+        if(count > 3)
+            item_height = 336;
+        else
+            item_height = count * 110;
     }
 
     div_container.animate({
@@ -2470,7 +2511,7 @@ function show_dialog(){
                 span_text.append(input_date);
                 input_date.datepicker({
                 dateFormat: 'yy-mm-dd',
-                minDate: '0D',
+                maxDate: '0D',
                 onSelect: function(dateText) {
                     $('p').find('input.hour-init').val('00:00:00');
                 },
@@ -2497,7 +2538,7 @@ function show_dialog(){
                 span_text.append(input_date);
                 input_date.datepicker({
                     dateFormat: 'yy-mm-dd',
-                    minDate: '0D',
+                    maxDate: '0D',
                     onSelect: function(dateText) {
                         $('p').find('input.hour-init').val('00:00:00');
                     },
@@ -2506,7 +2547,7 @@ function show_dialog(){
                     }
                 });
             }
-            if(type=="delete_list"){
+            if(type=="delete_list" | type=="delete_page"){
                 name = $(this).parent().parent().find('.name_list').val();
                 id_list = $(this).parent().parent().find('.id_list').val();
                 text = '¿ Estás seguro que deseas eliminar ' + name + ' ?';
@@ -2577,7 +2618,15 @@ function show_dialog(){
             var id_list = $(this).parent().parent().find('.id_list').val();
             btn_acept.click(function(){
                 d_list = $('.overview').find('.d-list_' + id_list);
-                delete_list(d_list);
+                delete_item(d_list, 'L');
+            });
+            closet(btn_acept);
+        }
+        if(($(this).find('.type_message').val())=='delete_page'){
+            var id_list = $(this).parent().parent().find('.id_list').val();
+            btn_acept.click(function(){
+                d_list = $('.overview').find('.d-list_' + id_list);
+                delete_item(d_list, 'P');
             });
             closet(btn_acept);
         }
@@ -3044,8 +3093,10 @@ function list_titles_and_author(data, type, $container, type_message){
             }
 
         var csrf = $('.csrf_header').find('input').val();
-        if(active_sel)
+        if(active_sel){
+            btn_save.fadeOut(200);
             add_my_title(csrf,array_title,5);
+        }
     });
     $container.append();
 }
@@ -3075,16 +3126,27 @@ function show_upload($this){
 }
 
 function disable_link_all(user_active){
-    var count = 3;
+    var count = 6;
     if(user_active)
-        count = 2;
+        count = 5;
     $.each($('.overview  div .d-paddin_bottom'),function(){
 
-        if($(this).hasClass('book_read'))
+        var text = 'libros favoritos';
+
+        if($(this).hasClass('book_read')){
+            text = 'libros leídos';
             $('.count_titles_read').html($(this).find('.d-item_book').length +
                 ' libros leídos');
+        }
+        if($(this).hasClass('book_for_reading'))
+            text = 'libros por leer';
+        $(this).find('.no_title').remove();
 
-        if($(this).find('.d-item_book').length>count){
+        if($(this).find('.d-item_book').length == 0)
+            $(this).append('<span class="grid-9 place_pink no_title">' +
+              'Añade tus ' + text + '</span>');
+
+        if($(this).find('.d-item_book').length > count){
             $(this).parent().find('.all_book').fadeIn(250);
             $(this).parent().find('.all_book').find('.span_text').html('Ver todos');
             $(this).parent().find('.all_book').find('input').val(0);
@@ -3093,8 +3155,11 @@ function disable_link_all(user_active){
             $(this).parent().find('.all_book').find('input').val(0);
             $(this).parent().find('.all_book').fadeOut(250);
         }
+        min_height = 320;
+        if($(this).find('.d-item_book').length <= 2)
+            min_height = 152;
         $(this).animate({
-            'height': 152
+            'height': min_height
         },250, function() {
             // Animation complete.
         });

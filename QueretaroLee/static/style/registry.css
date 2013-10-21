@@ -109,8 +109,8 @@ span.green_btn,span.yellow_btn{
         margin-bottom: 0px;
     }
     .data .value.map{
-        width: 160px;
-        height: 60px;
+        width: 126px;
+        min-height: 60px;
         position: absolute;
         top: 40px;
         left: 0px;

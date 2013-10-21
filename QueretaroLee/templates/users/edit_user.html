@@ -100,13 +100,13 @@ hyu
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
-                    </span>
+                </span>
                 <span class="close right"></span>
                 {% if user_profile.biography  %}
-                    <input name="biography" type="text" value="{{ user_profile.biography }}" class="grid-5 alpha fright value "/>
+                    <textarea name="biography" type="text"  class="grid-5 alpha fright value ">{{ user_profile.biography }}</textarea>
                     <span class="value grid-5 alpha fright">{{ user_profile.biography }}</span>
                 {% else %}
-                    <input name="biography" type="text" value="" class="grid-5 alpha fright value "/>
+                    <textarea name="biography" type="text"  class="grid-5 alpha fright value "></textarea>
                     <span class="value grid-5 alpha fright"></span>
                 {% endif %}
             </p>
@@ -133,12 +133,12 @@ hyu
                     </span>
                 <span class="close right"></span>
                 {% if user_profile.city %}
-                    <textarea name="city" style="resize: none" readonly='true' class="map address area value" >{{ user_profile.city }} </textarea>
-                    <textarea readonly='true' style="resize: none"  class="map area address_user value" >{{ user_profile.city }} </textarea>
-                    <span class="value map">{{ user_profile.city|cut:'#' }}</span>
+                    <textarea name="city" style="resize: none" readonly='true' class="map area address value" >{{ user_profile.city }} </textarea>
+                    <textarea name="city" readonly='true' style="resize: none"  class="map area address_user value" >{{ user_profile.city }} </textarea>
+                    <span class="value map area">{{ user_profile.city|cut:'#' }}</span>
                 {% else %}
-                    <textarea readonly='true' style="resize: none"  class="map address_user area value" ></textarea>
-                    <textarea name="city"  readonly='true' class="map address area value" ></textarea>
+                    <textarea  name="city" readonly='true' style="resize: none"  class="map area address_user value" ></textarea>
+                    <textarea name="city"  readonly='true' class="map area address value" ></textarea>
                     <span class="value map area"></span>
                 {% endif %}
                 <span id="map" class="grid-5 alpha fright"></span>
@@ -251,6 +251,14 @@ hyu
     </div>
     </div>
     <script type="text/javascript">
+        $('.input_init').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeYear: true,
+            yearRange: "-50:+0",
+            onSelect: function(dateText) {
+            }
+        });
+
         Dropzone.options.picture = {
         maxFiles: 1,
         dictRemoveFile: 'Quitar',
@@ -267,14 +275,6 @@ hyu
         }
     }
         $(document).ready(function(){
-
-            $('.input_init').datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeYear: true,
-                yearRange: "-50:+0",
-                onSelect: function(dateText) {
-                }
-            });
 
             if($('.type').val()=='profile'){
                 initialize();

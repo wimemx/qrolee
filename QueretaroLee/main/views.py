@@ -60,7 +60,7 @@ def index(request, **kwargs):
     }
     return render(request, template, context)
 
-
+@login_required(login_url='/')
 def get_entities(request, **kwargs):
     is_ajax_call = False
     status = True
@@ -207,6 +207,7 @@ def get_entities(request, **kwargs):
         return render(request, template, context)
 
 
+@login_required(login_url='/')
 def get_entity(request, **kwargs):
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
@@ -368,6 +369,7 @@ def get_entity(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
@@ -437,7 +439,7 @@ def get_events(request, **kwargs):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
-
+@login_required(login_url='/')
 def event_view(request,**kwargs):
 
     template = kwargs['template_name']
@@ -517,6 +519,7 @@ def event(request, **kwargs):
     }
 
     return render(request, template, context)
+
 
 @login_required(login_url='/')
 def advanced_search(request, **kwargs):
@@ -748,9 +751,6 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
-
-                    print related_object
-                    print q_list
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
@@ -787,6 +787,7 @@ def advanced_search(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def get_list(request,**kwargs):
     template = kwargs['template_name']
 
@@ -891,7 +892,7 @@ def get_list(request,**kwargs):
 
     return render(request, template, context)
 
-
+@login_required(login_url='/')
 def get_titles(request,**kwargs):
     template = kwargs['template_name']
 
@@ -980,7 +981,7 @@ def get_titles(request,**kwargs):
 
     return render(request, template, context)
 
-
+@login_required(login_url='/')
 def get_authors(request, **kwargs):
     template = kwargs['template_name']
     dict_items = {}
@@ -1119,6 +1120,7 @@ def get_genre(request):
     return HttpResponse(context, mimetype='application/json')
 
 
+@login_required(login_url='/')
 def get_profile(request, **kwargs):
     template = kwargs['template_name']
     type = kwargs['type']
@@ -1188,14 +1190,14 @@ def get_profile(request, **kwargs):
             grade_rate = int(round(count_grade,0))
 
         context = {
-            'list_titles':dict_items,
-            'list':list,
-            'count':len(list_titles),
-            'grade':grade,
-            'grade_rate':grade_rate,
-            'range':range(5),
-            'count_vot':len(count_rate),
-            'count_grade':count_grade,
+            'list_titles': dict_items,
+            'list': list,
+            'count': len(list_titles),
+            'grade': grade,
+            'grade_rate': grade_rate,
+            'range': range(5),
+            'count_vot': len(count_rate),
+            'count_grade': count_grade,
         }
 
     if type == 'title':
@@ -1270,8 +1272,30 @@ def get_profile(request, **kwargs):
         dict_titles = {}
         dict_authors = {}
         profile = account_models.List.objects.get(id=profile)
-        list = account_models.List.objects.filter(user=profile.user, default_type=-1,
-                                                  status=True).exclude(id=profile.id)
+        dict_list_rel = {}
+
+        if profile.type == 'T':
+            list_rel = account_models.ListTitle.objects.filter(list__id=profile.id)
+            list_rel_other = account_models.ListTitle.objects.filter(list__default_type=-1)
+            for obj_rel in list_rel_other:
+                equals = False
+                for obj_my in list_rel:
+                    if obj_my.title == obj_rel.title and obj_my.list != obj_rel.list:
+                        equals = True
+                if equals:
+                    dict_list_rel[int(obj_rel.list.id)] = obj_rel.list
+
+        else:
+            list_rel = account_models.ListAuthor.objects.filter(list__id=profile.id)
+            list_rel_other = account_models.ListAuthor.objects.filter(list__default_type=-1)
+            for obj_rel in list_rel_other:
+                equals = False
+                for obj_my in list_rel:
+                    if obj_my.author == obj_rel.author and obj_my.list != obj_rel.list:
+                        equals = True
+                if equals:
+                    dict_list_rel[int(obj_rel.list.id)] = obj_rel.list
+
         titles = account_models.ListTitle.objects.filter(list=profile, list__status=True)
         authors = account_models.ListAuthor.objects.filter(list=profile, list__status=True)
 
@@ -1343,7 +1367,7 @@ def get_profile(request, **kwargs):
                     items[field] = obj.author.__getattribute__(str(field))
 
             count_titles = account_models.AuthorTitle.objects.filter(author=obj.author).values('author').\
-            annotate(count=db_model.Count('title'))
+            annotate(count = db_model.Count('title'))
 
             count = 0
             if len(count_titles) != 0:
@@ -1366,6 +1390,20 @@ def get_profile(request, **kwargs):
                 count = count + obj.grade
             count_grade = Decimal(Decimal(count)/(len(count_rate)))
             grade_rate = int(round(count_grade,0))
+
+        context = {
+            'titles': dict_titles,
+            'authors': dict_authors,
+            'list': dict_list_rel,
+            'grade': grade,
+            'grade_rate': grade_rate,
+            'range': range(5),
+            'count_vot': len(count_rate),
+            'count_grade': count_grade
+        }
+
+    context['type'] = type
+    context['profile'] = profile
 
     return render(request, template, context)
 
@@ -1466,13 +1504,14 @@ def load_picture_profile(request):
     return HttpResponse(context, mimetype='application/json')
 
 
+@login_required(login_url='/')
 def get_page(request, **kwargs):
 
     template = kwargs['template_name']
     page_id = kwargs['page_id']
     user_id = kwargs['user_id']
     page = account_models.Page.objects.get(id=page_id)
-    list_pages = account_models.Page.objects.filter(id_user__id=user_id).\
+    list_pages = account_models.Page.objects.filter(user__id=user_id).\
         exclude(id=page_id)
     profile = models.Profile.objects.get(user__id=user_id)
     context = {

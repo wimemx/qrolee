@@ -139,8 +139,9 @@ class Page(models.Model):
     date = models.DateTimeField()
     meta = models.TextField(max_length=1000)
     user = models.ForeignKey(User)
-
-
+    status = models.BooleanField(default=True)
+    
+    
 class Discussion(models.Model):
     name = models.CharField(max_length=255)
     content = models.TextField()
@@ -149,3 +150,4 @@ class Discussion(models.Model):
     entity = models.ForeignKey(registry_models.Entity)
     user = models.ForeignKey(User)
     parent_discussion = models.ForeignKey('self', blank=True, null=True)
+    

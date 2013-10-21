@@ -119,6 +119,11 @@
         </div>
     </div>
     <script type="text/javascript">
+
+        function redireccionar(id_list)
+        {
+            location.href = site_url + '/qro_lee/profile/list/' + id_list;
+        }
         Dropzone.options.picture = {
             maxFiles: 1,
             dictDefaultMessage: 'Inserte aquí la foto de <br> perfil de la lista',
@@ -147,6 +152,8 @@
                 }
                 else
                     upload_valid = true;
+                $form = $(this);
+                $(this).find('input[type=submit]').fadeOut(200);
 
                 if($(this).find('input[type=submit]').hasClass('msg-ok'))
                     window.location.href = site_url;
@@ -160,9 +167,9 @@
                     }).done(function(data) {
 
                                 if(data.success == 'True'){
-
+                                    $form.find('input[type=submit]').fadeOut(200);
                                     add_titles_list($('.csrf_token').find('div input').val(),data.id_list);
-                                    window.location.href = site_url + '/qro_lee/profile/list/' + data.id_list;
+                                    setTimeout ("redireccionar("+data.id_list+")", 1300);
 
                                 }else{
                                     $('.message').addClass('fail');
