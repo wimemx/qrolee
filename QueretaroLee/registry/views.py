@@ -679,6 +679,14 @@ def remove_add_user(request, **kwargs):
                 users.append(member.user_id)
             objs = models.User.objects.filter(
                 id__in=users)
+        elif request.POST.get('user_email') == '-3':
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+            users = list()
+            for member in members:
+                users.append(member.user_id)
+            objs = models.User.objects.filter(
+                id__in=users)
         else:
             objs = models.User.objects.filter(
                 email__icontains=request.POST.get('user_email')).exclude(id__in=users)
@@ -707,12 +715,12 @@ def remove_add_user(request, **kwargs):
         obj = models.MemberToObject.objects.get_or_create(
             user_id=int(obj), object_type='E',
             object=int(request.POST.get('entity')))[0]
-
+        print request.POST.get('remove')
         if int(request.POST.get('remove')) == 1:
             obj.is_admin = 0
             obj.request = 0
-        elif int(request.POST.get('remove')) == 1:
-            pass
+        elif int(request.POST.get('remove')) == 2:
+            obj.is_member = 0
         else:
             if obj.request:
                 obj.is_member = True

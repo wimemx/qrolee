@@ -182,6 +182,7 @@ function findUser($ele, userEmail, entity, $parent){
                    removeUser($('.alert-message'),
                        $(this).parent().parent().find('.user-id').val(), 0,
                        $('.alert-message input.entity').val());
+
                    if($(this).parent().parent().parent().hasClass('request')){
                        $this = $(this).parent().parent();
                        var user = $this.find('input.user-id').val();
@@ -556,7 +557,8 @@ $('.affiliate').each(function(i){
             }
 
         });
-        $(this).parent().fadeOut(300,removeUser($(this).parent(), user, 1, $('.alert-message input.entity').val()));
+
+        $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
     });
     $('.alert-message .reject').click(function(){
         $('.container_message').fadeOut(300);
@@ -565,20 +567,23 @@ $('.affiliate').each(function(i){
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
+        $('input.type').val(1);
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
     });
     $('.entity .admin_nav.nav .btn.members').click(function(){
-        $('.admin').find("*[class*='user_']").each(function(){
+        $('.mmembers').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
-        findUser($('.alert-message'), '2',
+        $('input.type').val(2);
+        findUser($('.alert-message'), '-3',
             $('.alert-message').find('.entity').val(), $('.mmembers'));
     });
     $('.entity .admin_nav.nav .btn.request').click(function(){
-        $('.admin').find("*[class*='user_']").each(function(){
+        $('.request').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
+        $('input.type').val(1);
         findUser($('.alert-message'), '-2',
             $('.alert-message').find('.entity').val(), $('.request'));
     });
