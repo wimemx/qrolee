@@ -485,7 +485,7 @@ function dmap(data,id){
 
 
         if(id==1){
-            var counter = 0;
+            var counter = 1;
 
             $.each(data,function(index,k){
                     var spot = data[index];
@@ -2452,7 +2452,6 @@ function show_dialog(){
                     group[0] + ' ?';
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
-                href = 'href="#"';
             }
 
             if(type=="add_genre"){
@@ -2574,6 +2573,7 @@ function show_dialog(){
         container_btn = $('<div class="dialog_container_btn"></div>');
         container_btn.append(btn_acept);
         container_btn.append(btn_cancel);
+
         $('.dialog-confirm').append(div_text);
         div_text.append(div_closet);
         div_text.append(span_text);
@@ -2622,6 +2622,17 @@ function show_dialog(){
             });
             closet(btn_acept);
         }
+        if($(this).find('.type_message').val() == 'out_group'){
+            var id_group = $(this).parent().parent().find('.id_group').val();
+            $item = $(this).parent().parent();
+            btn_acept.click(function(){
+                removeUser($item,parseInt($('.sesion_user').val()),3,id_group);
+                $item.fadeOut(250,function(){
+                    $(this).remove();
+                });
+            });
+            closet(btn_acept);
+        }
         if(($(this).find('.type_message').val())=='delete_page'){
             var id_list = $(this).parent().parent().find('.id_list').val();
             btn_acept.click(function(){
@@ -2638,7 +2649,6 @@ function show_dialog(){
                 edit_title_read(id, 1, $this);
             });
             closet(btn_acept);
-
         }
         if(($(this).find('.type_message').val()) == 'edit_title_read'){
             var id = $(this).find('.id_list').val();
@@ -2647,7 +2657,6 @@ function show_dialog(){
                 edit_title_read(id, 2, $this);
             });
             closet(btn_acept);
-
         }
 
         $('.dialog-confirm').fadeIn(250);
@@ -2862,14 +2871,14 @@ function list_titles_and_author(data, type, $container, type_message){
                 type_add + ' no-margin"></div>');
             div_item.append(div_container_text);
             item_title.append(div_item);
-            a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-            a.append((titles_l[i].title).substring(0,15));
+            a = $('<a title="'+titles_l[i].title+'" class="title title_book_mini alpha ' + type_add + '"></a>');
+            a.append(truncText(titles_l[i].title,12));
             div_container_text.append(a);
             p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                 ' no-margin" ></p>');
             a_author = $('<a class="title_author" ></a>');
             var author_att= titles_l[i].extras[1];
-            a_author.append(author_att);
+            a_author.append(truncText(author_att,10));
             p_text_author.append('De ');
             p_text_author.append(a_author);
             div_container_text.append(p_text_author);
@@ -2982,24 +2991,25 @@ function list_titles_and_author(data, type, $container, type_message){
 
                 img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
                 span_wrapper.append(img_wrapper);
-
                 type_add = 'grid-2';
 
                 div_container_text = $('<div class="d-container_text_book ' +
                     type_add + ' no-margin"></div>');
                 div_item.append(div_container_text);
                 item_title.append(div_item);
-                a = $('<a class="title title_book_mini alpha ' + type_add + '"></a>');
-                a.append((attribute['title']).substring(0,12));
+                a = $('<a title="'+attribute['title']+'" class="title title_book_mini alpha ' + type_add + '"></a>');
+                a.append(truncText(attribute['title'],12));
                 div_container_text.append(a);
                 p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                     ' no-margin" ></p>');
                 a_author = $('<a " class="title_author" ></a>');
                 var author_att = 'autor anonimo';
-                if('authors' in attribute)
+                if('authors' in attribute){
                     author_att = attribute['authors'];
+                    author_att = truncText(author_att[0],10)
+                }
 
-                a_author.append(truncText(author_att[0],13));
+                a_author.append(author_att);
                 p_text_author.append('De ');
                 p_text_author.append(a_author);
                 div_container_text.append(p_text_author);
@@ -3094,7 +3104,7 @@ function list_titles_and_author(data, type, $container, type_message){
 
         var csrf = $('.csrf_header').find('input').val();
         if(active_sel){
-            btn_save.fadeOut(200);
+            div_btn_save.fadeOut(200);
             add_my_title(csrf,array_title,5);
         }
     });

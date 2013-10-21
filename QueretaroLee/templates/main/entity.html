@@ -52,7 +52,7 @@
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Salir">
+                            <input type="submit" class="btn " value="Dejar de seguir">
                         </form>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                     {% elif member and entity.privacy != 0 %}
@@ -60,7 +60,7 @@
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="follow_private" value="-1"/>
-                            <input type="submit" class="btn" value="Salir">
+                            <input type="submit" class="btn" value="Dejar de seguir">
                         </form>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                     {% else %}
@@ -93,7 +93,7 @@
                     <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
-                        <input type="submit" class="btn " value="Salir">
+                        <input type="submit" class="btn " value="Dejar de seguir">
                     </form>
                     <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% elif member and entity.privacy != 0 %}
@@ -101,7 +101,7 @@
                     <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
-                        <input type="submit" class="btn" value="Salir">
+                        <input type="submit" class="btn" value="Dejar de seguir">
                     </form>
                     <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% else %}
@@ -146,12 +146,10 @@
                                     {% endif %}
                                 </span>
                             </span>
-
                             {% endfor %}
                     </span>
                 </span>
         {% endif %}
-
     {% else %}
         {% block entity_menu %}
             {% include 'blocks/entity_menu.html' %}
@@ -159,14 +157,13 @@
     {% endif %}
     <span class="wrapper fleft">
             {% if entity.picture == '' %}
-                <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                <img src="/static/img/create.png" class="img_size_all" alt="{{ entity.name }}"/>
             {% else %}
                 {% if owner.id == user.id %}
-                    <span class="brown_btn edit"></span>
+                    <span class="brown_btn edit edit_entity"></span>
                 {% endif %}
-                <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                <img class="img_size_all" src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
             {% endif %}
-
         </span>
         <span class="general-info no-margin grid-7">
             <h3 class="title {{ entity_type.1 }}">{{ entity.name|capfirst }}</h3>
@@ -208,35 +205,40 @@
             {% if entity_type.1 != 'group' %}
                 <span class="grid-7 no-margin container_rate">
                     <span class="container_starts_rate fleft">
-                    {% if grade == 0 %}
-                        {% for x in range %}
-                            <span class="rate">
-                                    {% if x < grade_rate %}
+                        {% if my_grade == 0 %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < count_rate %}
                                         <img src="/static/img/comunityStar.png" />
                                     {% else %}
                                         <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
-                                <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
                                     <input class="type" type="hidden" value="E"/>
-                                    <input class="element_id" type="hidden" value="{{ entity.id }}"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
                                 </span>
-                        {% endfor %}
-                    {% else %}
-                        {% for x in range %}
-                            {% if x < grade %}
-                                <img src="/static/img/starUser.png" />
-                            {% else %}
-                                <img src="/static/img/backgroundStar.png" />
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </span>
-                <span class="container_text_rate">
-                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count }} votaciones </span>
-                    {% if grade >= 1 %}
-                        <span class="text_rate"> mi voto: {{ grade }} </span>
-                    {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < count_rate %}
+                                        <img src="/static/img/starUser.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+                    <span class="container_text_rate">
+                    <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                        {% if my_grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ my_vot }} </span>
+                        {% endif %}
                     </span>
                </span>
             {% endif %}

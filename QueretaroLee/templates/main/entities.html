@@ -61,7 +61,7 @@
 
                 {% if entity_type.1 == 'spot' %}
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
-                        <img src="/static/img/markers/marker{{ forloop.counter0 }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
+                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
                     <div class="d-text_spot ">
                     <p>
                         {% if entity.address.0 != '' %}
@@ -69,8 +69,7 @@
                         {% else %}
                             Querétaro
                         {% endif %}
-                        <br>Teléfonos:442 290 8989
-
+                        <br>
                         <a class="d-pink" href="" >Biblioteca</a>
                     </p>
                     </div>
@@ -114,7 +113,6 @@
                         {% else %}
                             Querétaro
                         {% endif %}
-                        <span>Teléfonos:442 290 8989</span>
                         <a class="d-pink" href="" >Biblioteca</a>
                     </p>
                     </div>
