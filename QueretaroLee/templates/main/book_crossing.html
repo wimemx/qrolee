@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"
+          xmlns="http://www.w3.org/1999/html"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block main_site %}
+    <div class="grid-16 book_crossing">
+        <div class="grid-14">
+            <span class="title">Libros vagabundos</span>
+            <span class="title grid-13 sub-title"> Libros vagabundos que otras personas han dejado
+                al rededor de querétaro y en el mundo, es muy secillo encontrar
+                libros y compartir otros con el mundo.
+            </span>
+            <span class="grid-3 step">
+                <span class="wrapper_step grid-3"></span>
+                <span class="grid-3 text_step">Paso 1. Registra un libro</span>
+            </span>
+            <span class="grid-3 step">
+                <span class="wrapper_step grid-3"></span>
+                <span class="grid-3 text_step">Paso 2. Comparte un libro</span>
+            </span>
+            <span class="grid-3 step">
+                <span class="wrapper_step grid-3"></span>
+                <span class="grid-3 text_step">Paso 3. Seguir tu libro</span>
+            </span>
+            <span class="grid-2 btn_step">Encontre un libro!</span>
+            <span class="grid-2 btn_step">Libera un libro!</span>
+            <span class="grid-7 no-margin">
+                <span class="title text_ grid-4 no-margin">Libros en el mundo</span>
+                <div id="map" class="map_crossing grid-6 no-margin"></div>
+                <span class="grid-3 no-margin">Ver más</span>
+            </span>
+            <span class="grid-7 no-margin">
+                <span class="title text_ grid-4">Últimos libros liberados</span>
+                <div id="scrollbar1">
+                    <div class="scrollbar"><div class="track"><div class="thumb">
+                        <div class="end"></div></div></div></div>
+                    <div class="viewport container_crossing">
+                        <div class="overview">
+                            {% for x in 'xxxxxx' %}
+                        <span class="grid-7 no-margin container_mini_crossing">
+                        <span class="grid-3 wrapper_mini_crossing">
+                            <img class="img_size_all" src="/static/img/create.png" />
+                        </span>
+                        <span class="title titles_mini_crossing grid-3 no-margin text_top">
+                            Harry potter y la piedra filoa
+                        </span>
+                        <span class="grid-2 no-margin text_free text_top">Liberado hace 4 horas</span>
+                        <span class="grid-4 no-margin text_top">J.K Rowling</span>
+                        <span class="grid-4 no-margin text_top">Liberado por
+                            <span class="place_pink">laura</span>
+                        </span>
+                    </span>
+                    {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <span class="grid-3 no-margin">Ver todos</span>
+            </span>
+        </div>
+    </div>
+{% endblock %}

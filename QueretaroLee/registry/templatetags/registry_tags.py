@@ -4,6 +4,7 @@ from django import template
 from account import models
 from registry import models as rmodels
 from django.contrib.auth import models as auth_models
+from django.db import models as db_model
 
 import datetime
 
@@ -160,13 +161,20 @@ def feed_type(feed_id):
             action)
     elif feed.activity_id == 6:
         action = u'calificó a'
+
         rate = models.Rate.objects.filter(
             type='E', element_id=feed.object)
         sum = 0
         for value in rate:
             sum += int(value.grade)
 
-        grade = sum/len(rate)
+        #grade = sum/len(rate)
+        grade = 0
+
+        '''rate_= models.Rate.objects.filter(type='E', element_id=feed.object).values('element_id').\
+            annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+        print rate_'''
+
         rating = ''
         for i in range(1, 6):
             if i <= grade:
@@ -226,3 +234,9 @@ def get_objects(object, type):
     else:
         obj = None
     return obj
+
+
+@register.filter
+def img_autoescape(img):
+    print 123
+

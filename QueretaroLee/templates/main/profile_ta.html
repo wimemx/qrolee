@@ -41,39 +41,39 @@
                 </h3>
                 <span class="grid-9 no-margin container_rate">
                       <span class="container_starts_rate fleft">
-                        {% if grade == 0 %}
+                          {% if my_grade == 0 %}
+                                {% for x in range %}
+                                    <span class="rate">
+                                        {% if x < count_rate %}
+                                            <img src="/static/img/comunityStar.png" />
+                                        {% else %}
+                                            <img src="/static/img/backgroundStar.png" />
+                                        {% endif %}
+                                        <input class="grade" type="hidden" value="{{ x }}"/>
+                                        <input class="type" type="hidden" value="A"/>
+                                        <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                    </span>
+                                {% endfor %}
+                        {% else %}
                             {% for x in range %}
                                 <span class="rate">
-                                    {% if x < grade_rate %}
-                                        <img src="/static/img/comunityStar.png" />
+                                    {% if x < count_rate %}
+                                        <img src="/static/img/starUser.png" />
                                     {% else %}
                                         <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
                                     <input class="grade" type="hidden" value="{{ x }}"/>
-                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="type" type="hidden" value="A"/>
                                     <input class="element_id" type="hidden" value="{{ profile.id }}"/>
                                 </span>
                             {% endfor %}
-                    {% else %}
-                        {% for x in range %}
-                            <span class="rate">
-                                {% if x < grade %}
-                                    <img src="/static/img/starUser.png" />
-                                {% else %}
-                                    <img src="/static/img/backgroundStar.png" />
-                                {% endif %}
-                                <input class="grade" type="hidden" value="{{ x }}"/>
-                                <input class="type" type="hidden" value="E"/>
-                                <input class="element_id" type="hidden" value="{{ profile.id }}"/>
-                            </span>
-                        {% endfor %}
-                    {% endif %}
+                        {% endif %}
                 </span>
                 <span class="container_text_rate">
-                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
                     <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
-                        {% if grade >= 1 %}
-                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% if my_grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
                     </span>
                 </span>
@@ -122,39 +122,39 @@
                 </p>
                 <span class="grid-9 no-margin container_rate text_profile">
                       <span class="container_starts_rate fleft">
-                    {% if grade == 0 %}
+                    {% if my_grade == 0 %}
                             {% for x in range %}
                                 <span class="rate">
-                                    {% if x < grade_rate %}
+                                    {% if x < count_rate %}
                                         <img src="/static/img/comunityStar.png" />
                                     {% else %}
                                         <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
                                     <input class="grade" type="hidden" value="{{ x }}"/>
-                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="type" type="hidden" value="T"/>
                                     <input class="element_id" type="hidden" value="{{ profile.id }}"/>
                                 </span>
                             {% endfor %}
                     {% else %}
                         {% for x in range %}
                             <span class="rate">
-                                {% if x < grade %}
+                                {% if x < count_rate %}
                                     <img src="/static/img/starUser.png" />
                                 {% else %}
                                     <img src="/static/img/backgroundStar.png" />
                                 {% endif %}
                                 <input class="grade" type="hidden" value="{{ x }}"/>
-                                <input class="type" type="hidden" value="E"/>
+                                <input class="type" type="hidden" value="T"/>
                                 <input class="element_id" type="hidden" value="{{ profile.id }}"/>
                             </span>
                         {% endfor %}
                     {% endif %}
                 </span>
                 <span class="container_text_rate">
-                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
                     <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
-                        {% if grade >= 1 %}
-                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% if my_grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
                     </span>
                 </span>
@@ -202,38 +202,43 @@
                     </a>
                 </p>
                 <span class="grid-9 no-margin container_rate">
-                      <span class="container_starts_rate fleft">
-                    {% if grade == 0 %}
+                    <span class="container_starts_rate fleft">
+                        {% if my_grade == 0 %}
                             {% for x in range %}
                                 <span class="rate">
-                                    {% if x < grade_rate %}
+                                    {% if x < count_rate %}
                                         <img src="/static/img/comunityStar.png" />
                                     {% else %}
                                         <img src="/static/img/backgroundStar.png" />
                                     {% endif %}
                                     <input class="grade" type="hidden" value="{{ x }}"/>
-                                    <input class="type" type="hidden" value="E"/>
+                                    <input class="type" type="hidden" value="L"/>
                                     <input class="element_id" type="hidden" value="{{ profile.id }}"/>
                                 </span>
                             {% endfor %}
-                    {% else %}
-                        {% for x in range %}
-                            {% if x < grade %}
-                                <img src="/static/img/starUser.png" />
-                            {% else %}
-                                <img src="/static/img/backgroundStar.png" />
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                        {% else %}
+                            {% for x in range %}
+                                <span class="rate">
+                                    {% if x < count_rate %}
+                                        <img src="/static/img/starUser.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ x }}"/>
+                                    <input class="type" type="hidden" value="L"/>
+                                    <input class="element_id" type="hidden" value="{{ profile.id }}"/>
+                                </span>
+                            {% endfor %}
+                        {% endif %}
                 </span>
                 <span class="container_text_rate">
-                    <span class="text_rate border_right"> Total: {{ count_grade|floatformat:1 }} </span>
+                    <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
                     <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
-                        {% if grade >= 1 %}
-                            <span class="text_rate"> mi voto: {{ grade }} </span>
+                        {% if my_grade >= 1 %}
+                            <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
                     </span>
-               </span>
+                </span>
                 <p class="descrip_list">
                     {{ profile.description|truncatechars:420 }}
                 </p>
@@ -280,7 +285,7 @@
                                 <p class="grid-6 p_text_mini margin_left text_tit">
                                     <span >
                                         {% for x in 'xxxxx' %}
-                                            {% if forloop.counter < value.grade %}
+                                            {% if forloop.counter <= value.grade and value.grade > 0 %}
                                                 <img src="/static/img/comunityStar.png" />
                                             {% else %}
                                                 <img src="/static/img/backgroundStar.png" />

@@ -10,6 +10,7 @@
     <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script src=" {% static "js/tinymce/tinymce.min.js" %}"></script>
     <script type="text/javascript">
         tinymce.init({
@@ -105,11 +106,14 @@
                     data: $(this).serialize(),
                     dataType: 'json'
                     }).done(function(data){
-                        if(data.success == 'True')
+                        if(data.success == 'True'){
                             message.fadeOut(200,function(){
                                 message.append('Cambios guardados');
                                 message.fadeIn(200);
                             });
+                            window.location.href = site_url + '/qro_lee/user/' + data.user_id +
+                                                   '/page/' + data.page_id;
+                        }
 
                     });
                 }

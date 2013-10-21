@@ -214,6 +214,12 @@ def get_entity(request, **kwargs):
     entity = models.Entity.objects.get(id=id_entity)
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
+    rate = account_models.Rate.objects.filter(element_id=id_entity, type='E').\
+                values('element_id').annotate(count = db_model.Count('element_id'),
+                                              score = db_model.Avg('grade'))
+    my_rate = account_models.Rate.objects.filter(user=request.user, element_id=id_entity,
+                                                  type='E')
+
     if request.POST:
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
@@ -279,22 +285,17 @@ def get_entity(request, **kwargs):
             object=ent.id, object_type='E')
         followers_list.append(len(followers))
 
-    user = request.user
-    rate = account_models.Rate.objects.filter(element_id=id_entity, user=user)
-    count_rate = account_models.Rate.objects.filter(element_id=id_entity)
-    grade = 0
-    grade_rate = 0
+    count_vot = 0
+    count_rate = 0
+    my_vot = 0
+
     if len(rate) > 0:
-        grade = rate[0].grade
+        count_vot = rate[0]['count']
+        count_rate = rate[0]['score']
 
-    count = 0
-    count_grade = 0
-    if len(count_rate) > 0:
-        for obj in count_rate:
-            count = count + obj.grade
-        count_grade = Decimal(Decimal(count)/(len(count_rate)))
+    if len(my_rate) > 0:
+        my_vot = my_rate[0].grade
 
-        grade_rate = int(round(count_grade, 0))
     events = models.Event.objects.all()
     events_months = []
     for event in events:
@@ -355,11 +356,11 @@ def get_entity(request, **kwargs):
         'profile': profile,
         'similar_entities': zip(entities, followers_list),
         'member': member,
-        'grade': grade,
-        'grade_rate': grade_rate,
+        'my_grade': len(my_rate),
+        'count_rate': count_rate,
+        'my_vot': my_vot,
         'range': range(5),
-        'count': len(count_rate),
-        'count_grade': count_grade,
+        'count_vot': count_vot,
         'followers': zip(entity_followers, user_pictures),
         'admins': admins,
         'activity': activity,
@@ -1127,19 +1128,19 @@ def get_profile(request, **kwargs):
     profile = kwargs['profile']
     user = request.user
     context = {}
+
     dict_items = {}
-    rate = account_models.Rate.objects.filter(element_id=profile, user=user)
-    count_rate = account_models.Rate.objects.filter(element_id=profile)
     list_picture = models.Profile.objects.all()
 
     if type == 'author':
         profile = account_models.Author.objects.get(id=profile)
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
         list_titles = account_models.AuthorTitle.objects.filter(author=profile)
-        grade = 0
-        grade_rate = 0
-        if len(rate) > 0:
-            grade = rate[0].grade
+        rate = account_models.Rate.objects.filter(element_id=profile.id, type='A').\
+                values('element_id').annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+        my_rate = account_models.Rate.objects.filter(user=user, element_id=profile.id,
+                                                  type='A')
+
 
         fields_related_objects = account_models.Title._meta.get_all_related_objects(
             local_only=True)
@@ -1181,29 +1182,36 @@ def get_profile(request, **kwargs):
             items['grade'] = grade_title
             dict_items[int(obj.title.id)] = items
 
-        count = 0
-        count_grade = 0
-        if len(count_rate) > 0:
-            for obj in count_rate:
-                count = count + obj.grade
-            count_grade = Decimal(Decimal(count)/(len(count_rate)))
-            grade_rate = int(round(count_grade,0))
+        count_vot = 0
+        count_rate = 0
+        my_vot = 0
+        if len(rate) > 0:
+            count_vot = rate[0]['count']
+            count_rate = rate[0]['score']
+        if len(my_rate) > 0:
+            my_vot = my_rate[0].grade
 
         context = {
             'list_titles': dict_items,
             'list': list,
             'count': len(list_titles),
-            'grade': grade,
-            'grade_rate': grade_rate,
+            'my_grade': len(my_rate),
+            'count_rate': count_rate,
+            'my_vot': my_vot,
             'range': range(5),
-            'count_vot': len(count_rate),
-            'count_grade': count_grade,
+            'count_vot': count_vot
         }
 
     if type == 'title':
         profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=1,
                                                           title=profile, list__status=True)
+
+        rate = account_models.Rate.objects.filter(element_id=profile.id, type='T').\
+                values('element_id').annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+        my_rate = account_models.Rate.objects.filter(user=user, element_id=profile.id,
+                                                  type='T')
+
         fields_related_objects = models.Profile._meta.get_all_related_objects(
             local_only=True)
         fields = models.Profile._meta.get_all_field_names()
@@ -1239,29 +1247,24 @@ def get_profile(request, **kwargs):
             name_author = author[0].author.name
             id_author = author[0].author.id
 
-        count = len(list_user)
-        grade = 0
-        grade_rate = 0
+        count_vot = 0
+        count_rate = 0
+        my_vot = 0
         if len(rate) > 0:
-            grade = rate[0].grade
-
-        count = 0
-        count_grade = 0
-        if len(count_rate) > 0:
-            for obj in count_rate:
-                count = count + obj.grade
-            count_grade = Decimal(Decimal(count)/(len(count_rate)))
-            grade_rate = int(round(count_grade,0))
+            count_vot = rate[0]['count']
+            count_rate = rate[0]['score']
+        if len(my_rate) > 0:
+            my_vot = my_rate[0].grade
 
         context = {
             'list_user': dict_users,
             'list': list,
             'count': len(list_user),
-            'grade': grade,
-            'grade_rate': grade_rate,
+            'my_grade': len(my_rate),
+            'count_rate': count_rate,
+            'my_vot': my_vot,
             'range': range(5),
-            'count_vot': len(count_rate),
-            'count_grade': count_grade,
+            'count_vot': count_vot,
             'list_picture': list_picture,
             'name_author': name_author,
             'id_author': id_author
@@ -1272,6 +1275,11 @@ def get_profile(request, **kwargs):
         dict_titles = {}
         dict_authors = {}
         profile = account_models.List.objects.get(id=profile)
+        rate = account_models.Rate.objects.filter(element_id=profile.id, type='L').\
+                values('element_id').annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+        my_rate = account_models.Rate.objects.filter(user=user, element_id=profile.id,
+                                                  type='L')
+
         dict_list_rel = {}
 
         if profile.type == 'T':
@@ -1378,28 +1386,25 @@ def get_profile(request, **kwargs):
             items['id_list'] = obj.list.id
             dict_authors[int(obj.author.id)] = items
 
-        grade = 0
-        grade_rate = 0
-        if len(rate) > 0:
-            grade = rate[0].grade
 
-        count = 0
-        count_grade = 0
-        if len(count_rate) > 0:
-            for obj in count_rate:
-                count = count + obj.grade
-            count_grade = Decimal(Decimal(count)/(len(count_rate)))
-            grade_rate = int(round(count_grade,0))
+        count_vot = 0
+        count_rate = 0
+        my_vot = 0
+        if len(rate) > 0:
+            count_vot = rate[0]['count']
+            count_rate = rate[0]['score']
+        if len(my_rate) > 0:
+            my_vot = my_rate[0].grade
 
         context = {
             'titles': dict_titles,
             'authors': dict_authors,
             'list': dict_list_rel,
-            'grade': grade,
-            'grade_rate': grade_rate,
+            'my_grade': len(my_rate),
+            'count_rate': count_rate,
+            'my_vot': my_vot,
             'range': range(5),
-            'count_vot': len(count_rate),
-            'count_grade': count_grade
+            'count_vot': count_vot
         }
 
     context['type'] = type
@@ -1495,3 +1500,12 @@ def get_page(request, **kwargs):
     }
 
     return render(request, template, context)
+
+
+def book_crossing(request, **kwargs):
+
+    template = kwargs['template_name']
+    context = {}
+
+    return  render(request, template, context)
+

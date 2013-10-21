@@ -208,7 +208,7 @@ def register_entity(request, **kwargs):
     if entity_type == 'group':
         entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
     elif entity_type == 'organization':
-        entity_type = ['Crear una nueva organización', 'organization', 'organizacion']
+        entity_type = ['Crear una nueva organización', 'organization', 'organización']
     elif entity_type == 'spot':
         entity_type = ['Crear un nuevo spot', 'spot', 'spot']
 
@@ -718,6 +718,10 @@ def remove_add_user(request, **kwargs):
             else:
                 obj.is_admin = True
                 obj.request = 0
+
+        if int(request.POST.get('remove')) == 3:
+            obj.is_member = 0
+
         obj.save()
     context = {}
     context = simplejson.dumps(context)
@@ -935,6 +939,7 @@ def add_rate(request):
 
     rate = account.Rate.objects.filter(user=user, type=str(type),
                                        element_id=int(element_id))
+
     if rate:
         rate[0].grade = int(grade)
         rate[0].save()
@@ -952,8 +957,10 @@ def add_rate(request):
         }
         update_activity(activity_data)
 
-    count_rate = account.Rate.objects.filter(element_id=element_id)
-    my_count = account.Rate.objects.get(user=user, element_id=element_id)
+    count_rate = account.Rate.objects.filter(element_id=element_id,
+                                             type=str(type))
+    my_count = account.Rate.objects.get(user=user, element_id=element_id,
+                                        type=str(type))
 
     count = 0
     for obj in count_rate:

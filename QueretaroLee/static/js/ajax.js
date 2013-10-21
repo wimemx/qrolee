@@ -121,6 +121,7 @@ function populateCal(curr_month,$item){
 var len = 0;
 var counter = 1;
 function removeUser($ele,user_id, remove, entity){
+
     $.ajax({
         type: "POST",
         url: '/registry/remove_add_user/'+user_id+'/',
@@ -132,6 +133,7 @@ function removeUser($ele,user_id, remove, entity){
             'entity': entity
         }
     }).done(function(data) {
+
 
     });
 }
@@ -525,6 +527,10 @@ $(document).ready(function(){
                 if(lattong.length>1)
                     initialize(lattong[0], lattong[1]);
             }
+        }
+
+        if($('#map').hasClass('map_crossing')){
+            initialize(-18.00,20.00);
         }
     }
 
@@ -1146,119 +1152,111 @@ function search_entities($this){
         }).done(function(data) {
 
                 if(data){
+                    $('.overview').fadeOut(250,function(){
+                        $('.overview').empty();
+                        var len = 0;
+                        $.each(data,function(index){
+                            var entity_obj = data[index];
 
-                    var counter = $('.overview .grid-7').size()-1;
-                    var len = 0;
-                    $('.overview .grid-7').each(function(){
-                        if(counter == 0){
-                            $(this).fadeOut(300,function(){
-                                $.each(data,function(index){
-                                    var entity_obj = data[index];
+                            $.each(entity_obj,function(i){
+                                var img_src;
+                                if(entity_obj[i].type=='spot'){
 
-                                    $.each(entity_obj,function(i){
-                                        var img_src;
-                                        if(entity_obj[i].type=='spot'){
+                                    div = $('<div class="grid-7 omega d-spot"></div>');
+                                    var d_name = entity_obj[i].name;
+                                    d_name = d_name.replace(/\s/g,'');
+                                    var href = '/qro_lee/entity/organization/'+
+                                        d_name+'_'+entity_obj[i].id+'/';
+                                    a = $('<a href="' + href +
+                                        '" class="wrapper d-wrapperspot"></a>');
+                                    divtext = $('<div class="d-text_spot "></div>');
+                                    if(entity_obj[i].picture != '')
+                                        img_src = '/static/media/users/'+
+                                            entity_obj[i].user + '/entity/'
+                                            + entity_obj[i].picture;
+                                    else
+                                        img_src ='';
+                                    img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
+                                    href = '/registry/edit/'+d_name+'_'+entity_obj[i].id+'/';
+                                    btn = $('<a class="brown_btn" href="' + href + '">Editar</a>');
+                                    div.append(a.append(img));
 
-                                            div = $('<div class="grid-7 omega d-spot"></div>');
-                                            var d_name = entity_obj[i].name;
-                                            d_name = d_name.replace(/\s/g,'');
-                                            var href = '/qro_lee/entity/organization/'+
-                                                d_name+'_'+entity_obj[i].id+'/';
-                                            a = $('<a href="' + href +
-                                                '" class="wrapper d-wrapperspot"></a>');
-                                            divtext = $('<div class="d-text_spot "></div>');
-                                            if(entity_obj[i].picture != '')
-                                                img_src = '/static/media/users/'+
-                                                    entity_obj[i].user + '/entity/'
-                                                    + entity_obj[i].picture;
-                                            else
-                                                img_src ='';
-                                            img = $('<img src="'+img_src+'" atr="" >');
-                                            href = '/registry/edit/'+d_name+'_'+entity_obj[i].id+'/';
-                                            btn = $('<a class="brown_btn" href="' + href + '">Editar</a>');
-                                            div.append(a.append(img));
+                                    if(entity_obj[i].user==$('.id_user').val()){
+                                        div.append(a.append(btn));
+                                    }
+                                    //h3 = $('<h3 class="title alpha grid-4"></h3>');
+                                    a2 = $('<a href="' + href + '" class="title ' +
+                                        'alpha grid-4"></a>');
+                                    div.append(a2);
+                                    p = $('<p></p>');
+                                    div.append(divtext.append(p));
+                                    $('.overview').append(div);
+                                    div.find('.title').html(entity_obj[i].name);
+                                    div.find('p').html(truncText(entity_obj[i].address,180)+
+                                        '<br>Teléfonos:442 290 8989<br>' +
+                                        '<a class="d-pink" href="">Biblioteca</a>');
 
-                                            if(entity_obj[i].user==$('.id_user').val()){
-                                                div.append(a.append(btn));
-                                            }
-                                            //h3 = $('<h3 class="title alpha grid-4"></h3>');
-                                            a2 = $('<a href="' + href + '" class="title ' +
-                                                'alpha grid-4"></a>');
-                                            div.append(a2);
-                                            p = $('<p></p>');
-                                            div.append(divtext.append(p));
-                                            $('.overview').append(div);
-                                            div.find('.title').html(entity_obj[i].name);
-                                            div.find('p').html(truncText(entity_obj[i].address,180)+
-                                                '<br>Teléfonos:442 290 8989<br>' +
-                                                '<a class="d-pink" href="">Biblioteca</a>');
-                                            div.fadeIn(300);
+                                }else{
 
-                                        }else{
+                                    var div;
 
-                                            var div;
-                                            console.log(len);
-                                            if(len%2 == 0)
-                                                div = $('<div class="grid-7 alpha">' +
-                                                    '</div>');
-                                            else
-                                                div = $('<div class="grid-7 omega">' +
-                                                    '</div>');
-                                            var d_name = entity_obj[i].name;
-                                            d_name = d_name.replace(/\s/g,'');
-                                            var href = '/qro_lee/entity/organization/'+
-                                                d_name+'_'+entity_obj[i].id+'/';
+                                    if(len%2 == 0)
+                                        div = $('<div class="grid-7 alpha">' +
+                                            '</div>');
+                                    else
+                                        div = $('<div class="grid-7 omega">' +
+                                            '</div>');
+                                    var d_name = entity_obj[i].name;
+                                    d_name = d_name.replace(/\s/g,'');
+                                    var href = '/qro_lee/entity/organization/'+
+                                        d_name+'_'+entity_obj[i].id+'/';
 
-                                            a = $('<a href="'+ href + '" class="wrapper">' +
-                                                '</a>');
+                                    a = $('<a href="'+ href + '" class="wrapper">' +
+                                        '</a>');
 
-                                            if(entity_obj[i].picture != '')
-                                                img_src = '/static/media/users/' +
-                                                    entity_obj[i].user+'/entity/'
-                                                    + entity_obj[i].picture;
-                                            else
-                                                img_src ='/static/img/create.png';
+                                    if(entity_obj[i].picture != '')
+                                        img_src = '/static/media/users/' +
+                                            entity_obj[i].user+'/entity/'
+                                            + entity_obj[i].picture;
+                                    else
+                                        img_src ='/static/img/create.png';
 
-                                            img = $('<img src="'+img_src+'" atr="" >');
-                                            href_edit = '/registry/edit/'+entity_obj[i].id+'/';
-                                            btn = $('<a class="green_btn" href="' +
-                                                href_edit + '">Editar</a>');
-                                            div.append(a.append(img));
+                                    img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
+                                    href_edit = '/registry/edit/'+entity_obj[i].id+'/';
+                                    btn = $('<a class="green_btn" href="' +
+                                        href_edit + '">Editar</a>');
+                                    div.append(a.append(img));
 
-                                            if(entity_obj[i].user==$('.id_user').val()){
-                                                div.append(a.append(btn));
-                                            }
+                                    if(entity_obj[i].user==$('.id_user').val()){
+                                        div.append(a.append(btn));
+                                    }
 
-                                            a2 = $('<a href="'+href+'" class="title alpha' +
-                                                ' grid-4"></a>');
-                                            div.append(a2);
-                                            p = $('<p></p>');
-                                            div.append(p);
-                                            $('.overview').append(div);
-                                            div.find('.title').html(entity_obj[i].name);
-                                            div.find('p').html(truncText(entity_obj[i].
-                                                description,180));
-                                            div.find('.img');
-                                            div.fadeIn(300);
-                                        }
-                                        len++;
-                                    });
-                                });
-                                $(this).fadeIn(250);
+                                    a2 = $('<a href="'+href+'" class="title alpha' +
+                                        ' grid-4"></a>');
+                                    div.append(a2);
+                                    p = $('<p></p>');
+                                    div.append(p);
+                                    $('.overview').append(div);
+                                    div.find('.title').html(entity_obj[i].name);
+                                    div.find('p').html(truncText(entity_obj[i].
+                                        description,180));
+                                    div.find('.img');
+                                }
                             });
-                        }
-                        $('.d-not_found').remove();
+                            $('.d-not_found').remove();
 
-                        //text_no_found();
-
-                        if(no_found==0){
-                            text_no_found('organizaciones');
-                            //$('.viewport').append(error_msg);
-                        }
-                        $('#scrollbar1').tinyscrollbar();
+                            if(Object.keys(data['organization']).length==0 &&
+                                Object.keys(data['user_entities']).length==0){
+                                text_no_found('organizaciones');
+                                //$('.viewport').append(error_msg);
+                            }
+                            $('#scrollbar1').tinyscrollbar();
+                        });
+                        $(this).fadeIn(250);
                     });
-                }});
-            }
+                }
+            });
+    }
 }
 
 function search_all_header($this){
@@ -1321,22 +1319,23 @@ function search_all_header($this){
                                         name_user = obj[i2].name;
                                     }
                                     if(i == "org"){
-                                        href = '/qro_lee/entity/organization/org_' +
+                                        href = '/qro_lee/entity/organization/' +
                                             obj[i2].id;
+                                        console.log(obj[i2].picture);
                                         if(obj[i2].picture!='')
                                             src = '/static/media/users/' + obj[i2].id_user +
                                                 '/entity/' + obj[i2].picture;
                                         name_user = obj[i2].name;
                                     }
                                     if(i == "group"){
-                                        href = '/qro_lee/entity/group/group_' + obj[i2].id;
+                                        href = '/qro_lee/entity/group/'+ obj[i2].id;
                                         if(obj[i2].picture!='')
                                             src = '/static/media/users/' + obj[i2].id_user +
                                                 '/entity/' + obj[i2].picture;
                                         name_user = obj[i2].name;
                                     }
                                     if(i == "spot"){
-                                        href = '/qro_lee/entity/spot/spot_' + obj[i2].id;
+                                        href = '/qro_lee/entity/spot/' + obj[i2].id;
                                         if(obj[i2].picture!='')
                                             src = '/static/media/users/' + obj[i2].id_user +
                                                 '/entity/' + obj[i2].picture;
@@ -1358,7 +1357,7 @@ function search_all_header($this){
 
                                     var a = $('<a title="' + name_user + '" href="' +
                                         href + '" class="user_profile"></a>');
-                                    a.append('<img src=' + src + ' class="img_user" />');
+                                    a.append('<img src="' + src + '" class="img_user" />');
                                     var name = $('<span class="span_name_user" ></span>');
                                     name.append(truncText(name_user,20));
                                     a.append(name);
@@ -1519,15 +1518,14 @@ $(document).click(function(){
 });
 
 function add_rate($this){
-
     $.ajax({
         type: "POST",
         url: '/registry/add_rate/',
         data: {
             'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
             'grade': parseInt($this.find('.grade').val()) + 1 ,
-            'type':$this.find('.type').val(),
-            'element_id':$this.find('.element_id').val()
+            'type': $this.find('.type').val(),
+            'element_id': $this.find('.element_id').val()
         },
         dataType: 'json'
     }).done(function(data){

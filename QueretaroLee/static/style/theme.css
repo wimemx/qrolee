@@ -2819,3 +2819,93 @@ textarea{
 .Title .viewport{
     height: 448px !important;
 }
+
+.out_group{
+    margin-left: 60px;
+    height: 24px;
+    margin-top: -4px;
+}
+
+.book_crossing{
+    margin: 40px 10px 30px 10px;
+    display: block;
+}
+
+.book_crossing .grid-14{
+    min-height: 640px;
+    padding: 40px 60px 40px 60px;
+    background: #fffcf5;
+    display: block;
+    margin: 0px;
+}
+
+.sub-title{
+    margin-top: 10px;
+    font-size: 12px!important;
+    width: 100%!important;
+}
+
+.step{
+    margin-right: 30px;
+}
+
+.wrapper_step{
+    margin-top: 20px;
+    width: 100px;
+    height: 100px;
+    background-color: #CCC;
+}
+
+.text_step{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn_step{
+    padding: 12px 25px;
+    margin-top: 20px;
+    margin-left: 60px;
+    background-color: #CCC;
+}
+
+.text_{
+    margin-top: 20px!important;
+}
+
+.map_crossing{
+    height: 340px;
+    margin-top: 10px!important;
+    background-color: #CCC;
+}
+
+.container_crossing{
+    border: 1px solid #CCC;
+    height: 340px!important;
+}
+
+.edit_entity{
+    min-height: 35px!important;
+    margin: 0px!important;
+    padding: 0px!important;
+    background-color: #c69264!important;
+    border-bottom: 0px!important;
+}
+
+.titles_mini_crossing{
+    font-size: 11px;
+}
+
+.wrapper_mini_crossing{
+    width: 70px !important;
+    height: 70px;
+}
+
+.container_mini_crossing{
+    margin-top: 12px!important;
+}
+.text_free{
+    font-size: 9px;
+}
+.text_top{
+    margin-top: 5px!important;
+}

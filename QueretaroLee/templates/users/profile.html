@@ -110,7 +110,7 @@
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Salir">
+                            <input type="submit" class="btn " value="Dejar de seguir">
                         </form>
                         <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
 
@@ -150,7 +150,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
@@ -740,6 +740,17 @@
                                     {{ value.description|truncatechars:350 }}
                                 </span>
                             </div>
+                        {% empty %}
+                            {% if user_profile.user.id == user.id  %}
+                                <span class="grid-15 place_pink no_title">
+                                    Aun no has creado ninguna lista
+                                </span>
+                            {% else %}
+                                <span class="grid-15 place_pink no_title">
+                                    {{ user_profile.user.username }}
+                                    aun no a creado ninguna lista
+                                </span>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -760,34 +771,34 @@
                     <div class="end"></div></div></div></div>
                 <div class="viewport">
                     <div class="overview">
-                        {% for obj in entities %}
+                        {% for key, value in entities.items %}
 
                             {% if forloop.counter|divisibleby:2 %}
                                 <div class="grid-7 omega">
                             {% else %}
                                 <div class="grid-7 alpha">
                             {% endif %}
-
+                        <input type="hidden" value="{{ key }}" class="id_group"/>
                         <span class="wrapper d-group_user fleft">
-                        <a href="/qro_lee/entity/group/{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}/">
-                            {% if not obj.entity.picture %}
-                                <img src="" class="img_group"  alt="{{ obj.entity.name }}"/>
-                            {% else %}
-                                <img src="/static/media/users/{{ obj.entity.user.id }}/entity/{{ obj.entity.picture }}"
-                                     class="img_group" />
+                            <a href="/qro_lee/entity/group/{{ value.entity.id }}/">
+                                {% if not value.entity.picture %}
+                                    <img src="/static/img/create.png" class="img_group" />
+                                {% else %}
+                                    <img src="/static/media/users/{{ value.entity.user.id }}/entity/{{ value.entity.picture }}"
+                                         class="img_group" />
 
-                            {% endif %}
-                        </a>
-                    </span>
-
-                        <a href="/qro_lee/entity/group/{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}/" class="title alpha grid-4 title_groups">
-                            {{ obj.entity.name|capfirst }}</a>
-                        <p class="d-text_group_user">{{ obj.entity.description|truncatewords:17 }}
+                                {% endif %}
+                            </a>
+                        </span>
+                        <a href="/qro_lee/entity/group/{{ value.entity.id }}/" class="title alpha grid-4 title_groups">
+                            {{ value.entity.name|capfirst }}</a>
+                        <p class="d-text_group_user">{{ value.entity.description|truncatewords:17 }}
                         </p>
-                        <p class="d-text_group_user" >1,024 usuarios inscritos
+                        <p class="d-text_group_user" >{{ value.followers.count }} usuarios inscritos
                             <input type="hidden" class="name"
                                    value="{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}"/>
-                            {% if obj.user.id == user.id %}
+
+                            {% if user_profile.user.id == user.id %}
                                 <span class="d-pink_buttom message_alert fright">
                                 Abandonar
                                 <input class="type_message" type="hidden" value="out_group"/>
@@ -795,6 +806,17 @@
                             {% endif %}
                         </p>
                         </div>
+                        {% empty %}
+                            {% if user_profile.user.id == user.id  %}
+                                <span class="grid-15 place_pink no_title">
+                                    Aun no te has unido a ningun grupo
+                                </span>
+                            {% else %}
+                                <span class="grid-15 place_pink no_title">
+                                    {{ user_profile.user.username }}
+                                    aun no se ha unido a ningun grupo
+                                </span>
+                            {% endif %}
                         {% endfor %}
                         </div></div></div>
             </div>
@@ -869,6 +891,17 @@
                                     {% endautoescape %}
                                 </span>
                             </div>
+                        {% empty %}
+                            {% if user_profile.user.id == user.id  %}
+                                <span class="grid-15 place_pink no_title">
+                                    Aun no has creado paginas
+                                </span>
+                            {% else %}
+                                <span class="grid-15 place_pink no_title">
+                                    {{ user_profile.user.username }}
+                                    aun no ha creado ninguna pagina
+                                </span>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

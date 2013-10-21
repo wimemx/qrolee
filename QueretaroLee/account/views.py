@@ -156,6 +156,19 @@ def user_profile(request, **kwargs):
     profile = registry.Profile.objects.get(user=id_user)
     entity_user = registry.MemberToObject.objects.filter(
         user=id_user, is_member=True, object_type='E')
+
+    dict_entities_user = {}
+
+    for obj in entity_user:
+
+        entity = registry.Entity.objects.get(id=obj.object)
+        count_members = registry.MemberToObject.objects.filter(object=obj.object)
+        att = {
+            'entity': entity,
+            'followers': count_members
+        }
+        dict_entities_user[int(obj.object)] = att
+
     list = models.List.objects.filter(user=id_user, default_type=-1, status=True)
 
     fields_related_objects = models.List._meta.get_all_related_objects(
@@ -271,7 +284,7 @@ def user_profile(request, **kwargs):
 
                 #--------------date------------------------#
                 items['default_type'] = obj.list.default_type
-                items['id_list'] = obj.id
+                items['id_liobjst'] = obj.id
                 items['id_author'] = id_author
                 if len(activity) != 0:
                     items['date'] = str(activity[0].date.day) + ' de ' \
@@ -335,7 +348,7 @@ def user_profile(request, **kwargs):
 
     context = {
         'user_profile': profile,
-        'entities': entity_user,
+        'entities': dict_entities_user,
         'type': 'profile',
         'list': dictionary,
         'list_genre': list_genre,
@@ -686,7 +699,9 @@ def update_ajax_page(request):
             activity.update(date=datetime.today())
 
     context = {
-        'success':success
+        'success': success,
+        'page_id': id_page,
+        'user_id': request.user.id
     }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
