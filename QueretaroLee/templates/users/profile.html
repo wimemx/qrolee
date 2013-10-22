@@ -855,10 +855,10 @@
                                 <input class="id_list" type="hidden" value="{{ key }}">
                                 <a href="/qro_lee/user/{{ value.id_user }}/page/{{ key }}/">
                                     <span class="wrapper_list" >
-                                        {% if not value.picture %}
+                                        {% if not value.coment|img_autoescape  %}
                                             <img src="/static/img/create.png" class="img_size_all" />
                                         {% else %}
-                                            <img src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}"
+                                            <img src="{{ value.coment|img_autoescape }}"
                                                  class="img_size_all"   />
                                         {% endif %}
                                     </span>
@@ -886,7 +886,7 @@
                                     </a>
                                 </span>
                                 <span class="d-text_list grid-13 no-margin bottom_text"  >
-                                    {% autoescape off %}{{ value.coment|img_autoescape }}
+                                    {% autoescape off %}
                                         {{ value.coment|striptags|truncatechars:580 }}
                                     {% endautoescape %}
                                 </span>

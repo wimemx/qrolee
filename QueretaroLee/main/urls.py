@@ -33,5 +33,4 @@ urlpatterns = patterns('',
     url(r'^book_crossing/$', views.book_crossing ,
         {'template_name': 'main/book_crossing.html'},name='book_crossing'),
 
-
 )

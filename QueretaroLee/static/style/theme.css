@@ -2832,7 +2832,7 @@ textarea{
 }
 
 .book_crossing .grid-14{
-    min-height: 640px;
+    min-height: 530px;
     padding: 40px 60px 40px 60px;
     background: #fffcf5;
     display: block;
@@ -2862,25 +2862,24 @@ textarea{
 }
 
 .btn_step{
-    padding: 12px 25px;
-    margin-top: 20px;
-    margin-left: 60px;
-    background-color: #CCC;
-}
+    padding: 5px 10px;
+    background-color: #edde84;
+    color: #000000;
+    font-weight: bold;
+    float: left;
+    cursor: pointer;
 
-.text_{
-    margin-top: 20px!important;
 }
 
 .map_crossing{
-    height: 340px;
-    margin-top: 10px!important;
+    min-height: 200px!important;
+    margin-top: 20px!important;
+    left: -60px;
     background-color: #CCC;
 }
 
 .container_crossing{
-    border: 1px solid #CCC;
-    height: 340px!important;
+    height: 380px!important;
 }
 
 .edit_entity{
@@ -2892,12 +2891,13 @@ textarea{
 }
 
 .titles_mini_crossing{
-    font-size: 11px;
+    font-size: 13px;
+    margin-top: 10px!important;
 }
 
 .wrapper_mini_crossing{
     width: 70px !important;
-    height: 70px;
+    height: 80px;
 }
 
 .container_mini_crossing{
@@ -2907,5 +2907,70 @@ textarea{
     font-size: 9px;
 }
 .text_top{
-    margin-top: 5px!important;
+    margin-top: 4px!important;
+}
+
+.book_crossing .wallpaper{
+    min-height: 200px!important;
+    background: none!important;
+    padding-top: 0px!important;
+    padding-bottom: 0px!important;
+}
+
+.wallpaper .title_cross{
+    width: 100% !important;
+    text-align: center;
+    font-size: 24px;
+}
+
+.icon_1{
+    width: 160px;
+    height: 150px;
+    float: left;
+}
+.icon_2{
+    height: 210px;
+    width: 200px;
+    float: left;
+    margin-top: -47px;
+}
+
+.icon_flet{
+    background-image: url('../img/arrow.png');
+    width: 96px;
+    height: 60px;
+    margin-top: 25px;
+    float: left;
+}
+
+.container_icons{
+    margin-top: 21px;
+    left: 60px;
+}
+
+.book_crossing .text_descrip{
+    font-size: 14px;
+    text-align: center;
+}
+
+.icon_arrow{
+    background: url('../img/detail_bottom.png') no-repeat 50% 4px;
+    height: 26px;
+    width: 73px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.icons_arrows{
+    margin-top: 20px;
+}
+
+.icons_center{
+    margin-left: 50%;
+    float: left;
+}
+
+.pos_center{
+    left: -50%;
 }

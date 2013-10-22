@@ -239,6 +239,14 @@ def get_objects(object, type):
 @register.filter
 def img_autoescape(text):
     t = str(text)
-    a = t.find('<img')
-    print a
+    img = t.split('<img')
+    src_img = ''
+
+    if len(img) > 0:
+        src = img[1].split('src="')
+        if len(src) > 0:
+            end = str(src[1]).find('"')
+            src_img = str(src[1])[0:end]
+
+    return  src_img
 

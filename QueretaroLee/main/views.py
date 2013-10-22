@@ -1505,7 +1505,11 @@ def get_page(request, **kwargs):
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
-    context = {}
+    books = models.Travel.objects.all()
+
+    context = {
+        'books': books
+    }
 
     return  render(request, template, context)
 

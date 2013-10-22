@@ -488,8 +488,7 @@ def delete_account(request):
 
 def list_user(request):
 
-    user = User.objects.filter(is_staff=False)
-
+    user = User.objects.filter(is_active=True, is_staff=False)
     author = models.Author.objects.all()
     org = registry.Entity.objects.filter(type__name='organization')
     group = registry.Entity.objects.filter(type__name='group')
@@ -501,7 +500,8 @@ def list_user(request):
         search = request.POST['field_value']
         user = User.objects.filter(
             db_model.Q(username__icontains=search) |
-            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)).filter(is_staff=False)
+            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)).\
+            filter(is_active=True, is_staff=False)
 
         author = models.Author.objects.filter(name__icontains=search)
         org = registry.Entity.objects.filter(name__icontains=search,
@@ -512,7 +512,6 @@ def list_user(request):
                                                            type__name='spot')
         list_ = models.List.objects.filter(name__icontains=search, default_type=-1)
         title = models.Title.objects.filter(title__icontains=search)
-
 
     list_us = {}
     list_author = {}

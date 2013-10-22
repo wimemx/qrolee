@@ -52,17 +52,17 @@
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Dejar de seguir">
+                            <input type="submit" class="btn " value="Eres seguidor">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+
                     {% elif member and entity.privacy != 0 %}
 
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="follow_private" value="-1"/>
-                            <input type="submit" class="btn" value="Dejar de seguir">
+                            <input type="submit" class="btn" value="Eres seguidor">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+
                     {% else %}
 
                         {% if entity.privacy == 1 %}
@@ -77,7 +77,7 @@
                                 <input type="hidden" name="membership" value="1"/>
                                 <input type="submit" class="btn " value="Seguir">
                             </form>
-                            <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+
                         {% endif %}
                     {% endif %}
                 </span>
@@ -93,22 +93,19 @@
                     <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
-                        <input type="submit" class="btn " value="Dejar de seguir">
+                        <input type="submit" class="btn " value="Eres seguidor">
                     </form>
-                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% elif member and entity.privacy != 0 %}
 
                     <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
-                        <input type="submit" class="btn" value="Dejar de seguir">
+                        <input type="submit" class="btn" value="Eres seguidor">
                     </form>
-                    <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                 {% else %}
 
                     {% if entity.privacy != 0 %}
                         <span class="btn no-ajax fleft">Seguir</span>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                         <p class="private-icon fright">
                             <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                         </p>
@@ -120,35 +117,13 @@
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn " value="Seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
 
                     {% endif %}
 
                 {% endif %}
 
                 </span>
-            <p class="follow no-margin">Para recibir notificaciones sobre eventos y
-                            actividades referente a {{ entity.name }}, da click en el botón</p>
-            <span class="followers">
-                        <p>Usarios siguiendo</p>
-                            {% for follower, profile in followers %}
-                                <span>
-                                {% if not profile.picture or profile.picture == '' %}
-                                    <img src="/static/img/create.png" alt=""/>
-                                {% else %}
-                                    <img src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
-                                {% endif %}
-                                    <span class="user">
-                                    {% if follower.first_name != '' %}
-                                        {{ follower.first_name }} {{ follower.last_name }}
-                                    {% else %}
-                                        {{ follower.username }}
-                                    {% endif %}
-                                </span>
-                            </span>
-                            {% endfor %}
-                    </span>
-                </span>
+            </span>
         {% endif %}
     {% else %}
         {% block entity_menu %}

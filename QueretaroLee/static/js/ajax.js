@@ -530,7 +530,35 @@ $(document).ready(function(){
         }
 
         if($('#map').hasClass('map_crossing')){
-            initialize(-18.00,20.00);
+            query = {
+                'book__status':1
+            }
+            fields = ['user','book','lat','long'];
+            and = 0;
+            join = {
+                'tables':{
+                    0: JSON.stringify(['registry.book'])
+                },
+                'quieres':{
+                    0: JSON.stringify(['id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['id','title'])
+                }
+            }
+            join = JSON.stringify(join);
+
+            var search = {
+                'type': 'registry.travel',
+                'fields': JSON.stringify(fields),
+                'value': JSON.stringify(query),
+                'and': and,
+                'join': join
+            }
+            search = JSON.stringify(search);
+            var csrf = $('.csrf_header').find('div input').val();
+            var data = advanced_search(search, csrf);
+            dmap(data,2);
         }
     }
 
@@ -1154,18 +1182,20 @@ function search_entities($this){
                     $('.overview').fadeOut(250,function(){
                         $('.overview').empty();
                         var len = 0;
+                        var empty = false;
                         $.each(data,function(index){
                             var entity_obj = data[index];
 
                             $.each(entity_obj,function(i){
+                                empty = true;
                                 var img_src;
+                                var count = 1;
                                 if(entity_obj[i].type=='spot'){
 
                                     div = $('<div class="grid-7 omega d-spot"></div>');
                                     var d_name = entity_obj[i].name;
                                     d_name = d_name.replace(/\s/g,'');
-                                    var href = '/qro_lee/entity/organization/'+
-                                        d_name+'_'+entity_obj[i].id+'/';
+                                    var href = '/qro_lee/entity/spot/'+ entity_obj[i].id+'/';
                                     a = $('<a href="' + href +
                                         '" class="wrapper d-wrapperspot"></a>');
                                     divtext = $('<div class="d-text_spot "></div>');
@@ -1176,7 +1206,7 @@ function search_entities($this){
                                     else
                                         img_src ='';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
-                                    href = '/registry/edit/'+d_name+'_'+entity_obj[i].id+'/';
+                                    href = '/registry/edit/' + entity_obj[i].id+'/';
                                     btn = $('<a class="brown_btn" href="' + href + '">Editar</a>');
                                     div.append(a.append(img));
 
@@ -1184,16 +1214,18 @@ function search_entities($this){
                                         div.append(a.append(btn));
                                     }
                                     //h3 = $('<h3 class="title alpha grid-4"></h3>');
-                                    a2 = $('<a href="' + href + '" class="title ' +
-                                        'alpha grid-4"></a>');
+                                    a2 = $('<a href="' + href +
+                                        '" class="title alpha grid-4 d-title_spot"></a>');
                                     div.append(a2);
                                     p = $('<p></p>');
                                     div.append(divtext.append(p));
                                     $('.overview').append(div);
                                     div.find('.title').html(entity_obj[i].name);
+                                    div.find('.title').append('<img src="/static/img/markers/marker'+
+                                        count + '.png" class="d-icon_map fleft">');
                                     div.find('p').html(truncText(entity_obj[i].address,180)+
-                                        '<br>Teléfonos:442 290 8989<br>' +
-                                        '<a class="d-pink" href="">Biblioteca</a>');
+                                        '<br>' +'<a class="d-pink" href="">Biblioteca</a>');
+                                    count++;
 
                                 }else{
 
@@ -1207,8 +1239,7 @@ function search_entities($this){
                                             '</div>');
                                     var d_name = entity_obj[i].name;
                                     d_name = d_name.replace(/\s/g,'');
-                                    var href = '/qro_lee/entity/organization/'+
-                                        d_name+'_'+entity_obj[i].id+'/';
+                                    var href = '/qro_lee/entity/organization/' + entity_obj[i].id+'/';
 
                                     a = $('<a href="'+ href + '" class="wrapper">' +
                                         '</a>');
@@ -1244,14 +1275,21 @@ function search_entities($this){
                             });
                             $('.d-not_found').remove();
 
-                            if(Object.keys(data['organization']).length==0 &&
-                                Object.keys(data['user_entities']).length==0){
-                                text_no_found('organizaciones');
-                                //$('.viewport').append(error_msg);
+                            if(!empty){
+                                var message = 'organizaciones';
+
+                                if($('.type').val() == 'group')
+                                    message = 'grupos';
+
+                                if($('.type').val() == 'spot')
+                                    message = 'spots';
+
+                                text_no_found(message);
                             }
                             $('#scrollbar1').tinyscrollbar();
                         });
                         $(this).fadeIn(250);
+                        dmap(data,1);
                     });
                 }
             });
@@ -1320,7 +1358,6 @@ function search_all_header($this){
                                     if(i == "org"){
                                         href = '/qro_lee/entity/organization/' +
                                             obj[i2].id;
-                                        console.log(obj[i2].picture);
                                         if(obj[i2].picture!='')
                                             src = '/static/media/users/' + obj[i2].id_user +
                                                 '/entity/' + obj[i2].picture;
@@ -1513,6 +1550,9 @@ $(document).click(function(){
     if(!set_act)
         $('.sub-menu-h').fadeOut(250);
     set_act = false;
+    if(!men_1)
+        $('.sub-menu').fadeOut(250);
+    men_1 = false;
 
 });
 
