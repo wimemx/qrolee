@@ -138,6 +138,18 @@ $(document).ready(function(){
         show_items_left($(this));
     });
 
+    $('.tag_btn').click(function(){
+        $.each($('.book_crossing .tag'),function(){
+            if($(this).hasClass('act_tag')){
+                $(this).removeClass('act_tag');
+                $(this).fadeOut(300);
+            }else{
+                $(this).fadeIn(300);
+                $(this).addClass('act_tag');
+            }
+        });
+    });
+
     $('.d-add_book').click(function(){
 
         var query = ' ';

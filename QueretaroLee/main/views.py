@@ -1502,6 +1502,7 @@ def get_page(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']

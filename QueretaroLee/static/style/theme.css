@@ -2929,7 +2929,7 @@ textarea{
     float: left;
 }
 .icon_2{
-    height: 210px;
+    height: 210px!important;
     width: 200px;
     float: left;
     margin-top: -47px;
@@ -2973,4 +2973,45 @@ textarea{
 
 .pos_center{
     left: -50%;
+}
+
+.tag{
+    display: none;
+}
+
+.act_tag{
+    display: block;
+}
+
+.text_search{
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+
+.int_btn{
+    float: left!important;
+    margin-left: 70px;
+    padding: 7px 20px 7px 20px!important;
+}
+
+.text_field{
+    padding-bottom: 5px;
+    float: left;
+}
+
+.value_field{
+    text-align: center;
+}
+
+.form_bottom{
+    margin-bottom: 230px!important;
+}
+
+.tag_btn{
+    cursor: pointer;
+}
+.top_{
+    top: 0px!important;
+    right: 0px!important;
 }

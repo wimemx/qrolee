@@ -1205,15 +1205,16 @@ function search_entities($this){
                                             + entity_obj[i].picture;
                                     else
                                         img_src ='';
+
+                                    href2 = '/registry/edit/' + entity_obj[i].id+'/';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
-                                    href = '/registry/edit/' + entity_obj[i].id+'/';
-                                    btn = $('<a class="brown_btn" href="' + href + '">Editar</a>');
+                                    btn = $('<a class="brown_btn" href="' + href2 + '">Editar</a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
                                         div.append(a.append(btn));
                                     }
-                                    //h3 = $('<h3 class="title alpha grid-4"></h3>');
+
                                     a2 = $('<a href="' + href +
                                         '" class="title alpha grid-4 d-title_spot"></a>');
                                     div.append(a2);
@@ -1289,7 +1290,8 @@ function search_entities($this){
                             $('#scrollbar1').tinyscrollbar();
                         });
                         $(this).fadeIn(250);
-                        dmap(data,1);
+                        if($('.type').val() == 'spot')
+                            dmap(data,1);
                     });
                 }
             });
