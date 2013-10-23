@@ -51,6 +51,8 @@ def feed_type(feed_id):
     added_to_img_url = '/static/media/users/'+str(feed.user_id)+'/'
     name = ''
     obj_name = ''
+    trigger_url = ''
+    whom_url = ''
     if feed.added_to_type == 'U':
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)
@@ -59,15 +61,17 @@ def feed_type(feed_id):
         else:
             img_url += 'profile/'+profile.picture
         if obj_list[0].first_name != '':
-            name = obj_list[0].first_name + ' '+ obj_list[0].last_name
+            name = obj_list[0].first_name + ' '+obj_list[0].last_name
         else:
             name = obj_list[0].username
+        trigger_url = '/accounts/users/profile/'+str(obj_list[0].id)
     else:
         if obj_list[0].picture != '':
             img_url += 'entity/'+obj_list[0].picture
         else:
             img_url = '/static/img/create.png'
         name = obj_list[0].name
+        trigger_url = '/qro_lee/entity/organization/'+str(obj_list[0].id)
 
     if feed.type == 'U':
         if profile.picture == None:
@@ -75,9 +79,10 @@ def feed_type(feed_id):
         else:
             added_to_img_url += 'profile/'+profile.picture
         if obj_list[1].first_name != '':
-            obj_name = obj_list[1].first_name + ' '+ obj_list[1].last_name
+            obj_name = obj_list[1].first_name + ' '+obj_list[1].last_name
         else:
             obj_name = obj_list[1].username
+        whom_url = '/accounts/users/profile/'+str(obj_list[1].id)
     elif feed.type == 'D':
         if obj_list[1].picture != '':
             added_to_img_url += 'event/'+obj_list[1].picture
@@ -89,6 +94,7 @@ def feed_type(feed_id):
         content += content_[1]
         date = obj_list[1].start_time
         extra_content = str(date.hour).zfill(2)+':'+str(date.minute).zfill(2)+':00'
+        whom_url = '/qro_lee/events/'+str(obj_list[1].id)
     elif feed.type == 'E':
         if obj_list[1].picture != '':
             added_to_img_url += 'entity/'+obj_list[1].picture
@@ -97,6 +103,36 @@ def feed_type(feed_id):
         obj_name = obj_list[1].name
         content = obj_list[1].description[:100]
         extra_content = ''
+        whom_url = '/qro_lee/entity/organization/'+str(obj_list[1].id)
+    elif feed.type == 'T':
+        if obj_list[1].picture != '':
+            added_to_img_url = obj_list[1].picture
+        else:
+            added_to_img_url = '/static/img/create.png'
+        obj_name = obj_list[1].title
+        content = ''
+        extra_content = ''
+        whom_url = '/qro_lee/profile/title/'+str(obj_list[1].id)
+    elif feed.type == 'A':
+        if obj_list[1].picture != '':
+            added_to_img_url = obj_list[1].picture
+        else:
+            added_to_img_url = '/static/img/create.png'
+        obj_name = obj_list[1].name
+        content = ''
+        extra_content = ''
+        whom_url = '/qro_lee/profile/author/'+str(obj_list[1].id)
+    elif feed.type == 'L':
+        if not obj_list[1].picture:
+            obj_list[1].picture = ''
+        if obj_list[1].picture != '':
+            added_to_img_url = obj_list[1].picture
+        else:
+            added_to_img_url = '/static/img/create.png'
+        obj_name = obj_list[1].name
+        content = ''
+        extra_content = ''
+        whom_url = '/qro_lee/profile/list/'+str(obj_list[1].id)
     date = member_since(feed.date)
 
     if feed.activity_id == 1:
@@ -111,22 +147,24 @@ def feed_type(feed_id):
                 action = u'creó un spot'
             else:
                 action = u'realizo un rating'
+        elif feed.type == 'L':
+            action = u'creó una lista'
         else:
             action = ''
         ret_value = u"""<span class="create feed">
-                            <span class="wrapper fleft">
+                            <a href="{8}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
-                            </span>
+                            </a>
                             <span class="grid-6 content no-margin fleft">
-                                    <span class="trigger din-b">{0} </span>
+                                    <span class="trigger din-b"><a href="{8}">{0}</a> </span>
                                     <span class="verb din-r">{7} </span>
-                                    <span class="verb din-b">{1} </span>
+                                    <span class="verb din-b"><a href="{9}">{1}</a> </span>
                                 <span class="action grid-5 no-margin">
-                                    <span class="wrapper fleft">
+                                    <a href="{9}" class="wrapper fleft">
                                         <img src="{3}" alt=""/>
-                                    </span>
+                                    </a>
                                     <span class="wrap fleft">
-                                        <span class="din-m fleft">{1}</span>
+                                        <span class="din-m fleft"><a href="{9}">{1}</a></span>
                                     <p class="gray_text no-margin fleft">
                                         <span class="entry">{4}</span>
                                         <span class="time">{5}</span></p>
@@ -138,7 +176,7 @@ def feed_type(feed_id):
                         </span>"""
         ret = ret_value.format(
             name, obj_name, img_url, added_to_img_url,
-            content, extra_content, date, action)
+            content, extra_content, date, action, trigger_url, whom_url)
 
     elif feed.activity_id == 5:
         if feed.type == 'E':
@@ -149,31 +187,23 @@ def feed_type(feed_id):
         else:
             action = u'empezó a seguir a'
         ret_value = u"""<span class="follow feed">
-              <span class="wrapper fleft">
-              <img src="{2}" alt=""/></span>
+              <a href="{5}" class="wrapper fleft">
+                <img src="{2}" alt=""/>
+              </a>
               <span class="grid-6 content no-margin fleft">
-              <span class="trigger din-b">{0} </span>
+              <span class="trigger din-b"><a href="{5}">{0}</a> </span>
               <span class="verb din-r">{4} </span>
-              <span class="verb din-b">{1} </span></span>
+              <span class="verb din-b"><a href="{6}">{1}</a> </span></span>
               <p class="gray_text no-margin fleft">hace  {3}</p></span>"""
         ret = ret_value.format(
             name, obj_name, img_url, date,
-            action)
+            action, trigger_url, whom_url)
     elif feed.activity_id == 6:
         action = u'calificó a'
 
-        rate = models.Rate.objects.filter(
-            type='E', element_id=feed.object)
-        sum = 0
-        for value in rate:
-            sum += int(value.grade)
-
-        #grade = sum/len(rate)
-        grade = 0
-
-        '''rate_= models.Rate.objects.filter(type='E', element_id=feed.object).values('element_id').\
-            annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
-        print rate_'''
+        rate_ = models.Rate.objects.filter(type=str(feed.type), element_id=feed.object).values(
+            'element_id').annotate(count=db_model.Count('element_id'), score=db_model.Avg('grade'))
+        grade = rate_[0]['score']
 
         rating = ''
         for i in range(1, 6):
@@ -183,19 +213,19 @@ def feed_type(feed_id):
                 rating += '<span class="rate unrated"></span>'
 
         ret_value = u"""<span class="create feed">
-                            <span class="wrapper fleft">
+                            <a href="{7}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
-                            </span>
+                            </a>
                             <span class="grid-6 content no-margin fleft">
-                                    <span class="trigger din-b">{0} </span>
+                                    <span class="trigger din-b"><a href="{7}">{0}</a> </span>
                                     <span class="verb din-r">{4} </span>
-                                    <span class="verb din-b">{1} </span>
+                                    <span class="verb din-b"><a href="{8}">{1}</a> </span>
                                 <span class="action grid-5 no-margin">
-                                    <span class="wrapper fleft">
+                                    <a href="{8}" class="wrapper fleft">
                                         <img src="{5}" alt=""/>
-                                    </span>
+                                    </a>
                                     <span class="wrap fleft">
-                                        <span class="din-m fleft">{1} </span>
+                                        <span class="din-m fleft"><a href="{8}">{1}</a> </span>
                                     <p class="gray_text no-margin fleft">
                                         <span style="margin-top:5px;display:block;" class="entry">{6}</span>
                                         <span class="time"></span></p>
@@ -207,10 +237,11 @@ def feed_type(feed_id):
                         </span>"""
         ret = ret_value.format(
             name, obj_name, img_url, date,
-            action, added_to_img_url, rating)
+            action, added_to_img_url, rating, trigger_url, whom_url)
     else:
         ret = ''
     return ret
+
 
 def get_objects(object, type):
     if type == 'E':

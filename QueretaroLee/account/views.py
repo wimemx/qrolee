@@ -398,7 +398,7 @@ def update_account(request,**kwargs):
 
 def update_profile(request, **kwargs):
 
-    id_user =  request.user.id
+    id_user = request.user.id
     field = request.POST.get('field')
     value = request.POST.get('value')
 
@@ -456,7 +456,7 @@ def update_profile(request, **kwargs):
     dictionary_user = {}
 
     for field_type in fields:
-        if field_type=='first_name' or field_type=='last_name' or field_type=='email':
+        if field_type == 'first_name' or field_type == 'last_name' or field_type == 'email':
             if isinstance(obj.__getattribute__(field_type), unicode):
                 if dictionary.has_key(str(field_type)):
                     dictionary_user[str(field_type)] = (dictionary[str(field_type)]).encode('utf-8', 'ignore')
@@ -464,7 +464,7 @@ def update_profile(request, **kwargs):
                 if dictionary.has_key(str(field_type)):
                     dictionary_user[str(field_type)] = str(dictionary[str(field_type)])
 
-    if len(dictionary_user)>0:
+    if len(dictionary_user) > 0:
         user = registry.User.objects.filter(id=id_user).update(**dictionary_user)
 
     context = {}
@@ -483,7 +483,7 @@ def delete_account(request):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponseRedirect('/registry/logout');
+    return HttpResponseRedirect('/registry/logout')
 
 
 def list_user(request):

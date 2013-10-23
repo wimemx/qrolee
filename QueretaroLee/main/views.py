@@ -7,12 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db import models as db_model
 from django.db.models import Q
+from django.core import serializers
 
 from registry.models import Entity,Type,Event
 from account import models as account_models
 from registry import models,views,settings
 
-from collections import namedtuple
+
 from decimal import Decimal
 import simplejson
 import calendar
@@ -22,6 +23,7 @@ import ast
 import operator
 import math
 import urllib2
+
 
 
 @login_required(login_url='/')
@@ -347,7 +349,7 @@ def get_entity(request, **kwargs):
         added_to_object=entity.id, added_to_type='E').order_by('-date')
 
     discussions = account_models.Discussion.objects.filter(
-        entity__id=entity.id, parent_discussion_id=None)
+        entity__id=entity.id, parent_discussion_id=None).order_by('-date')
 
     context = {
         'entity': entity,
@@ -646,6 +648,7 @@ def advanced_search(request, **kwargs):
         fields = ast.literal_eval(str(data['fields']))
 
         for obj in object:
+            flag = False
             if activity and model_name == 'activity':
                 is_reading = account_models.Activity.objects.filter(user_id=obj.id, type='T')
                 if not is_reading:
@@ -663,12 +666,9 @@ def advanced_search(request, **kwargs):
             if 'distance' in query_list:
                 if query_list['distance'] != '':
                     if obj.lat != '' and obj.long != '':
-                        print latitude
-                        print obj.lat
                         lat = float(obj.lat)
                         lng = float(obj.long)
                         radius = float( 6371 * math.acos( math.cos( math.radians(latitude) ) * math.cos( math.radians( lat ) ) * math.cos( math.radians( lng ) - math.radians(longitude) ) + math.sin( math.radians(latitude) ) * math.sin( math.radians( lat ) ) ) )
-                        print radius
                         if radius > distance:
                             break
             context_fields = {'extras': list()}
@@ -725,10 +725,13 @@ def advanced_search(request, **kwargs):
                                         filtered_users.append(obj.id)
 
                     models = ast.literal_eval(join['tables'][str(ele)])
-                    if 'user_id' in data['fields']:
+
+                    if 'user_id' in data['fields'] and not flag:
                         related_object = obj.user_id
+                        flag = True
                     else:
                         related_object = obj.id
+
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
                     model_name = parent[1]
@@ -752,7 +755,6 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
-                    print q_list
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
@@ -1451,7 +1453,6 @@ def search_api(request, **kwargs):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
 
-
     if 'items' in response:
         pass
     elif 'cost' in response:
@@ -1466,6 +1467,74 @@ def search_api(request, **kwargs):
     return HttpResponse(context, mimetype='application/json')
 
 
+def get_a_discussion(request):
+    discussion = account_models.Discussion.objects.get(
+        id=int(request.POST.get('id')))
+    discussion_list = get_discussion(discussion=discussion)
+    res = list()
+    for lis in discussion_list:
+        results = [ele.as_json() for ele in lis]
+        res.append(results)
+    context = {
+        'parent': discussion.parent_as_json(),
+        'discussion': res
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def create_discussion(request):
+    discussion = account_models.Discussion.objects.create(
+        entity_id=int(request.POST.get('entity_id')), name=request.POST.get('name'),
+        content=request.POST.get('content'), user_id=request.user.id)
+
+    context = {
+        'response': discussion.parent_as_json()
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def respond_to_discussion(request):
+    response = account_models.Discussion.objects.create(
+        entity_id=int(request.POST.get('entity_id')),
+        parent_discussion_id=int(request.POST.get('parent_discussion')),
+        content=request.POST.get('response'), user_id=request.user.id)
+    context = {
+        'response': response.as_json()
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def get_discussion(discussion):
+    discussion_list = list()
+    discussions = account_models.Discussion.objects.filter(
+        parent_discussion_id=discussion.id).order_by('-date')
+
+    for discuss in discussions:
+        discuss_list = list()
+        discuss_list.append(discuss)
+        discussions_2nd_level = account_models.Discussion.objects.filter(
+            parent_discussion_id=discuss.id).order_by('-date')
+        for dis in discussions_2nd_level:
+            discuss_list.append(dis)
+        discussion_list.append(discuss_list)
+    return discussion_list
+
+
+#def get_discussion(discussion, l):
+#    discussion_list = l
+#    discussion = account_models.Discussion.objects.filter(
+#        parent_discussion_id=discussion.id)
+#
+#    if discussion:
+#        l.append(discussion[0])
+#        get_discussion(discussion[0], discussion_list)
+#        return l
+#    return discussion_list
+
+
 def load_picture_profile(request):
 
     user = request.user
@@ -1475,7 +1544,7 @@ def load_picture_profile(request):
     if profile.picture:
         picture = profile.picture
     context = {
-        'id_user':user.id,
+        'id_user': user.id,
         'picture': picture
     }
 

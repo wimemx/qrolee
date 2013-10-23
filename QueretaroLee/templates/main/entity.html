@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="wrapper_message " >
+    <div class="wrapper_message">
         <div class="container-16 container_message">
             <div class="alert-message gray">{% csrf_token %}
                 <p>Para poder ser miembro, tu solicitud será enviada al
@@ -35,6 +35,20 @@
                 <input class="user" type="hidden"/>
                 <input class="entity" value="{{ entity.id }}" type="hidden"/>
             </div>
+            {% if entity_type.1 ==  'group' %}
+                <div class="create-discussion-wrapper margin-50 grid-8 lightbox center">
+                    <span class="close"></span>
+                <span class="create-discussion grid-7 center">
+                    <p class="title center">Crea una nueva discusión</p>
+                    <p class="fleft">Titulo de la discusión
+                        <input type="text" name="name" class="fleft"/></p>
+                    <p class="fleft">Contenido de la discusión
+                        <textarea name="content" class="fleft" ></textarea></p>
+                    <span class="remove fright">Rechazar</span>
+                    <span class="accept green_btn fright">Guardar</span>
+                </span>
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="wrapper_message " >
@@ -613,10 +627,12 @@
         {% endif %}
         </div>
     {% endif %}
+    <!-- Disucssion -->
     {% if entity_type.1 == 'group' %}
         <div class="grid-16 discussion load no-margin">
         <div class="grid-15 center">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
+            <span style="background-image: none;" class="brown_btn fright discuss">Crear nueva discusión</span>
             <div class="grid-5 fleft alpha">
             <h3 class="title main">Discusiones
                 <span class="select_wrapper grid-2 alpha fright">
@@ -656,35 +672,44 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-9 discuss fleft">
+
+            <span style="display:none;" class="discussion_response main grid-9 no-margin fleft">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <!-- Gringue -->
+                        <span class="grid-8 din-r answer fright no-margin">
+                            <span class="name title">Laura Rodríguez <span class="gray_text">hace 3 semanas</span></span>
+                            <p>Pellentesque habitant morbi tristique senectus et netus et
+                            malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
+                            ultricies eget, tempor sit amet, ante. Donec eu libero sit
+                            amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                            Quisque sit amet est et sapien ullamcorper pharetra.
+                            Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
+                            <span class="respond_btn btn">responder</span>
+
+                            <span class="erase_btn btn">eliminar</span>
+                        </span>
+
+                    </span>
+            </span>
+            <div style="display: none;" class="grid-9 discuss main fright">
                 <h3 class="title no-margin">Title</h3>
                 <p class="no-margin fleft gray_text">Por <a class="spot category" href="#">Alguien</a></p>
                 <p class="gray_text no-margin fright">20 de oct de 2013</p>
-                <p style="margin-bottom: 20px;" class="fleft">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+                <p style="margin-bottom: 20px; width:100%;" class="main_content fleft">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
                 <span class="respond main fleft">
                     <span class="wrapper no-margin fleft grid-1">
                         <img src="/static/img/create.png" alt=""/>
                     </span>
-                    <textarea class="grid-8 din-r fright no-margin">Escribe un comentario...</textarea>
+                    <textarea class="grid-8 din-r no-brradius fright no-margin">Escribe un comentario...</textarea>
+                    <span class="respond_btn main btn">responder</span>
                 </span>
-                <span class="discussion_response fleft">
-                    <span class="respond main fleft">
-                    <span class="wrapper no-margin fleft grid-1">
-                        <img src="/static/img/create.png" alt=""/>
-                    </span>
-                    <span class="grid-8 din-r answer fright no-margin">
-                        <span class="name title">Laura Rodríguez <span class="gray_text">hace 3 semanas</span></span>
-                        <p>Pellentesque habitant morbi tristique senectus et netus et
-                        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
-                        ultricies eget, tempor sit amet, ante. Donec eu libero sit
-                        amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-                        Quisque sit amet est et sapien ullamcorper pharetra.
-                        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
-                        <span class="respond_btn btn">responder</span>
-                        <span class="share_btn btn">compartir</span>
-                        <span class="erase_btn btn">eliminar</span>
-                    </span>
-                </span>
+            </div>
+            <div class="discussion_contents">
+
             </div>
         {% else %}
             <p class="private-message margin-50 center">Este grupo es privado,
