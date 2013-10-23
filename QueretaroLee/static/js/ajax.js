@@ -626,13 +626,58 @@ $('.affiliate').each(function(i){
 
     if($('.discussion.load').length > 0){
         $('.discussion.load a.title').click(function(e){
+            $('.discussion_contents .discuss').remove();
             e.preventDefault();
-                var response = discussion($(this).attr('id'));
+            discussion($(this).attr('id'));
             return false;
+        });
+        $('.brown_btn.discuss').click(function(){
+            $('.create-discussion input').val('');
+            $('.create-discussion textarea').val('');
+            $('.alert-message').fadeOut(300, function(){
+                $(this).parent().fadeIn(300);
+            });
+        });
+        $('.create-discussion-wrapper .accept').click(function(){
+
+            var name = $('.create-discussion input').val();
+            var content = $('.create-discussion textarea').val();
+            create_discussion($('input.entity').val(), name, content);
         });
     }
 
 });
+
+function create_discussion(entity_id, name, content){
+    $.ajax({
+        type: "POST",
+        url: '/qro_lee/create_discussion/',
+        data: {
+            'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
+            'entity_id': entity_id,
+            'name':name,
+            'content': content
+        },
+        dataType: 'json'
+    }).done(function(data){
+            $('.create-discussion-wrapper').parent().fadeOut(300);
+            var discuss = data['response'];
+            var $span = $('<span class="item">' +
+                '<a href="#" id="'+discuss.id+'" style="margin-top: 5px;" class="title no-margin">'+discuss.name+'</a>' +
+                '<p class="no-margin">Por ' +
+                '<a class="spot category" href="#">' +discuss.username+'</a></p>' +
+                '<p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
+            $span.find('a.title').click(function(e){
+                $('.discussion_contents .discuss').remove();
+                    e.preventDefault();
+                    discussion($(this).attr('id'));
+                    return false;
+            });
+            $span.find('a.title').trigger('click');
+            $('.discussion').find('.overview .item').before($span);
+        });
+}
+
 
 function discussion(id){
     $.ajax({
@@ -644,7 +689,129 @@ function discussion(id){
         },
         dataType: 'json'
     }).done(function(data){
+            var $item = $('div.discuss.main').clone();
+            $item.removeClass('main');
+            $item.find('.main textarea').focus(function(){
+                //$(this).val('');
+                //text = $(this).val();
+            });
+            var parent = data['parent'];
+            $item.find('.title').html(parent.name);
+            $item.find('p.main_content').html(parent.content);
+            $item.find('p a').html(parent.username);
+            $item.find('p a').attr('href', '/accounts/users/profile/'+parent.user);
+            data = data['discussion'];
+            respond_discussion(
+                $item.find('.respond_btn'),
+                id, $item,
+                $('input.entity').val(), false
+            );
 
+            $.each(data, function(i){
+                var counter = 0;
+                $.each(data[i], function(index){
+                        var discussion = data[i][index];
+                        var $discussion_response = $('.discussion_response').clone();
+                        $discussion_response.removeClass().addClass('discussion_response grid-9 no-margin fleft item_'+discussion.id);
+
+                        if($discussion_response.hasClass('item_'+discussion.id)){
+                            $discussion_response.find('.answer p').html(discussion.content);
+                            $discussion_response.find('.name.title').html(discussion.username);
+                            if(!discussion.user_pic){
+                                discussion.user_pic = '/static/img/create.png';
+                            }else{
+                                discussion.user_pic = '/static/media/users/'+discussion.user+'/profile/'+discussion.user_pic;
+                            }
+                            $discussion_response.find('.wrapper img').attr('src', discussion.user_pic);
+
+                            var parent_id = id;
+                            if(index != 0){
+                                $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
+                                $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
+                            }else{
+                                parent_id = discussion.id
+                            }
+
+                            $discussion_response.find('.respond_btn').click(function(){
+                                var $respond = $('.discuss.main .respond').clone();
+                                $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
+                                $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+                                $respond.insertAfter($discussion_response);
+                                respond_discussion(
+                                    $respond.find('.respond_btn'),
+                                    parent_id, $respond,
+                                    $('input.entity').val(), true
+                                );
+                            });
+
+
+                            $item.append($discussion_response);
+                            $discussion_response.fadeIn(300);
+                        }
+
+
+
+                });
+            });
+            $('.discussion_contents').append($item);
+            $item.fadeIn(300);
+
+        });
+}
+
+
+function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
+    $ele.click(function(){
+        $.ajax({
+        type: "POST",
+        url: '/qro_lee/respond_to_discussion/',
+        data: {
+            'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
+            'parent_discussion': parent_discussion,
+            'response': $item.find('textarea').val(),
+            'entity_id': entity_id
+        },
+        dataType: 'json'
+        }).done(function(data){
+                var discussion = data['response'];
+                var $discussion_response = $('.discussion_response.main').clone();
+                $discussion_response.removeClass().addClass('discussion_response grid-9 no-margin fleft item_'+discussion.id);
+
+                if($discussion_response.hasClass('item_'+discussion.id)){
+                    $discussion_response.find('.answer p').html(discussion.content);
+                    $discussion_response.find('.name.title').html(discussion.username);
+                    if(!discussion.user_pic){
+                        discussion.user_pic = '/static/img/create.png';
+                    }else{
+                        discussion.user_pic = '/static/media/users/'+discussion.user+'/profile/'+discussion.user_pic;
+                    }
+                    $discussion_response.find('.wrapper img').attr('src', discussion.user_pic);
+
+                    if(is_son){
+                        $discussion_response.find('.respond_btn').remove();
+                        $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
+                        $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
+                        $discussion_response.insertBefore($ele.parent());
+                        $ele.parent().remove();
+                    }else{
+                        $discussion_response.insertAfter($item.find('.respond'));
+                        $discussion_response.find('.respond_btn').click(function(){
+                                var $respond = $('.discuss.main .respond').clone();
+                                $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
+                                $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+                                $respond.insertAfter($discussion_response);
+                                respond_discussion(
+                                    $respond.find('.respond_btn'),
+                                    discussion.id, $respond,
+                                    $('input.entity').val(), true
+                                );
+                        });
+                    }
+                    $discussion_response.fadeIn(300);
+
+
+                }
+            });
     });
 }
 

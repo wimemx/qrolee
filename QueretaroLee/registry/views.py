@@ -1277,7 +1277,7 @@ def add_titles_author_list(request):
     type = request.POST.get('type')
     list = ast.literal_eval(request.POST.get('list'))
     my_list = account.List.objects.get(id=id_list, user=user)
-    name = my_list.name.replace(' ','')
+    name = my_list.name.replace(' ', '')
 
     if type == 'T':
 
@@ -1286,24 +1286,33 @@ def add_titles_author_list(request):
             title = account.Title.objects.get(id=int(obj))
 
             list_title = {
-                'title':title,
-                'list':my_list
+                'title': title,
+                'list': my_list
             }
             rel_list = account.ListTitle.objects.create(**list_title)
             rel_list.save()
 
-    if type == 'A':
+    else:
 
         for obj in list:
 
-            author= account.Author.objects.get(id=int(obj))
+            author = account.Author.objects.get(id=int(obj))
             list_title = {
-                'author':author,
-                'list':my_list
+                'author': author,
+                'list': my_list
             }
-            rel_list_aut = account.ListAuthor.objects.create(**list_title)
-            rel_list_aut.save()
+            rel_list = account.ListAuthor.objects.create(**list_title)
+            rel_list.save()
 
+    activity_data = {
+        'user_id': request.user.id,
+        'object': id_list,
+        'added_to_object': request.user.id,
+        'type': 'L',
+        'added_to_type': 'U',
+        'activity_id': 1
+    }
+    update_activity(activity_data)
     #context = {}
     #context = simplejson.dumps(context)
     return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')

@@ -245,9 +245,9 @@ $(document).ready(function(){
     $('.show_upload').click(function(){
        show_upload($(this));
     });
-    $('.discussion .main textarea').focus(function(){
-        $(this).val('');
-    });
+
+
+
 });
 
 function fb_obj_search(search, type){

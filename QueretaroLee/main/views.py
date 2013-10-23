@@ -7,12 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db import models as db_model
 from django.db.models import Q
+from django.core import serializers
 
 from registry.models import Entity,Type,Event
 from account import models as account_models
 from registry import models,views,settings
 
-from collections import namedtuple
+
 from decimal import Decimal
 import simplejson
 import calendar
@@ -22,6 +23,7 @@ import ast
 import operator
 import math
 import urllib2
+
 
 
 @login_required(login_url='/')
@@ -346,7 +348,7 @@ def get_entity(request, **kwargs):
         added_to_object=entity.id, added_to_type='E').order_by('-date')
 
     discussions = account_models.Discussion.objects.filter(
-        entity__id=entity.id, parent_discussion_id=None)
+        entity__id=entity.id, parent_discussion_id=None).order_by('-date')
 
     context = {
         'entity': entity,
@@ -1450,7 +1452,6 @@ def search_api(request, **kwargs):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
 
-
     if 'items' in response:
         pass
     elif 'cost' in response:
@@ -1467,29 +1468,70 @@ def search_api(request, **kwargs):
 
 def get_a_discussion(request):
     discussion = account_models.Discussion.objects.get(
-        pk=1)
-    response = ''
-    get_discussion(discussion=discussion)
+        id=int(request.POST.get('id')))
+    discussion_list = get_discussion(discussion=discussion)
+    res = list()
+    for lis in discussion_list:
+        results = [ele.as_json() for ele in lis]
+        res.append(results)
     context = {
-        'disucssion': response
+        'parent': discussion.parent_as_json(),
+        'discussion': res
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def create_discussion(request):
+    discussion = account_models.Discussion.objects.create(
+        entity_id=int(request.POST.get('entity_id')), name=request.POST.get('name'),
+        content=request.POST.get('content'), user_id=request.user.id)
+
+    context = {
+        'response': discussion.parent_as_json()
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def respond_to_discussion(request):
+    response = account_models.Discussion.objects.create(
+        entity_id=int(request.POST.get('entity_id')),
+        parent_discussion_id=int(request.POST.get('parent_discussion')),
+        content=request.POST.get('response'), user_id=request.user.id)
+    context = {
+        'response': response.as_json()
     }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
 
 def get_discussion(discussion):
-    print discussion.id
     discussion_list = list()
-    discussion = account_models.Discussion.objects.filter(
-        parent_discussion_id=discussion.id)
-    if discussion:
-        discussion_list.append(get_discussion(discussion[0]))
-    else:
-        discussion = account_models.Discussion.objects.get(
-            id=discussion.id)
-        return discussion
+    discussions = account_models.Discussion.objects.filter(
+        parent_discussion_id=discussion.id).order_by('-date')
 
-    print discussion_list
+    for discuss in discussions:
+        discuss_list = list()
+        discuss_list.append(discuss)
+        discussions_2nd_level = account_models.Discussion.objects.filter(
+            parent_discussion_id=discuss.id).order_by('-date')
+        for dis in discussions_2nd_level:
+            discuss_list.append(dis)
+        discussion_list.append(discuss_list)
+    return discussion_list
+
+
+#def get_discussion(discussion, l):
+#    discussion_list = l
+#    discussion = account_models.Discussion.objects.filter(
+#        parent_discussion_id=discussion.id)
+#
+#    if discussion:
+#        l.append(discussion[0])
+#        get_discussion(discussion[0], discussion_list)
+#        return l
+#    return discussion_list
 
 
 def load_picture_profile(request):
@@ -1501,7 +1543,7 @@ def load_picture_profile(request):
     if profile.picture:
         picture = profile.picture
     context = {
-        'id_user':user.id,
+        'id_user': user.id,
         'picture': picture
     }
 

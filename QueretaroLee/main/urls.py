@@ -31,6 +31,8 @@ urlpatterns = patterns('',
     url(r'^user/(?P<user_id>[0-9]+)/page/(?P<page_id>[0-9]+)/$', views.get_page ,
         {'template_name': 'main/page.html'},name='page'),
     url(r'^get_a_discussion/$', views.get_a_discussion, name='get_discussion'),
+    url(r'^respond_to_discussion/$', views.respond_to_discussion, name='response_discussion'),
+    url(r'^create_discussion/$', views.create_discussion, name='create_discussion'),
     url(r'^book_crossing/$', views.book_crossing ,
         {'template_name': 'main/book_crossing.html'},name='book_crossing'),
 
