@@ -461,7 +461,7 @@ def event_view(request,**kwargs):
     lat = event.location.lat
     lon = event.location.long
 
-    list_events = models.Event.objects.filter(owner=event.owner)
+    list_events = models.Event.objects.filter(owner=event.owner).exclude(id=event.id)
 
     date = {'weekday':weekday,'day':day,'month':month,'year':year}
 
@@ -1571,10 +1571,15 @@ def get_page(request, **kwargs):
     return render(request, template, context)
 
 
+@login_required(login_url='/')
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
-    context = {}
+    books = models.Travel.objects.all()
+
+    context = {
+        'books': books
+    }
 
     return  render(request, template, context)
 

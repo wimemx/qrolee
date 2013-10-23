@@ -107,10 +107,47 @@ class Event(models.Model):
         return '%s, %s' % (self.name, self.description)
 
 
+class Book(models.Model):
+    code = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255)
+    series = models.CharField(max_length=255)
+    publisher = models.CharField(max_length=255)
+    edition = models.CharField(max_length=255)
+    published_date = models.DateTimeField()
+    pages = models.CharField(max_length=255)
+    isbn = models.CharField(max_length=255)
+    isbn13 = models.CharField(max_length=255)
+    language = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    cover = models.CharField(max_length=255)
+    picture = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.title, self.subtitle)
+
+
+class Travel(models.Model):
+    type_user = models.CharField(max_length=255)
+    lat = models.CharField(max_length=255, null=True)
+    long = models.CharField(max_length=255, null=True)
+    status = models.BooleanField(default=True)
+    date = models.DateTimeField(auto_now_add=True)
+    meta = models.TextField(max_length=255)
+    user = models.ForeignKey(User)
+    book = models.ForeignKey(Book)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.book, self.user)
+
+
 class MemberToObject(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=0)
     is_member = models.BooleanField(default=0)
+    super_user = models.BooleanField(default=0)
     request = models.BooleanField(default=0)
     object = models.IntegerField()
     object_type = models.CharField(max_length=1)

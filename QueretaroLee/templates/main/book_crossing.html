@@ -2,8 +2,11 @@
 {% load staticfiles %}
 
 {% block style %}
+    <link rel="stylesheet" href="{% static "style/register.css" %}"
+          xmlns="http://www.w3.org/1999/html"/>
     <link rel="stylesheet" href="{% static "style/theme.css" %}"
           xmlns="http://www.w3.org/1999/html"/>
+
 {% endblock %}
 
 {% block js %}
@@ -17,58 +20,133 @@
 {% endblock %}
 {% block main_site %}
     <div class="grid-16 book_crossing">
-        <div class="grid-14">
-            <span class="title">Libros vagabundos</span>
-            <span class="title grid-13 sub-title"> Libros vagabundos que otras personas han dejado
-                al rededor de querétaro y en el mundo, es muy secillo encontrar
-                libros y compartir otros con el mundo.
-            </span>
-            <span class="grid-3 step">
-                <span class="wrapper_step grid-3"></span>
-                <span class="grid-3 text_step">Paso 1. Registra un libro</span>
-            </span>
-            <span class="grid-3 step">
-                <span class="wrapper_step grid-3"></span>
-                <span class="grid-3 text_step">Paso 2. Comparte un libro</span>
-            </span>
-            <span class="grid-3 step">
-                <span class="wrapper_step grid-3"></span>
-                <span class="grid-3 text_step">Paso 3. Seguir tu libro</span>
-            </span>
-            <span class="grid-2 btn_step">Encontre un libro!</span>
-            <span class="grid-2 btn_step">Libera un libro!</span>
-            <span class="grid-7 no-margin">
-                <span class="title text_ grid-4 no-margin">Libros en el mundo</span>
-                <div id="map" class="map_crossing grid-6 no-margin"></div>
-                <span class="grid-3 no-margin">Ver más</span>
-            </span>
-            <span class="grid-7 no-margin">
-                <span class="title text_ grid-4">Últimos libros liberados</span>
-                <div id="scrollbar1">
-                    <div class="scrollbar"><div class="track"><div class="thumb">
-                        <div class="end"></div></div></div></div>
-                    <div class="viewport container_crossing">
-                        <div class="overview">
-                            {% for x in 'xxxxxx' %}
-                        <span class="grid-7 no-margin container_mini_crossing">
-                        <span class="grid-3 wrapper_mini_crossing">
-                            <img class="img_size_all" src="/static/img/create.png" />
-                        </span>
-                        <span class="title titles_mini_crossing grid-3 no-margin text_top">
-                            Harry potter y la piedra filoa
-                        </span>
-                        <span class="grid-2 no-margin text_free text_top">Liberado hace 4 horas</span>
-                        <span class="grid-4 no-margin text_top">J.K Rowling</span>
-                        <span class="grid-4 no-margin text_top">Liberado por
-                            <span class="place_pink">laura</span>
-                        </span>
+        <div class="tag act_tag">
+            <div class="grid-14 wallpaper ">
+                <span class="title title_cross grid-5">Libros vagabundos</span>
+                <span class="icon grid-13 container_icons" >
+                    <span class="icon_1"
+                          style='background-image: url("/static/img/welcome_icons_set1.png");'>
                     </span>
-                    {% endfor %}
+                    <span class="icon_flet"></span>
+                    <span class="icon_1"
+                          style='background: url("/static/img/welcome_icons_set1.png") no-repeat -17px -170px'>
+                    </span>
+                    <span class="icon_flet"></span>
+                    <span class="icon_2"
+                          style='background: url("/static/img/welcome_icons_set2.png") no-repeat -42px -11px;'>
+                    </span>
+                </span>
+                <span class="icons_center">
+                    <span class="grid-10 title text_descrip pos_center">
+                        Los libros vagabundos son libros que han ido dejando las
+                        <br>personas alrededor de Querétaro y el mundo,
+                        <br>es muy sencillo encontrar libros y compartirlos con los demás
+                    </span>
+                </span>
+                <span class="icons_center icons_arrows">
+                    <span class="grid-6 pos_center">
+                        <span class="btn_step tag_btn">Encontre un libro</span>
+                        <span class="icon_arrow"></span>
+                        <span class="btn_step">Libera un libro</span>
+                    </span>
+               </span>
+               <div id="map" class="grid-14 map_crossing no-margin"></div>
+            </div>
+            <div class="grid-14">
+                <span class="grid-7 no-margin">
+                    <span class="title grid-4">Últimos libros liberados</span>
+                    <div id="scrollbar1">
+                        <div class="scrollbar"><div class="track"><div class="thumb">
+                            <div class="end"></div></div></div></div>
+                        <div class="viewport container_crossing">
+                            <div class="overview">
+                                {% for obj in books %}
+                                    {% if obj.status == 1 %}
+                                        <span class="grid-7 no-margin container_mini_crossing">
+                                            <span class="grid-3 wrapper_mini_crossing">
+                                                {% if not obj.book.picture %}
+                                                    <img class="img_size_all" src="/static/img/create.png" />
+                                                {% else %}
+                                                    <img class="img_size_all"
+                                                         src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
+                                                {% endif %}
+                                            </span>
+                                            <span class="title titles_mini_crossing grid-4 no-margin ">
+                                                {{ obj.book.title }}
+                                            </span>
+                                            <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                            <span class="grid-4 no-margin text_top">Liberado por
+                                                <span class="place_pink">{{ obj.user.username }}</span>
+                                            </span>
+                                        </span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
+                    <span class="grid-3 no-margin place_pink">Ver todos</span>
+                </span>
+                <span class="grid-7 no-margin">
+            <span class="title grid-4">Últimos libros encontrados</span>
+            <div id="scrollbar1">
+                <div class="scrollbar"><div class="track"><div class="thumb">
+                    <div class="end"></div></div></div></div>
+                <div class="viewport container_crossing">
+                    <div class="overview">
+                        {% for obj in books %}
+                            {% if obj.status == 0 %}
+                                <span class="grid-7 no-margin container_mini_crossing">
+                                    <span class="grid-3 wrapper_mini_crossing">
+                                        {% if not obj.book.picture %}
+                                            <img class="img_size_all" src="/static/img/create.png" />
+                                        {% else %}
+                                            <img class="img_size_all"
+                                                 src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
+                                        {% endif %}
+                                    </span>
+                                    <span class="title titles_mini_crossing grid-4 no-margin ">
+                                        {{ obj.book.title }}
+                                    </span>
+                                    <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                    <span class="grid-4 no-margin text_top">Liberado por
+                                        <span class="place_pink">{{ obj.user.username }}</span>
+                                    </span>
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-                <span class="grid-3 no-margin">Ver todos</span>
-            </span>
+            </div>
+            <span class="grid-3 no-margin place_pink">Ver todos</span>
+        </span>
+
+            </div>
+        </div>
+        <div class="tag">
+            <div class="grid-14 wallpaper ">
+                <span class="title title_cross grid-5">Libros vagabundos</span>
+                <span class="text_search" >
+                    Introduce el codigo del libro Vagabundo para entrar al perfíl
+                    del libro que encontraste
+                </span>
+                <div class="form-container center form_bottom" style="display: block
+                ;margin-top: 80px">
+                    <p class="title"><span>Codigo Libro Vagabundo</span>
+                        <a class="close right tag_btn" ></a>
+                    </p>
+                    <form id="form_search" class="login grid-4 center" action="#" style="display: block;">
+                        <span class="banner"></span>
+                        <p>
+                            <span class="text_field">Inserta aquí tu codigo</span>
+                            <input name="codec" class="required value_field" type="text">
+                        </p>
+                        <p>
+                            <input value="Buscar" class="int_btn" type="submit">
+                        </p>
+                    </form>
+                    <img class="shadow" src="/static/img/form_shadow.png" alt="">
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

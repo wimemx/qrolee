@@ -4,6 +4,7 @@ var entity_search_events = false;
 var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
+var men_1 = false;
 var date = new Date();
 var curr_month = date.getMonth();
 var months = ['Enero','Febrero','Marzo','Abril',
@@ -135,6 +136,18 @@ $(document).ready(function(){
     });
     $('.all_list').click(function(){
         show_items_left($(this));
+    });
+
+    $('.tag_btn').click(function(){
+        $.each($('.book_crossing .tag'),function(){
+            if($(this).hasClass('act_tag')){
+                $(this).removeClass('act_tag');
+                $(this).fadeOut(300);
+            }else{
+                $(this).fadeIn(300);
+                $(this).addClass('act_tag');
+            }
+        });
     });
 
     $('.d-add_book').click(function(){
@@ -442,77 +455,94 @@ function update_dir_info(loc_address, lat_long, type){
 
 function dmap(data,id){
 
-        var styles = [
+    var styles = [
         {
-        stylers: [
-            { hue: "#b3d4fc" },
-            { saturation: -20 }
-          ]
+            stylers: [
+                { hue: "#b3d4fc" },
+                { saturation: -20 }
+            ]
         },{
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [
-            { lightness: 100 },
-            { visibility: "simplified" }
-          ]
+            featureType: "road",
+            elementType: "geometry",
+            stylers: [
+                { lightness: 100 },
+                { visibility: "simplified" }
+            ]
         },{
-        featureType: "road",
-        elementType: "labels",
-        stylers: [
-            { visibility: "off" }
-          ]
-          }
-        ];
+            featureType: "road",
+            elementType: "labels",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }
+    ];
 
-        var styledMap = new google.maps.StyledMapType(styles,
+    var styledMap = new google.maps.StyledMapType(styles,
         {name: "Styled Map"});
+    var lat = 20.589081;
+    var lon = -100.38826;
 
-        var latlon = $('.d-latlon').val().split(",");
-
-        var lat = parseFloat(latlon[0]);
-        var lon = parseFloat(latlon[1])  ;
-
-        var mapOptions = {
+    var mapOptions = {
         zoom: 12,
         center: new google.maps.LatLng(lat,lon),
         mapTypeControlOptions: {
-        mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+            mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
         }
-        };
+    };
+    var div_map = 'd-map';
+    if(id==2)
+        div_map = 'map';
 
-        var map = new google.maps.Map(document.getElementById('d-map'),
+    var map = new google.maps.Map(document.getElementById(div_map),
         mapOptions);
 
+    if(id==1){
+        var counter = 1;
+        $.each(data,function(index,k){
+            var spot = data[index];
+            $.each(spot,function(index2){
 
-        if(id==1){
-            var counter = 1;
-
-            $.each(data,function(index,k){
-                    var spot = data[index];
-                 $.each(spot,function(index2){
-
-                    var companyPos = new google.maps.LatLng(spot[index2].lat,spot[index2].long);
-                    var companyMarker = new google.maps.Marker({
+                var companyPos = new google.maps.LatLng(spot[index2].lat,spot[index2].long);
+                var companyMarker = new google.maps.Marker({
                     position: companyPos,
                     map: map,
                     labelClass: "labels", // the CSS class for the label
                     icon: new google.maps.MarkerImage(
-				        "/static/img/markers/marker"+counter+".png", // reference from your base
-				        new google.maps.Size(20, 34), // size of image to capture
-				        new google.maps.Point(0, 0), // start reference point on image (upper left)
-				        new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
+                        "/static/img/markers/marker"+counter+".png", // reference from your base
+                        new google.maps.Size(20, 34), // size of image to capture
+                        new google.maps.Point(0, 0), // start reference point on image (upper left)
+                        new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
-			        ),
-                        title:spot[index2].name
+                    ),
+                    title:spot[index2].name
 
-                    });
-                    counter++;
-                    });
-
+                });
+                counter++;
             });
-        }
-}
 
+        });
+    }
+    if(id==2){
+        var counter = 1;
+        $.each(data,function(ind){
+            var companyPos = new google.maps.LatLng(data[ind].lat,data[ind].long);
+            var companyMarker = new google.maps.Marker({
+                position: companyPos,
+                map: map,
+                labelClass: "labels", // the CSS class for the label
+                icon: new google.maps.MarkerImage(
+                    "/static/img/markers/marker"+counter+".png", // reference from your base
+                    new google.maps.Size(20, 34), // size of image to capture
+                    new google.maps.Point(0, 0), // start reference point on image (upper left)
+                    new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
+
+                ),
+                title:data[ind]['book'][0]
+            });
+            counter++;
+        });
+    }
+}
 
 $(document).ready(function(){
 
@@ -582,8 +612,10 @@ $(document).ready(function(){
             $('.settings .member .sub-menu').fadeOut();
         if($(this).find('.sub-menu-').is(':visible'))
             $(this).find('.sub-menu').fadeOut(300);
-        else
+        else{
             $(this).find('.sub-menu').fadeIn(300);
+            men_1 = true;
+        }
     });
     $('.settings').click(function(){
         set_act = true;
@@ -1213,8 +1245,8 @@ function create_template(type, result,i, create_user){
         if (type == 'registry.entity.2'){
             p.addClass('category');
             entity_type = 'group';
-            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
-            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
             var privacy;
             if(result[i].privacy == 'False')
                 privacy = 'Público';
@@ -1232,8 +1264,8 @@ function create_template(type, result,i, create_user){
                     '/entity/'+result[i].picture;
 
             img.attr('src', url);
-            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
-            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
             p = $('<p class="category fright no-margin grid-4"></p>');
             $.each(result[i].extras,function(indx){
 
@@ -1264,8 +1296,8 @@ function create_template(type, result,i, create_user){
             p.html(text+result[i].extras[1][0]);
             item.append(p);
         }else if(type == 'registry.event'){
-            a_wrapper.attr('href','/qro_lee/events/event_'+result[i].id);
-            a_title.attr('href','/qro_lee/events/event_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/events/'+result[i].id);
+            a_title.attr('href','/qro_lee/events/'+result[i].id);
             var date = result[i].start_time.split(' ');
             var hour = date[1].split(':');
             date = date[0];
@@ -2078,6 +2110,9 @@ function add_my_title(csrf, array_title, type){
                         p_date = $('<p class="p-d-text d-text_opacity">' + text_com +
                             title[i2].date + '</p>');
                         btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                        btn_edit = $('<span class="green_btn message_alert size_btn_edit">Editar</span>');
+                        btn_edit.append('<input class="type_message" type="hidden" value="edit_read">');
+                        btn_edit.append('<input class="name_title" type="hidden" value="'+title[i2].title+'">');
                         input_type = $('<input class="type_message" type="hidden" ' +
                             'value="delete_title"/>');
                         p_stars = $('<p class="no-margin stars_grade grid-2"></p>');
@@ -2100,6 +2135,8 @@ function add_my_title(csrf, array_title, type){
                         div_text.append(p_stars);
                         div_text.append(p_date);
                         div_text.append(btn_del);
+                        if(i=='book_read')
+                            div_text.append(btn_edit);
                         btn_del.append(input_type);
                         div_add = container_list.find('.d-container_add_book');
                         div_add.after(div);
@@ -2243,7 +2280,7 @@ function get_titles_authors(list, csrf){
                 div_text.append(p_author);
                 div_text.append(span_stars);
                 div_text.append(btn_del);
-                btn_del.append(input_type);
+                btn_del.append(input_ticoype);
                 div_add = container_list.find('.d-container_add_book');
                 div_add.after(div);
             }
@@ -2263,7 +2300,7 @@ function get_titles_authors(list, csrf){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
             },
             'activity':{

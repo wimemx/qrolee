@@ -1,4 +1,4 @@
-#coding: utf8
+# -*- coding: utf-8 -*-
 from django import template
 
 from account import models
@@ -268,6 +268,24 @@ def get_objects(object, type):
 
 
 @register.filter
-def img_autoescape(img):
-    print 123
+def img_autoescape(text):
+    t = str(text)
+    img = t.split('<img')
+    src_img = ''
+
+    if len(img) > 0:
+        src = img[1].split('src="')
+        if len(src) > 0:
+            end = str(src[1]).find('"')
+            src_img = str(src[1])[0:end]
+
+    return  src_img
+
+
+@register.filter
+def replace(text, char):
+
+    text = text.replace('#',' ')
+
+    return  text
 
