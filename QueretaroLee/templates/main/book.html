@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load registry_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/register.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block main_site %}
+    <div class="grid-16">
+        <div class="grid-16 entity no-margin">
+            <span class="wrapper fleft borde_author borde_title">
+                {% if not book.picture %}
+                    <img class="img_size_all" src="/static/img/create.png" alt="{{ book.title }}"/>
+                {% else %}
+                    <img class="img_size_all" src="/static/media/users/2/book/{{ book.picture }}/"
+                         alt="{{ book.picture }}"/>
+                {% endif %}
+            </span>
+                <span class="general-info no-margin grid-9">
+                <h3 class="title d-title_profile" >
+                    {{ book.title|title|truncatechars:25 }}
+                </h3>
+                <p class="text_profile">
+                    {% if name_author != 'autor anonimo' %}
+                        <a href="/qro_lee/profile/author/{{ id_author }}"
+                           class="title_author name_author" >
+                            {{ name_author|truncatechars:19 }}
+                        </a>
+                    {% else %}
+                        <a class="title_author name_author" >
+                            {{ name_author|truncatechars:19 }}
+                        </a>
+                    {% endif %}
+                </p>
+                <span class="grid-9 no-margin ">
+                    <p class="text_profile">
+                        Autor: Edgar Allan Poe
+                    </p>
+                </span>
+                <span class="grid-9 no-margin ">
+                    <p class="text_profile">
+                       Género: suspenso
+                    </p>
+                </span>
+                <span class="grid-9 no-margin ">
+                    <p class="text_profile">
+                        Creado por:
+                        <span class="title_author">
+                            {{ book.user.username }}
+                        </span>
+                            en Querétaro, México
+                    </p>
+                </span>
+
+                <span class="grid-9 no-margin ">
+                    <p class="text_profile">
+                        {% if list_users|length == 0  and list_users %}
+                            nadia se ha encontrado este libro
+                        {% endif %}
+                        {% if list_users|length == 1  and list_users %}
+                            una persona se ha encontrado este libro
+                        {% endif %}
+                        {% if list_users|length > 1 and list_users  %}
+                            {{ list_users|length }}
+                            personas han encontrado este libro
+                        {% endif %}
+                    </p>
+                </span>
+            </span>
+            <div class="grid-16 content book_cro single no-margin">
+                <div class="grid-15 no-margin">
+                    <div class="grid-15 no-margin no-pandding">k
+                    </div>
+                    <div class="grid-15 no-margin no-pandding">
+                        <div class="grid-7 no-margin">
+                            <span class="title">
+                                {% if list_users|length == 0  and list_users %}
+                                    nadia se ha encontrado este libro
+                                {% endif %}
+                                {% if list_users|length == 1  and list_users %}
+                                    una persona se ha encontrado este libro
+                                {% endif %}
+                                {% if list_users|length > 1 and list_users  %}
+                                    {{ list_users|length }}
+                                    personas han encontrado este libro
+                                {% endif %}
+                            </span>
+                            {% for obj in list_users %}
+                                <div class="discussion disc_book">
+                                    <div class="grid-7 discuss fleft">
+                                    </div>
+                                    <span class="discussion_response fleft">
+                                        <span class="respond main fleft">
+                                        <span class="wrapper no-margin fleft grid-1">
+                                            <img src="/static/img/create.png" alt=""/>
+                                        </span>
+                                        <span class="grid-6 din-r answer fright no-margin">
+                                            <span class="name title grid-6 no-margin ">
+                                                {{ obj.user }}
+                                            </span>
+                                            <span class="gray_text grid-6 no-margin " >
+                                                liberado hace {{ obj.date|member_since }} en
+                                                plaza de armas, San juan del rio, Qro.
+                                            </span>
+                                            <p>
+                                                {{ obj.description}}
+                                            </p>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span class="grid-7 no-margin line_divide"></span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="grid-8 no-margin book_travel">
+                            <span class="title ">Esta libro ha viajado por</span>
+                            <div id="map" class="grid-8 no-margin map_crossing"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -677,7 +677,6 @@ def update_ajax_page(request):
     pages = copy
     id_page = pages['id_page']
     del pages['id_page']
-
     page = models.Page.objects.filter(id=id_page)
     page.update(**pages)
 

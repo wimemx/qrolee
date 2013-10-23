@@ -124,6 +124,7 @@ class Book(models.Model):
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
+    user = models.ForeignKey(User)
 
     def __unicode__(self):
         return '%s, %s' % (self.title, self.subtitle)
@@ -135,6 +136,7 @@ class Travel(models.Model):
     long = models.CharField(max_length=255, null=True)
     status = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(max_length=255)
     meta = models.TextField(max_length=255)
     user = models.ForeignKey(User)
     book = models.ForeignKey(Book)

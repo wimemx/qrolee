@@ -209,6 +209,7 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
+
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -219,7 +220,6 @@ def get_entity(request, **kwargs):
                                               score = db_model.Avg('grade'))
     my_rate = account_models.Rate.objects.filter(user=request.user, element_id=id_entity,
                                                   type='E')
-
     if request.POST:
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
@@ -278,6 +278,7 @@ def get_entity(request, **kwargs):
     entity_admins = models.User.objects.filter(
         membertoobject__is_admin=1, membertoobject__object=entity.id,
         membertoobject__object_type='E')
+
     admins = User.objects.filter(id=entity_admins)
 
     for ent in entities:
@@ -1489,8 +1490,8 @@ def get_page(request, **kwargs):
     page_id = kwargs['page_id']
     user_id = kwargs['user_id']
     page = account_models.Page.objects.get(id=page_id)
-    list_pages = account_models.Page.objects.filter(user__id=user_id).\
-        exclude(id=page_id)
+    list_pages = account_models.Page.objects.filter(user__id=user_id, status=True).\
+        exclude(id=page_id,)
     profile = models.Profile.objects.get(user__id=user_id)
     context = {
         'page':page,
@@ -1513,4 +1514,19 @@ def book_crossing(request, **kwargs):
     }
 
     return  render(request, template, context)
+
+
+@login_required(login_url='/')
+def book(request, **kwargs):
+    template = kwargs['template_name']
+    code = request.POST.get('codec')
+    book = models.Book.objects.get(code=code)
+    list_users = models.Travel.objects.filter(book__code=code)
+    context = {
+        'book': book,
+        'list_users': list_users
+    }
+
+    return  render(request, template, context)
+
 

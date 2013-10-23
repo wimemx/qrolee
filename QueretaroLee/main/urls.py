@@ -32,5 +32,7 @@ urlpatterns = patterns('',
         {'template_name': 'main/page.html'},name='page'),
     url(r'^book_crossing/$', views.book_crossing ,
         {'template_name': 'main/book_crossing.html'},name='book_crossing'),
+    url(r'^book/$', views.book ,
+        {'template_name': 'main/book.html'},name='book'),
 
 )

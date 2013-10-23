@@ -37,8 +37,15 @@
             </div>
         </div>
     </div>
+    <div class="wrapper_message " >
+        <div class="container-16 container_message_2">
+            <div class="dialog-confirm" >
+            </div>
+        </div>
+    </div>
     <div class="grid-16">
-    <input type="hidden" class="d-entity_id" value="entity_{{ entity.id }}"/>
+    <input type="hidden" class="d-entity_id" value="{{ entity.id }}"/>
+    <input type="hidden" class="d-name_ent" value="{{ entity.name }}"/>
     <input type="hidden" class="type" value="{{ entity.type }}"/>
     <input type="hidden" class="lat" value="{{ entity.lat }}"/>
     <input type="hidden" class="long" value="{{ entity.long }}"/>
@@ -49,7 +56,7 @@
             <span class="member grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member and entity.privacy == 0 %}
-                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                        <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
                             <input type="submit" class="btn " value="Eres seguidor">
@@ -69,7 +76,14 @@
                             <span class="btn no-ajax fleft">Seguir</span>
                             <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                             <p class="private-icon fright">
-                                <img src="/static/img/private_icon.jpg" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                                <img src="/static/img/private_icon.png" alt=""/>
+                                <span class="fright">{{ entity_type.1 }} <br>
+                                    {% if entity_type.1 == 'group' %}
+                                        Privado
+                                    {% else %}
+                                        Privada
+                                    {% endif %}
+                                </span>
                             </p>
                         {% else %}
                             <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
@@ -97,7 +111,7 @@
                     </form>
                 {% elif member and entity.privacy != 0 %}
 
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                    <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
                         <input type="submit" class="btn" value="Eres seguidor">
@@ -506,10 +520,10 @@
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
-                <div id="scrollbar1">
+                <div id="scrollbar1" class="scroll_events">
                     <div  class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport error">
-                        <div class="overview">
+                        <div class="overview d-width-container-event">
                             <span class="item">
                                 <span class="no-margin grid-6">
                                     <span class="date fright din-m"></span>
@@ -567,15 +581,15 @@
                 <div class="viewport">
                     <div class="overview">
                         {% for follower, profile in followers %}
-                            <span class="wrapper grid-5 no-margin">
-                                    <span class="fleft">
+                            <span class="wrapper item_member grid-5 no-margin">
+                                    <span class="fleft wrapper_member">
                                         {% if not profile.picture or profile.picture == '' %}
-                                            <img src="/static/img/create.png" alt=""/>
+                                            <img class="img_size_all" src="/static/img/create.png" alt=""/>
                                         {% else %}
-                                            <img src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
+                                            <img class="img_size_all" src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
                                         {% endif %}
                                     </span>
-                                    <h3 class="title fleft">
+                                    <h3 class="title container_txt fleft">
                                         {% if follower.first_name != '' %}
                                             {{ follower.first_name }} {{ follower.last_name }}
                                         {% else %}
