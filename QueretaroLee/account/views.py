@@ -284,7 +284,7 @@ def user_profile(request, **kwargs):
 
                 #--------------date------------------------#
                 items['default_type'] = obj.list.default_type
-                items['id_liobjst'] = obj.id
+                items['id_list'] = obj.id
                 items['id_author'] = id_author
                 if len(activity) != 0:
                     items['date'] = str(activity[0].date.day) + ' de ' \

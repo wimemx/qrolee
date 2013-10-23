@@ -459,7 +459,7 @@ def event_view(request,**kwargs):
     lat = event.location.lat
     lon = event.location.long
 
-    list_events = models.Event.objects.filter(owner=event.owner)
+    list_events = models.Event.objects.filter(owner=event.owner).exclude(id=event.id)
 
     date = {'weekday':weekday,'day':day,'month':month,'year':year}
 

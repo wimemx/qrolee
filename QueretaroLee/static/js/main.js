@@ -492,6 +492,7 @@ function dmap(data,id){
     var div_map = 'd-map';
     if(id==2)
         div_map = 'map';
+
     var map = new google.maps.Map(document.getElementById(div_map),
         mapOptions);
 
@@ -520,25 +521,25 @@ function dmap(data,id){
             });
 
         });
-        }
+    }
     if(id==2){
         var counter = 1;
-            $.each(data,function(ind){
-                var companyPos = new google.maps.LatLng(data[ind].lat,data[ind].long);
-                var companyMarker = new google.maps.Marker({
-                    position: companyPos,
-                    map: map,
-                    labelClass: "labels", // the CSS class for the label
-                    icon: new google.maps.MarkerImage(
-                        "/static/img/markers/marker"+counter+".png", // reference from your base
-                        new google.maps.Size(20, 34), // size of image to capture
-                        new google.maps.Point(0, 0), // start reference point on image (upper left)
-                        new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
+        $.each(data,function(ind){
+            var companyPos = new google.maps.LatLng(data[ind].lat,data[ind].long);
+            var companyMarker = new google.maps.Marker({
+                position: companyPos,
+                map: map,
+                labelClass: "labels", // the CSS class for the label
+                icon: new google.maps.MarkerImage(
+                    "/static/img/markers/marker"+counter+".png", // reference from your base
+                    new google.maps.Size(20, 34), // size of image to capture
+                    new google.maps.Point(0, 0), // start reference point on image (upper left)
+                    new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
-                    ),
-                    title:data[ind]['book'][0]
-                });
-                counter++;
+                ),
+                title:data[ind]['book'][0]
+            });
+            counter++;
         });
     }
 }
@@ -1244,8 +1245,8 @@ function create_template(type, result,i, create_user){
         if (type == 'registry.entity.2'){
             p.addClass('category');
             entity_type = 'group';
-            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
-            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
             var privacy;
             if(result[i].privacy == 'False')
                 privacy = 'Público';
@@ -1263,8 +1264,8 @@ function create_template(type, result,i, create_user){
                     '/entity/'+result[i].picture;
 
             img.attr('src', url);
-            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
-            a_title.attr('href','/qro_lee/entity/'+entity_type+'/entity_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
+            a_title.attr('href','/qro_lee/entity/'+entity_type+'/'+result[i].id);
             p = $('<p class="category fright no-margin grid-4"></p>');
             $.each(result[i].extras,function(indx){
 
@@ -1295,8 +1296,8 @@ function create_template(type, result,i, create_user){
             p.html(text+result[i].extras[1][0]);
             item.append(p);
         }else if(type == 'registry.event'){
-            a_wrapper.attr('href','/qro_lee/events/event_'+result[i].id);
-            a_title.attr('href','/qro_lee/events/event_'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/events/'+result[i].id);
+            a_title.attr('href','/qro_lee/events/'+result[i].id);
             var date = result[i].start_time.split(' ');
             var hour = date[1].split(':');
             date = date[0];
@@ -2060,7 +2061,6 @@ function add_my_title(csrf, array_title, type){
         },
         dataType: 'json'
     }).done(function(data){
-            console.log(data);
             if(type == 1 | type == 3){
                 //book_favorite
                 $.each(data,function(i){
@@ -2110,6 +2110,9 @@ function add_my_title(csrf, array_title, type){
                         p_date = $('<p class="p-d-text d-text_opacity">' + text_com +
                             title[i2].date + '</p>');
                         btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                        btn_edit = $('<span class="green_btn message_alert size_btn_edit">Editar</span>');
+                        btn_edit.append('<input class="type_message" type="hidden" value="edit_read">');
+                        btn_edit.append('<input class="name_title" type="hidden" value="'+title[i2].title+'">');
                         input_type = $('<input class="type_message" type="hidden" ' +
                             'value="delete_title"/>');
                         p_stars = $('<p class="no-margin stars_grade grid-2"></p>');
@@ -2132,6 +2135,8 @@ function add_my_title(csrf, array_title, type){
                         div_text.append(p_stars);
                         div_text.append(p_date);
                         div_text.append(btn_del);
+                        if(i=='book_read')
+                            div_text.append(btn_edit);
                         btn_del.append(input_type);
                         div_add = container_list.find('.d-container_add_book');
                         div_add.after(div);

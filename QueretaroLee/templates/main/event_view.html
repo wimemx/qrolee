@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -26,8 +27,8 @@
             <div class="d-container-name"  >
 
                 <div class="d-image" >
-                    {% if event.picture %}
-                        <img src="/static/media/users/{{ event.owner.id }}/event/{{ event.picture }}" class="d-image-event" />
+                    {% if event.cover_picture %}
+                        <img src="/static/media/users/{{ event.owner.id }}/event/{{ event.cover_picture }}" class="d-image-event" />
                     {% else %}
                         <img src="/static/img/create.png" class="d-image-event" />
                     {% endif %}
@@ -39,14 +40,19 @@
                     </b>
                 </div>
 
-                <div class="d-by">
+                <div class="d-by grid-5 no-margin">
                     Organizado por
                     <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
                         {{ event.owner }}
                     </a>
                     <input type="hidden" class="d-latlon" value="{{ lat }},{{ lon }}" />
                 </div>
-
+                {% if event.privacy_type %}
+                    <span class="grid-2">
+                        <img class="mini_priv" src="/static/img/private_icon.png"/>
+                        Evento Privado
+                    </span>
+                {% endif %}
                 <div class="offset-7">
                     <div class="d-buttoms">
                     <input type="button" id="d-btn-facebook" value="facebook" />
@@ -75,7 +81,7 @@
                     </div>
                     <div class="d-address">
                         <p><b>Lugar</b></p>
-                        <p>{{ event.location }}</p>
+                        <p>{{ event.location_name|replace:'#' }}</p>
                     </div>
                 </div>
 
@@ -93,7 +99,7 @@
 
                     <div class="d-event">
                         <div class="d-image-mini">
-                            <a href="/qro_lee/events/{{ event.name|cut:' ' }}_{{ event.id }}/" >
+                            <a href="/qro_lee/events/{{ event.id }}/" >
                                 {% if event.picture %}
                                     <img src="/static/media/users/{{ event.owner.id }}/event/{{ event.picture }}"
                                          class="d-image-event" />
@@ -103,7 +109,9 @@
                             </a>
                         </div>
                         <div class="d-text_event">
-                            <b class="d-name-event-mini">{{ event.name }}</b>
+                            <a href="/qro_lee/events/{{ event.id }}/" >
+                                <b class="d-name-event-mini">{{ event.name }}</b>
+                            </a>
                             <br>
                             <b class="d-data-event">
                             {{ event.start_time }} hrs

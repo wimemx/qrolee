@@ -29,6 +29,7 @@ function truncText (text, maxLength, ellipseText){
 
 function populateCal(curr_month,$item){
     $('.item').remove();
+    $('.d-not_found').remove();
     if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
@@ -55,13 +56,66 @@ function populateCal(curr_month,$item){
                 $.each(data,function(index){
                     var event = data[index];
                     var length = event.length;
+
                     $.each(event,function(i){
                         var $ditem = $item.clone();
                         var e = event[i];
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
                         $ditem.removeClass().addClass('item item_'+i);
 
-                        if($ditem.hasClass('item_'+i)){
+                        var picture_url = window.location.origin+'/static/media/users/'+
+                            e[8]+'/event/'+e[3];
+                        if(e[3] == '')
+                            picture_url = '/static/img/create.png';
+                        var d_name = e[0];
+                        d_name = d_name.replace(/\s/g,'');
+                        var href = '/qro_lee/events/' + e[6];
+
+                        span_item = $('<span class="item item_'+i+'"></span>');
+                        span_lin = $('<span class="grid-6 no-margin"></span>');
+                        span_date = $('<span class="date fright din-m day_15"></span>');
+                        span_date.html(days[e[2]-1]+' '+e[1]);
+                        span_date.addClass('day_'+e[1]);
+                        span_ = $('<span class="ruler grid-5 fright"></span>');
+                        span_lin.append(span_date);
+                        span_lin.append(span_);
+                        span_item.append(span_lin);
+                        span_wrap = $('<span class="wrapper fleft"></span>');
+                        a = $('<a class="d-link_event" href="'+href+'" ></a>');
+                        img = $('<img class="profile-picture" />');
+                        img.attr('src',picture_url);
+                        a.append(img);
+                        span_wrap.append(a);
+                        span_item.append(span_wrap);
+                        span_text = $('<span class="grid-7 fleft no-margin"></span>');
+                        a_2 = $('<a class="d-link_event" href="'+href+'" ><h3>'+e[0]+'</h3></a>');
+                        p = $('<p></p>');
+                        span_info = $('<span class="info grid-6 alpha">'+truncText(e[4],160)+'</span>');
+                        p.append(span_info);
+                        span_time = $('<span class="time fleft">'+e[5]+'</span>');
+                        span_text.append(a_2);
+                        span_text.append(p);
+                        span_text.append(span_time);
+                        span_locat = $('<span class="location fright"><span>');
+                        p_2 = $('<p></p>');
+                        var loc = e[7].split('-');
+                        var location_name = loc[0].split("#");
+                        span_place_1 = $('<span class="place">'+truncText(location_name[0],30)+'</span><br>');
+                        p_2.append(span_place_1);
+                        if(location_name.length>1){
+                            span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
+                            p_2.append(span_place_2);
+                        }
+                        span_apply = $('<span class="apply fright">asistir</span>');
+                        span_locat.append(p_2);
+                        span_locat.append(span_apply);
+                        span_text.append(span_locat);
+                        span_item.append(span_lin);
+                        span_item.append(span_wrap);
+                        span_item.append(span_text);
+                        $('.d-width-container-event').append(span_item);
+
+                        /*if($ditem.hasClass('item_'+i)){
                             $ditem.find('.date').html(days[e[2]-1]+' '+e[1]);
                             $ditem.find('.date').addClass('day_'+e[1]);
                             var picture_url = window.location.origin+'/static/media/users/'+
@@ -90,7 +144,7 @@ function populateCal(curr_month,$item){
                                 $ditem.find('.date').html(e[1]+' de '+months[e[9]-1]);
                                 $ditem.find('.green_btn').attr('href', edit_url);
                             }
-                        }
+                        }*/
 
                         if((counter+1) == length){
                             $('.sidebar-a .overview *[class*="item_"]').fadeIn(300,function(){
@@ -106,7 +160,6 @@ function populateCal(curr_month,$item){
                         counter++;
                     });
                 });
-
 
                 if(counter==0){
                     text_no_found('eventos para este mes');
@@ -139,6 +192,7 @@ function removeUser($ele,user_id, remove, entity){
 }
 
 function findUser($ele, userEmail, entity, $parent){
+
     $item = $parent.find('.affiliate').clone();
     $.ajax({
         type: "POST",
@@ -150,6 +204,7 @@ function findUser($ele, userEmail, entity, $parent){
             'entity': entity
         }
     }).done(function(data) {
+
             $.each(data,function(index){
                 var user = data[index];
                 $.each(user,function(i){
@@ -167,6 +222,8 @@ function findUser($ele, userEmail, entity, $parent){
                         span.find('.since').html('Se únio hace '+user[i][3]+' meses');
                         span.appendTo($parent);
                         span.fadeIn(300);
+                        if(user[i][4])
+                            span.find('.remove').remove();
                     }
                 });
 
@@ -348,6 +405,47 @@ function search_api(csrf, query){
 }
 
 $(document).ready(function(){
+
+    $('#form_search').submit(function(e){
+        query = {
+            'status':1,
+            'code':$(this).find('input[name=codec]').val()
+        }
+        fields = ['id','code'];
+        and = 1;
+        join = {
+            'tables':{
+                0: JSON.stringify(['registry.book'])
+            },
+            'quieres':{
+                0: JSON.stringify(['id'])
+            },
+            'fields':{
+                0: JSON.stringify(['id','title'])
+            }
+        }
+        join = JSON.stringify(join);
+
+        var search = {
+            'type': 'registry.book',
+            'fields': JSON.stringify(fields),
+            'value': JSON.stringify(query),
+            'and': and,
+            'join': join
+        }
+        search = JSON.stringify(search);
+        var csrf = $('.csrf_header').find('div input').val();
+        var data = advanced_search(search, csrf);
+        $(this).find('.place_pink').remove();
+
+        if('response' in data){
+            $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">No ' +
+                'se encontro el codigo del libro que estas buscando revisa que este bien escrito el codigo</p>');
+            return false;
+        }
+
+            return true;
+     });
 
     if($('.img_profile_mini').length>0){
         load_img_profile();
@@ -596,11 +694,21 @@ $('.affiliate').each(function(i){
         $('.container_message').fadeOut(300);
     });
     $('.entity .admin_nav.nav .btn:eq(0)').click(function(){
+
         $('.admin').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
+    });
+    $('.entity .admin_nav.nav .btn:eq(1)').click(function(){
+        $('.load').find("*[class*='user_']").each(function(){
+            $(this).remove();
+        });
+
+        var entity = $('.alert-message input.entity').val();
+
+        findUser($('.alert-message'), '-3', entity,$('.load.add'));
     });
     $('.entity .admin_nav.nav .btn:eq(2)').click(function(){
         $('.admin').find("*[class*='user_']").each(function(){
@@ -824,9 +932,12 @@ $.ajax({
                         '</a>';
                 p_author = $('<p class="p-d-text" >' + name_author +'</p>');
                 span_rate = $('<span></span>');
-                p_date = $('<p class="p-d-text d-text_opacity"> añadido ' +
+                p_date = $('<p class="p-d-text d-text_opacity"> leído'+
                     title[i2].date + '</p>');
                 btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                btn_edit = $('<span class="green_btn message_alert size_btn_edit">Editar</span>');
+                        btn_edit.append('<input class="type_message" type="hidden" value="edit_read">');
+                        btn_edit.append('<input class="name_title" type="hidden" value="'+title[i2].title+'">');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title"/>');
                 p_stars = $('<p class="no-margin stars_grade grid-2"></p>');
@@ -849,6 +960,7 @@ $.ajax({
                 div_text.append(p_stars);
                 div_text.append(p_date);
                 div_text.append(btn_del);
+                div_text.append(btn_edit);
                 btn_del.append(input_type);
                 div_add = container_list.find('.d-container_add_book');
                 div_add.after(div);
@@ -865,7 +977,7 @@ $.ajax({
 
             text_date.fadeOut(250,function(){
                 text_date.empty();
-                text_date.append('añadido ' + date[2] + ' de ' + months[(date[1]-1)]
+                text_date.append('leído ' + date[2] + ' de ' + months[(date[1]-1)]
                     + ' ' + date[0]);
                 text_date.fadeIn(250);
             });
@@ -1119,7 +1231,7 @@ function search_list_authors_titles($this){
                   }
                     $('.no_resuls').remove();
                     if(Object.keys(data).length==0){
-                        div = $('<div class="grid-14  no_resuls">No hay ' + text + ' </div>');
+                        div = $('<div class="grid-14  no_resuls">No se pudieron encontrar  ' + text + ' </div>');
                         overview.append(div);
                     }
 
@@ -1290,8 +1402,9 @@ function search_entities($this){
                             $('#scrollbar1').tinyscrollbar();
                         });
                         $(this).fadeIn(250);
-                        if($('.type').val() == 'spot')
+                        if($('.type').val() == 'spot'){
                             dmap(data,1);
+                        }
                     });
                 }
             });
@@ -1570,7 +1683,7 @@ function add_rate($this){
         },
         dataType: 'json'
     }).done(function(data){
-            div = $('.container_rate').fadeOut(250);
+            div = $('.container_rate').fadeOut(300);
             div.empty();
             count_rate = parseFloat(data.count_grade);
             count =  parseInt(data.count_grade);
@@ -1599,7 +1712,7 @@ function add_rate($this){
             div.append(span_count);
             div.append(span_vote);
             div.append(span_my_vote);
-            div.fadeIn(250);
+            div.fadeIn(300);
             $('.rate').click(function(){
                 add_rate($(this));
             });

@@ -269,6 +269,17 @@ def register(request):
                 entity_id=entity.id, category_id=ele)
     if entity is not None:
         succuess = entity.id
+        dict_ = {
+            'super_user': 1,
+            'is_admin': 1,
+            'is_member': 1,
+            'object': entity.id,
+            'object_type': 'E',
+            'user': user
+
+        }
+        super_user = models.MemberToObject.objects.create(**dict_)
+        super_user.save()
         activity_data = {
             'user_id': request.user.id,
             'object': entity.id,
@@ -610,9 +621,9 @@ def get_events(request, **kwargs):
 
 def edit_event(request, **kwargs):
     template = kwargs['template_name']
-    obj = kwargs['entity'].split('_', 1)
+    obj = kwargs['entity']
     obj = models.Event.objects.get(
-        pk=int(obj[1]))
+        pk=int(obj))
 
     context = {
         'entity': obj
@@ -655,6 +666,7 @@ def admin_users(request, **kwargs):
 
 
 def remove_add_user(request, **kwargs):
+    print
     if 'user_email' in request.POST:
         members = models.MemberToObject.objects.filter(
             object=int(request.POST.get('entity')),
@@ -663,6 +675,7 @@ def remove_add_user(request, **kwargs):
         users.append(request.user.id)
         for member in members:
             users.append(member.user_id)
+
         if request.POST.get('user_email') == '-1':
             members = models.MemberToObject.objects.filter(
                 object=int(request.POST.get('entity')), object_type='E').filter(is_admin=True)
@@ -679,10 +692,15 @@ def remove_add_user(request, **kwargs):
                 users.append(member.user_id)
             objs = models.User.objects.filter(
                 id__in=users)
+        elif request.POST.get('user_email') == '-3':
+            objs = models.User.objects.filter(
+                email__icontains='ju').exclude(id__in=users)
+            obj_ = models.MemberToObject.objects.filter(object=int(request.POST.get('entity')),
+                                                        is_member=True, is_admin=False)
+            print obj_
         else:
             objs = models.User.objects.filter(
                 email__icontains=request.POST.get('user_email')).exclude(id__in=users)
-        users = list()
 
         users = list()
         for obj in objs:
@@ -690,11 +708,16 @@ def remove_add_user(request, **kwargs):
             obj_data = list()
             profile = models.Profile.objects.filter(
                 user_id=obj.id)
+            member = models.MemberToObject.objects.filter(user_id=obj.id)
             for data in profile:
                 obj_data.append(data.picture)
             obj_data.append(obj.id)
             obj_data.append(obj.username)
             obj_data.append(datetime.datetime.now().month - obj.date_joined.month)
+            super_user = 0
+            if member:
+                super_user = member[0].super_user
+            obj_data.append(super_user)
             users.append(obj_data)
 
         context = {

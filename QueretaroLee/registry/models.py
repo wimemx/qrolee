@@ -147,6 +147,7 @@ class MemberToObject(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=0)
     is_member = models.BooleanField(default=0)
+    super_user = models.BooleanField(default=0)
     request = models.BooleanField(default=0)
     object = models.IntegerField()
     object_type = models.CharField(max_length=1)
