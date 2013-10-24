@@ -531,8 +531,8 @@ function dmap(data,id){
                 map: map,
                 labelClass: "labels", // the CSS class for the label
                 icon: new google.maps.MarkerImage(
-                    "/static/img/markers/marker"+counter+".png", // reference from your base
-                    new google.maps.Size(20, 34), // size of image to capture
+                    "/static/img/pin.png", // reference from your base
+                    new google.maps.Size(34, 40), // size of image to capture
                     new google.maps.Point(0, 0), // start reference point on image (upper left)
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 

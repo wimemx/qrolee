@@ -35,5 +35,7 @@ urlpatterns = patterns('',
     url(r'^create_discussion/$', views.create_discussion, name='create_discussion'),
     url(r'^book_crossing/$', views.book_crossing ,
         {'template_name': 'main/book_crossing.html'},name='book_crossing'),
+    url(r'^book/$', views.book ,
+        {'template_name': 'main/book.html'},name='book'),
 
 )

@@ -1,6 +1,35 @@
 var valid_form = false;
 $(document).ready(function(){
 
+    $('#form_member').submit(function(e){
+        $('.dialog-confirm').empty();
+        span_text = $('<span></span>');
+        var href = '';
+        text = '¿ Estas seguro de que deseas dejar de seguir '+
+            $('.d-name_ent').val() +'?';
+        p_text = $('<p class="p_text_dialog">' + text + '</p>');
+        span_text.append(p_text);
+        div_closet = $('<span class="dialog_closet"></span>');
+        div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
+        btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
+        btn_acept = $('<a class="dialog_btn green_btn" >Aceptar</a>');
+        container_btn = $('<div class="dialog_container_btn"></div>');
+        $('.dialog-confirm').append(div_text);
+        div_text.append(div_closet);
+        div_text.append(span_text);
+        span_text.append(btn_acept);
+        span_text.append(btn_cancel);
+        $('.dialog-confirm').fadeIn(250);
+        $('.container_message_2').fadeIn(250);
+        closet(div_closet);
+        closet(btn_cancel);
+        aling_message();
+        btn_acept.click(function(){
+           removeUser($(this),parseInt($('.sesion_user').val()),3,$('.d-entity_id').val());
+        });
+        return false;
+    });
+
     $('.input_val').keyup(function(){
         if($(this).val().length>0)
             $(this).parent().find('.invalid_messa').remove();
@@ -309,12 +338,13 @@ function invalid_f(form){
     $('.invalid_messa').remove();
 
     var names = {
-        'name':'nombre',
-        'coment':'contenido',
-        'tags':'etiquetas'
+        'name': 'nombre',
+        'coment': 'contenido',
+        'tags': 'etiquetas'
     }
+    if (tinyMCE) tinyMCE.triggerSave();
     form.find('textarea').each(function(i){
-        if($(this).val().length<1){
+        if($(this).val().length < 1){
             var span = $('<span class="invalid_messa" ></span>');
             span.append('Agrega ' + names[$(this).attr('name')] + ' a tu página');
             $(this).parent().append(span);
@@ -322,8 +352,8 @@ function invalid_f(form){
         }
     });
     form.find('p input').each(function(i){
-        if($(this).attr('type')=='text'){
-            if($(this).val().length<1){
+        if($(this).attr('type') == 'text'){
+            if($(this).val().length < 1){
                 var span = $('<span class="invalid_messa" ></span>');
                 span.append('Agrega ' + names[$(this).attr('name')] + ' a tu página' );
                 $(this).parent().append(span);

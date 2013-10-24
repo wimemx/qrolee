@@ -1562,8 +1562,8 @@ def get_page(request, **kwargs):
     page_id = kwargs['page_id']
     user_id = kwargs['user_id']
     page = account_models.Page.objects.get(id=page_id)
-    list_pages = account_models.Page.objects.filter(user__id=user_id).\
-        exclude(id=page_id)
+    list_pages = account_models.Page.objects.filter(user__id=user_id, status=True).\
+        exclude(id=page_id,)
     profile = models.Profile.objects.get(user__id=user_id)
     context = {
         'page':page,
@@ -1586,4 +1586,19 @@ def book_crossing(request, **kwargs):
     }
 
     return  render(request, template, context)
+
+
+@login_required(login_url='/')
+def book(request, **kwargs):
+    template = kwargs['template_name']
+    code = request.POST.get('codec')
+    book = models.Book.objects.get(code=code)
+    list_users = models.Travel.objects.filter(book__code=code)
+    context = {
+        'book': book,
+        'list_users': list_users
+    }
+
+    return  render(request, template, context)
+
 

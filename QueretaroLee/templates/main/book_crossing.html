@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/register.css" %}"
@@ -75,8 +76,11 @@
                                                 {{ obj.book.title }}
                                             </span>
                                             <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                            <span class="grid-4 no-margin text_top">Liberado por
+                                            <span class="grid-3 no-margin text_top">Liberado por
                                                 <span class="place_pink">{{ obj.user.username }}</span>
+                                            </span>
+                                            <span class="grid-2 text_since no-margin d-text_opacity text_top">
+                                                hace {{ obj.book.date|member_since }}
                                             </span>
                                         </span>
                                     {% endif %}
@@ -108,8 +112,11 @@
                                         {{ obj.book.title }}
                                     </span>
                                     <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                    <span class="grid-4 no-margin text_top">Liberado por
+                                    <span class="grid-3 no-margin text_top">Liberado por
                                         <span class="place_pink">{{ obj.user.username }}</span>
+                                    </span>
+                                    <span class="grid-2 no-margin text_since d-text_opacity text_top">
+                                        hace {{ obj.book.date|member_since }}
                                     </span>
                                 </span>
                             {% endif %}
@@ -134,7 +141,8 @@
                     <p class="title"><span>Codigo Libro Vagabundo</span>
                         <a class="close right tag_btn" ></a>
                     </p>
-                    <form id="form_search" class="login grid-4 center" action="#" style="display: block;">
+                    <form id="form_search" method="post" class="login grid-4 center" action="/qro_lee/book/" style="display: block;">
+                        {% csrf_token %}
                         <span class="banner"></span>
                         <p>
                             <span class="text_field">Inserta aquí tu codigo</span>

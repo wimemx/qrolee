@@ -147,11 +147,7 @@ function populateCal(curr_month,$item){
 
                         if((counter+1) == length){
                             $('.sidebar-a .overview *[class*="item_"]').fadeIn(300,function(){
-                                if($('div').hasClass('events')){
-                                    $('.sidebar-a #scrollbar1').tinyscrollbar({sizethumb:80});
-                                }else{
-                                    $('.sidebar-a #scrollbar1').tinyscrollbar();
-                                }
+
 
                             }).css('display','block');
                         }
@@ -159,13 +155,10 @@ function populateCal(curr_month,$item){
                         counter++;
                     });
                 });
-
-
                 if(counter==0){
                     text_no_found('eventos para este mes');
                 }
-
-
+                $('.scroll_events').tinyscrollbar();
             });
     }
 }
@@ -192,6 +185,7 @@ function removeUser($ele,user_id, remove, entity){
 }
 
 function findUser($ele, userEmail, entity, $parent){
+
     $item = $parent.find('.affiliate').clone();
     $.ajax({
         type: "POST",
@@ -1373,7 +1367,7 @@ function search_list_authors_titles($this){
                   }
                     $('.no_resuls').remove();
                     if(Object.keys(data).length==0){
-                        div = $('<div class="grid-14  no_resuls">No se pudieron encontrar  ' + text + ' </div>');
+                        div = $('<div class="grid-14 no_resuls">No se pudieron encontrar  ' + text + ' </div>');
                         overview.append(div);
                     }
 
@@ -1736,20 +1730,18 @@ function search_pages(){
     $.each(data,function(i){
 
         var href = '/qro_lee/user/' + id_user + '/page/'+ data[i].id;
-        div = $('<div class="item_list grid-15 no-margin" ></div>');
+        div = $('<div class="item_list d-list_'+data[i].id+'" ></div>');
         a_wrapper = $('<a href="' + href + '"></a>');
         span = $('<span class="wrapper_list" ></span>');
         a_wrapper.append(span);
         input_name = $('.<input class="name_list" type="hidden" value="'+data[i].name+'">');
-        input_id_rel = $('.<input class="id_list" type="hidden" value="'+data[i]+'">');
+        input_id_rel = $('.<input class="id_list" type="hidden" value="'+data[i].id+'">');
         div.append(input_name);
         div.append(input_id_rel);
         div.append(a_wrapper);
         img = $('<img class="img_size_all" src="/static/img/create.png"/>');
-        span_data = $('<span class="container_data grid-13 no-margin">'+
-            '</span>');
         span_title = $('<span class="grid-9 no-margin"></span>');
-        span_data.append(span_title);
+        div.append(span_title);
         a_title =  $('<a title="' + data[i].name + '" href="' +
             href + '" class="title alpha title_book"></a>');
         a_title.append(truncText(data[i].name,26));
@@ -1764,14 +1756,14 @@ function search_pages(){
             span_btn.append(a_edit);
             span_btn.append(span_del);
         }
-        span_data.append(span_btn);
+        div.append(span_btn);
         span_by = $('<span class="grid-10 no-margin"></span>');
         text_by = $('<span class="d-text_opacity">De </span>');
         user = $('<a href="/accounts/users/profile/' + id_user + '">' +
             '<span class="place_pink">'+ data[i].user +'</span></a>');
         span_by.append(text_by);
         text_by.append(user);
-        span_data.append(span_by);
+        div.append(span_by);
         p_text = $('<span class="d-text_list grid-13 no-margin" ></span>');
         img_coment = $('<div></div>');
         img_coment.append(data[i].coment);
@@ -1779,7 +1771,8 @@ function search_pages(){
         var count_img = 0;
         $.each(img_coment,function(){
             if($(this).find('img').length>0 & !img_exist){
-                span.append($(this).find('img'));
+                span.append('<img class="img_size_all" src="' +
+                    $(this).find('img').attr('src') + '"/>');
                 img_exist = true;
             }
         });
@@ -1790,8 +1783,7 @@ function search_pages(){
         var item_html = (data[i].coment).replace(/<\/?[^>]+>/gi, '');
         p_text.append(truncText(item_html,580));
         span_title.append(a_title);
-        span_data.append(p_text);
-        div.append(span_data);
+        div.append(p_text);
         overview.append(div);
 
     });

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"
@@ -28,7 +29,11 @@
                 <span class="item_page grid-4 no-margin">
                     <a href="/qro_lee/user/{{ obj.user.id }}/page/{{ obj.id }}">
                         <span class="wrapper_page">
-                            <img src="/static/img/create.png" class="img_size_all"/>
+                            {% if not obj.coment|img_autoescape %}
+                                <img src="/static/img/create.png" class="img_size_all"/>
+                            {% else %}
+                                <img src="{{ obj.coment|img_autoescape }}" class="img_size_all"/>
+                            {% endif %}
                         </span>
                     </a>
                     <a href="/qro_lee/user/{{ obj.user.id }}/page/{{ obj.id }}">
