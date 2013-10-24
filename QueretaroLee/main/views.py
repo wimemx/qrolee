@@ -42,7 +42,7 @@ def index(request, **kwargs):
         following_list.append(follow.object)
 
     activity = account_models.Activity.objects.filter(
-        added_to_object__in=following_list).order_by('-date')
+        user_id__in=following_list).order_by('-date')
 
     entities = models.Entity.objects.filter(
         user_id=user)
@@ -219,9 +219,10 @@ def get_entity(request, **kwargs):
     rate = account_models.Rate.objects.filter(element_id=id_entity, type='E').\
                 values('element_id').annotate(count = db_model.Count('element_id'),
                                               score = db_model.Avg('grade'))
-    my_rate = account_models.Rate.objects.filter(user=request.user, element_id=id_entity,
-                                                  type='E')
+    my_rate = account_models.Rate.objects.filter(
+        user=request.user, element_id=id_entity, type='E')
 
+    request_sent = False
     if request.POST:
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
@@ -247,6 +248,7 @@ def get_entity(request, **kwargs):
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
+                request_sent = True
                 entityuser[0].request = True
                 entityuser[0].save()
             else:
@@ -256,6 +258,7 @@ def get_entity(request, **kwargs):
     else:
         entityuser = models.MemberToObject.objects.filter(
             user_id=request.user.id, object=entity.id, object_type='E')
+        request_sent = entityuser[0].request
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -366,7 +369,8 @@ def get_entity(request, **kwargs):
         'followers': zip(entity_followers, user_pictures),
         'admins': admins,
         'activity': activity,
-        'discussions': discussions
+        'discussions': discussions,
+        'request_sent': request_sent
     }
 
     return render(request, template, context)

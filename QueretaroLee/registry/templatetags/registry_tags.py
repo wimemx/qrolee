@@ -41,7 +41,6 @@ def get_num_followers(entity):
 
 @register.filter
 def feed_type(feed_id):
-    ret = 0
     feed = models.Activity.objects.get(
         id=feed_id)
     obj_list = list()
@@ -56,7 +55,7 @@ def feed_type(feed_id):
     if feed.added_to_type == 'U':
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)
-        if profile.picture == None:
+        if profile.picture is None:
             img_url = '/static/img/create.png'
         else:
             img_url += 'profile/'+profile.picture
@@ -65,6 +64,22 @@ def feed_type(feed_id):
         else:
             name = obj_list[0].username
         trigger_url = '/accounts/users/profile/'+str(obj_list[0].id)
+
+    elif feed.added_to_type == 'L':
+        user = auth_models.User.objects.get(
+            id=obj_list[0].user_id)
+        profile = rmodels.Profile.objects.get(
+            user_id=user.id)
+        if profile.picture is None:
+            img_url = '/static/img/create.png'
+        else:
+            img_url += 'profile/'+profile.picture
+
+        if user.first_name != '':
+            name = user.first_name + ' '+user.last_name
+        else:
+            name = user.username
+        trigger_url = '/accounts/users/profile/'+str(user.id)
     else:
         if obj_list[0].picture != '':
             img_url += 'entity/'+obj_list[0].picture
@@ -113,6 +128,7 @@ def feed_type(feed_id):
         content = ''
         extra_content = ''
         whom_url = '/qro_lee/profile/title/'+str(obj_list[1].id)
+
     elif feed.type == 'A':
         if obj_list[1].picture != '':
             added_to_img_url = obj_list[1].picture
@@ -149,6 +165,8 @@ def feed_type(feed_id):
                 action = u'realizo un rating'
         elif feed.type == 'L':
             action = u'creó una lista'
+        elif feed.type == 'T':
+            action = u'añadio a'
         else:
             action = ''
         ret_value = u"""<span class="create feed">
@@ -178,6 +196,41 @@ def feed_type(feed_id):
             name, obj_name, img_url, added_to_img_url,
             content, extra_content, date, action, trigger_url, whom_url)
 
+    elif feed.activity_id == 4:
+        action = u'añadio a'
+        list_ = models.List.objects.get(
+            id=int(feed.added_to_object))
+        list_url = '/qro_lee/profile/list/'+str(list_.id)
+        ret_value = u"""<span class="create feed">
+                            <a href="{8}" class="wrapper fleft">
+                                <img src="{2}" alt=""/>
+                            </a>
+                            <span class="grid-6 content no-margin fleft">
+                                    <span class="trigger din-b"><a href="{8}">{0}</a> </span>
+                                    <span class="verb din-r">{7} </span>
+                                    <span class="verb din-b"><a href="{11}">{10}</a> </span>
+                                <span class="action grid-5 no-margin">
+                                    <a href="{9}" class="wrapper fleft">
+                                        <img src="{3}" alt=""/>
+                                    </a>
+                                    <span class="wrap fleft">
+                                        <span class="din-m fleft"><a href="{9}">{1}</a></span>
+                                    <p class="gray_text no-margin fleft">
+                                        <span class="entry">{4}</span>
+                                        <span class="time">{5}</span></p>
+                                    </span>
+                                    <p style="margin-top:10px;" class="gray_text no-margin fleft">hace {6}</p>
+                                </span>
+                            </span>
+
+                        </span>"""
+        ret = ret_value.format(
+            name, obj_name, img_url, added_to_img_url,
+            content, extra_content, date, action,
+            trigger_url, whom_url, list_.name, list_url)
+
+
+
     elif feed.activity_id == 5:
         if feed.type == 'E':
             if obj_list[1].type_id == 1:
@@ -198,13 +251,17 @@ def feed_type(feed_id):
         ret = ret_value.format(
             name, obj_name, img_url, date,
             action, trigger_url, whom_url)
+
     elif feed.activity_id == 6:
         action = u'calificó a'
 
         rate_ = models.Rate.objects.filter(type=str(feed.type), element_id=feed.object).values(
             'element_id').annotate(count=db_model.Count('element_id'), score=db_model.Avg('grade'))
         grade = rate_[0]['score']
-
+        if str(feed.type) == 'E':
+            u_id = auth_models.User.objects.get(entity__id=int(obj_list[1].id))
+            if obj_list[1].picture != '':
+                added_to_img_url = '/static/media/users/'+str(u_id.id)+'/entity/'+obj_list[1].picture
         rating = ''
         for i in range(1, 6):
             if i <= grade:
@@ -264,6 +321,7 @@ def get_objects(object, type):
             id=object)
     else:
         obj = None
+
     return obj
 
 
