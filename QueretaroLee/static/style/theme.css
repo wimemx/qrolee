@@ -156,6 +156,9 @@ input:not([type='submit']){
 .container-16 p.center{
     text-align: center;
 }
+    h3.center, h4.center{
+        text-align: center;
+    }
 .eraseClass{
 
 }
@@ -306,8 +309,16 @@ p{
 .gray_text{
     color: #8e8e8e;
 }
+.news-feed .user .title{
+    width: auto;
+}
+    .news-feed a{
+        color: inherit;
+    }
 .news-feed .title{
     font-size: 15px;
+    width: 100%;
+    float: left;
 }
 .news-feed .main.title{
     font-size: 12px;
@@ -316,6 +327,8 @@ p{
 .news-feed .element{
     height: 110px;
     display: block;
+    float: left;
+    width: 100%;
 }
     .news-feed .viewport{
         width: 100%;
@@ -3183,7 +3196,31 @@ textarea{
 .book_travel .title{
     left: 20px!important;
 }
-.book_register .title{
+
+.qr-wrapper{
+    background: #fffcf5;
+    height: 300px;
+    padding-top: 50px;
+    margin-bottom: 100px !important;
+    border: 2px dashed #000000;
+    border-radius: 8px;
+}
+    .qr{
+        height: 220px;
+        display: block;
+    }
+        .qr img{
+            width: 100%;
+            height: 100%;
+        }
+    .qr-link{
+        margin-top: 30px;
+        clear: both;
+    }
+    .view-pdf{
+        margin-top: 30px;
+        cursor: pointer;
+    }.book_register .title{
     font-size: 12px!important;
     margin-bottom: 10px!important;
 }

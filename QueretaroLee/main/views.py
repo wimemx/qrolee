@@ -9,9 +9,9 @@ from django.db import models as db_model
 from django.db.models import Q
 from django.core import serializers
 
-from registry.models import Entity,Type,Event
+from registry.models import Entity, Type, Event
 from account import models as account_models
-from registry import models,views,settings
+from registry import models, views, settings
 
 
 from decimal import Decimal
@@ -23,7 +23,9 @@ import ast
 import operator
 import math
 import urllib2
-
+import urllib
+import httplib
+import os
 
 
 @login_required(login_url='/')
@@ -42,7 +44,7 @@ def index(request, **kwargs):
         following_list.append(follow.object)
 
     activity = account_models.Activity.objects.filter(
-        added_to_object__in=following_list).order_by('-date')
+        user_id__in=following_list).order_by('-date')
 
     entities = models.Entity.objects.filter(
         user_id=user)
@@ -211,7 +213,6 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
-
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -220,8 +221,10 @@ def get_entity(request, **kwargs):
     rate = account_models.Rate.objects.filter(element_id=id_entity, type='E').\
                 values('element_id').annotate(count = db_model.Count('element_id'),
                                               score = db_model.Avg('grade'))
-    my_rate = account_models.Rate.objects.filter(user=request.user, element_id=id_entity,
-                                                  type='E')
+    my_rate = account_models.Rate.objects.filter(
+        user=request.user, element_id=id_entity, type='E')
+
+    request_sent = False
     if request.POST:
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
@@ -247,6 +250,7 @@ def get_entity(request, **kwargs):
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
+                request_sent = True
                 entityuser[0].request = True
                 entityuser[0].save()
             else:
@@ -256,6 +260,8 @@ def get_entity(request, **kwargs):
     else:
         entityuser = models.MemberToObject.objects.filter(
             user_id=request.user.id, object=entity.id, object_type='E')
+        if entityuser:
+            request_sent = entityuser[0].request
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -280,7 +286,6 @@ def get_entity(request, **kwargs):
     entity_admins = models.User.objects.filter(
         membertoobject__is_admin=1, membertoobject__object=entity.id,
         membertoobject__object_type='E')
-
     admins = User.objects.filter(id=entity_admins)
 
     for ent in entities:
@@ -367,7 +372,8 @@ def get_entity(request, **kwargs):
         'followers': zip(entity_followers, user_pictures),
         'admins': admins,
         'activity': activity,
-        'discussions': discussions
+        'discussions': discussions,
+        'request_sent': request_sent
     }
 
     return render(request, template, context)
@@ -1581,7 +1587,7 @@ def book_crossing(request, **kwargs):
         'books': books
     }
 
-    return  render(request, template, context)
+    return render(request, template, context)
 
 
 def book(request, **kwargs):
@@ -1620,6 +1626,35 @@ def book(request, **kwargs):
         'count_user': count_user
     }
 
-    return  render(request, template, context)
+    return render(request, template, context)
 
+
+def qr_book(request, **kwargs):
+    template = kwargs['template_name']
+    code = kwargs['book_code']
+    url = settings.SITE_URL+'qro_lee/qr/'+code
+    image = generate(url)
+    path = os.path.join(os.path.dirname(__file__), '..', 'static/qr/').replace('\\','/')
+    file = open(path+code+".png", "wb")
+    file.write(image)
+    file.close()
+    context = {
+        'code': code,
+        'url': url,
+        'img': code
+    }
+    return render(request, template, context)
+
+
+def generate(content, format="png"):
+    query = urllib.urlencode({
+        "content": content,
+        "format": format
+    })
+    con = httplib.HTTPConnection("www.esponce.com")
+    con.request("GET", "/api/v3/generate?" + query)
+    response = con.getresponse()
+    image = response.read()
+    con.close()
+    return image
 

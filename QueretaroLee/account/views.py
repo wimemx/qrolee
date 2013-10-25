@@ -339,7 +339,7 @@ def user_profile(request, **kwargs):
             city = city[1]
 
     activity = models.Activity.objects.filter(
-        added_to_object=profile.user_id, added_to_type='U').order_by('-date')
+        user_id=profile.user_id).order_by('-date')
     birthday = profile.birthday
     if birthday:
         birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\

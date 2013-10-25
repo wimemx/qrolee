@@ -742,7 +742,6 @@ $('.affiliate').each(function(i){
 
 
     $('.alert-message .accept').click(function(){
-
         var user = $(this).parent().find('input.user').val();
 
         $('.affiliate').each(function(index){
@@ -783,7 +782,7 @@ $('.affiliate').each(function(i){
         findUser($('.alert-message'), '-3',
             $('.alert-message').find('.entity').val(), $('.mmembers'));
     });
-    $('.entity .admin_nav.nav .btn.request').click(function(){
+    $('.entity .admin_nav.nav .btn.request_btn').click(function(){
         $('.request').find("*[class*='user_']").each(function(){
             $(this).remove();
         });
@@ -834,6 +833,7 @@ $('.affiliate').each(function(i){
             $('.create-discussion textarea').val('');
             $('.alert-message').fadeOut(300, function(){
                 $(this).parent().fadeIn(300);
+                $(this).parent().find('.create-discussion-wrapper').fadeIn(300);
             });
         });
         $('.create-discussion-wrapper .accept').click(function(){

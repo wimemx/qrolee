@@ -35,8 +35,8 @@
                 <input class="user" type="hidden"/>
                 <input class="entity" value="{{ entity.id }}" type="hidden"/>
             </div>
-            {% if entity_type.1 ==  'group' %}
-                <div class="create-discussion-wrapper margin-50 grid-8 lightbox center">
+            {% if entity_type.1 ==  'group' and member %}
+                <div style="display:none;" class="create-discussion-wrapper margin-50 grid-8 lightbox center">
                     <span class="close"></span>
                 <span class="create-discussion grid-7 center">
                     <p class="title center">Crea una nueva discusión</p>
@@ -87,6 +87,12 @@
                     {% else %}
 
                         {% if entity.privacy == 1 %}
+                            {% if request_sent %}
+                            <span style="width: 100px;left: -30px;position: relative;" class="btn no-action no-ajax fleft">Solicitud enviada</span>
+                            <p class="private-icon fright">
+                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            </p>
+                            {% else %}
                             <span class="btn no-ajax fleft">Seguir</span>
                             <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
                             <p class="private-icon fright">
@@ -99,6 +105,7 @@
                                     {% endif %}
                                 </span>
                             </p>
+                            {% endif %}
                         {% else %}
                             <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                                 {% csrf_token %}
@@ -134,18 +141,15 @@
 
                     {% if entity.privacy != 0 %}
                         <span class="btn no-ajax fleft">Seguir</span>
-                        <p class="private-icon fright">
-                            <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
-                        </p>
-
+                            <p class="private-icon fright">
+                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            </p>
                     {% else %}
-
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn " value="Seguir">
                         </form>
-
                     {% endif %}
 
                 {% endif %}
