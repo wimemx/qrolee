@@ -60,4 +60,8 @@ urlpatterns = patterns('',
     name='update_list'),
     url(r'^edit_title_read/', views.edit_title_read, name='edit_title_read'),
     url(r'^delete_picture/', views.delete_picture, name='delete_picture'),
+    url(r'^cheking_book/', views.cheking_book, name='cheking_book'),
+    url(r'^register_book/', views.registry_book ,
+        { 'template_name': 'registry/register_book.html' },name='registry_book'),
+    url(r'^register_ajax_book/', views.register_ajax_book, name='reg_book'),
 )

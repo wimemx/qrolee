@@ -13,18 +13,7 @@ var months = ['Enero','Febrero','Marzo','Abril',
 var days = ['lunes','martes','miercoles',
     'jueves','viernes','sabado','domingo'];
 var site_url = window.location.origin;
-
-function text_no_found(message){
-    $('.d-not_found').fadeOut(250,function(){
-        $(this).remove();
-    });
-
-    var error_msg = $('<p class="center grid-3 d-not_found" >No se pudieron encontrar '+message+'</div> ');
-    $('.error').append(error_msg);
-}
-
-function init(lat,long) {
-	var styles =[
+var styles =[
   {
     "featureType": "road.highway",
     "elementType": "geometry.fill",
@@ -51,6 +40,18 @@ function init(lat,long) {
     ]
   }
 ];
+
+function text_no_found(message){
+    $('.d-not_found').fadeOut(250,function(){
+        $(this).remove();
+    });
+
+    var error_msg = $('<p class="center grid-3 d-not_found" >No se pudieron encontrar '+message+'</div> ');
+    $('.error').append(error_msg);
+}
+
+function init(lat,long) {
+
 	var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 		var latlng = new google.maps.LatLng( lat, long);
@@ -139,13 +140,18 @@ $(document).ready(function(){
     });
 
     $('.tag_btn').click(function(){
+
+        var class_name = 't_1';
+        if($(this).hasClass('t_2'))
+            class_name = 't_2';
+        if($(this).hasClass('t_3'))
+            class_name = 't_3';
+
         $.each($('.book_crossing .tag'),function(){
-            if($(this).hasClass('act_tag')){
-                $(this).removeClass('act_tag');
-                $(this).fadeOut(300);
-            }else{
+            if($(this).hasClass(class_name)){
                 $(this).fadeIn(300);
-                $(this).addClass('act_tag');
+            }else{
+                $(this).fadeOut(300);
             }
         });
     });
@@ -455,30 +461,9 @@ function update_dir_info(loc_address, lat_long, type){
 
 function dmap(data,id){
 
-    var styles = [
-        {
-            stylers: [
-                { hue: "#b3d4fc" },
-                { saturation: -20 }
-            ]
-        },{
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [
-                { lightness: 100 },
-                { visibility: "simplified" }
-            ]
-        },{
-            featureType: "road",
-            elementType: "labels",
-            stylers: [
-                { visibility: "off" }
-            ]
-        }
-    ];
-
     var styledMap = new google.maps.StyledMapType(styles,
         {name: "Styled Map"});
+
     var lat = 20.589081;
     var lon = -100.38826;
 
@@ -544,7 +529,107 @@ function dmap(data,id){
     }
 }
 
+function map_cheking(country, state, city){
+
+    var lat = 20.589081;
+    var lon = -100.38826;
+
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': 'http://maps.googleapis.com/maps/api/geocode/json?address='+state+'+'+city+
+            '&components=country:'+country+'&sensor=false',
+        'dataType': "json",
+        'success': function (data) {
+            lat = data['results'][0]['geometry']['location']['lat'];
+            lon = data['results'][0]['geometry']['location']['lng'];
+        }
+    });
+
+
+    var styledMap = new google.maps.StyledMapType(styles,
+        {name: "Styled Map"});
+
+    var mapOptions = {
+        zoom: 12,
+        center: new google.maps.LatLng(lat,lon),
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+        },
+        navigationControl: true,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var div_map = 'reg_map';
+
+    var map = new google.maps.Map(document.getElementById(div_map),
+        mapOptions);
+
+    var latlng = new google.maps.LatLng( lat, lon)
+    $('.lat_long').val(lat+','+lon);
+    geocoder = new google.maps.Geocoder();
+		marker = new google.maps.Marker({
+			position: latlng,
+			map: map,
+            icon: new google.maps.MarkerImage(
+                "/static/img/pin.png", // reference from your base
+                new google.maps.Size(34, 40), // size of image to capture
+                new google.maps.Point(0, 0), // start reference point on image (upper left)
+				new google.maps.Point(10, 10) // point on image to center on latlng (scaled)
+
+			),
+			draggable: true
+		});
+        google.maps.event.addListener(marker, 'dragend', update_latlog);
+}
+
+function update_latlog(lat_long){
+    $('.lat_long').val(lat_long['latLng']['lb']+','+lat_long['latLng']['mb']);
+}
+
+function map_select(){
+    var country = '';
+    var state = '';
+    var city = '';;
+    var index = 0;
+    $.each($('.selec_reg .sel_val'), function(){
+        if(index == 0)
+            country =$(this).find('option:selected').val();
+        if(index == 1)
+            state =$(this).find('option:selected').val();
+        if(index == 2)
+            city =$(this).find('option:selected').val();
+        index++;
+    });
+
+    map_cheking(country, state, city);
+}
+
+function show_text($elem, message){
+    $elem.fadeOut(300,function(){
+        $(this).html(message);
+        $(this).fadeIn(300);
+    });
+}
+
 $(document).ready(function(){
+
+    $('.book_register .btn_ra').click(function(){
+        if($(this).hasClass('find')){
+            show_text($('.text_1'), '¿ Dónde encontraste este libro ?');
+            show_text($('.text_2'), 'Más información de donde encontraste el libro');
+            $(this).find('img').attr('src','/static/img/radioOn.png');
+            $(this).parent().find('.lib').find('img').attr('src','/static/img/radioOff.png');
+            $(this).parent().find('input').val(1);
+        }else{
+            show_text($('.text_1'), '¿Dónde vas a liberar este libro?');
+            show_text($('.text_2'), 'Más información sobre dónde liberarás el libro');
+            $(this).find('img').attr('src','/static/img/radioOn.png');
+            $(this).parent().find('.find').find('img').attr('src','/static/img/radioOff.png');
+            $(this).parent().find('input').val(0);
+        }
+    });
 
     $('.heading .search .search_btn').click(function(){
         if($.trim($(this).parent().find('input[type=text]').val())
@@ -2280,7 +2365,7 @@ function get_titles_authors(list, csrf){
                 div_text.append(p_author);
                 div_text.append(span_stars);
                 div_text.append(btn_del);
-                btn_del.append(input_ticoype);
+                btn_del.append(input_title);
                 div_add = container_list.find('.d-container_add_book');
                 div_add.after(div);
             }

@@ -2985,7 +2985,8 @@ textarea{
 
 .wrapper_mini_crossing{
     width: 70px !important;
-    height: 80px;
+    height: 90px;
+    margin-left: 0px;
 }
 
 .container_mini_crossing{
@@ -3143,6 +3144,13 @@ textarea{
     display: block;
     margin: 0px;
 }
+.book_crossing .grid-15{
+    padding: 30px 30px 0px 30px;
+    background-color: #ffffff;
+    min-height:600px ;
+    display: block;
+    margin: 0px;
+}
 
 .no-pandding{
     padding: 0px!important;
@@ -3174,4 +3182,192 @@ textarea{
 
 .book_travel .title{
     left: 20px!important;
+}
+.book_register .title{
+    font-size: 12px!important;
+    margin-bottom: 10px!important;
+}
+
+.selec_reg .select_wrapper{
+    margin-bottom: 10px!important;
+}
+
+.book_register input ,textarea{
+    border: 1px solid #e4e4e4;
+    margin-bottom: 10px!important;
+}
+
+.book_register textarea{
+    height: 70px;
+    margin-bottom: 20px!important;
+}
+
+.map_book_reg .map_crossing{
+    left: 30px;
+    margin-top: 30px!important;
+    height: 266px!important;
+    background-color: transparent!important;
+    background: url("/static/img/loading.gif")no-repeat 52% 33px;
+    background-size: 200px 200px;
+}
+
+.book_register{
+     border-bottom: 1px solid #CCC;
+}
+
+.title_part_2{
+    margin-top: 12px!important;
+}
+
+.book_register .radio_btn{
+    margin-bottom: 10px!important;
+}
+
+.book_register .title_uno{
+    margin-top: 30px!important;
+}
+
+.btn_ra span{
+    padding: 0px 0px 0px 5px;
+}
+.radio_btn{
+    cursor: pointer;
+}
+.btn_reg{
+    background-color: #7ca680!important;
+    left: 50%!important;
+    top: 20px!important;
+    padding: 5px 20px 5px 20px!important;
+}
+
+.container_pop{
+    margin-top: 30px!important;
+    margin-bottom: 60px!important;
+    height: 212px;
+    background: #f4e5c8 url('../img/register_form_bg.png');
+}
+.container_pop .int_btn{
+    margin-left: 0px;
+}
+.container_pop .login{
+    margin-left: 30px;
+}
+.container_pop .title{
+    margin-top: 20px;
+    text-align: center;
+}
+.container_pop input{
+    height: 25px!important;
+}
+.container_pop .int_btn{
+    padding: 4px 8px 4px 8px!important;
+}
+.container_pop .social{
+    margin-left: 20px;
+}
+.container_pop .log{
+    margin-left: 25px!important;
+    margin-bottom: 0px!important;
+    margin-top: 10px;
+}
+.container_pop p{
+    margin-bottom: 0px;
+    margin-top: 0px;;
+}
+.container_pop .shadow{
+    width: 100%;
+    margin-top: 19px!important;
+}
+.container_pop .text_log{
+    margin-left: 25px;
+    margin-top: 22px;
+    font-size: 11px;
+}
+
+.container_mini_crossing .borde_author{
+    border-width: 2px!important;
+}
+
+.right_marg{
+    margin-left: 30px;
+}
+
+.mar_rig{
+    margin-right: 35px!important;
+}
+
+.book_reg {
+    margin: 40px 10px 30px 10px;
+    display: block;
+}
+
+.book_reg .grid-14{
+    min-height: 640px;
+    padding: 40px 60px 40px 60px;
+    background: #fffcf5;
+    display: block;
+    margin: 0px;
+}
+.book_reg .title_top{
+    width: 100%;
+    float: left;
+    text-align: center;
+    font-size: 26px;
+}
+
+.book_reg .wrapper{
+    width: 110px;
+    height: 140px;
+    float: left;
+    margin-left: 32px;
+}
+.book_reg .container_b{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.container_b .title{
+    font-size: 18px;
+}
+.book_reg .center{
+    height: 215px;
+}
+.book_reg .part_bottom{
+    width: 100%;
+    min-height: 100px;
+}
+.book_reg .part_top{
+    min-height: 200px!important;
+}
+.title_center{
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    float: left;
+    margin-top: 15px;
+}
+
+.contain_reg .title{
+    font-size: 12px;
+}
+
+.part_bottom .map_r{
+    height: 214px;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.part_bottom input{
+    margin-top: 10px;
+    border: 1px solid #e4e4e4!important;
+}
+.part_bottom .contain_reg{
+    margin-top: 5px!important;
+}
+
+.contain_reg .green_btn{
+    position: relative;
+    left: 0px!important;
+    background-color: #7ca680!important;
+    top: 20px!important;
+    padding: 5px 20px 5px 20px!important;
 }
