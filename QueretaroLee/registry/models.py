@@ -134,7 +134,7 @@ class Travel(models.Model):
     type_user = models.CharField(max_length=255)
     lat = models.CharField(max_length=255, null=True)
     long = models.CharField(max_length=255, null=True)
-    status = models.BooleanField(default=True)
+    status = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=255)
     meta = models.TextField(max_length=255)

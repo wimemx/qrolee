@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load registry_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/register.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% if user.is_active %}
+        {% include 'header.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid-16">
+        <div class="grid-16 book_reg no-margin">
+            <div class="grid-14">
+                <span class="center grid-14 part_top border_bottom no-pandding">
+                    <input type="hidden" value="{{ book.isbn }}" class="isbn_book" />
+                    <span class="title title_top">¿Deseas donar un libro al mundo?</span>
+                    <span class="grid-6 center no-margin">
+                        <span class="wrapper borde_author">
+                            <img class="img_size_all" src="{{ book.picture }}" />
+                        </span>
+                        <span class="grid-3 no-margin container_b">
+                            <span class="title grid-3 no-margin">{{ book.title }}</span>
+                            <span class="grid-3 no-margin" >Autor: {{ book.author }}</span>
+                            <span class="grid-3 no-margin">ISBN: {{ book.isbn }}</span>
+                            <span class="grid-3 no-margin">Editorial: {{ book.publisher }}</span>
+                            <span class="grid-3 no-margin">Categoría:</span>
+                        </span>
+                    </span>
+                </span>
+                <div class="part_bottom">
+                    <span class="title title_center">¿Donde vas a liberar este libro?</span>
+                    <div class="grid-11 no-margin center">
+                        <span class="grid-5 no-margin contain_reg">
+                            <input type="hidden" value="20.0000,-100.090909" class="lat_long" />
+                            <span class="grid-5 no-margin discussion selec_reg">
+                                <span class="select_wrapper grid-5 alpha">
+                                    <span class="grid-3 select sel_val no-margin">
+                                        <span class="text">Pais</span>
+                                        <span class="dropdown"></span>
+                                        <select class="change value" name="privacy">
+                                            <option value="Mexico">México</option>
+                                            <option value="España">España</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="select_wrapper grid-5 alpha">
+                                    <span class="grid-3 select sel_val no-margin">
+                                        <span class="text">Estado</span>
+                                        <span class="dropdown"></span>
+                                        <select class="change value" name="privacy">
+                                            <option value="Guanajuato">Guanajuato</option>
+                                            <option value="Queretaro">Queretaro</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="select_wrapper grid-5 alpha">
+                                    <span class="grid-3 select sel_val no-margin">
+                                        <span class="text">Ciudad</span>
+                                        <span class="dropdown"></span>
+                                        <select class="change value" name="privacy">
+                                            <option value="moroleon">Moroleon</option>
+                                            <option value="uriangato">Uriangato</option>
+                                            <option value="Queretaro">Queretaro</option>
+                                        </select>
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="title grid-3 text_2 no-margin">
+                                Más información de donde vas a liberar el libro
+                            </span>
+                            <span class="grid-5 no-margin">
+                                <input type="text"
+                                       placeholder="en el café, en el restaurante, en la plaza"
+                                       class="meta" />
+                            </span>
+                            <span class="grid-5 no-margin">
+                                <span class="green_btn fright">Registrar</span>
+                            </span>
+                        </span>
+                        <div id="reg_map" class="map_r grid-6 no-margin"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from _mysql import connection
+from operator import attrgetter
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
@@ -1612,3 +1613,139 @@ def update_activity(data):
         else:
             activity = account.Activity.objects.create(**data)
             activity.save()
+
+
+def cheking_book(request):
+    list =  ast.literal_eval(request.POST.get('query'))
+    list['user'] = request.user
+    code_book = list['code_book']
+    del list['code_book']
+    book = models.Book.objects.get(code=code_book)
+    list['book'] = book
+    list['type_user'] = 1
+
+    travel = models.Travel.objects.create(**list)
+    travel.save()
+
+    succes = 'False'
+    code = 0
+    if travel:
+        succes = 'True'
+
+    context = {
+        'succes': succes,
+        'code_book': code_book
+
+    }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def registry_book(request, **kwargs):
+
+    isbn = request.POST.get('isbn')
+    url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+ isbn
+    response = urllib2.urlopen(url)
+    response = simplejson.load(response)
+    attribute = response['items'][0]['volumeInfo']
+
+    author = 'anonimo'
+    picture = 'create.jpg'
+    publishedDate = datetime.datetime.today()
+    pages = 100
+
+    if attribute['authors']:
+        author = attribute['authors'][0]
+
+    if attribute['imageLinks']['thumbnail']:
+        picture = attribute['imageLinks']['thumbnail']
+
+
+    book = {
+        'title': attribute['title'],
+        'author': author,
+        'isbn': isbn,
+        'publisher': attribute['publisher'],
+        'picture': picture
+    }
+
+
+    template = kwargs['template_name']
+    context = {
+        'book': book
+    }
+
+    return  render(request, template, context)
+
+
+def register_ajax_book(request):
+    list =  ast.literal_eval(request.POST.get('query'))
+    list['user'] = request.user
+    isbn = list['isbn']
+    url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+ isbn
+    response = urllib2.urlopen(url)
+    response = simplejson.load(response)
+    attribute = response['items'][0]['volumeInfo']
+
+    author = 'anonimo'
+    picture = 'create.jpg'
+    publishedDate = datetime.datetime.today()
+    pages = 100
+
+    if attribute['authors']:
+        author = attribute['authors'][0]
+
+    if attribute['imageLinks']['thumbnail']:
+        picture = attribute['imageLinks']['thumbnail']
+
+
+    date = str(attribute['publishedDate']).split("-")
+    publishedDate = str(attribute['publishedDate'])
+
+    if len(date) < 3 :
+        publishedDate = str(date[0]) + '-01-01'
+
+    list['picture'] = picture
+    list['cover'] = picture
+    list['publisher'] = attribute['publisher']
+    list['published_date'] = publishedDate
+    list['pages'] = pages
+    list['isbn'] = isbn
+    list['isbn13'] = attribute['industryIdentifiers'][1]['identifier']
+    list['country'] = response['items'][0]['accessInfo']['country']
+    list['title'] = attribute['title']
+    list['language'] = attribute['language']
+    list['code'] = 123
+
+    succes = 'False'
+
+    list_travel = {
+        'lat': list['lat'],
+        'long': list['long'],
+        'user': list['user'],
+        'meta': list['meta'],
+        'status': 0,
+        'type_user': 1
+    }
+    del list['lat']
+    del list['long']
+    del list['meta']
+
+    book = models.Book.objects.create(**list)
+    book.save()
+
+    if book:
+        succes = 'True'
+        list_travel['book'] = book
+        travel = models.Travel.objects.create(**list_travel)
+        travel.save()
+
+    context = {
+        'succes': succes,
+        'code': book.code
+
+    }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')

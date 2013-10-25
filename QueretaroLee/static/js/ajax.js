@@ -396,47 +396,122 @@ function search_api(csrf, query){
     return ret;
 }
 
+function search_book_code(form){
+    var code = form.find('input[name=codec]').val();
+    var query = {
+        'status': 1,
+        'code': code
+    }
+    var fields = ['id','code'];
+    var and = 1;
+    var join = {
+        'tables':{
+            0: JSON.stringify(['registry.travel'])
+        },
+        'quieres':{
+            0: JSON.stringify(['id'])
+        },
+        'fields':{
+            0: JSON.stringify(['id'])
+        }
+    }
+    join = JSON.stringify(join);
+
+    var search = {
+        'type': 'registry.book',
+        'fields': JSON.stringify(fields),
+        'value': JSON.stringify(query),
+        'and': and,
+        'join': join
+    }
+    search = JSON.stringify(search);
+    var csrf = $('.csrf_header').find('div input').val();
+    var data_1 = advanced_search(search, csrf);
+
+    form.find('.place_pink').remove();
+
+    if('response' in data_1)
+        form.find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">No ' +
+            'se encontro el codigo del libro que estas buscando revisa que este bien escrito el codigo</p>');
+    else
+        window.location.href = site_url + '/qro_lee/book/' + code;
+
+
+    return false;
+}
+
 $(document).ready(function(){
 
+    $('.part_bottom .green_btn').click(function(){
+
+        var lat_long = $('.lat_long').val().split(',');
+        var query = {
+            'lat': lat_long[0],
+            'long': lat_long[1],
+            'meta': $('.meta').val(),
+            'isbn': $('.isbn_book').val()
+        }
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '/registry/register_ajax_book/',
+            data: {
+                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                'query': JSON.stringify(query)
+            },
+            dataType: 'json'
+        }).done(function(data){
+                if(data['succes'] == 'True')
+                    window.location.href = site_url + '/qro_lee/qr/'+data['code'];
+            });
+    });
+
+    $('.btn_reg').click(function(){
+        var lat_long = $('.lat_long').val().split(',');
+        var query = {
+            'status': parseInt($('.value_option').find('input').val()),
+            'lat': lat_long[0],
+            'long': lat_long[1],
+            'meta': $('.meta').val(),
+            'description': $('.text_descrip').val(),
+            'code_book': $('.code_book').val()
+        }
+
+       $.ajax({
+            type: "POST",
+            async: false,
+            url: '/registry/cheking_book/',
+            data: {
+                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                'query': JSON.stringify(query)
+            },
+            dataType: 'json'
+        }).done(function(data){
+
+               if(data['succes'] == 'True')
+                    window.location.href = site_url + '/qro_lee/book/'+data['code_book'];
+            });
+    });
+
     $('#form_search').submit(function(e){
-        query = {
-            'status':1,
-            'code':$(this).find('input[name=codec]').val()
-        }
-        fields = ['id','code'];
-        and = 1;
-        join = {
-            'tables':{
-                0: JSON.stringify(['registry.book'])
-            },
-            'quieres':{
-                0: JSON.stringify(['id'])
-            },
-            'fields':{
-                0: JSON.stringify(['id','title'])
+        return search_book_code($(this));
+     });
+    $('#form_isbn').submit(function(e){
+
+        //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
+        /*var isbn = $(this).find('input[name=codec]').val();
+        var data_;
+        $.ajax({
+            'async': false,
+            'global': false,
+            'url': 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn,
+            'dataType': "json",
+            'success': function (data) {
+                data_ = data;
             }
-        }
-        join = JSON.stringify(join);
-
-        var search = {
-            'type': 'registry.book',
-            'fields': JSON.stringify(fields),
-            'value': JSON.stringify(query),
-            'and': and,
-            'join': join
-        }
-        search = JSON.stringify(search);
-        var csrf = $('.csrf_header').find('div input').val();
-        var data = advanced_search(search, csrf);
-        $(this).find('.place_pink').remove();
-
-        if('response' in data){
-            $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">No ' +
-                'se encontro el codigo del libro que estas buscando revisa que este bien escrito el codigo</p>');
-            return false;
-        }
-
-            return true;
+        });
+        console.log(data_);
+        return false;*/
      });
 
     if($('.img_profile_mini').length>0){
@@ -591,8 +666,13 @@ $(document).ready(function(){
 
         });
 
+    $('.selec_reg ').change(function(){
+        map_select();
+    });
 
-
+    if($('#reg_map').length>0){
+        map_select();
+    }
 
     if($('#d-map').length>0){
             $.ajax({

@@ -1578,7 +1578,6 @@ def get_page(request, **kwargs):
     return render(request, template, context)
 
 
-@login_required(login_url='/')
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
@@ -1591,15 +1590,40 @@ def book_crossing(request, **kwargs):
     return render(request, template, context)
 
 
-@login_required(login_url='/')
 def book(request, **kwargs):
+
     template = kwargs['template_name']
-    code = request.POST.get('codec')
+
+    #state_1 = encontrado, state_2 = liberado
+    code = kwargs['code']
     book = models.Book.objects.get(code=code)
     list_users = models.Travel.objects.filter(book__code=code)
+
+    count_user =models.Travel.objects.filter(book__code=code).\
+                values('user__username').annotate(count = db_model.Count('user'))
+
+    state_1 = models.Travel.objects.filter(user=request.user,
+                                          book__code=code, status=1)
+    state_2 = models.Travel.objects.filter(user=request.user,
+                                          book__code=code, status=0)
+
+    if state_1:
+        state_1 = True
+    else:
+        state_1 = False
+
+    if state_2:
+        state_2 = True
+    else:
+        state_2 = False
+
+
     context = {
         'book': book,
-        'list_users': list_users
+        'list_users': list_users,
+        'state_1': state_1,
+        'state_2': state_2,
+        'count_user': count_user
     }
 
     return render(request, template, context)

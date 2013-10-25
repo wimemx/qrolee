@@ -17,11 +17,14 @@
 {% endblock %}
 
 {% block head %}
-    {% include 'header.html' %}
+    {% if user.is_active %}
+        {% include 'header.html' %}
+    {% endif %}
 {% endblock %}
+
 {% block main_site %}
     <div class="grid-16 book_crossing">
-        <div class="tag act_tag">
+        <div class="tag t_1 act_tag">
             <div class="grid-14 wallpaper ">
                 <span class="title title_cross grid-5">Libros vagabundos</span>
                 <span class="icon grid-13 container_icons" >
@@ -46,15 +49,15 @@
                 </span>
                 <span class="icons_center icons_arrows">
                     <span class="grid-6 pos_center">
-                        <span class="btn_step tag_btn">Encontre un libro</span>
+                        <span class="btn_step tag_btn t_2">Encontre un libro</span>
                         <span class="icon_arrow"></span>
-                        <span class="btn_step">Libera un libro</span>
+                        <span class="btn_step tag_btn t_3">Libera un libro</span>
                     </span>
                </span>
                <div id="map" class="grid-14 map_crossing no-margin"></div>
             </div>
-            <div class="grid-14">
-                <span class="grid-7 no-margin">
+            <div class="grid-15">
+                <span class="grid-7 no-margin mar_rig ">
                     <span class="title grid-4">Últimos libros liberados</span>
                     <div id="scrollbar1">
                         <div class="scrollbar"><div class="track"><div class="thumb">
@@ -64,7 +67,7 @@
                                 {% for obj in books %}
                                     {% if obj.status == 1 %}
                                         <span class="grid-7 no-margin container_mini_crossing">
-                                            <span class="grid-3 wrapper_mini_crossing">
+                                            <span class="grid-3 wrapper_mini_crossing borde_author">
                                                 {% if not obj.book.picture %}
                                                     <img class="img_size_all" src="/static/img/create.png" />
                                                 {% else %}
@@ -90,46 +93,48 @@
                     </div>
                     <span class="grid-3 no-margin place_pink">Ver todos</span>
                 </span>
-                <span class="grid-7 no-margin">
-            <span class="title grid-4">Últimos libros encontrados</span>
-            <div id="scrollbar1">
-                <div class="scrollbar"><div class="track"><div class="thumb">
-                    <div class="end"></div></div></div></div>
-                <div class="viewport container_crossing">
-                    <div class="overview">
-                        {% for obj in books %}
-                            {% if obj.status == 0 %}
-                                <span class="grid-7 no-margin container_mini_crossing">
-                                    <span class="grid-3 wrapper_mini_crossing">
-                                        {% if not obj.book.picture %}
-                                            <img class="img_size_all" src="/static/img/create.png" />
-                                        {% else %}
-                                            <img class="img_size_all"
-                                                 src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
+                <span class="grid-7 no-margin border_left">
+                    <div class="right_marg">
+                        <span class="title grid-4">Últimos libros encontrados</span>
+                        <div id="scrollbar1">
+                            <div class="scrollbar"><div class="track"><div class="thumb">
+                                <div class="end"></div></div></div></div>
+                            <div class="viewport container_crossing">
+                                <div class="overview">
+                                    {% for obj in books %}
+                                        {% if obj.status == 0 %}
+                                            <span class="grid-7 no-margin container_mini_crossing">
+                                                <span class="grid-3 wrapper_mini_crossing borde_author">
+                                                    {% if not obj.book.picture %}
+                                                        <img class="img_size_all" src="/static/img/create.png" />
+                                                    {% else %}
+                                                        <img class="img_size_all"
+                                                             src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
+                                                    {% endif %}
+                                                </span>
+                                                <span class="title titles_mini_crossing grid-4 no-margin ">
+                                                    {{ obj.book.title }}
+                                                </span>
+                                                <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                                <span class="grid-3 no-margin text_top">Encontrado por
+                                                    <span class="place_pink">{{ obj.user.username }}</span>
+                                                </span>
+                                                <span class="grid-2 no-margin text_since d-text_opacity text_top">
+                                                    hace {{ obj.book.date|member_since }}
+                                                </span>
+                                            </span>
                                         {% endif %}
-                                    </span>
-                                    <span class="title titles_mini_crossing grid-4 no-margin ">
-                                        {{ obj.book.title }}
-                                    </span>
-                                    <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                    <span class="grid-3 no-margin text_top">Liberado por
-                                        <span class="place_pink">{{ obj.user.username }}</span>
-                                    </span>
-                                    <span class="grid-2 no-margin text_since d-text_opacity text_top">
-                                        hace {{ obj.book.date|member_since }}
-                                    </span>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <span class="grid-3 no-margin place_pink">Ver todos</span>
                     </div>
-                </div>
-            </div>
-            <span class="grid-3 no-margin place_pink">Ver todos</span>
-        </span>
+                </span>
 
             </div>
         </div>
-        <div class="tag">
+        <div class="tag t_2 ">
             <div class="grid-14 wallpaper ">
                 <span class="title title_cross grid-5">Libros vagabundos</span>
                 <span class="text_search" >
@@ -139,9 +144,9 @@
                 <div class="form-container center form_bottom" style="display: block
                 ;margin-top: 80px">
                     <p class="title"><span>Codigo Libro Vagabundo</span>
-                        <a class="close right tag_btn" ></a>
+                        <a class="close right tag_btn t_1" ></a>
                     </p>
-                    <form id="form_search" method="post" class="login grid-4 center" action="/qro_lee/book/" style="display: block;">
+                    <form id="form_search" method="post" class="login grid-4 center" style="display: block;">
                         {% csrf_token %}
                         <span class="banner"></span>
                         <p>
@@ -156,5 +161,32 @@
                 </div>
             </div>
         </div>
+        <div class="tag t_3 ">
+        <div class="grid-14 wallpaper ">
+            <span class="title title_cross grid-5">¿Deseas donar un libro al mundo?</span>
+            <span class="text_search" >
+                Ingresa el ISBN del libro que deseas liberar
+            </span>
+            <div class="form-container center form_bottom" style="display: block
+            ;margin-top: 80px">
+                <p class="title"><span>Codigo ISBN</span>
+                    <a class="close right tag_btn t_1" ></a>
+                </p>
+                <form id="form_isbn" method="post" class="login grid-4 center isbn"
+                      style="display: block;" action="/registry/register_book/">
+                    {% csrf_token %}
+                    <span class="banner"></span>
+                    <p>
+                        <span class="text_field">Inserta aquí tu código</span>
+                        <input name="isbn" class="required value_field" type="text">
+                    </p>
+                    <p>
+                        <input value="Buscar" class="int_btn" type="submit">
+                    </p>
+                </form>
+                <img class="shadow" src="/static/img/form_shadow.png" alt="">
+            </div>
+        </div>
+    </div>
     </div>
 {% endblock %}
