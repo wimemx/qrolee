@@ -9,9 +9,9 @@ from django.db import models as db_model
 from django.db.models import Q
 from django.core import serializers
 
-from registry.models import Entity,Type,Event
+from registry.models import Entity, Type, Event
 from account import models as account_models
-from registry import models,views,settings
+from registry import models, views, settings
 
 
 from decimal import Decimal
@@ -23,7 +23,9 @@ import ast
 import operator
 import math
 import urllib2
-
+import urllib
+import httplib
+import os
 
 
 @login_required(login_url='/')
@@ -258,7 +260,8 @@ def get_entity(request, **kwargs):
     else:
         entityuser = models.MemberToObject.objects.filter(
             user_id=request.user.id, object=entity.id, object_type='E')
-        request_sent = entityuser[0].request
+        if entityuser:
+            request_sent = entityuser[0].request
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -1585,7 +1588,7 @@ def book_crossing(request, **kwargs):
         'books': books
     }
 
-    return  render(request, template, context)
+    return render(request, template, context)
 
 
 @login_required(login_url='/')
@@ -1599,6 +1602,35 @@ def book(request, **kwargs):
         'list_users': list_users
     }
 
-    return  render(request, template, context)
+    return render(request, template, context)
 
+
+def qr_book(request, **kwargs):
+    template = kwargs['template_name']
+    code = kwargs['book_code']
+    url = settings.SITE_URL+'qro_lee/qr/'+code
+    image = generate(url)
+    path = os.path.join(os.path.dirname(__file__), '..', 'static/qr/').replace('\\','/')
+    file = open(path+code+".png", "wb")
+    file.write(image)
+    file.close()
+    context = {
+        'code': code,
+        'url': url,
+        'img': code
+    }
+    return render(request, template, context)
+
+
+def generate(content, format="png"):
+    query = urllib.urlencode({
+        "content": content,
+        "format": format
+    })
+    con = httplib.HTTPConnection("www.esponce.com")
+    con.request("GET", "/api/v3/generate?" + query)
+    response = con.getresponse()
+    image = response.read()
+    con.close()
+    return image
 

@@ -753,6 +753,7 @@ $('.affiliate').each(function(i){
             $('.create-discussion textarea').val('');
             $('.alert-message').fadeOut(300, function(){
                 $(this).parent().fadeIn(300);
+                $(this).parent().find('.create-discussion-wrapper').fadeIn(300);
             });
         });
         $('.create-discussion-wrapper .accept').click(function(){

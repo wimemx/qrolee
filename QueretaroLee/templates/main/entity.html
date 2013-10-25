@@ -35,7 +35,7 @@
                 <input class="user" type="hidden"/>
                 <input class="entity" value="{{ entity.id }}" type="hidden"/>
             </div>
-            {% if entity_type.1 ==  'group' %}
+            {% if entity_type.1 ==  'group' and member %}
                 <div style="display:none;" class="create-discussion-wrapper margin-50 grid-8 lightbox center">
                     <span class="close"></span>
                 <span class="create-discussion grid-7 center">

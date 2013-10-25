@@ -156,6 +156,9 @@ input:not([type='submit']){
 .container-16 p.center{
     text-align: center;
 }
+    h3.center, h4.center{
+        text-align: center;
+    }
 .eraseClass{
 
 }
@@ -3185,3 +3188,28 @@ textarea{
 .book_travel .title{
     left: 20px!important;
 }
+
+.qr-wrapper{
+    background: #fffcf5;
+    height: 300px;
+    padding-top: 50px;
+    margin-bottom: 100px !important;
+    border: 2px dashed #000000;
+    border-radius: 8px;
+}
+    .qr{
+        height: 220px;
+        display: block;
+    }
+        .qr img{
+            width: 100%;
+            height: 100%;
+        }
+    .qr-link{
+        margin-top: 30px;
+        clear: both;
+    }
+    .view-pdf{
+        margin-top: 30px;
+        cursor: pointer;
+    }
