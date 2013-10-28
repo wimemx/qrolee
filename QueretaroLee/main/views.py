@@ -1459,6 +1459,7 @@ def search_api(request, **kwargs):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
 
+    print response
     if 'items' in response:
         pass
     elif 'cost' in response:
