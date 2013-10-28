@@ -1424,12 +1424,13 @@ function create_template(type, result,i, create_user){
             p.html(privacy);
             item.append(p);
         }else if (type == 'account.page'){
+            a_title.attr('href','/qro_lee//'+result[i].id);
             var privacy;
             if(result[i].coment)
                 privacy = result[i].coment.replace(/<\/?[^>]+>/gi, '');
             else
                 privacy = '';
-            p.html(privacy);
+            p.html(truncText(privacy, 120));
             item.append(p);
             var img_exist = false;
             var img_coment = $('<div></div>');
@@ -1440,7 +1441,6 @@ function create_template(type, result,i, create_user){
                     img_exist = true;
                 }
             });
-
 
         }else if(type == 'registry.entity.1' ||
             type == 'registry.entity.3'){
