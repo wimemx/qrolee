@@ -1002,6 +1002,24 @@ $(document).ready(function(){
                 }
             }
             join = JSON.stringify(join);
+        }else if(type == 'account.page'){
+            query = {
+                'name__icontains': $.trim($('.advanced_filter .search').val())
+            }
+            fields = ['name','coment'];
+            join = {
+                'tables':{
+                    0: JSON.stringify(['account.page','auth.user'])
+
+                },
+                'quieres':{
+                    0: JSON.stringify(['id'])
+                },
+                'fields':{
+                    0: JSON.stringify(['name'])
+                }
+            }
+            join = JSON.stringify(join);
         }else if(type == 'account.list'){
             query = {
                 'name__icontains': $.trim($('.advanced_filter .search').val())
@@ -1195,7 +1213,7 @@ $(document).ready(function(){
                 api = search_api(csrf, query);
             }else
                 result = advanced_search(search, csrf);
-
+                console.log(result);
             if(result.response != 0){
                 $.each(result,function(i){
                     create_template(type, result, i, create_user);
@@ -1405,6 +1423,25 @@ function create_template(type, result,i, create_user){
                 privacy = 'Privado';
             p.html(privacy);
             item.append(p);
+        }else if (type == 'account.page'){
+            var privacy;
+            if(result[i].coment)
+                privacy = result[i].coment.replace(/<\/?[^>]+>/gi, '');
+            else
+                privacy = '';
+            p.html(privacy);
+            item.append(p);
+            var img_exist = false;
+            var img_coment = $('<div></div>');
+            img_coment.append(result[i].coment);
+            $.each(img_coment,function(){
+                if($(this).find('img').length>0 & !img_exist){
+                    img.attr('src',$(this).find('img').attr('src'));
+                    img_exist = true;
+                }
+            });
+
+
         }else if(type == 'registry.entity.1' ||
             type == 'registry.entity.3'){
 
