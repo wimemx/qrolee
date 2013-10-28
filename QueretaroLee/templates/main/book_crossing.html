@@ -59,76 +59,70 @@
             <div class="grid-15">
                 <span class="grid-7 no-margin mar_rig ">
                     <span class="title grid-4">Últimos libros liberados</span>
-                    <div id="scrollbar1">
-                        <div class="scrollbar"><div class="track"><div class="thumb">
-                            <div class="end"></div></div></div></div>
                         <div class="viewport container_crossing">
-                            <div class="overview">
-                                {% for obj in books %}
-                                    {% if obj.status == 1 %}
-                                        <span class="grid-7 no-margin container_mini_crossing">
-                                            <span class="grid-3 wrapper_mini_crossing borde_author">
-                                                {% if not obj.book.picture %}
-                                                    <img class="img_size_all" src="/static/img/create.png" />
-                                                {% else %}
-                                                    <img class="img_size_all"
-                                                         src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
-                                                {% endif %}
-                                            </span>
-                                            <span class="title titles_mini_crossing grid-4 no-margin ">
-                                                {{ obj.book.title }}
-                                            </span>
-                                            <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                            <span class="grid-3 no-margin text_top">Liberado por
-                                                <span class="place_pink">{{ obj.user.username }}</span>
-                                            </span>
-                                            <span class="grid-2 text_since no-margin d-text_opacity text_top">
-                                                hace {{ obj.book.date|member_since }}
-                                            </span>
-                                        </span>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                            {% for obj in books_1 %}
+                                <span class="grid-7 no-margin container_mini_crossing">
+                                    <span class="grid-3 wrapper_mini_crossing borde_author">
+                                        {% if not obj.book.picture %}
+                                            <img class="img_size_all" src="/static/img/create.png" />
+                                        {% else %}
+                                            <img class="img_size_all"
+                                                 src="{{ obj.book.picture }}" />
+                                        {% endif %}
+                                    </span>
+                                    <span class="title titles_mini_crossing grid-4 no-margin ">
+                                        {{ obj.book.title }}
+                                    </span>
+                                    <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                    <span class="grid-3 no-margin text_top">Liberado por
+                                        <span class="place_pink">{{ obj.user.username }}</span>
+                                    </span>
+                                    <span class="grid-2 text_since no-margin d-text_opacity text_top">
+                                        hace {{ obj.book.date|member_since }}
+                                    </span>
+                                </span>
+                            {% endfor %}
                         </div>
-                    </div>
-                    <span class="grid-3 no-margin place_pink">Ver todos</span>
+                    {% if books_1 and books_1|length > 3 %}
+                        <span class="grid-3 no-margin place_pink show_t">
+                            <span>Ver todos</span>
+                            <input type="hidden" value="1"/>
+                        </span>
+                    {% endif %}
                 </span>
                 <span class="grid-7 no-margin border_left">
                     <div class="right_marg">
                         <span class="title grid-4">Últimos libros encontrados</span>
-                        <div id="scrollbar1">
-                            <div class="scrollbar"><div class="track"><div class="thumb">
-                                <div class="end"></div></div></div></div>
                             <div class="viewport container_crossing">
-                                <div class="overview">
-                                    {% for obj in books %}
-                                        {% if obj.status == 0 %}
-                                            <span class="grid-7 no-margin container_mini_crossing">
-                                                <span class="grid-3 wrapper_mini_crossing borde_author">
-                                                    {% if not obj.book.picture %}
-                                                        <img class="img_size_all" src="/static/img/create.png" />
-                                                    {% else %}
-                                                        <img class="img_size_all"
-                                                             src="/static/media/users/{{ obj.user.id }}/book/{{ obj.book.picture }}" />
-                                                    {% endif %}
-                                                </span>
-                                                <span class="title titles_mini_crossing grid-4 no-margin ">
-                                                    {{ obj.book.title }}
-                                                </span>
-                                                <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                                <span class="grid-3 no-margin text_top">Encontrado por
-                                                    <span class="place_pink">{{ obj.user.username }}</span>
-                                                </span>
-                                                <span class="grid-2 no-margin text_since d-text_opacity text_top">
-                                                    hace {{ obj.book.date|member_since }}
-                                                </span>
-                                            </span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                {% for obj in books_2 %}
+                                    <span class="grid-7 no-margin container_mini_crossing">
+                                        <span class="grid-3 wrapper_mini_crossing borde_author">
+                                            {% if not obj.book.picture %}
+                                                <img class="img_size_all" src="/static/img/create.png" />
+                                            {% else %}
+                                                <img class="img_size_all"
+                                                     src="{{ obj.book.picture }}" />
+                                            {% endif %}
+                                        </span>
+                                        <span class="title titles_mini_crossing grid-4 no-margin ">
+                                            {{ obj.book.title }}
+                                        </span>
+                                        <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                        <span class="grid-3 no-margin text_top">Encontrado por
+                                            <span class="place_pink">{{ obj.user.username }}</span>
+                                        </span>
+                                        <span class="grid-2 no-margin text_since d-text_opacity text_top">
+                                            hace {{ obj.book.date|member_since }}
+                                        </span>
+                                    </span>
+                                {% endfor %}
                             </div>
-                        </div>
-                        <span class="grid-3 no-margin place_pink">Ver todos</span>
+                        {% if books_2 and books_2|length > 3 %}
+                            <span class="grid-3 no-margin place_pink show_t">
+                                <span>Ver todos</span>
+                                <input type="hidden" value="1"/>
+                            </span>
+                        {% endif %}
                     </div>
                 </span>
 

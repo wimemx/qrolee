@@ -2980,7 +2980,12 @@ textarea{
 }
 
 .container_crossing{
-    height: 380px!important;
+    height: 328px;
+    overflow: hidden;
+    float: left;
+}
+.book_crossing .show_t{
+    margin-bottom: 50px !important;
 }
 
 .edit_entity{
@@ -3407,4 +3412,40 @@ textarea{
     background-color: #7ca680!important;
     top: 20px!important;
     padding: 5px 20px 5px 20px!important;
+}
+
+.genre_sel .select_wrapper{
+    width: 88px!important;
+    left: 6px!important;
+}
+
+.book_reg .line_divide{
+    width: 100%;
+    float: left;
+    height: 10px;
+}
+
+.sel_spots select{
+    display: none;
+}
+
+.sel_spots .value_sel{
+    position: absolute;
+    z-index: 9;
+    right: 23px;
+    background-color: #CCC;
+    top: 29px;
+}
+.value_sel .sel_{
+    cursor: pointer;
+}
+.value_sel .sel_:hover{
+    background-color: #C2BAAB;
+}
+.sel_spots .dropdown{
+    cursor: pointer;
+    height: 27px!important;
+    width: 20px;
+    border: 1px solid #e4e4e4;
+    background: url('../img/dropdown.png') no-repeat 4px 7px;
 }

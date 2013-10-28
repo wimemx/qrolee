@@ -37,6 +37,6 @@ urlpatterns = patterns('',
         {'template_name': 'main/book_crossing.html'},name='book_crossing'),
     url(r'^book/(?P<code>[-\w]+)/$', views.book ,
         {'template_name': 'main/book.html'},name='book'),
-    url(r'^qr/(?P<book_code>[0-9]+)/$', views.qr_book ,
+    url(r'^qr/(?P<book_code>[-\w]+)/$', views.qr_book ,
         {'template_name': 'main/qr.html'},name='Qr_code'),
 )

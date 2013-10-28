@@ -5,6 +5,7 @@ var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var men_1 = false;
+var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
 var months = ['Enero','Febrero','Marzo','Abril',
@@ -117,7 +118,6 @@ var marker;
 	};
 
 
-
 function clear_input(no_clear){
     $('input').each(function(){
         if($(this).attr('name')){
@@ -129,8 +129,68 @@ function clear_input(no_clear){
     });
 }
 
+function item_select(all, value){
+    var value_sel = $('.sel_spots .value_sel').empty();
+    value_sel.fadeOut(0);
+    var count = 1;
+    $.each($('.sel_spots select option'),function(){
+        if(count <= 10){
+            var cad = $(this).val();
+            if(all)
+                value_sel.append('<span class="grid-3 sel_">'+cad+
+                    '</span>');
+            else{
+                if(cad.search(value) == 0){
+                    value_sel.append('<span class="grid-3 sel_">'+cad+
+                        '</span>');
+                }
+            }
+        }
+        count++;
+    });
+    value_sel.fadeIn(0);
+    $('.sel_').click(function(){
+        $('.sel_spots input').val($(this).text());
+        $(this).parent().fadeOut(0);
+    });
+}
 
 $(document).ready(function(){
+
+    $('.sel_spots .dropdown').click(function(){
+        item_select(true, '');
+        combo_act = true;
+    });
+    $('.sel_spots input').keyup(function(){
+        var value = $(this).val();
+        item_select(false, value);
+
+    });
+
+    $('.book_crossing .show_t').click(function(){
+        var count = $(this).parent().find('.container_crossing').find('.grid-7').length;
+        var item_height = count * 107;
+        $(this).find('span').empty();
+
+        if(parseInt($(this).find('input').val())==0){
+            $(this).find('input').val(1);
+            $(this).find('span').append('Ver todos');
+            item_height = 328;
+        }else{
+            $(this).find('input').val(0);
+            $(this).find('span').append('Ver menos');
+            if(count <= 3)
+                item_height = 328;
+            else
+                item_height = count * 107;
+        }
+        $(this).parent().find('.container_crossing').animate({
+            'height': item_height
+        },250, function() {
+            // Animation complete.
+    });
+
+    });
 
     $('.span_all').click(function(){
         show_index_items($(this));
@@ -144,8 +204,12 @@ $(document).ready(function(){
         var class_name = 't_1';
         if($(this).hasClass('t_2'))
             class_name = 't_2';
+
         if($(this).hasClass('t_3'))
             class_name = 't_3';
+
+        $('.text_no_book').remove();
+        $('.value_field').val('');
 
         $.each($('.book_crossing .tag'),function(){
             if($(this).hasClass(class_name)){

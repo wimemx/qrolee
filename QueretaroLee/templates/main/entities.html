@@ -36,9 +36,7 @@
             <div class="viewport error">
                 <div class="overview">
                 {% for entity in user_entities %}
-
                 {% if entity_type.1 == 'spot' %}
-
                 <div class="grid-7 omega d-spot">
 
                 {% else %}
@@ -93,15 +91,15 @@
                             <div class="grid-7 alpha">
                         {% endif %}
                 {% endif %}
-
-                    <span class="wrapper {{ classimage }}">
-                        {% if not entity.picture %}
-                            <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
-                        {% else %}
-                            <img class="img_size_all" src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
-
-                        {% endif %}
-                    </span>
+                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/">
+                        <span class="wrapper {{ classimage }}">
+                            {% if not entity.picture %}
+                                <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
+                            {% else %}
+                                <img class="img_size_all" src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                            {% endif %}
+                        </span>
+                    </a>
 
                 {% if entity_type.1 == 'spot' %}
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">

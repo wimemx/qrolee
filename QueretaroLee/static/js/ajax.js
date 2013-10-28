@@ -432,7 +432,7 @@ function search_book_code(form){
 
     if('response' in data_1)
         form.find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">No ' +
-            'se encontro el codigo del libro que estas buscando revisa que este bien escrito el codigo</p>');
+            'se encontró el código del libro que estas buscando revisa que este bien escrito</p>');
     else
         window.location.href = site_url + '/qro_lee/book/' + code;
 
@@ -445,12 +445,19 @@ $(document).ready(function(){
     $('.part_bottom .green_btn').click(function(){
 
         var lat_long = $('.lat_long').val().split(',');
+        var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ2346789";
+        var contraseña = "";
+        for (i=0; i<10; i++) contraseña += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+
         var query = {
             'lat': lat_long[0],
             'long': lat_long[1],
             'meta': $('.meta').val(),
-            'isbn': $('.isbn_book').val()
+            'isbn': $('.isbn_book').val(),
+            'key' : contraseña,
+            'genre': $('.genre_sel').find('select').val()
         }
+
         $.ajax({
             type: "POST",
             async: false,
@@ -476,7 +483,6 @@ $(document).ready(function(){
             'description': $('.text_descrip').val(),
             'code_book': $('.code_book').val()
         }
-
        $.ajax({
             type: "POST",
             async: false,
@@ -491,15 +497,16 @@ $(document).ready(function(){
                if(data['succes'] == 'True')
                     window.location.href = site_url + '/qro_lee/book/'+data['code_book'];
             });
+
     });
 
     $('#form_search').submit(function(e){
         return search_book_code($(this));
      });
     $('#form_isbn').submit(function(e){
+        var isbn = $(this).find('input[name=isbn]').val();
 
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
-        /*var isbn = $(this).find('input[name=codec]').val();
         var data_;
         $.ajax({
             'async': false,
@@ -510,8 +517,13 @@ $(document).ready(function(){
                 data_ = data;
             }
         });
-        console.log(data_);
-        return false;*/
+        $(this).find('input[type=submit]').parent().parent().find('.text_no_book').remove();
+        if(data_['totalItems'] == 0){
+            $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
+                'No se encontró el isbn verifica que este correcto</p>');
+            return false;
+        }else
+            return true;
      });
 
     if($('.img_profile_mini').length>0){
@@ -1883,6 +1895,9 @@ $(document).click(function(){
     if(!men_1)
         $('.sub-menu').fadeOut(250);
     men_1 = false;
+    if(!combo_act)
+        $('.value_sel').fadeOut(200);
+    combo_act = false;
 
 });
 

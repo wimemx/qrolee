@@ -1582,10 +1582,12 @@ def get_page(request, **kwargs):
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
-    books = models.Travel.objects.all()
+    books_1 = models.Travel.objects.filter(status=1)
+    books_2 = models.Travel.objects.filter(status=0)
 
     context = {
-        'books': books
+        'books_1': books_1,
+        'books_2': books_2
     }
 
     return render(request, template, context)
@@ -1633,7 +1635,7 @@ def book(request, **kwargs):
 def qr_book(request, **kwargs):
     template = kwargs['template_name']
     code = kwargs['book_code']
-    url = settings.SITE_URL+'qro_lee/qr/'+code
+    url = settings.SITE_URL+'qro_lee/book/'+code
     image = generate(url)
     path = os.path.join(os.path.dirname(__file__), '..', 'static/qr/').replace('\\','/')
     file = open(path+code+".png", "wb")

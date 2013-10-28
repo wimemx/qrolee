@@ -26,7 +26,6 @@ import HTMLParser
 import datetime
 
 
-
 def index(request, **kwargs):
 
     error = ''
@@ -444,10 +443,14 @@ def register_event(request, **kwargs):
     else:
         entity_type == 'organization'
         entity_type = ['organizaciones', 'organization']
+
+    spots = models.Entity.objects.filter(type__name='spot')
+
     context = {
         'profile': profile,
         'entity': entity,
-        'entity_type': entity_type
+        'entity_type': entity_type,
+        'spots': spots
     }
 
     return render(request, template, context)
@@ -1649,31 +1652,34 @@ def registry_book(request, **kwargs):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
     attribute = response['items'][0]['volumeInfo']
+    genres = account.Genre.objects.all()
 
     author = 'anonimo'
-    picture = 'create.jpg'
+    picture = ''
     publishedDate = datetime.datetime.today()
     pages = 100
+    publisher = ''
 
     if attribute['authors']:
         author = attribute['authors'][0]
-
-    if attribute['imageLinks']['thumbnail']:
-        picture = attribute['imageLinks']['thumbnail']
-
+    if 'imageLinks' in attribute:
+        if attribute['imageLinks']['thumbnail']:
+            picture = attribute['imageLinks']['thumbnail']
+    if 'publisher' in attribute:
+        publisher = attribute['publisher']
 
     book = {
         'title': attribute['title'],
         'author': author,
         'isbn': isbn,
-        'publisher': attribute['publisher'],
+        'publisher': publisher,
         'picture': picture
     }
 
-
     template = kwargs['template_name']
     context = {
-        'book': book
+        'book': book,
+        'genres': genres
     }
 
     return  render(request, template, context)
@@ -1687,17 +1693,24 @@ def register_ajax_book(request):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
     attribute = response['items'][0]['volumeInfo']
+    dict = {
+        'name': list['genre'],
+    }
+    del list['genre']
 
     author = 'anonimo'
-    picture = 'create.jpg'
+    picture = ''
     publishedDate = datetime.datetime.today()
     pages = 100
+    publisher = ''
 
-    if attribute['authors']:
+    if 'authors' in attribute:
         author = attribute['authors'][0]
-
-    if attribute['imageLinks']['thumbnail']:
-        picture = attribute['imageLinks']['thumbnail']
+    if 'imageLinks' in attribute:
+        if attribute['imageLinks']['thumbnail']:
+            picture = attribute['imageLinks']['thumbnail']
+    if 'publisher' in attribute:
+        publisher = attribute['publisher']
 
 
     date = str(attribute['publishedDate']).split("-")
@@ -1708,7 +1721,7 @@ def register_ajax_book(request):
 
     list['picture'] = picture
     list['cover'] = picture
-    list['publisher'] = attribute['publisher']
+    list['publisher'] = publisher
     list['published_date'] = publishedDate
     list['pages'] = pages
     list['isbn'] = isbn
@@ -1728,9 +1741,20 @@ def register_ajax_book(request):
         'status': 0,
         'type_user': 1
     }
+    key = list['key']
     del list['lat']
     del list['long']
     del list['meta']
+    del list['key']
+
+    charArt_1 = 0
+    code = ''
+
+    for x in isbn:
+        code = code + str(x) + key[charArt_1]
+        charArt_1+=1
+
+    list['code'] = code[0:10]
 
     book = models.Book.objects.create(**list)
     book.save()
@@ -1741,11 +1765,13 @@ def register_ajax_book(request):
         travel = models.Travel.objects.create(**list_travel)
         travel.save()
 
+
     context = {
         'succes': succes,
         'code': book.code
 
     }
+
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
