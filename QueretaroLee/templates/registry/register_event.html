@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block js %}
-
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
@@ -90,8 +90,17 @@
                     <input name="end_time" type="text" class="date-end"/>
                 </span>
             </p>
-            <p>Lugar del evento
-                <input name="location_name" type="text" value="" class="grid-5 alpha address fright value"/>
+            <p class="sel_spots " >Lugar del evento
+                <span class="fright dropdown">
+                </span>
+                <input name="location_name" type="text" value="" class="grid-4 alpha address fright value"/>
+                <span class="grid-4 no-margin value_sel">
+                </span>
+                <select>
+                    {% for obj in spots %}
+                        <option value="{{ obj.name }}">{{ obj.name }}</option>
+                    {% endfor %}
+                </select>
             </p>
             <p>
                 <span id="map" class="grid-5 omega fright"></span>
@@ -128,6 +137,7 @@
     </div>
     </div>
     <script type="text/javascript">
+
         Dropzone.options.picture = {
             maxFiles: 1,
             dictDefaultMessage: 'Arrastre aquí el logotipo',

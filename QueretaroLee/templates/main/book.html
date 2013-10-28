@@ -29,7 +29,7 @@
                 {% if not book.picture %}
                     <img class="img_size_all" src="/static/img/create.png" alt="{{ book.title }}"/>
                 {% else %}
-                    <img class="img_size_all" src="/static/media/users/2/book/{{ book.picture }}/"
+                    <img class="img_size_all" src="{{ book.picture }}"
                          alt="{{ book.picture }}"/>
                 {% endif %}
             </span>
@@ -84,6 +84,13 @@
                     </p>
                 </span>
             </span>
+            <span class="grid-4 no-margin fright">
+                    {% if state_1 and not state_2 %}
+                        Este libro se encuentra vagando
+                    {% elif state_2 %}
+                        Este libro se encuentra liberado
+                    {% endif %}
+                </span>
             <div class="grid-16 content book_cro single no-margin">
                 <div class="grid-15 no-margin">
                     <input type="hidden" value="{{ book.code }}" class="code_book"/>
