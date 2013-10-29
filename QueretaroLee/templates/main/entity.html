@@ -166,7 +166,10 @@
                 <img src="/static/img/create.png" class="img_size_all" alt="{{ entity.name }}"/>
             {% else %}
                 {% if owner.id == user.id %}
-                    <span class="brown_btn edit edit_entity"></span>
+                    <a href="/registry/edit/{{ entity.id }}">
+                        <span class="brown_btn edit edit_entity" style="background: url('/static/img/btn_edit.png')no-repeat 8px 8px;" >
+                        </span>
+                    </a>
                 {% endif %}
                 <img class="img_size_all" src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
             {% endif %}
@@ -600,10 +603,10 @@
                         {% for follower, profile in followers %}
                             <span class="wrapper item_member grid-5 no-margin">
                                     <span class="fleft wrapper_member">
-                                        {% if not profile.picture or profile.picture == '' %}
+                                        {% if not profile or profile == '' %}
                                             <img class="img_size_all" src="/static/img/create.png" alt=""/>
                                         {% else %}
-                                            <img class="img_size_all" src="/static/media/users/{{ follower.id }}/profile/{{ profile.picture }}" alt=""/>
+                                            <img class="img_size_all" src="/static/media/users/{{ follower.id }}/profile/{{ profile }}" alt=""/>
                                         {% endif %}
                                     </span>
                                     <h3 class="title container_txt fleft">

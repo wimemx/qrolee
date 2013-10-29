@@ -67,21 +67,21 @@ function init(lat,long) {
 			navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 
-
     };
+
 	var map = new google.maps.Map(document.getElementById("map"), settings);
-	var companyLogo = new google.maps.MarkerImage('/static/img/gmap_marker.png',
-		new google.maps.Size(100,50),
-		new google.maps.Point(0,0),
-		new google.maps.Point(50,50)
-	);
-	var companyPos = new google.maps.LatLng(lat,long);
-	var companyMarker = new google.maps.Marker({
-		position: companyPos,
-		map: map,
-		icon: companyLogo,
-		title:"Qro Lee"
-	});
+	geocoder = new google.maps.Geocoder();
+    marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: new google.maps.MarkerImage(
+            "/static/img/gmap_marker.png", // reference from your base
+            new google.maps.Size(36, 36), // size of image to capture
+            new google.maps.Point(0, 0), // start reference point on image (upper left)
+            new google.maps.Point(10, 10), // point on image to center on latlng (scaled)
+            new google.maps.Size(20, 20) // actual size on map
+        )
+    });
 	map.mapTypes.set('map_style', styledMap);
     map.setMapTypeId('map_style');
  }
@@ -151,6 +151,7 @@ function item_select(all, value){
     value_sel.fadeIn(0);
     $('.sel_').click(function(){
         $('.sel_spots input').val($(this).text());
+        $('.place_spot').val(1);
         $(this).parent().fadeOut(0);
     });
 }
@@ -163,6 +164,7 @@ $(document).ready(function(){
     });
     $('.sel_spots input').keyup(function(){
         var value = $(this).val();
+        $('.place_spot').val(0);
         item_select(false, value);
 
     });
@@ -518,6 +520,7 @@ function update_dir_info(loc_address, lat_long, type){
                     results[0].address_components[3].long_name;
                 $('.address').val(address);
                 $('.address_user').val(address.replace('#',' '));
+
             });
         }
     }
@@ -1006,7 +1009,7 @@ $(document).ready(function(){
             query = {
                 'name__icontains': $.trim($('.advanced_filter .search').val())
             }
-            fields = ['name','coment'];
+            fields = ['name','coment','user_id','id'];
             join = {
                 'tables':{
                     0: JSON.stringify(['account.page','auth.user'])
@@ -1424,7 +1427,8 @@ function create_template(type, result,i, create_user){
             p.html(privacy);
             item.append(p);
         }else if (type == 'account.page'){
-            a_title.attr('href','/qro_lee//'+result[i].id);
+            a_wrapper.attr('href','/qro_lee/user/'+result[i].user_id+'/page/'+result[i].id);
+            a_title.attr('href','/qro_lee/user/'+result[i].user_id+'/page/'+result[i].id);
             var privacy;
             if(result[i].coment)
                 privacy = result[i].coment.replace(/<\/?[^>]+>/gi, '');
@@ -2911,20 +2915,17 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
             'title__icontains':words
         }
         model = 'account.title';
-        fields = ['title', 'cover', 'id','id_google'];
+        fields = ['title', 'cover', 'id','id_google','description'];
         and = 0;
         join = {
             'tables':{
-                0: JSON.stringify(['account.author','account.authortitle']),
-                1: JSON.stringify(['account.rate'])
+                0: JSON.stringify(['account.author'])
             },
             'quieres':{
-                0: JSON.stringify(['title_id']),
-                1: JSON.stringify(['element_id'])
+                0: JSON.stringify(['id'])
             },
             'fields':{
-                0: JSON.stringify(['name']),
-                1: JSON.stringify(['grade'])
+                0: JSON.stringify(['name'])
             },
             'activity':{
                 0:JSON.stringify(['A'])

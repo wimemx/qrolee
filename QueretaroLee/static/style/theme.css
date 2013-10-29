@@ -2848,7 +2848,6 @@ textarea{
 
 .container_message .green_btn{
     position: relative!important;
-    padding: 5px 15px 5px 15px!important;
 }
 .container_message .remove{
     position: relative !important;
@@ -2918,7 +2917,7 @@ textarea{
 }
 
 .Title .viewport{
-    height: 448px !important;
+    height: 468px !important;
 }
 
 .out_group{
@@ -3448,4 +3447,8 @@ textarea{
     width: 20px;
     border: 1px solid #e4e4e4;
     background: url('../img/dropdown.png') no-repeat 4px 7px;
+}
+
+.cursor_p{
+    cursor: pointer;
 }

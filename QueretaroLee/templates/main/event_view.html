@@ -45,7 +45,7 @@
                     <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
                         {{ event.owner }}
                     </a>
-                    <input type="hidden" class="d-latlon" value="{{ lat }},{{ lon }}" />
+                    <input type="hidden" class="d-latlon" value="{{ event.lat }},{{ event.long }}" />
                 </div>
                 {% if event.privacy_type %}
                     <span class="grid-2">
@@ -68,9 +68,7 @@
                         </p>
                     </div>
                     <div class="d-map" id="map" >
-
                     </div>
-
                 </div>
 
                 <div class="grid-2">
@@ -81,7 +79,14 @@
                     </div>
                     <div class="d-address">
                         <p><b>Lugar</b></p>
-                        <p>{{ event.location_name|replace:'#' }}</p>
+                        {% if event.place_spot %}
+                            <a class="place_pink" href="/qro_lee/entity/spot/{{ spot.0.id }}">
+                                {{ event.location_name|replace:'#' }}
+                            </a>
+                            <p class="location_name"></p>
+                        {% else %}
+                            <p>{{ event.location_name|replace:'#' }}</p>
+                        {% endif %}
                     </div>
                 </div>
 

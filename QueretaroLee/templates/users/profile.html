@@ -172,12 +172,12 @@
                          <span class="container_items grid-4 no-margin">
                              {% for obj in list_genre %}
                                  {% if forloop.counter <= 3 %}
-                                    <span class="place_pink my_items
+                                    <span title="{{ obj.genre.name }}" class="place_pink my_items
                                         {% if not forloop.last and forloop.counter != 3 %}
                                                 border_right
                                         {% endif %}
                                      ">
-                                        {{ obj.genre.name|truncatechars:12 }}
+                                        {{ obj.genre.name|truncatechars:11 }}
                                      </span>
                                  {% endif %}
                              {% endfor %}
@@ -193,14 +193,14 @@
                                         border_right
                                     {% endif %}
                                     ">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:9 }}
+                                        <a class="place_pink" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:9 }}
+                                        <a class="place_pink" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -224,14 +224,16 @@
                                         border_right
                                     {% endif %}
                                     ">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:9 }}
+                                        <a title="{{ value.title }}" class="place_pink"
+                                           href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
-                                        <a class="place_pink" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:9 }}
+                                        <a title="{{ value.title }}" class="place_pink"
+                                           href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -358,7 +360,7 @@
             </span>
         {% else %}
             <span class="grid-14 place_pink no_title">
-                {{ user_profile.user.username }} aun no añade libros favoritos
+                {{ user_profile.user.username }} aún no añade libros favoritos
             </span>
         {% endif %}
     {% endfor %}
@@ -481,7 +483,7 @@
                 </span>
             {% else %}
                 <span class="grid-14 place_pink no_title">
-                    {{ user_profile.user.username }} aun no añade libros leídos
+                    {{ user_profile.user.username }} aún no añade libros leídos
                 </span>
             {% endif %}
         {% endfor %}
@@ -599,7 +601,7 @@
                     </span>
                 {% else %}
                     <span class="grid-14 place_pink no_title">
-                        {{ user_profile.user.username }} aun no añade libros que desea leer
+                        {{ user_profile.user.username }} aún no añade libros que desea leer
                     </span>
                 {% endif %}
             {% endfor %}
@@ -743,12 +745,12 @@
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
                                 <span class="grid-15 place_pink no_title">
-                                    Aun no has creado ninguna lista
+                                    Aún no has creado ninguna lista
                                 </span>
                             {% else %}
                                 <span class="grid-15 place_pink no_title">
                                     {{ user_profile.user.username }}
-                                    aun no a creado ninguna lista
+                                    aún no ha creado ninguna lista
                                 </span>
                             {% endif %}
                         {% endfor %}
@@ -809,12 +811,12 @@
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
                                 <span class="grid-15 place_pink no_title">
-                                    Aun no te has unido a ningun grupo
+                                    Aún no te has unido a ningun grupo
                                 </span>
                             {% else %}
                                 <span class="grid-15 place_pink no_title">
                                     {{ user_profile.user.username }}
-                                    aun no se ha unido a ningun grupo
+                                    aún no se ha unido a ningun grupo
                                 </span>
                             {% endif %}
                         {% endfor %}
@@ -828,7 +830,7 @@
                     {% if user_profile.user.id == user.id %}
                         Mis páginas
                     {% else %}
-                        Paginas de {{ user_profile.user.username }}
+                        Páginas de {{ user_profile.user.username }}
                     {% endif %}
                 </h3>
                 <span class="search fleft grid-4">
@@ -894,12 +896,12 @@
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
                                 <span class="grid-15 place_pink no_title">
-                                    Aun no has creado paginas
+                                    Aún no has creado páginas
                                 </span>
                             {% else %}
                                 <span class="grid-15 place_pink no_title">
                                     {{ user_profile.user.username }}
-                                    aun no ha creado ninguna pagina
+                                    aún no ha creado ninguna página
                                 </span>
                             {% endif %}
                         {% endfor %}

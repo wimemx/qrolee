@@ -355,7 +355,6 @@ def get_entity(request, **kwargs):
 
     discussions = account_models.Discussion.objects.filter(
         entity__id=entity.id, parent_discussion_id=None).order_by('-date')
-
     context = {
         'entity': entity,
         'calendar': unescaped,
@@ -456,6 +455,13 @@ def event_view(request,**kwargs):
     entity = kwargs['event_id']
     id_event = int(entity)
     event = Event.objects.get(id=id_event)
+    spot = ''
+
+    if event.place_spot == 1:
+        spot = models.Entity.objects.filter(type__name='spot',
+                                        name=event.location_name)
+
+
     arraymonth = ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
                 'Agosto','Septiembre','Octubre','Noviembre','Diciembre')
     arrayday = ('Lunes','Martes','Miercoles','Jueves','Viernes',
@@ -465,16 +471,22 @@ def event_view(request,**kwargs):
     month = arraymonth[event.start_time.month-1]
     day = event.start_time.day
     year = event.start_time.year
-    lat = event.location.lat
-    lon = event.location.long
 
     list_events = models.Event.objects.filter(owner=event.owner).exclude(id=event.id)
 
-    date = {'weekday':weekday,'day':day,'month':month,'year':year}
+    date = {
+        'weekday': weekday,
+        'day': day,
+        'month': month,
+        'year': year
+    }
 
-    context = {'event':event,
-               'date':date,'lat':lat,'lon':lon,
-               'list_event':list_events}
+    context = {
+        'event': event,
+        'date': date,
+        'spot': spot,
+        'list_event': list_events
+    }
 
     if 'post' in request.POST:
         context = simplejson.dumps(context)
@@ -1215,6 +1227,8 @@ def get_profile(request, **kwargs):
         profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=1,
                                                           title=profile, list__status=True)
+        list_read = account_models.ListTitle.objects.filter(list__default_type=5,
+                                                          title=profile, list__status=True)
 
         rate = account_models.Rate.objects.filter(element_id=profile.id, type='T').\
                 values('element_id').annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
@@ -1268,7 +1282,7 @@ def get_profile(request, **kwargs):
         context = {
             'list_user': dict_users,
             'list': list,
-            'count': len(list_user),
+            'count': len(list_read),
             'my_grade': len(my_rate),
             'count_rate': count_rate,
             'my_vot': my_vot,

@@ -64,4 +64,5 @@ urlpatterns = patterns('',
     url(r'^register_book/', views.registry_book ,
         { 'template_name': 'registry/register_book.html' },name='registry_book'),
     url(r'^register_ajax_book/', views.register_ajax_book, name='reg_book'),
+    url(r'^register_title_click/', views.register_title_click, name='reg_title_click'),
 )

@@ -11,7 +11,7 @@ class Title(models.Model):
     series = models.CharField(max_length=255)
     publisher = models.CharField(max_length=255)
     edition = models.CharField(max_length=255)
-    published_date = models.DateTimeField()
+    published_date = models.DateTimeField(null=True)
     pages = models.CharField(max_length=255)
     isbn = models.CharField(max_length=255)
     isbn13 = models.CharField(max_length=255)

@@ -489,11 +489,27 @@ def ajax_register_event(request):
             else:
                 copy[e] = val[0]
 
+    place_spot = int(event['place_spot'])
     event = copy
+
     event = models.Event.objects.create(**event)
+
     if event.share_fb == 1:
         post_event_fb(event, request.user, profile)
+
+    if place_spot == 0:
+        event.place_spot = 0
+        event.save()
+    else:
+        spot = models.Entity.objects.filter(name=event.location_name,
+                                            type__name='spot')
+        if spot:
+            event.lat = spot[0].lat
+            event.long = spot[0].long
+            event.save()
+
     event.save()
+    success = 'False'
     if event is not None:
         success = event.id
         activity_data = {
@@ -1749,22 +1765,29 @@ def register_ajax_book(request):
 
     charArt_1 = 0
     code = ''
+    index = 1
 
     for x in isbn:
-        code = code + str(x) + key[charArt_1]
-        charArt_1+=1
+        if index <= 10:
+            code = code + str(x) + key[charArt_1]
+            charArt_1 += 1
+        else:
+            break
+
+        index += 1
 
     list['code'] = code[0:10]
-
     book = models.Book.objects.create(**list)
     book.save()
 
     if book:
         succes = 'True'
+        code = str(book.id) + code
+        book.code = code[0:10]
         list_travel['book'] = book
         travel = models.Travel.objects.create(**list_travel)
         travel.save()
-
+        book.save()
 
     context = {
         'succes': succes,
@@ -1772,6 +1795,30 @@ def register_ajax_book(request):
 
     }
 
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def register_title_click(request):
+    list =  ast.literal_eval(request.POST['dict'])
+    del list['id']
+    del list['genre']
+    del list['grade']
+    del list['author']
+    del list['id_author']
+
+    title = account.Title.objects.create(**list)
+    title.save()
+
+    if title:
+        context = {
+            'succes': 'True',
+            'id_title': title.id
+        }
+    else:
+        context = {
+            'succes': 'False'
+        }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

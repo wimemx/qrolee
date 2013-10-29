@@ -97,11 +97,15 @@ class Event(models.Model):
     description = models.TextField(null=True)
     location = models.CharField(max_length=255)
     location_name = models.CharField(max_length=255)
+    place_spot = models.BooleanField(default=False)
+    lat = models.CharField(max_length=255, null=True)
+    long = models.CharField(max_length=255, null=True)
     privacy_type = models.BooleanField(default=False)
     status = models.BooleanField(default=True)
     share_fb = models.BooleanField(default=False)
     location = models.ForeignKey(Entity)
     owner = models.ForeignKey(User)
+
     fb_url = models.CharField(max_length=255, null=True)
     def __unicode__(self):
         return '%s, %s' % (self.name, self.description)

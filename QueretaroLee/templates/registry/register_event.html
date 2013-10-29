@@ -43,6 +43,7 @@
                 {% include 'blocks/entity_menu.html' %}
             {% endblock %}
     <form action="/registry/register/event/" class="grid-8 fleft no-margin">
+        <input type="hidden" class="type_ent" value="event" />
         <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <input class="profile-pic" type="hidden" value="" name="picture"/>
         <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
@@ -80,7 +81,6 @@
                 <span class="grid-2 fright no-margin">
                     <input name="start_time" type="text" class="date-init"/>
                 </span>
-
             </p>
             <p>Fecha de finalización
                 <span class="grid-3 no-margin fright">
@@ -94,6 +94,9 @@
                 <span class="fright dropdown">
                 </span>
                 <input name="location_name" type="text" value="" class="grid-4 alpha address fright value"/>
+                <input name="lat" type="hidden" class="lat" value="" />
+                <input name="long" type="hidden" class="long" value="" />
+                <input type="hidden" class="place_spot" name="place_spot" value="0"/>
                 <span class="grid-4 no-margin value_sel">
                 </span>
                 <select>
