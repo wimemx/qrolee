@@ -164,15 +164,19 @@ class FacebookSessionError(Exception):
     def __init__(self, error_type, message):
         self.message = message
         self.type = type
+
     def get_message(self):
         return self.message
+
     def get_type(self):
         return self.type
+
     def __unicode__(self):
         return u'%s: "%s"' % (self.type, self.message)
 
+
 class FacebookSession(models.Model):
-    access_token = models.CharField(max_length=200, unique=True)
+    access_token = models.CharField(max_length=255, unique=True)
     expires = models.IntegerField(null=True)
 
     user = models.ForeignKey(User, null=True)
@@ -184,8 +188,6 @@ class FacebookSession(models.Model):
     def query(self, object_id, connection_type=None, metadata=False):
         import urllib
         import json
-        import datetime
-        import urllib2
         url = 'https://graph.facebook.com/%s' % object_id
         if connection_type:
             url += '%s' % (connection_type)
@@ -202,8 +204,8 @@ class FacebookSession(models.Model):
         return response
 
 class TwitterSession(models.Model):
-    request_token = models.CharField(max_length=250)
-    oauth_token = models.CharField(max_length=250)
+    request_token = models.CharField(max_length=255)
+    oauth_token = models.CharField(max_length=255)
     user = models.ForeignKey(User, null=True)
     class Meta:
         unique_together = (('request_token', 'oauth_token'),)

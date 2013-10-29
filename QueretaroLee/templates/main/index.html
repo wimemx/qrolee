@@ -44,7 +44,7 @@
                     {% for event in events %}
                         <span class="item">
                         <p class="main title no-margin"><a href="/qro_lee/events/{{ event.id }}">{{ event.name }}</a></p>
-                        <a class="category spot din-r" href="#">Biblioteca Gómez Morín</a>
+                        <a class="category spot din-r" href="#">{{ event.location_name|truncatechars:42 }}</a>
                         </span>
                     {% endfor %}
                 {% else %}

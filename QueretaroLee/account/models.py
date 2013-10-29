@@ -147,6 +147,7 @@ class Discussion(models.Model):
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     meta = models.CharField(max_length=1)
+    status = models.BooleanField(default=True)
     entity = models.ForeignKey(registry_models.Entity)
     user = models.ForeignKey(User)
     parent_discussion = models.ForeignKey('self', blank=True, null=True)

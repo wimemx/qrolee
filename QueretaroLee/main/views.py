@@ -26,6 +26,7 @@ import urllib2
 import urllib
 import httplib
 import os
+from xml.dom import minidom
 
 
 @login_required(login_url='/')
@@ -51,8 +52,8 @@ def index(request, **kwargs):
     groups = entities.filter(type__name='group')
     organizations = entities.filter(type__name='organization')
     pages = account_models.Page.objects.filter(user_id=user)
-    events = models.Event.objects.filter(owner_id=user)
-
+    events = models.Event.objects.filter(
+        Q(owner_id=user) | Q(owner_id__in=following_list))
     context = {
         'user': user,
         'profile': profile,
@@ -1437,6 +1438,16 @@ def get_profile(request, **kwargs):
 
 
 def search_api(request, **kwargs):
+    if int(request.POST.get('aux_api')) == -1:
+        isbn = request.POST.get('search')
+        url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
+        response = urllib2.urlopen(url).read()
+        dom = minidom.parseString(response)
+        context = {
+            'result_api': dom.childNodes.__contains__('error')
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, mimetype='application/json')
     search = ast.literal_eval(request.POST.get('search'))
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
@@ -1479,7 +1490,6 @@ def search_api(request, **kwargs):
         pass
     else:
         response = 'No se pudieron encontraron más libros en su búsqueda'
-
     context = {
         'result_api': response
     }
@@ -1530,13 +1540,13 @@ def respond_to_discussion(request):
 def get_discussion(discussion):
     discussion_list = list()
     discussions = account_models.Discussion.objects.filter(
-        parent_discussion_id=discussion.id).order_by('-date')
+        parent_discussion_id=discussion.id, status=True).order_by('-date')
 
     for discuss in discussions:
         discuss_list = list()
         discuss_list.append(discuss)
         discussions_2nd_level = account_models.Discussion.objects.filter(
-            parent_discussion_id=discuss.id).order_by('-date')
+            parent_discussion_id=discuss.id, status=True).order_by('-date')
         for dis in discussions_2nd_level:
             discuss_list.append(dis)
         discussion_list.append(discuss_list)

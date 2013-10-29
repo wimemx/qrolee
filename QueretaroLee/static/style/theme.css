@@ -885,6 +885,7 @@ p{
 
 
         }
+
         .discussion .answer{
             border-radius: 0px;
             border-top-left-radius: 5px;
@@ -3233,7 +3234,7 @@ textarea{
     margin-bottom: 10px!important;
 }
 
-.book_register input ,textarea{
+.book_register input ,.book_register textarea{
     border: 1px solid #e4e4e4;
     margin-bottom: 10px!important;
 }

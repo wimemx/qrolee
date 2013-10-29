@@ -367,27 +367,18 @@ function advanced_search(search_params, csrf){
 
 
 
-function search_api(csrf, query){
-    /*
-    query = {
-         'q': JSON.stringify($.trim($('.advanced_filter .search').val()).split(' ')),
-         'start_index': {
-            0: 0 (para hacer paginacion en los libros, autores no se puede hacer paginacion )
-         },
-         'type': {
-            0: type (account.title o account.author)
-         }
-     }
-     api = search_api(csrf, query);
-     */
+function search_api(csrf, query, aux_api){
     var ret = null;
+    if(!aux_api)
+        aux_api = 0;
     $.ajax({
         type: "POST",
         async: false,
         url: '/qro_lee/search_api/',
         data: {
             'csrfmiddlewaretoken': csrf,
-            'search': JSON.stringify(query)
+            'search': JSON.stringify(query),
+            'aux_api': aux_api
         },
         dataType: 'json'
     }).done(function(data){
@@ -464,7 +455,8 @@ $(document).ready(function(){
             url: '/registry/register_ajax_book/',
             data: {
                 'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
-                'query': JSON.stringify(query)
+                'query': JSON.stringify(query),
+                'api_type': $('input.api_type').val()
             },
             dataType: 'json'
         }).done(function(data){
@@ -505,25 +497,15 @@ $(document).ready(function(){
      });
     $('#form_isbn').submit(function(e){
         var isbn = $(this).find('input[name=isbn]').val();
-
+        //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
-        var data_;
-        $.ajax({
-            'async': false,
-            'global': false,
-            'url': 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn,
-            'dataType': "json",
-            'success': function (data) {
-                data_ = data;
-            }
-        });
-        $(this).find('input[type=submit]').parent().parent().find('.text_no_book').remove();
-        if(data_['totalItems'] == 0){
+        var data_ = api_isbn_search(isbn);
+        if(data_ == -1){
+            e.preventDefault();
             $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
-                'No se encontró el isbn verifica que este correcto</p>');
-            return false;
-        }else
-            return true;
+               'No se encontró el isbn verifica que este correcto</p>');
+        }
+
      });
 
     if($('.img_profile_mini').length>0){
@@ -859,6 +841,37 @@ $('.affiliate').each(function(i){
 
 });
 
+
+function api_isbn_search(isbn){
+    var data_ = -1;
+    $.ajax({
+            'async': false,
+            'global': false,
+            'url': 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn,
+            'dataType': "json",
+            'success': function (data) {
+                data_ = data;
+                if(data['totalItems'] == 0){
+                    data_ = -1;
+                }
+            }
+    }).done(function(){
+            if(data_ == -1){
+                var result = search_api($('.csrf_header').find('input').val(),isbn, -1);
+                if (result['result_api'] != -1){
+                    data_ = 1;
+                    $('.api_type').val('goodreads_api');
+                }
+
+            }
+        });
+
+    return data_;
+
+}
+
+var textarea_flag = false;
+var textarea_flag2 = false;
 function create_discussion(entity_id, name, content){
     $.ajax({
         type: "POST",
@@ -885,7 +898,12 @@ function create_discussion(entity_id, name, content){
                     return false;
             });
             $span.find('a.title').trigger('click');
-            $('.discussion').find('.overview .item').before($span);
+            if($('.discussion').find('.overview .item').length > 0)
+                $('.discussion').find('.overview .item').before($span);
+            else{
+                $('.discussion').find('.overview p').before($span);
+                $('.discussion').find('.overview p').remove();
+            }
         });
 }
 
@@ -903,8 +921,10 @@ function discussion(id){
             var $item = $('div.discuss.main').clone();
             $item.removeClass('main');
             $item.find('.main textarea').focus(function(){
-                //$(this).val('');
-                //text = $(this).val();
+                if(!textarea_flag){
+                    $(this).val('');
+                    textarea_flag = true;
+                }
             });
             var parent = data['parent'];
             $item.find('.title').html(parent.name);
@@ -939,15 +959,28 @@ function discussion(id){
                             if(index != 0){
                                 $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
                                 $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
+                                $discussion_response.find('.respond_btn').remove();
+                                if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
+                                    $discussion_response.find('.answer').find('.erase_btn').remove();
+
                             }else{
                                 parent_id = discussion.id
+                                if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
+                                    $discussion_response.find('.answer').find('.erase_btn').remove();
                             }
 
                             $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
                                 $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
                                 $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+
                                 $respond.insertAfter($discussion_response);
+                                $respond.find('textarea').focus(function(){
+                                    if(!textarea_flag2){
+                                        $(this).val('');
+                                        textarea_flag2 = true;
+                                    }
+                                });
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
                                     parent_id, $respond,
@@ -991,6 +1024,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                 if($discussion_response.hasClass('item_'+discussion.id)){
                     $discussion_response.find('.answer p').html(discussion.content);
                     $discussion_response.find('.name.title').html(discussion.username);
+
                     if(!discussion.user_pic){
                         discussion.user_pic = '/static/img/create.png';
                     }else{
@@ -1003,13 +1037,22 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                         $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
                         $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
                         $discussion_response.insertBefore($ele.parent());
+
                         $ele.parent().remove();
                     }else{
+
+                        $discussion_response.find('.respond_btn').remove();
                         $discussion_response.insertAfter($item.find('.respond'));
                         $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
                                 $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
                                 $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+                                $respond.find('textarea').focus(function(){
+                                    if(!textarea_flag2){
+                                        $(this).val('');
+                                        textarea_flag2 = true;
+                                    }
+                                });
                                 $respond.insertAfter($discussion_response);
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
@@ -1023,6 +1066,10 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
 
                 }
             });
+        if(textarea_flag)
+            $item.find('textarea').val('Escribe un comentario...');
+        textarea_flag = false;
+        textarea_flag2 = false;
     });
 }
 
