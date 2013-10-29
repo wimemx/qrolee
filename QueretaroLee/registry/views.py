@@ -13,6 +13,7 @@ from registry import models, settings
 from decimal import Decimal
 from QueretaroLee import settings as main_settings
 from django.db import models as db_model
+
 import calendar
 import urllib2
 import os
@@ -24,6 +25,7 @@ import oauth2
 import hashlib
 import HTMLParser
 import datetime
+from xml.dom import minidom
 
 
 def index(request, **kwargs):
@@ -1646,30 +1648,45 @@ def cheking_book(request):
 
 
 def registry_book(request, **kwargs):
+    if request.POST.get('api_type') == 'google_api':
+        isbn = request.POST.get('isbn')
+        url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn
+        response = urllib2.urlopen(url)
+        response = simplejson.load(response)
+        attribute = response['items'][0]['volumeInfo']
+        genres = account.Genre.objects.all()
 
-    isbn = request.POST.get('isbn')
-    url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+ isbn
-    response = urllib2.urlopen(url)
-    response = simplejson.load(response)
-    attribute = response['items'][0]['volumeInfo']
-    genres = account.Genre.objects.all()
+        author = 'anonimo'
+        picture = ''
+        publishedDate = datetime.datetime.today()
+        pages = 100
+        publisher = ''
 
-    author = 'anonimo'
-    picture = ''
-    publishedDate = datetime.datetime.today()
-    pages = 100
-    publisher = ''
-
-    if attribute['authors']:
-        author = attribute['authors'][0]
-    if 'imageLinks' in attribute:
-        if attribute['imageLinks']['thumbnail']:
-            picture = attribute['imageLinks']['thumbnail']
-    if 'publisher' in attribute:
-        publisher = attribute['publisher']
+        if attribute['authors']:
+            author = attribute['authors'][0]
+        if 'imageLinks' in attribute:
+            if attribute['imageLinks']['thumbnail']:
+                picture = attribute['imageLinks']['thumbnail']
+        if 'publisher' in attribute:
+            publisher = attribute['publisher']
+        title = attribute['title']
+    else:
+        isbn = request.POST.get('isbn')
+        url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
+        response = urllib2.urlopen(url).read()
+        dom = minidom.parseString(response)
+        title = dom.getElementsByTagName('title')[0].toxml()
+        title = title.replace('<title>', '').replace('</title>', '')
+        author = dom.getElementsByTagName('name')[0].toxml()
+        author = author.replace('<name>', '').replace('</name>', '')
+        publisher = dom.getElementsByTagName('publisher')[0].toxml()
+        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
+        picture = dom.getElementsByTagName('image_url')[0].toxml()
+        picture = picture.replace('<image_url>', '').replace('</image_url>', '')
+        genres = account.Genre.objects.all()
 
     book = {
-        'title': attribute['title'],
+        'title': title,
         'author': author,
         'isbn': isbn,
         'publisher': publisher,
@@ -1682,11 +1699,11 @@ def registry_book(request, **kwargs):
         'genres': genres
     }
 
-    return  render(request, template, context)
+    return render(request, template, context)
 
 
 def register_ajax_book(request):
-    list =  ast.literal_eval(request.POST.get('query'))
+    list = ast.literal_eval(request.POST.get('query'))
     list['user'] = request.user
     isbn = list['isbn']
     url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+ isbn
@@ -1712,11 +1729,10 @@ def register_ajax_book(request):
     if 'publisher' in attribute:
         publisher = attribute['publisher']
 
-
     date = str(attribute['publishedDate']).split("-")
     publishedDate = str(attribute['publishedDate'])
 
-    if len(date) < 3 :
+    if len(date) < 3:
         publishedDate = str(date[0]) + '-01-01'
 
     list['picture'] = picture
@@ -1729,9 +1745,8 @@ def register_ajax_book(request):
     list['country'] = response['items'][0]['accessInfo']['country']
     list['title'] = attribute['title']
     list['language'] = attribute['language']
-    list['code'] = 123
 
-    succes = 'False'
+    success = 'False'
 
     list_travel = {
         'lat': list['lat'],
@@ -1752,7 +1767,7 @@ def register_ajax_book(request):
 
     for x in isbn:
         code = code + str(x) + key[charArt_1]
-        charArt_1+=1
+        charArt_1 += 1
 
     list['code'] = code[0:10]
 
@@ -1760,18 +1775,15 @@ def register_ajax_book(request):
     book.save()
 
     if book:
-        succes = 'True'
+        success = 'True'
         list_travel['book'] = book
         travel = models.Travel.objects.create(**list_travel)
         travel.save()
 
-
     context = {
-        'succes': succes,
+        'success': success,
         'code': book.code
 
     }
-
-
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

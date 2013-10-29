@@ -367,27 +367,18 @@ function advanced_search(search_params, csrf){
 
 
 
-function search_api(csrf, query){
-    /*
-    query = {
-         'q': JSON.stringify($.trim($('.advanced_filter .search').val()).split(' ')),
-         'start_index': {
-            0: 0 (para hacer paginacion en los libros, autores no se puede hacer paginacion )
-         },
-         'type': {
-            0: type (account.title o account.author)
-         }
-     }
-     api = search_api(csrf, query);
-     */
+function search_api(csrf, query, aux_api){
     var ret = null;
+    if(!aux_api)
+        aux_api = 0;
     $.ajax({
         type: "POST",
         async: false,
         url: '/qro_lee/search_api/',
         data: {
             'csrfmiddlewaretoken': csrf,
-            'search': JSON.stringify(query)
+            'search': JSON.stringify(query),
+            'aux_api': aux_api
         },
         dataType: 'json'
     }).done(function(data){
@@ -505,25 +496,15 @@ $(document).ready(function(){
      });
     $('#form_isbn').submit(function(e){
         var isbn = $(this).find('input[name=isbn]').val();
-
+        //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
-        var data_;
-        $.ajax({
-            'async': false,
-            'global': false,
-            'url': 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn,
-            'dataType': "json",
-            'success': function (data) {
-                data_ = data;
-            }
-        });
-        $(this).find('input[type=submit]').parent().parent().find('.text_no_book').remove();
-        if(data_['totalItems'] == 0){
+        var data_ = api_isbn_search(isbn);
+        if(data_ == -1){
+            e.preventDefault();
             $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
-                'No se encontró el isbn verifica que este correcto</p>');
-            return false;
-        }else
-            return true;
+               'No se encontró el isbn verifica que este correcto</p>');
+        }
+
      });
 
     if($('.img_profile_mini').length>0){
@@ -857,6 +838,35 @@ $('.affiliate').each(function(i){
     }
 
 });
+
+
+function api_isbn_search(isbn){
+    var data_ = -1;
+    $.ajax({
+            'async': false,
+            'global': false,
+            'url': 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn,
+            'dataType': "json",
+            'success': function (data) {
+                data_ = data;
+                if(data['totalItems'] == 0){
+                    data_ = -1;
+                }
+            }
+    }).done(function(){
+            if(data_ == -1){
+                var result = search_api($('.csrf_header').find('input').val(),isbn, -1);
+                if (result['result_api'] != -1){
+                    data_ = 1;
+                    $('.api_type').val('goodreads_api');
+                }
+
+            }
+        });
+
+    return data_;
+
+}
 
 function create_discussion(entity_id, name, content){
     $.ajax({

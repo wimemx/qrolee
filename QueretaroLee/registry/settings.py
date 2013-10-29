@@ -18,4 +18,6 @@ TWITTER_ACCESS_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_REDIRECT = settings.SITE_URL
 
 GOOGLE_BOOKS_KEY = 'AIzaSyCIreWA7VgeIKPxH7-702YtpiDME61CrLM'
+GOODREADS_KEY = 'AEcByNqSmUrr85SWOVdUmQ'
+GOODREADS_SECRET = 'YiP2esopTgc8elt9GPLU3Or3nmCiAf7sYnm1mJqw'
 

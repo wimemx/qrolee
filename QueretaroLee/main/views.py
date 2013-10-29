@@ -26,6 +26,7 @@ import urllib2
 import urllib
 import httplib
 import os
+from xml.dom import minidom
 
 
 @login_required(login_url='/')
@@ -1423,6 +1424,16 @@ def get_profile(request, **kwargs):
 
 
 def search_api(request, **kwargs):
+    if int(request.POST.get('aux_api')) == -1:
+        isbn = request.POST.get('search')
+        url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
+        response = urllib2.urlopen(url).read()
+        dom = minidom.parseString(response)
+        context = {
+            'result_api': dom.childNodes.__contains__('error')
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, mimetype='application/json')
     search = ast.literal_eval(request.POST.get('search'))
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
@@ -1459,14 +1470,12 @@ def search_api(request, **kwargs):
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
 
-    print response
     if 'items' in response:
         pass
     elif 'cost' in response:
         pass
     else:
         response = 'No se pudieron encontraron más libros en su búsqueda'
-
     context = {
         'result_api': response
     }
