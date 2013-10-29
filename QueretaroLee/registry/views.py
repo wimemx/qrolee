@@ -1600,12 +1600,13 @@ def update_activity(data):
     Verb = action Actualizo Creo etc...
     """
     if data['activity_id'] == 10:
-        activity = account.Activity.objects.get(
+        activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
             added_to_object=data['added_to_object'], added_to_type='U',
             activity_id=5)
-        activity.activity_id = 10
-        activity.save()
+        if activity:
+            activity[0].activity_id = 10
+            activity[0].save()
     else:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
@@ -1616,8 +1617,13 @@ def update_activity(data):
             activity[0].save()
             return
         else:
-            activity = account.Activity.objects.create(**data)
-            activity.save()
+            activity = account.Activity.objects.filter(
+                user_id=data['user_id'], object=data['object'],
+                added_to_object=data['added_to_object'], added_to_type='U',
+                activity_id=5, type='U')
+            if not activity:
+                activity = account.Activity.objects.create(**data)
+                activity.save()
 
 
 def cheking_book(request):
@@ -1696,57 +1702,105 @@ def registry_book(request, **kwargs):
     template = kwargs['template_name']
     context = {
         'book': book,
-        'genres': genres
+        'genres': genres,
+        'api_type': request.POST.get('api_type')
     }
 
     return render(request, template, context)
 
 
 def register_ajax_book(request):
+
     list = ast.literal_eval(request.POST.get('query'))
     list['user'] = request.user
     isbn = list['isbn']
-    url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+ isbn
-    response = urllib2.urlopen(url)
-    response = simplejson.load(response)
-    attribute = response['items'][0]['volumeInfo']
-    dict = {
-        'name': list['genre'],
-    }
+    if request.POST.get('api_type') == 'google_api':
+        url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn
+        response = urllib2.urlopen(url)
+        response = simplejson.load(response)
+        attribute = response['items'][0]['volumeInfo']
+        dict = {
+            'name': list['genre'],
+        }
+
+
+        author = 'anonimo'
+        picture = ''
+        publishedDate = datetime.datetime.today()
+        pages = 100
+        publisher = ''
+
+        if 'authors' in attribute:
+            author = attribute['authors'][0]
+        if 'imageLinks' in attribute:
+            if attribute['imageLinks']['thumbnail']:
+                picture = attribute['imageLinks']['thumbnail']
+        if 'publisher' in attribute:
+            publisher = attribute['publisher']
+
+        date = str(attribute['publishedDate']).split("-")
+        publishedDate = str(attribute['publishedDate'])
+
+        if len(date) < 3:
+            publishedDate = str(date[0]) + '-01-01'
+        isbn13 = attribute['industryIdentifiers'][1]['identifier']
+        country = response['items'][0]['accessInfo']['country']
+        title = attribute['title']
+        language = attribute['language']
+    else:
+        url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
+        response = urllib2.urlopen(url).read()
+        dom = minidom.parseString(response)
+        title = dom.getElementsByTagName('title')[0].toxml()
+        title = title.replace('<title>', '').replace('</title>', '')
+        publisher = dom.getElementsByTagName('publisher')[0].toxml()
+        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
+        picture = dom.getElementsByTagName('image_url')[0].toxml()
+        picture = picture.replace('<image_url>', '').replace('</image_url>', '')
+        pages = dom.getElementsByTagName('num_pages')[0].toxml()
+        pages = pages.replace('<num_pages>', '').replace('</num_pages>', '')
+        pages = pages.replace('<![CDATA[', '')
+        pages = int(pages.replace(']]>', ''))
+        isbn13 = dom.getElementsByTagName('isbn13')[0].toxml()
+        isbn13 = isbn13.replace('<isbn13>', '').replace('</isbn13>', '')
+        isbn13 = isbn13.replace('<![CDATA[', '')
+        isbn13 = isbn13.replace(']]>', '')
+        country = ''
+        language = dom.getElementsByTagName('language_code')[0].toxml()
+        language = language.replace('<language_code>', '').replace('</language_code>', '')
+        year = dom.getElementsByTagName('publication_year')[0].toxml()
+        year = year.replace('<publication_year>', '').replace('</publication_year>', '')
+        month = dom.getElementsByTagName('publication_month')[0].toxml()
+        if month[-2:] == '/>':
+            month = month.replace('<publication_month/>', '')
+        else:
+            month = month.replace('<publication_month>', '').replace('</publication_month>', '')
+        day = dom.getElementsByTagName('publication_day')[0].toxml()
+        if day[-2:] == '/>':
+            day = day.replace('<publication_day/>', '')
+        else:
+            day = day.replace('<publication_day>', '').replace('</publication_day>', '')
+        if year == '':
+            year = '2013'
+        if month == '':
+            month = '01'
+        if day == '':
+            day = '01'
+        publishedDate = year+'-'+month+'-'+day+' 00:00:00'
+
     del list['genre']
-
-    author = 'anonimo'
-    picture = ''
-    publishedDate = datetime.datetime.today()
-    pages = 100
-    publisher = ''
-
-    if 'authors' in attribute:
-        author = attribute['authors'][0]
-    if 'imageLinks' in attribute:
-        if attribute['imageLinks']['thumbnail']:
-            picture = attribute['imageLinks']['thumbnail']
-    if 'publisher' in attribute:
-        publisher = attribute['publisher']
-
-    date = str(attribute['publishedDate']).split("-")
-    publishedDate = str(attribute['publishedDate'])
-
-    if len(date) < 3:
-        publishedDate = str(date[0]) + '-01-01'
-
     list['picture'] = picture
     list['cover'] = picture
     list['publisher'] = publisher
     list['published_date'] = publishedDate
     list['pages'] = pages
     list['isbn'] = isbn
-    list['isbn13'] = attribute['industryIdentifiers'][1]['identifier']
-    list['country'] = response['items'][0]['accessInfo']['country']
-    list['title'] = attribute['title']
-    list['language'] = attribute['language']
+    list['isbn13'] = isbn13
+    list['country'] = country
+    list['title'] = title
+    list['language'] = language
 
-    success = 'False'
+    succes = 'False'
 
     list_travel = {
         'lat': list['lat'],
@@ -1764,24 +1818,32 @@ def register_ajax_book(request):
 
     charArt_1 = 0
     code = ''
+    index = 1
 
     for x in isbn:
-        code = code + str(x) + key[charArt_1]
-        charArt_1 += 1
+        if index <= 10:
+            code = code + str(x) + key[charArt_1]
+            charArt_1 += 1
+        else:
+            break
+
+        index += 1
 
     list['code'] = code[0:10]
-
     book = models.Book.objects.create(**list)
     book.save()
 
     if book:
-        success = 'True'
+        succes = 'True'
+        code = str(book.id) + code
+        book.code = code[0:10]
         list_travel['book'] = book
         travel = models.Travel.objects.create(**list_travel)
         travel.save()
+        book.save()
 
     context = {
-        'success': success,
+        'succes': succes,
         'code': book.code
 
     }

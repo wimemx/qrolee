@@ -128,13 +128,13 @@ def user_profile(request, **kwargs):
     if request.POST:
         membership = registry.MemberToObject.objects.get_or_create(
             user_id=request.user.id, object_type='U', object=id_user)[0]
+
         activity_id = 5
         if int(request.POST.get('membership')) == -1:
             membership.is_member = False
             activity_id = 10
         else:
             membership.is_member = True
-
         activity_data = {
             'user_id': request.user.id,
             'object': id_user,

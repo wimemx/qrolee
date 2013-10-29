@@ -455,7 +455,8 @@ $(document).ready(function(){
             url: '/registry/register_ajax_book/',
             data: {
                 'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
-                'query': JSON.stringify(query)
+                'query': JSON.stringify(query),
+                'api_type': $('input.api_type').val()
             },
             dataType: 'json'
         }).done(function(data){
@@ -868,6 +869,8 @@ function api_isbn_search(isbn){
 
 }
 
+var textarea_flag = false;
+var textarea_flag2 = false;
 function create_discussion(entity_id, name, content){
     $.ajax({
         type: "POST",
@@ -894,7 +897,12 @@ function create_discussion(entity_id, name, content){
                     return false;
             });
             $span.find('a.title').trigger('click');
-            $('.discussion').find('.overview .item').before($span);
+            if($('.discussion').find('.overview .item').length > 0)
+                $('.discussion').find('.overview .item').before($span);
+            else{
+                $('.discussion').find('.overview p').before($span);
+                $('.discussion').find('.overview p').remove();
+            }
         });
 }
 
@@ -912,8 +920,10 @@ function discussion(id){
             var $item = $('div.discuss.main').clone();
             $item.removeClass('main');
             $item.find('.main textarea').focus(function(){
-                //$(this).val('');
-                //text = $(this).val();
+                if(!textarea_flag){
+                    $(this).val('');
+                    textarea_flag = true;
+                }
             });
             var parent = data['parent'];
             $item.find('.title').html(parent.name);
@@ -948,15 +958,28 @@ function discussion(id){
                             if(index != 0){
                                 $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
                                 $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
+                                $discussion_response.find('.respond_btn').remove();
+                                if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
+                                    $discussion_response.find('.answer').find('.erase_btn').remove();
+
                             }else{
                                 parent_id = discussion.id
+                                if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
+                                    $discussion_response.find('.answer').find('.erase_btn').remove();
                             }
 
                             $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
                                 $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
                                 $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+
                                 $respond.insertAfter($discussion_response);
+                                $respond.find('textarea').focus(function(){
+                                    if(!textarea_flag2){
+                                        $(this).val('');
+                                        textarea_flag2 = true;
+                                    }
+                                });
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
                                     parent_id, $respond,
@@ -1000,6 +1023,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                 if($discussion_response.hasClass('item_'+discussion.id)){
                     $discussion_response.find('.answer p').html(discussion.content);
                     $discussion_response.find('.name.title').html(discussion.username);
+
                     if(!discussion.user_pic){
                         discussion.user_pic = '/static/img/create.png';
                     }else{
@@ -1012,13 +1036,22 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                         $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
                         $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
                         $discussion_response.insertBefore($ele.parent());
+
                         $ele.parent().remove();
                     }else{
+
+                        $discussion_response.find('.respond_btn').remove();
                         $discussion_response.insertAfter($item.find('.respond'));
                         $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
                                 $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
                                 $respond.find('textarea').removeClass('grid-8').addClass('grid-7');
+                                $respond.find('textarea').focus(function(){
+                                    if(!textarea_flag2){
+                                        $(this).val('');
+                                        textarea_flag2 = true;
+                                    }
+                                });
                                 $respond.insertAfter($discussion_response);
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
@@ -1032,6 +1065,10 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
 
                 }
             });
+        if(textarea_flag)
+            $item.find('textarea').val('Escribe un comentario...');
+        textarea_flag = false;
+        textarea_flag2 = false;
     });
 }
 

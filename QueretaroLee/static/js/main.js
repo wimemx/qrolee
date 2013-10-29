@@ -1238,6 +1238,12 @@ $(document).ready(function(){
             $('.container_message').fadeIn(300);
         }
     });
+    $('.close').click(function(){
+        $(this).closest('.container_message').fadeOut(300, function(){
+            $(this).find('input').val('');
+            $(this).find('textarea').val('');
+        });
+    });
 });
 
 function create_template(type, result,i, create_user){

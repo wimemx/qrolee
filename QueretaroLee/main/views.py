@@ -52,8 +52,8 @@ def index(request, **kwargs):
     groups = entities.filter(type__name='group')
     organizations = entities.filter(type__name='organization')
     pages = account_models.Page.objects.filter(user_id=user)
-    events = models.Event.objects.filter(owner_id=user)
-
+    events = models.Event.objects.filter(
+        Q(owner_id=user) | Q(owner_id__in=following_list))
     context = {
         'user': user,
         'profile': profile,
@@ -1526,13 +1526,13 @@ def respond_to_discussion(request):
 def get_discussion(discussion):
     discussion_list = list()
     discussions = account_models.Discussion.objects.filter(
-        parent_discussion_id=discussion.id).order_by('-date')
+        parent_discussion_id=discussion.id, status=True).order_by('-date')
 
     for discuss in discussions:
         discuss_list = list()
         discuss_list.append(discuss)
         discussions_2nd_level = account_models.Discussion.objects.filter(
-            parent_discussion_id=discuss.id).order_by('-date')
+            parent_discussion_id=discuss.id, status=True).order_by('-date')
         for dis in discussions_2nd_level:
             discuss_list.append(dis)
         discussion_list.append(discuss_list)
