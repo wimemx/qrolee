@@ -36,13 +36,12 @@ def index(request, **kwargs):
         if 'code' in request.GET:
             args = {
                 'client_id': settings.FACEBOOK_APP_ID,
-                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+                'redirect_uri': 'http://localhost:8000/qro_lee/book/5987L8f6y0_1',
                 'client_secret': settings.FACEBOOK_API_SECRET,
                 'code': request.GET['code'],
             }
-
-            url = 'https://graph.facebook.com/oauth/access_token?' + \
-                    urllib.urlencode(args)
+            url = 'https://graph.facebook.com/' \
+                  'oauth/access_token?'+urllib.urlencode(args)
             response = urlparse.parse_qs(urllib.urlopen(url).read())
             access_token = response['access_token'][0]
             expires = response['expires'][0]
@@ -101,6 +100,7 @@ def index(request, **kwargs):
     }
     return render(request, template, context)
 
+
 def login(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
@@ -125,15 +125,16 @@ def login(request):
         context = {
             'success': success,
             'url': url
-            }
+        }
     else:
         context = {
             'success': False,
             'url': 'Error en algun campo'
-            }
+        }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
 
 def account_register(request):
     user = dict(request.POST)
@@ -184,6 +185,7 @@ def account_register(request):
     }
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
 
 @login_required(login_url='/')
 def register_entity(request, **kwargs):

@@ -8,6 +8,7 @@ import oauth2
 import urlparse
 import os
 
+
 def user_exists(email=None, username=None, user=None):
     if (username is None) and (user is None):
         if User.objects.filter(email=email).count():
@@ -21,6 +22,7 @@ def user_exists(email=None, username=None, user=None):
         if User.objects.filter(id=user).count():
             return True
         return False
+
 
 class FacebookBackend:
     def authenticate(self, token=None):
@@ -101,6 +103,7 @@ class FacebookBackend:
         except auth_models.User.DoesNotExist:
             return None
 
+
 class TwitterBackend:
     def authenticate(self, oauth_verifier=None, request_token=None):
 
@@ -149,6 +152,7 @@ class TwitterBackend:
             return auth_models.User.objects.get(pk=user_id)
         except auth_models.User.DoesNotExist:
             return None
+
 
 class SocialBackend:
     def authenticate(self, social_connect=None, oauth_verifier=None,

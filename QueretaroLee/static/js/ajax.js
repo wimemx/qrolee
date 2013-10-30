@@ -60,6 +60,7 @@ function populateCal(curr_month,$item){
                     $.each(event,function(i){
                         var $ditem = $item.clone();
                         var e = event[i];
+                        console.log(e);
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
 
                         var picture_url = window.location.origin+'/static/media/users/'+
@@ -899,7 +900,7 @@ function create_discussion(entity_id, name, content){
             });
             $span.find('a.title').trigger('click');
             if($('.discussion').find('.overview .item').length > 0)
-                $('.discussion').find('.overview .item').before($span);
+                $('.discussion').find('.overview .item:eq(0)').before($span);
             else{
                 $('.discussion').find('.overview p').before($span);
                 $('.discussion').find('.overview p').remove();
