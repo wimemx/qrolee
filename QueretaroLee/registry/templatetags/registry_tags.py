@@ -338,8 +338,7 @@ def img_autoescape(text):
     t = str(text)
     img = t.split('<img')
     src_img = ''
-
-    if len(img) > 0:
+    if len(img) > 1:
         src = img[1].split('src="')
         if len(src) > 0:
             end = str(src[1]).find('"')
