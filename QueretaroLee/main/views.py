@@ -54,9 +54,8 @@ def index(request, **kwargs):
     for f in following_entity:
         entity_following_list.append(f.object)
 
-    print following_list
     activity = account_models.Activity.objects.filter(
-        Q(added_to_type=following_list) | Q(added_to_object__in=entity_following_list)).order_by('-date')
+        Q(user_id__in=following_list) | Q(added_to_object__in=entity_following_list)).order_by('-date')
 
     entities = models.Entity.objects.filter(
         user_id=user)

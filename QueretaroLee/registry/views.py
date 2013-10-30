@@ -1622,7 +1622,7 @@ def update_activity(data):
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
             added_to_object=data['added_to_object'], added_to_type='U',
-            activity_id=5)
+            activity_id=5, type=data['type'])
         if activity:
             activity[0].activity_id = 10
             activity[0].save()
