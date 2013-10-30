@@ -207,7 +207,7 @@ def user_profile(request, **kwargs):
 
         grade_title = 0
         rate_title = models.Rate.objects.filter(element_id=obj.id).values('element_id').\
-            annotate(count = db_model.Count('element_id'), score = db_model.Avg('grade'))
+            annotate(count=db_model.Count('element_id'), score = db_model.Avg('grade'))
 
         if len(rate_title) != 0:
             grade_title = rate_title[0]['score']
@@ -340,6 +340,7 @@ def user_profile(request, **kwargs):
 
     activity = models.Activity.objects.filter(
         user_id=profile.user_id).order_by('-date')
+
     birthday = profile.birthday
     if birthday:
         birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\

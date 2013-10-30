@@ -92,8 +92,10 @@ def feed_type(feed_id):
         name = obj_list[0].name
 
     if feed.type == 'U':
+        user = auth_models.User.objects.get(
+            id=obj_list[1].id)
         profile = rmodels.Profile.objects.get(
-            user_id=user.id)
+            user_id=obj_list[1].id)
         if not profile.picture:
             img_url = '/static/img/create.png'
         elif profile.picture.strip() == '':
