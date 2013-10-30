@@ -74,7 +74,24 @@
                     </span>
 
                 </p>
+                {% if entity_type.1 == 'group' %}
+                <p>Privacidad
+                    <span class="grid-5 fright no-margin">
+                        <span class="grid-2 select no-margin">
+                            <span class="text"></span>
+                            <span class="dropdown"></span>
+                            <select class="change" name="privacy" id="">
+
+                                <option value="publica">Publica</option>
+                                <option value="privada">Privada</option>
+                            </select>
+                        </span>
+                    </span>
+
+                </p>
+                {% else %}
                     <input type="hidden" value="publica" name="privacy"/>
+                {% endif %}
                 <p>Sitio web
                     <input class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>

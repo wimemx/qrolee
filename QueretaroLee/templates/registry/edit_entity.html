@@ -90,7 +90,9 @@
             </p>
         </span>
         <span class="data grid-9 fleft no-margin">
-            <p>Tipo de acceso
+
+        {% if entity_type.1 == 'group' %}
+        <p>Tipo de acceso
             <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
@@ -115,7 +117,8 @@
                 </span>
                 </span>
 
-            </p>
+        </p>
+        {% endif %}
             <p>Fecha creación
                 <span class="controllers_wrapper">
                 <span style="visibility: hidden;" class="green_btn fright">Editar</span>

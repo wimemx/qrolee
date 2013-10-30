@@ -26,6 +26,8 @@ import urllib2
 import urllib
 import httplib
 import os
+import urlparse
+import urllib
 from xml.dom import minidom
 
 
@@ -1628,6 +1630,33 @@ def book_crossing(request, **kwargs):
 
 
 def book(request, **kwargs):
+    if 'code' in request.GET:
+        args = {
+            'client_id': settings.FACEBOOK_APP_ID,
+            'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+            'client_secret': settings.FACEBOOK_API_SECRET,
+            'code': request.GET['code'],
+        }
+        url = 'https://graph.facebook.com/' \
+              'oauth/access_token?'+urllib.urlencode(args)
+        print url
+        response = urlparse.parse_qs(urllib.urlopen(url).read())
+        access_token = response['access_token'][0]
+        expires = response['expires'][0]
+        facebook_session = models.FacebookSession.objects.get_or_create(
+            access_token=access_token,
+        )[0]
+
+        facebook_session.expires = expires
+        facebook_session.save()
+
+        user = auth.authenticate(token=access_token)
+        if user:
+            auth.login(request, user)
+            return HttpResponseRedirect('/qro_lee/book/')
+        else:
+            error = 'AUTH_FAILED'
+
     template = kwargs['template_name']
 
     #state_1 = encontrado, state_2 = liberado
@@ -1665,7 +1694,8 @@ def book(request, **kwargs):
         'state_1': state_1,
         'state_2': state_2,
         'count_user': count_user,
-        'cheking': cheking
+        'cheking': cheking,
+        'settings': settings
     }
 
     return render(request, template, context)

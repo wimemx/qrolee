@@ -60,6 +60,7 @@ function populateCal(curr_month,$item){
                     $.each(event,function(i){
                         var $ditem = $item.clone();
                         var e = event[i];
+                        console.log(e);
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
 
                         var picture_url = window.location.origin+'/static/media/users/'+
