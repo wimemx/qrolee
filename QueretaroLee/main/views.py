@@ -294,7 +294,7 @@ def get_entity(request, **kwargs):
         membertoobject__is_admin=1, membertoobject__object=entity.id,
         membertoobject__object_type='E')
     admins = User.objects.filter(id__in=entity_admins).distinct()
-    print admins
+
     for ent in entities:
         followers = models.MemberToObject.objects.filter(
             object=ent.id, object_type='E')
@@ -1652,33 +1652,6 @@ def book_crossing(request, **kwargs):
 
 
 def book(request, **kwargs):
-    if 'code' in request.GET:
-        args = {
-            'client_id': settings.FACEBOOK_APP_ID,
-            'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
-            'client_secret': settings.FACEBOOK_API_SECRET,
-            'code': request.GET['code'],
-        }
-        url = 'https://graph.facebook.com/' \
-              'oauth/access_token?'+urllib.urlencode(args)
-        print url
-        response = urlparse.parse_qs(urllib.urlopen(url).read())
-        access_token = response['access_token'][0]
-        expires = response['expires'][0]
-        facebook_session = models.FacebookSession.objects.get_or_create(
-            access_token=access_token,
-        )[0]
-
-        facebook_session.expires = expires
-        facebook_session.save()
-
-        user = auth.authenticate(token=access_token)
-        if user:
-            auth.login(request, user)
-            return HttpResponseRedirect('/qro_lee/book/')
-        else:
-            error = 'AUTH_FAILED'
-
     template = kwargs['template_name']
 
     #state_1 = encontrado, state_2 = liberado

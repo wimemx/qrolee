@@ -36,7 +36,7 @@ def index(request, **kwargs):
         if 'code' in request.GET:
             args = {
                 'client_id': settings.FACEBOOK_APP_ID,
-                'redirect_uri': 'http://localhost:8000/qro_lee/book/5987L8f6y0_1',
+                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
                 'client_secret': settings.FACEBOOK_API_SECRET,
                 'code': request.GET['code'],
             }
@@ -1621,7 +1621,7 @@ def update_activity(data):
     if data['activity_id'] == 10:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
-            added_to_object=data['added_to_object'], added_to_type='U',
+            added_to_object=data['added_to_object'], added_to_type=data['added_to_type'],
             activity_id=5, type=data['type'])
         if activity:
             activity[0].activity_id = 10
@@ -1629,7 +1629,7 @@ def update_activity(data):
     else:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
-            added_to_object=data['added_to_object'], added_to_type='U',
+            added_to_object=data['added_to_object'], added_to_type=data['added_to_type'],
             activity_id=10, type=data['type'])
         if activity:
             activity[0].activity_id = 5
@@ -1638,7 +1638,7 @@ def update_activity(data):
         else:
             activity = account.Activity.objects.filter(
                 user_id=data['user_id'], object=data['object'],
-                added_to_object=data['added_to_object'], added_to_type='U',
+                added_to_object=data['added_to_object'], added_to_type=data['added_to_type'],
                 activity_id=5, type=data['type'])
             if not activity:
                 activity = account.Activity.objects.create(**data)
