@@ -582,7 +582,8 @@ p{
             color: #222 !important;
         }
         .color_btn.spot{
-            background: #f89883;;
+            background: #f89883;
+            color: #000 !important;
         }
         .entity .general-info a{
             text-decoration: none;

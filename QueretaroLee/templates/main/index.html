@@ -36,7 +36,9 @@
                      {% endif %}
                  </a></h3>
             </span>
-            <h3 class="title fleft din-r"><img src="" alt=""/>Próximos eventos</h3>
+            <h3 class="title fleft din-r">
+                <span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-134px;" alt=""/></span>Próximos eventos</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
@@ -44,7 +46,7 @@
                     {% for event in events %}
                         <span class="item">
                         <p class="main title no-margin"><a href="/qro_lee/events/{{ event.id }}">{{ event.name }}</a></p>
-                        <a class="category spot din-r" href="#">{{ event.location_name|truncatechars:42 }}</a>
+                        <a class="category spot din-r" href="{% ifequal event.place_spot 1%}/qro_lee/entity/spot/{{ event.location_id }}{% endifequal %}">{{ event.location_name|truncatechars:42|lower }}</a>
                         </span>
                     {% endfor %}
                 {% else %}
@@ -60,7 +62,8 @@
             {% endif %}
             </span>
 
-            <h3 class="title din-r"><img src="" alt=""/>Mis grupos</h3>
+            <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-65px;" alt=""/></span>Mis grupos</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
@@ -81,7 +84,8 @@
             {% endif %}
             </span>
 
-            <h3 class="title din-r"><img src="" alt=""/>Mis organizaciones</h3>
+            <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-65px;" alt=""/></span>Mis organizaciones</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
@@ -102,13 +106,14 @@
             {% endif %}
             </span>
 
-            <h3 class="title din-r"><img src="" alt=""/>Mis páginas</h3>
+            <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-166px;" alt=""/></span>Mis páginas</h3>
             <span style="padding-bottom: 50px;" class="element">
-            <span class="viewport">
+            <span class="viewport" style="margin-bottom: 20px;">
                 <span class="overview">
                     {% for page in pages %}
                         <span class="item">
-                            <p class="main title no-margin">{{ page.name }}</p>
+                            <p class="main title "><a href="/qro_lee/user/{{ page.user_id }}/page/"{{ page.id }}>{{ page.name }}</a></p>
                         </span>
                     {% endfor %}
                 </span>
