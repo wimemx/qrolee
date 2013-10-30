@@ -250,6 +250,15 @@ def get_entity(request, **kwargs):
                 }
                 views.update_activity(activity_data)
             else:
+                activity_data = {
+                    'user_id': request.user.id,
+                    'object': entity.id,
+                    'added_to_object': request.user.id,
+                    'type': 'E',
+                    'added_to_type': 'U',
+                    'activity_id': 10
+                }
+                views.update_activity(activity_data)
                 entityuser[0].is_member = False
                 entityuser[0].save()
         elif 'follow_private' in request.POST:
@@ -257,10 +266,28 @@ def get_entity(request, **kwargs):
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
+                activity_data = {
+                    'user_id': request.user.id,
+                    'object': entity.id,
+                    'added_to_object': request.user.id,
+                    'type': 'E',
+                    'added_to_type': 'U',
+                    'activity_id': 5
+                }
+                views.update_activity(activity_data)
                 request_sent = True
                 entityuser[0].request = True
                 entityuser[0].save()
             else:
+                activity_data = {
+                    'user_id': request.user.id,
+                    'object': entity.id,
+                    'added_to_object': request.user.id,
+                    'type': 'E',
+                    'added_to_type': 'U',
+                    'activity_id': 10
+                }
+                views.update_activity(activity_data)
                 entityuser[0].request = False
                 entityuser[0].is_member = False
                 entityuser[0].save()
