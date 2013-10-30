@@ -62,17 +62,21 @@
                         <div class="viewport container_crossing">
                             {% for obj in books_1 %}
                                 <span class="grid-7 no-margin container_mini_crossing">
-                                    <span class="grid-3 wrapper_mini_crossing borde_author">
-                                        {% if not obj.book.picture %}
-                                            <img class="img_size_all" src="/static/img/create.png" />
-                                        {% else %}
-                                            <img class="img_size_all"
-                                                 src="{{ obj.book.picture }}" />
-                                        {% endif %}
-                                    </span>
-                                    <span class="title titles_mini_crossing grid-4 no-margin ">
-                                        {{ obj.book.title }}
-                                    </span>
+                                    <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                        <span class="grid-3 wrapper_mini_crossing borde_author">
+                                            {% if not obj.book.picture %}
+                                                <img class="img_size_all" src="/static/img/create.png" />
+                                            {% else %}
+                                                <img class="img_size_all"
+                                                     src="{{ obj.book.picture }}" />
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                    <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                        <span class="title titles_mini_crossing grid-4 no-margin ">
+                                            {{ obj.book.title }}
+                                        </span>
+                                    </a>
                                     <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
                                     <span class="grid-3 no-margin text_top">Liberado por
                                         <span class="place_pink">{{ obj.user.username }}</span>
@@ -96,17 +100,21 @@
                             <div class="viewport container_crossing">
                                 {% for obj in books_2 %}
                                     <span class="grid-7 no-margin container_mini_crossing">
-                                        <span class="grid-3 wrapper_mini_crossing borde_author">
-                                            {% if not obj.book.picture %}
-                                                <img class="img_size_all" src="/static/img/create.png" />
-                                            {% else %}
-                                                <img class="img_size_all"
-                                                     src="{{ obj.book.picture }}" />
-                                            {% endif %}
-                                        </span>
-                                        <span class="title titles_mini_crossing grid-4 no-margin ">
-                                            {{ obj.book.title }}
-                                        </span>
+                                        <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                            <span class="grid-3 wrapper_mini_crossing borde_author">
+                                                {% if not obj.book.picture %}
+                                                    <img class="img_size_all" src="/static/img/create.png" />
+                                                {% else %}
+                                                    <img class="img_size_all"
+                                                         src="{{ obj.book.picture }}" />
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                        <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                            <span class="title titles_mini_crossing grid-4 no-margin ">
+                                                {{ obj.book.title }}
+                                            </span>
+                                        </a>
                                         <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
                                         <span class="grid-3 no-margin text_top">Encontrado por
                                             <span class="place_pink">{{ obj.user.username }}</span>

@@ -1823,7 +1823,7 @@ def register_ajax_book(request):
         'long': list['long'],
         'user': list['user'],
         'meta': list['meta'],
-        'status': 0,
+        'status': 1,
         'type_user': 1
     }
     key = list['key']
@@ -1872,11 +1872,49 @@ def register_title_click(request):
     del list['id']
     del list['genre']
     del list['grade']
+    author_name = list['author']
     del list['author']
     del list['id_author']
 
     title = account.Title.objects.create(**list)
     title.save()
+    name = str(author_name).replace(' ','+')
+    query = ''
+    key = '&key='+settings.GOOGLE_BOOKS_KEY
+    search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
+    url = 'https://www.googleapis.com/freebase/v1/search?query='+name
+    query += search_author + key
+    url += query
+    response = urllib2.urlopen(url)
+    response = simplejson.load(response)
+
+    biography = ' '
+    picture = ' '
+    if len(response['result']) != 0:
+        if len(response['result'][0]['output']) != 0:
+            if len(response['result'][0]['output']['description']) != 0:
+                biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
+
+        if len(biography) > 1000:
+            biography = biography[0:900]
+
+        if len(response['result'][0]['mid']) != 0:
+            picture = 'https://www.googleapis.com/freebase/v1/image' + \
+                      response['result'][0]['mid']
+
+        dict_author = {
+            'name': response['result'][0]['name'],
+            'picture': picture,
+            'biography': biography,
+            'birthday': datetime.datetime.today()
+        }
+
+        author = account.Author.objects.create(**dict_author)
+        author.save()
+
+    if len(response['result']) != 0:
+        list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
+        list_author_title.save()
 
     if title:
         context = {
