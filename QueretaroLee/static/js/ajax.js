@@ -727,13 +727,13 @@ $(document).ready(function(){
         }
     }
 
-$('.affiliate').each(function(i){
-        if(i == counter){
-            $(this).addClass('margin');
-            counter += 3;
-        }
+    $('.affiliate').each(function(i){
+            if(i == counter){
+                $(this).addClass('margin');
+                counter += 3;
+            }
 
-    });
+        });
 
 
     $('.alert-message .accept').click(function(){

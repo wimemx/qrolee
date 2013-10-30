@@ -128,6 +128,9 @@
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
+                <input type="hidden" class="lat" name="lat"/>
+                <input type="hidden" class="long" name="long"/>
+                <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
                 <textarea name="address" class="map address value">{{ entity.address }}</textarea>
                 <span class="value area map">{{ entity.address }}</span>
                 <span id="map" class="grid-5 alpha fright"></span>
@@ -228,7 +231,12 @@
                     field = $this_.find('select.value').attr('name');
                 }
                 $this = $(this);
-                update_obj(field,value,$this);
+                if($this_.find('.lat').length > 0){
+                    update_obj('lat',parseFloat($('input.lat').val()), $this);
+                    update_obj('long',parseFloat($('input.long').val()), $this);
+                }
+
+                update_obj(field,value, $this);
                 $this = $(this).parent();
                 $(this).fadeOut(timeout);
                 $this.parent().find('.close').fadeOut(timeout);
