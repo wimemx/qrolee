@@ -916,7 +916,7 @@ def get_list(request,**kwargs):
 def get_titles(request,**kwargs):
     template = kwargs['template_name']
 
-    type = ['Titulos', 'Title']
+    type = ['Títulos', 'Title']
     dict_items = {}
     book = account_models.Title.objects.all()
 

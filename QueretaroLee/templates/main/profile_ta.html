@@ -105,8 +105,8 @@
                 {% endif %}
             </span>
             <span class="general-info no-margin grid-9">
-                <h3 class="title d-title_profile">
-                        {{ profile.title|title|truncatechars:25 }}
+                <h3 title="{{ profile.title }}" class="title d-title_profile">
+                        {{ profile.title|title|truncatechars:40 }}
                 </h3>
                 <p class="text_profile">
                     {% if name_author != 'autor anonimo' %}

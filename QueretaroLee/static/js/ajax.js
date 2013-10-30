@@ -1608,9 +1608,9 @@ function search_list_authors_titles($this){
 
                                 if('country' in data_api[i]['accessInfo'])
                                     country = data_api[i]['accessInfo']['country'];
-
-                                if('identifier' in isbn[0])
-                                    isbn1 = isbn[0]['identifier'];
+                                if(isbn.length > 0)
+                                    if('identifier' in isbn[0])
+                                        isbn1 = isbn[0]['identifier'];
 
                                 if(isbn.length > 1)
                                     if('identifier' in isbn[1])
