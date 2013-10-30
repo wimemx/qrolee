@@ -454,9 +454,12 @@ def event_view(request,**kwargs):
     event = Event.objects.get(id=id_event)
     spot = ''
 
+    address = ''
     if event.place_spot == 1:
-        spot = models.Entity.objects.filter(type__name='spot',
-                                        name=event.location_name)
+        spot = models.Entity.objects.filter(
+            type__name='spot', name=event.location_name)
+        if spot:
+            address = spot[0].address
 
 
     arraymonth = ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
@@ -482,7 +485,8 @@ def event_view(request,**kwargs):
         'event': event,
         'date': date,
         'spot': spot,
-        'list_event': list_events
+        'list_event': list_events,
+        'address': address.split('#')
     }
 
     if 'post' in request.POST:

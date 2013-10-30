@@ -83,7 +83,7 @@
                             <a class="place_pink" href="/qro_lee/entity/spot/{{ spot.0.id }}">
                                 {{ event.location_name|replace:'#' }}
                             </a>
-                            <p class="location_name"></p>
+                            <p class="location_name">{{ address.0 }} {{ address.1 }}</p>
                         {% else %}
                             <p>{{ event.location_name|replace:'#' }}</p>
                         {% endif %}
