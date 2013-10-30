@@ -416,7 +416,7 @@ function search_book_code(form){
         'join': join
     }
     search = JSON.stringify(search);
-    var csrf = $('.csrf_header').find('div input').val();
+    var csrf = $('.csrf_header').find('input').val();
     var data_1 = advanced_search(search, csrf);
 
     form.find('.place_pink').remove();
