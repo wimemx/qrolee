@@ -52,7 +52,6 @@ function text_no_found(message){
 }
 
 function init(lat,long) {
-
 	var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 		var latlng = new google.maps.LatLng( lat, long);
@@ -90,7 +89,7 @@ var geocoder;
 var map;
 var marker;
 	function initialize(lat,long) {
-			var latlng = new google.maps.LatLng(20.600008,-100.388363);
+			var latlng = new google.maps.LatLng(lat, long);
 			var settings = {
 				zoom: 13,
 				center: latlng,

@@ -100,7 +100,7 @@ def get_entities(request, **kwargs):
                 type_id__in=entity_ids, name__icontains=search, status=status).\
                 exclude(user_id=request.user)
             user_entities = models.Entity.objects.filter(
-                type_id__in=entity_ids, user_id__in=user_ids,
+                type_id__in=entity_ids, user_id=request.user,
                 name__icontains=search, status=status)
 
     value = {}
