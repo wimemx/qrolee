@@ -3345,14 +3345,17 @@ function list_titles_and_author(data, type, $container, type_message){
 }
 
 function show_upload($this){
-
+    var cover = 0;
+    if($this.hasClass('cover'))
+        cover = 1;
     $.ajax({
         type: "POST",
         url: '/registry/delete_picture/',
         data: {
             'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
             'type': $('.type').val(),
-            'id_user': $('.id_user').val()
+            'id': $('.id_object').val(),
+            'cover': cover
         },
         dataType: 'json'
     }).done(function(data){
@@ -3362,8 +3365,8 @@ function show_upload($this){
 
     $this.fadeOut(250, function(){
 
-        $('.wrapper_picture_user').fadeOut(250,function(){
-            $('.dropzone_user').fadeIn(250);
+        $this.parent().find('.wrapper_picture_user').fadeOut(250,function(){
+            $this.parent().find('.dropzone_user').fadeIn(250);
         });
     });
 }

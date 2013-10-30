@@ -29,7 +29,7 @@ hyu
     <div class="grid-14 center">
         {% csrf_token %}
         <input type="hidden" class="type" value="{{ type }}" />
-        <input type="hidden" class="id_user" value="{{ user_profile.user.id }}" />
+        <input type="hidden" class="id_object" value="{{ user_profile.user.id }}" />
         <span class="title main">Editar información de
             {% if type == 'profile' %}
                 <a class="d-link_perfil" href="/accounts/users/profile/{{ user.id }}">tu perfil</a>
@@ -200,27 +200,27 @@ hyu
                 {% endif %}
             </p>
         </span>
-            <span class="d-picture_user grid-4" >
-                {% if user_profile.picture %}
-                    <span class="del_pict grid-2 no-margin show_upload">Quitar</span>
-                    <span class="d-picture_user wrapper_picture_user">
-                        <img class="img_size_all"
-                             src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" />
-                    </span>
-                    <span class="dropzone_user disable_upload">
-                        <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
-                            <input type="hidden" name="edit_profile" value="1"/>
-                        </form>
-                    </span>
-                {% else %}
-                    <span class="dropzone_user ">
-                        <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
-                            <input type="hidden" name="edit_profile" value="1"/>
-                        </form>
-                    </span>
-                {% endif %}
+        <span class="d-picture_user grid-4" >
+            {% if user_profile.picture %}
+                <span class="del_pict grid-2 no-margin show_upload">Quitar foto</span>
+                <span class="d-picture_user wrapper_picture_user">
+                    <img class="img_size_all"
+                         src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" />
+                </span>
+                <span class="dropzone_user disable_upload">
+                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="edit_profile" value="1"/>
+                    </form>
+                </span>
+            {% else %}
+                <span class="dropzone_user ">
+                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="edit_profile" value="1"/>
+                    </form>
+                </span>
+            {% endif %}
         </span>
-        {% endif %}
+    {% endif %}
         {% if type == 'account' %}
             <span style="border: none" class="data grid-9 fleft no-margin">
             <p>Nombre
