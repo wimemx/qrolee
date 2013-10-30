@@ -126,6 +126,7 @@ def user_profile(request, **kwargs):
     id_user = kwargs['id_user']
 
     if request.POST:
+
         membership = registry.MemberToObject.objects.get_or_create(
             user_id=request.user.id, object_type='U', object=id_user)[0]
 
