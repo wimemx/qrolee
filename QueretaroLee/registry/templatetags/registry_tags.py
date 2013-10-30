@@ -55,7 +55,9 @@ def feed_type(feed_id):
     if feed.added_to_type == 'U':
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)
-        if profile.picture is None:
+        if not profile.picture:
+            img_url = '/static/img/create.png'
+        elif profile.picture.strip() == '':
             img_url = '/static/img/create.png'
         else:
             img_url += 'profile/'+profile.picture
@@ -70,7 +72,9 @@ def feed_type(feed_id):
             id=obj_list[0].user_id)
         profile = rmodels.Profile.objects.get(
             user_id=user.id)
-        if profile.picture is None:
+        if not profile.picture:
+            img_url = '/static/img/create.png'
+        elif profile.picture.strip() == '':
             img_url = '/static/img/create.png'
         else:
             img_url += 'profile/'+profile.picture
@@ -86,13 +90,16 @@ def feed_type(feed_id):
         else:
             img_url = '/static/img/create.png'
         name = obj_list[0].name
-        trigger_url = '/qro_lee/entity/organization/'+str(obj_list[0].id)
 
     if feed.type == 'U':
-        if profile.picture == None:
-            added_to_img_url = '/static/img/create.png'
+        profile = rmodels.Profile.objects.get(
+            user_id=user.id)
+        if not profile.picture:
+            img_url = '/static/img/create.png'
+        elif profile.picture.strip() == '':
+            img_url = '/static/img/create.png'
         else:
-            added_to_img_url += 'profile/'+profile.picture
+            img_url += 'profile/'+profile.picture
         if obj_list[1].first_name != '':
             obj_name = obj_list[1].first_name + ' '+obj_list[1].last_name
         else:
@@ -106,8 +113,10 @@ def feed_type(feed_id):
         obj_name = obj_list[1].name
         content_ = obj_list[1].location_name.split('#')
         content = content_[0]+' '
-        content += content_[1]
+        if len(content_) > 1:
+            content += content_[1]
         date = obj_list[1].start_time
+
         extra_content = str(date.hour).zfill(2)+':'+str(date.minute).zfill(2)+':00'
         whom_url = '/qro_lee/events/'+str(obj_list[1].id)
     elif feed.type == 'E':
@@ -150,7 +159,6 @@ def feed_type(feed_id):
         extra_content = ''
         whom_url = '/qro_lee/profile/list/'+str(obj_list[1].id)
     date = member_since(feed.date)
-
     if feed.activity_id == 1:
         if feed.type == 'D':
             action = u'creó un evento'
@@ -228,8 +236,6 @@ def feed_type(feed_id):
             name, obj_name, img_url, added_to_img_url,
             content, extra_content, date, action,
             trigger_url, whom_url, list_.name, list_url)
-
-
 
     elif feed.activity_id == 5:
         if feed.type == 'E':

@@ -79,23 +79,19 @@ def get_entities(request, **kwargs):
     else:
         entity_type_ids = models.Type.objects.filter(name=entity_type)
 
-    user = models.User.objects.filter(
-        username=request.user)
     entity_ids = list()
     user_ids = list()
     for ele in entity_type_ids:
         entity_ids.append(ele.id)
-    for u in user:
-        user_ids.append(u.id)
 
     entity = models.Entity.objects.filter(
         type_id__in=entity_ids, status=status).exclude(user_id=request.user)
-
+    # admins = models.MemberToObject.objects.filter()
     user_entities = models.Entity.objects.filter(
-        type_id__in=entity_ids, user_id__in=user_ids, status=status)
+        Q(type_id__in=entity_ids, user_id=request.user, status=status))
 
     if request.POST.get('field_search_entity'):
-        if request.POST['field_search_entity']=='*':
+        if request.POST['field_search_entity'] == '*':
             entity = models.Entity.objects.filter(
                 type_id__in=entity_ids, status=status).exclude(user_id=request.user)
         else:
@@ -585,6 +581,7 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
         query = [Q(x) for x in q_list]
+        print q_list
         activity = None
         if 'join' in data:
             if data['join'] != 'none':
@@ -1498,6 +1495,16 @@ def search_api(request, **kwargs):
 
 
 def get_a_discussion(request):
+    if 'erase' in request.POST:
+        discussion = account_models.Discussion.objects.get(
+            id=int(request.POST.get('erase')))
+        discussion.status = 0
+        discussion.save()
+        context = {
+
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, mimetype='application/json')
     discussion = account_models.Discussion.objects.get(
         id=int(request.POST.get('id')))
     discussion_list = get_discussion(discussion=discussion)

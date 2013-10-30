@@ -1030,10 +1030,10 @@ $(document).ready(function(){
             fields = ['name','picture'];
             join = {
                 'tables':{
-                    0: JSON.stringify(['auth.user','account.listuser'])
+                    0: JSON.stringify(['auth.user','account.list'])
                 },
                 'quieres':{
-                    0: JSON.stringify(['list_id'])
+                    0: JSON.stringify(['id'])
                 },
                 'fields':{
                     0: JSON.stringify(['username','first_name','last_name'])
@@ -1395,7 +1395,7 @@ function create_template(type, result,i, create_user){
         var h3 = $('<h3 class="title no-margin grid-4 fright"></h3>');
         if(type == 'account.author' || create_user){
             if(type == 'account.author'){
-                awrapper.attr('href','/qro_lee/profile/author/'+result[i].id);
+                a_wrapper.attr('href','/qro_lee/profile/author/'+result[i].id);
                 a_title.attr('href','/qro_lee/profile/author/'+result[i].id);
                 h3.html(result[i].name);
                 url = result[i].picture;
@@ -1477,17 +1477,24 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }else if(type == 'account.list'){
             var text= 'Lista creada por ';
-            if(result[i].extras[0] != 'None')
-                p.html(text+result[i].extras[0]
-                    + ' '+ result[i].extras[2] );
+            //var p = $('<p class="fright no-margin grid-4"></p>');
+            console.log(result[i]);
+            if(result[i].extras[0][1] != '')
+                p.html(text+result[i].extras[0][1]+ ' '+ result[i].extras[0][2] );
             else
-                p.html(text+result[i].extras[1]);
+                p.html(text+result[i].extras[0][0]);
+
             item.append(p);
         }else if(type == 'account.author'){
             p.html(result[i].extras[0].length+' Libros');
             item.append(p);
         }else if(type == 'account.title'){
-            img.attr('src',result[i].picture);
+            if($.trim(result[i].cover) != '')
+                img.attr('src',result[i].cover);
+            else if(result[i].cover)
+                img.attr('src',result[i].cover);
+            else
+                 img.attr('src','/static/img/create.png');
             a_wrapper.attr('href','/qro_lee/profile/title/'+result[i].id);
             a_title.attr('href','/qro_lee/profile/title/'+result[i].id);
             var text= '';
@@ -1501,13 +1508,15 @@ function create_template(type, result,i, create_user){
             date = date[0];
             date = $.datepicker.parseDate("yy-mm-dd",  date);
             var date_string = days[date.getDay()-1]+', '+
-                date.getDate()+' de '+months[date.getMonth()-1]+
+                date.getDate()+' de '+months[date.getMonth()]+
                 ' del '+date.getFullYear()+' '+hour[0]+':'+
                 hour[1]+'hrs.';
             p.html(date_string);
             item.append(p);
-            url = '/static/media/users/'+result[i].owner_id+
-            '/event/'+result[i].picture;
+            if(result[i].picture)
+                url = '/static/media/users/'+result[i].owner_id+'/event/'+result[i].picture;
+            else
+                url = '/static/img/create.png';
             img.attr('src', url);
         }else if(create_user){
             var a;

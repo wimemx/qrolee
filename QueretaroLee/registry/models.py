@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Profile(models.Model):
     picture = models.CharField(max_length=255)
     phone = models.CharField(max_length=60, null=True)
@@ -43,6 +44,7 @@ class Type(models.Model):
     def __unicode__(self):
         return '%s' % (self.name, )
 
+
 class Attribute(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
@@ -54,12 +56,14 @@ class Attribute(models.Model):
     def __unicode__(self):
         return '%s' % (self.name, )
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
     type = models.ForeignKey(Type)
 
     def __unicode__(self):
         return '%s' % (self.name, )
+
 
 class Entity(models.Model):
     name = models.CharField(max_length=255)
@@ -84,9 +88,11 @@ class Entity(models.Model):
     def __unicode__(self):
         return '%s' % (self.name, )
 
+
 class EntityCategory(models.Model):
     category = models.ForeignKey(Category)
     entity = models.ForeignKey(Entity)
+
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
@@ -203,10 +209,12 @@ class FacebookSession(models.Model):
             raise FacebookSessionError(error['type'], error['message'])
         return response
 
+
 class TwitterSession(models.Model):
     request_token = models.CharField(max_length=255)
     oauth_token = models.CharField(max_length=255)
     user = models.ForeignKey(User, null=True)
+
     class Meta:
         unique_together = (('request_token', 'oauth_token'),)
 

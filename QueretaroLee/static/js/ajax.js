@@ -967,8 +967,13 @@ function discussion(id){
                                 parent_id = discussion.id
                                 if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
                                     $discussion_response.find('.answer').find('.erase_btn').remove();
-                            }
 
+                            }
+                            if($discussion_response.find('.answer').find('.erase_btn').length > 0){
+                                $discussion_response.find('.answer').find('.erase_btn').click(function(){
+                                    erase_discussion(discussion.id, $discussion_response);
+                                });
+                            }
                             $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
                                 $respond.removeClass('fleft respond').addClass('grid-8 fright no-margin');
@@ -1003,8 +1008,24 @@ function discussion(id){
         });
 }
 
+function erase_discussion(id, $ele){
+    $.ajax({
+        type: "POST",
+        url: '/qro_lee/get_a_discussion/',
+        data: {
+            'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
+            'erase': id
+        },
+        dataType: 'json'
+        }).done(function(data){
+            $ele.fadeOut(300,function(){
+                $(this).remove();
+            });
+        });
+}
 
 function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
+
     $ele.click(function(){
         $.ajax({
         type: "POST",
@@ -1039,9 +1060,19 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                         $discussion_response.insertBefore($ele.parent());
 
                         $ele.parent().remove();
+                        if($discussion_response.find('.answer').find('.erase_btn').length > 0){
+                                $discussion_response.find('.answer').find('.erase_btn').click(function(){
+                                    erase_discussion(discussion.id, $discussion_response);
+                                });
+                            }
                     }else{
 
-                        $discussion_response.find('.respond_btn').remove();
+                        //$discussion_response.find('.respond_btn').remove();
+                        if($discussion_response.find('.answer').find('.erase_btn').length > 0){
+                                $discussion_response.find('.answer').find('.erase_btn').click(function(){
+                                    erase_discussion(discussion.id, $discussion_response);
+                                });
+                            }
                         $discussion_response.insertAfter($item.find('.respond'));
                         $discussion_response.find('.respond_btn').click(function(){
                                 var $respond = $('.discuss.main .respond').clone();
