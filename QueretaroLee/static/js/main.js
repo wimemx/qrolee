@@ -52,6 +52,7 @@ function text_no_found(message){
 }
 
 function init(lat,long) {
+
 	var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 		var latlng = new google.maps.LatLng( lat, long);
@@ -500,7 +501,6 @@ function update_dir_info(loc_address, lat_long, type){
         $('.long').val(marker.getPosition().lng());
         if(geocoder){
             geocoder.geocode({'location':marker.getPosition()},function(results,status){
-                console.log(results[0]);
                 var address = results[0].address_components[1].long_name +' '+
                     results[0].address_components[0].long_name +' '+
                     results[0].address_components[2].long_name +'#'+
@@ -697,7 +697,6 @@ $(document).ready(function(){
             $(this).parent().find('input').val(0);
         }
     });
-
 
     $('.heading .search .search_btn').click(function(){
         if($.trim($(this).parent().find('input[type=text]').val())

@@ -1735,7 +1735,6 @@ function search_entities($this){
         }else{
             field_search = "*";
         }
-
         $.ajax({
             type: "POST",
             url: url,
