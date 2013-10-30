@@ -60,29 +60,29 @@
                 <span class="grid-7 no-margin mar_rig ">
                     <span class="title grid-4">Últimos libros liberados</span>
                         <div class="viewport container_crossing">
-                            {% for obj in books_1 %}
+                            {% for obj, value in books_1.items %}
                                 <span class="grid-7 no-margin container_mini_crossing">
-                                    <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                    <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                         <span class="grid-3 wrapper_mini_crossing borde_author">
-                                            {% if not obj.book.picture %}
+                                            {% if not value.travel.book.picture %}
                                                 <img class="img_size_all" src="/static/img/create.png" />
                                             {% else %}
                                                 <img class="img_size_all"
-                                                     src="{{ obj.book.picture }}" />
+                                                     src="{{ value.travel.book.picture }}" />
                                             {% endif %}
                                         </span>
                                     </a>
-                                    <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                    <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                         <span class="title titles_mini_crossing grid-4 no-margin ">
-                                            {{ obj.book.title }}
+                                            {{ value.travel.book.title }}
                                         </span>
                                     </a>
                                     <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
                                     <span class="grid-3 no-margin text_top">Liberado por
-                                        <span class="place_pink">{{ obj.user.username }}</span>
+                                        <span class="place_pink">{{ value.user.username }}</span>
                                     </span>
                                     <span class="grid-2 text_since no-margin d-text_opacity text_top">
-                                        hace {{ obj.book.date|member_since }}
+                                        hace {{ value.travel.book.date|member_since }}
                                     </span>
                                 </span>
                             {% endfor %}
@@ -98,29 +98,29 @@
                     <div class="right_marg">
                         <span class="title grid-4">Últimos libros encontrados</span>
                             <div class="viewport container_crossing">
-                                {% for obj in books_2 %}
+                                {% for obj, value in books_2.items %}
                                     <span class="grid-7 no-margin container_mini_crossing">
-                                        <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                        <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                             <span class="grid-3 wrapper_mini_crossing borde_author">
-                                                {% if not obj.book.picture %}
+                                                {% if not value.travel.book.picture %}
                                                     <img class="img_size_all" src="/static/img/create.png" />
                                                 {% else %}
                                                     <img class="img_size_all"
-                                                         src="{{ obj.book.picture }}" />
+                                                         src="{{ value.travel.book.picture }}" />
                                                 {% endif %}
                                             </span>
                                         </a>
-                                        <a href="/qro_lee/book/{{ obj.book.code }}_0">
+                                        <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                             <span class="title titles_mini_crossing grid-4 no-margin ">
-                                                {{ obj.book.title }}
+                                                {{ value.travel.book.title }}
                                             </span>
                                         </a>
                                         <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
                                         <span class="grid-3 no-margin text_top">Encontrado por
-                                            <span class="place_pink">{{ obj.user.username }}</span>
+                                            <span class="place_pink">{{ value.user.username }}</span>
                                         </span>
                                         <span class="grid-2 no-margin text_since d-text_opacity text_top">
-                                            hace {{ obj.book.date|member_since }}
+                                            hace {{ value.travel.book.date|member_since }}
                                         </span>
                                     </span>
                                 {% endfor %}

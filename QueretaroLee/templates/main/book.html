@@ -63,7 +63,7 @@
                     <p class="text_profile">
                         Creado por:
                         <span class="title_author">
-                            {{ book.user.username }}
+                            {{ user_.username }}
                         </span>
                             en Querétaro, México
                     </p>
@@ -243,7 +243,8 @@
                                     personas han encontrado este libro
                                 {% endif %}
                             </span>
-                            {% for obj in list_users %}
+                            {% for obj, value in list_users.items %}
+
                                 <div class="discussion disc_book">
                                     <div class="grid-7 discuss fleft">
                                     </div>
@@ -254,19 +255,19 @@
                                         </span>
                                         <span class="grid-6 din-r answer fright no-margin">
                                             <span class="name title grid-6 no-margin ">
-                                                {{ obj.user }}
+                                                {{ value.user }}
                                             </span>
                                             <span class="gray_text grid-6 no-margin " >
-                                                {% if obj.status %}
+                                                {% if value.travel.status %}
                                                     encontrado
                                                 {% else %}
                                                     liberado
                                                 {% endif %}
-                                                 hace {{ obj.date|member_since }} en
+                                                 hace {{ value.travel.date }} en
                                                 plaza de armas, San juan del rio, Qro.
                                             </span>
                                             <p>
-                                                {{ obj.description}}
+                                                {{ value.travel.description}}
                                             </p>
                                             </span>
                                         </span>

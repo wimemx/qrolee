@@ -1617,11 +1617,25 @@ def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
     books_1 = models.Travel.objects.filter(status=1)
+    dict_1 = {}
+    for obj in books_1:
+        user_book = account_models.User.objects.get(id=obj.user)
+        dict_1[obj.id] = {
+            'user': user_book,
+            'travel': obj
+        }
     books_2 = models.Travel.objects.filter(status=0)
+    dict_2 = {}
+    for obj in books_2:
+        user_book = account_models.User.objects.get(id=obj.user)
+        dict_2[obj.id] = {
+            'user': user_book,
+            'travel': obj
+        }
 
     context = {
-        'books_1': books_1,
-        'books_2': books_2
+        'books_1': dict_1,
+        'books_2': dict_2
     }
 
     return render(request, template, context)
@@ -1641,13 +1655,25 @@ def book(request, **kwargs):
 
     code = active[0]
     book = models.Book.objects.get(code=code)
+    user = account_models.User.objects.get(id=book.user.id)
     list_users = models.Travel.objects.filter(book__code=code)
 
     count_user =models.Travel.objects.filter(book__code=code).\
-                values('user__username').annotate(count = db_model.Count('user'))
+                values('user').annotate(count = db_model.Count('user'))
 
-    state_1 = models.Travel.objects.filter(book__code=code, status=1)
-    state_2 = models.Travel.objects.filter(book__code=code, status=0)
+    state_1 = models.Travel.objects.filter(book__code=code, status=0)
+    state_2 = models.Travel.objects.filter(book__code=code, status=1)
+
+    print state_1
+    print state_2
+
+    dict = {}
+    for obj in list_users:
+        user_book = account_models.User.objects.get(id=obj.user)
+        dict[obj.id] = {
+            'user': user_book,
+            'travel': obj
+        }
 
     if state_1:
         state_1 = True
@@ -1661,7 +1687,8 @@ def book(request, **kwargs):
 
     context = {
         'book': book,
-        'list_users': list_users,
+        'user_': user,
+        'list_users': dict,
         'state_1': state_1,
         'state_2': state_2,
         'count_user': count_user,

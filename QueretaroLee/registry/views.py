@@ -1738,7 +1738,6 @@ def register_ajax_book(request):
             'name': list['genre'],
         }
 
-
         author = 'anonimo'
         picture = ''
         publishedDate = datetime.datetime.today()
@@ -1820,7 +1819,7 @@ def register_ajax_book(request):
     list_travel = {
         'lat': list['lat'],
         'long': list['long'],
-        'user': list['user'],
+        'user': request.user.id,
         'meta': list['meta'],
         'status': 1,
         'type_user': 1
