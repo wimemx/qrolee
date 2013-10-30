@@ -3016,10 +3016,6 @@ function d_show_dialog(type_message){
         text = '¿Qué estás leyendo actualmente?';
         text2 = 'Selecciona un libro para añadirlo a tu perfil como libro actual de lectura';
     }
-    if(type_message == 1){
-        text = '¿Qué estás leyendo actualmente?';
-        text2 = 'Selecciona un libro para añadirlo a tu perfil como libro actual de lectura';
-    }
 
     p_text = $('<p class="p_text_dialog">' + text + '</p>');
     p_text2 = $('<p class="p_text_mini p_mini_book">' + text2 + '</p>');
@@ -3033,12 +3029,12 @@ function d_show_dialog(type_message){
 
     input.keyup(function(){
 
-        if($(this).val().length%2){
+        //if($(this).val().length%2){
             csrf = $('.csrf_header').find('input').val();
             words = $(this).val();
             data = search_titles_and_author_in_api_bd('T', csrf, words);
             list_titles_and_author(data, 'T', div_text, type_message);
-        }
+
 
     });
 
@@ -3057,7 +3053,6 @@ function d_show_dialog(type_message){
 function list_titles_and_author(data, type, $container, type_message){
 
     $container.find('#scrollbar1').remove();
-
     div_scroll = $('<div id="scrollbar1"></div>');
     div_scroll.append('<div class="scrollbar"><div class="track">'+
         '<div class="thumb"><div class="end"></div></div></div></div>');
@@ -3077,7 +3072,6 @@ function list_titles_and_author(data, type, $container, type_message){
         if('response' in titles_l)
             delete titles_l['response'];
         var array_ids_google = [];
-
 
         $.each(titles_l,function(i){
             array_ids_google.push(titles_l[i].id_google);
@@ -3117,7 +3111,7 @@ function list_titles_and_author(data, type, $container, type_message){
             p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                 ' no-margin" ></p>');
             a_author = $('<a class="title_author" ></a>');
-            var author_att= titles_l[i].extras[1];
+            var author_att = titles_l[i].extras[0];
             a_author.append(truncText(author_att,10));
             p_text_author.append('De ');
             p_text_author.append(a_author);
@@ -3273,7 +3267,6 @@ function list_titles_and_author(data, type, $container, type_message){
             }
         });
     }
-
     if(bar)
         div_scroll.tinyscrollbar();
 
