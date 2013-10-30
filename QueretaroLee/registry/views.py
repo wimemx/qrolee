@@ -689,6 +689,7 @@ def admin_users(request, **kwargs):
 
 
 def remove_add_user(request, **kwargs):
+    
     if 'user_email' in request.POST:
         members = models.MemberToObject.objects.filter(
             object=int(request.POST.get('entity')),
