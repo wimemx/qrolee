@@ -26,6 +26,8 @@ $(document).ready(function(){
         aling_message();
         btn_acept.click(function(){
            removeUser($(this),parseInt($('.sesion_user').val()),3,$('.d-entity_id').val());
+           $('.container_message_2').fadeOut(250);
+            window.location.href = site_url + '/qro_lee/entity/group/'+$('.id_group_red').val();
         });
         return false;
     });

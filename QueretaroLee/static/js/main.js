@@ -2809,7 +2809,6 @@ function show_dialog(){
 
             href = 'href="/accounts/delete_user/"';
         }
-
         div_closet = $('<span class="dialog_closet"></span>');
         div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
         btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');

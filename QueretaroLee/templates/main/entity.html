@@ -252,6 +252,7 @@
                </span>
             {% endif %}
             {% if entity_type.1 == 'group' %}
+                <input type="hidden" class="id_group_red" value="{{ entity.id }}" />
                 <p class="din-r grid-6 alpha omega desc_group">
                     {{ entity.description|truncatewords:30 }}
                 </p>
