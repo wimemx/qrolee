@@ -1648,8 +1648,6 @@ def book(request, **kwargs):
     else:
         state_2 = False
 
-    print state_1
-    print state_2
     context = {
         'book': book,
         'list_users': list_users,
