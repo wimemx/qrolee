@@ -1664,18 +1664,19 @@ def book(request, **kwargs):
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
-    print state_1
-    print state_2
-
     dict = {}
+    count = 1
     for obj in list_users:
-        user_book = account_models.User.objects.get(id=obj.user)
-        dict[obj.id] = {
-            'user': user_book,
-            'travel': obj
-        }
+        if count > 1:
+            user_book = account_models.User.objects.get(id=obj.user)
+            dict[obj.id] = {
+                'user': user_book,
+                'travel': obj
+            }
 
-    if state_1:
+        count += 1
+
+    if len(state_1) > 1:
         state_1 = True
     else:
         state_1 = False

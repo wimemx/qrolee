@@ -85,14 +85,15 @@
                 </span>
             </span>
             <span class="grid-6 no-margin fright">
-                    {% if state_1 and not state_2 %}
+                    {% if not state_1 and not state_2 %}
                         <span style="background: url(/static/img/book_free.png) no-repeat 0px 0px;
                          height: 100px;width: 100px;float: left;"></span>
                         <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro está vagando</span>
                     {% elif state_2 %}
                         <span style="background: url(/static/img/book_user.png) no-repeat 0px 0px;
                         height: 100px;width: 100px;float: left;"></span>
-                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">>Este libro lo liberado</span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ user_find }}</span>
+
                     {% endif %}
                 </span>
             <div class="grid-16 content book_cro single no-margin">
@@ -263,7 +264,7 @@
                                                 {% else %}
                                                     liberado
                                                 {% endif %}
-                                                 hace {{ value.travel.date }} en
+                                                 el {{ value.travel.date }} en
                                                 plaza de armas, San juan del rio, Qro.
                                             </span>
                                             <p>

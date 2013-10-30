@@ -479,7 +479,7 @@ $(document).ready(function(){
             async: false,
             url: '/registry/cheking_book/',
             data: {
-                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                 'query': JSON.stringify(query)
             },
             dataType: 'json'
