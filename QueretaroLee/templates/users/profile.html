@@ -150,7 +150,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id }}
+                                {{ news_feed.id|feed_type }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
