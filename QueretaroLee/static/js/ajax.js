@@ -930,6 +930,11 @@ function discussion(id){
             $item.find('.title').html(parent.name);
             $item.find('p.main_content').html(parent.content);
             $item.find('p a').html(parent.username);
+            var date = parent.date.split('T');
+            date = date[0].split('-');
+
+            $item.find('.date').html(date[2]+' de '+
+                months[parseInt(date[1])-1]+' del ' + date[0]);
             $item.find('p a').attr('href', '/accounts/users/profile/'+parent.user);
             data = data['discussion'];
             respond_discussion(
@@ -965,6 +970,7 @@ function discussion(id){
 
                             }else{
                                 parent_id = discussion.id
+
                                 if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
                                     $discussion_response.find('.answer').find('.erase_btn').remove();
 
