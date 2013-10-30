@@ -33,7 +33,7 @@
                          alt="{{ book.picture }}"/>
                 {% endif %}
             </span>
-                <span class="general-info no-margin grid-9">
+                <span class="general-info no-margin grid-7">
                 <h3 class="title d-title_profile" >
                     {{ book.title|title|truncatechars:25 }}
                 </h3>
@@ -72,7 +72,7 @@
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
                         {% if count_user|length == 0  and count_user %}
-                            nadia se ha encontrado este libro
+                            nadie se ha encontrado este libro
                         {% endif %}
                         {% if count_user|length == 1  and count_user%}
                             una persona se ha encontrado este libro
@@ -84,18 +84,23 @@
                     </p>
                 </span>
             </span>
-            <span class="grid-4 no-margin fright">
+            <span class="grid-6 no-margin fright">
                     {% if state_1 and not state_2 %}
-                        Este libro se encuentra vagando
+                        <span style="background: url(/static/img/book_free.png) no-repeat 0px 0px;
+                         height: 100px;width: 100px;float: left;"></span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro está vagando</span>
                     {% elif state_2 %}
-                        Este libro se encuentra liberado
+                        <span style="background: url(/static/img/book_user.png) no-repeat 0px 0px;
+                        height: 100px;width: 100px;float: left;"></span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">>Este libro lo liberado</span>
                     {% endif %}
                 </span>
             <div class="grid-16 content book_cro single no-margin">
                 <div class="grid-15 no-margin">
                     <input type="hidden" value="{{ book.code }}" class="code_book"/>
                     <div class="grid-15 no-margin no-pandding book_register">
-                        {% if user.is_active %}
+                        {% if cheking %}
+                            {% if user.is_active%}
                             {% if not state_1 or  not state_2 %}
                                 <div class="grid-5 no-margin">
                                     <span class="title grid-5 no-margin title_uno">Selecciona una opcion</span>
@@ -221,6 +226,7 @@
                                     </span>
                                 </span>
                             </div>
+                        {% endif %}
                         {% endif %}
                     </div>
                     <div class="grid-15 no-margin no-pandding">

@@ -1617,21 +1617,26 @@ def book_crossing(request, **kwargs):
 
 
 def book(request, **kwargs):
-
     template = kwargs['template_name']
 
     #state_1 = encontrado, state_2 = liberado
     code = kwargs['code']
+
+    active = str(code).split('_')
+    cheking = False
+
+    if int(active[1]) == 1:
+        cheking = True
+
+    code = active[0]
     book = models.Book.objects.get(code=code)
     list_users = models.Travel.objects.filter(book__code=code)
 
     count_user =models.Travel.objects.filter(book__code=code).\
                 values('user__username').annotate(count = db_model.Count('user'))
 
-    state_1 = models.Travel.objects.filter(user=request.user,
-                                          book__code=code, status=1)
-    state_2 = models.Travel.objects.filter(user=request.user,
-                                          book__code=code, status=0)
+    state_1 = models.Travel.objects.filter(book__code=code, status=1)
+    state_2 = models.Travel.objects.filter(book__code=code, status=0)
 
     if state_1:
         state_1 = True
@@ -1643,13 +1648,15 @@ def book(request, **kwargs):
     else:
         state_2 = False
 
-
+    print state_1
+    print state_2
     context = {
         'book': book,
         'list_users': list_users,
         'state_1': state_1,
         'state_2': state_2,
-        'count_user': count_user
+        'count_user': count_user,
+        'cheking': cheking
     }
 
     return render(request, template, context)
