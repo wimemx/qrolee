@@ -90,7 +90,7 @@ var geocoder;
 var map;
 var marker;
 	function initialize(lat,long) {
-			var latlng = new google.maps.LatLng(20.6144226,-100.4057373);
+			var latlng = new google.maps.LatLng(lat, long);
 			var settings = {
 				zoom: 13,
 				center: latlng,
@@ -596,6 +596,31 @@ function dmap(data,id){
     }
 }
 
+function search_map_address(address){
+
+    var lat = 20.589081;
+    var long = -100.38826;
+
+    if(address.length != 0){
+        var addres_ = address.replace(/\s/g,"+");
+
+        $.ajax({
+            'async': false,
+            'global': false,
+            'url': 'http://maps.googleapis.com/maps/api/geocode/json?address='+addres_+
+                '&sensor=false',
+            'dataType': "json",
+            'success': function (data) {
+                lat = data['results'][0]['geometry']['location']['lat'];
+                long = data['results'][0]['geometry']['location']['lng'];
+            }
+        });
+    }
+
+    initialize(lat, long);
+
+}
+
 function map_cheking(country, state, city){
 
     var lat = 20.589081;
@@ -681,6 +706,10 @@ function show_text($elem, message){
 }
 
 $(document).ready(function(){
+
+    $('.address').keyup(function(){
+        search_map_address($(this).val());
+     });
 
     $('.book_register .btn_ra').click(function(){
         if($(this).hasClass('find')){
