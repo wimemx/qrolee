@@ -1,9 +1,28 @@
-from _ast import mod
 from django.db import models
-from django import forms
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+
+class Cities(models.Model):
+    code = models.CharField(max_length=4)
+    city = models.CharField(max_length=128)
+    accentCity = models.CharField(max_length=128)
+    region = models.CharField(max_length=128)
+    population = models.CharField(max_length=128)
+    lat = models.CharField(max_length=128)
+    long = models.CharField(max_length=128)
+
+
+class Countries(models.Model):
+    code = models.CharField(max_length=4)
+    name = models.CharField(max_length=128)
+
+
+class States(models.Model):
+    code = models.CharField(max_length=4)
+    region = models.CharField(max_length=4)
+    name = models.CharField(max_length=128)
 
 
 class Profile(models.Model):
@@ -113,6 +132,7 @@ class Event(models.Model):
     owner = models.ForeignKey(User)
 
     fb_url = models.CharField(max_length=255, null=True)
+
     def __unicode__(self):
         return '%s, %s' % (self.name, self.description)
 
