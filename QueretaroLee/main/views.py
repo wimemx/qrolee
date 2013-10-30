@@ -283,8 +283,8 @@ def get_entity(request, **kwargs):
     entity_admins = models.User.objects.filter(
         membertoobject__is_admin=1, membertoobject__object=entity.id,
         membertoobject__object_type='E')
-    admins = User.objects.filter(id=entity_admins)
-
+    admins = User.objects.filter(id__in=entity_admins).distinct()
+    print admins
     for ent in entities:
         followers = models.MemberToObject.objects.filter(
             object=ent.id, object_type='E')

@@ -481,7 +481,6 @@
                     </span>
                     <span class="grid-3 omega">
                         <h3 class="title main">Administrador/es
-                            <span>{{ owner.first_name }}</span>
                             {% for admin in admins %}
                                 {% if admin.first_name == '' %}
                                     <span>{{ admin.username }}</span>
