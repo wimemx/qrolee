@@ -1617,7 +1617,7 @@ def update_activity(data):
     Type = E (entity) T (title) L (list) etc...
     Verb = action Actualizo Creo etc...
     """
-    print data
+
     if data['activity_id'] == 10:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
