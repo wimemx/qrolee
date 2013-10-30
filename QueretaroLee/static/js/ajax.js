@@ -53,6 +53,7 @@ function populateCal(curr_month,$item){
             dataType: 'json'
         }).done(function(data){
                 var counter = 0;
+                $('.d-width-container-event').empty();
                 $.each(data,function(index){
                     var event = data[index];
                     var length = event.length;
@@ -60,7 +61,6 @@ function populateCal(curr_month,$item){
                         var $ditem = $item.clone();
                         var e = event[i];
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
-                        $ditem.removeClass().addClass('item item_'+i);
 
                         var picture_url = window.location.origin+'/static/media/users/'+
                             e[8]+'/event/'+e[3];
@@ -1438,7 +1438,7 @@ function search_list_authors_titles($this){
                 }else{
                     overview = $('.overview');
                 }
-
+                overview.parent().find('.loading_image');
                 overview.parent().append('<span class="grid-14 no-pandding no-margin loading_image"'+
                     'style="margin-top:100px;" ><img src="/static/img/loading.gif" class="center" /></span>');
                 overview.fadeOut(300,function(){
