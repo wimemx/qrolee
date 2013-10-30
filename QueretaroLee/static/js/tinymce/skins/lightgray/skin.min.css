@@ -16,8 +16,8 @@
 
 .mce-panel{
     border:0 solid #9e9e9e;
-    background-color:#edd5a5;
     zoom:1;
+    background-color: rgb(233, 233, 233);
 }
 
 .mce-floatpanel{
