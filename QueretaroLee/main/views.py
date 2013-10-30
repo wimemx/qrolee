@@ -41,13 +41,22 @@ def index(request, **kwargs):
     profile = models.Profile.objects.get(user_id=user)
 
     following = account_models.Activity.objects.filter(
-        user_id=user.id, activity_id=5)
+        user_id=user.id, activity_id=5, type='U').distinct()
+
+    following_entity = account_models.Activity.objects.filter(
+        user_id=user.id, activity_id=5, type='E').distinct()
+
     following_list = list()
+    entity_following_list = list()
     for follow in following:
         following_list.append(follow.object)
 
+    for f in following_entity:
+        entity_following_list.append(f.object)
+
+    print following_list
     activity = account_models.Activity.objects.filter(
-        user_id__in=following_list).order_by('-date')
+        Q(added_to_type=following_list) | Q(added_to_object__in=entity_following_list)).order_by('-date')
 
     entities = models.Entity.objects.filter(
         user_id=user)
