@@ -79,23 +79,19 @@ def get_entities(request, **kwargs):
     else:
         entity_type_ids = models.Type.objects.filter(name=entity_type)
 
-    user = models.User.objects.filter(
-        username=request.user)
     entity_ids = list()
     user_ids = list()
     for ele in entity_type_ids:
         entity_ids.append(ele.id)
-    for u in user:
-        user_ids.append(u.id)
 
     entity = models.Entity.objects.filter(
         type_id__in=entity_ids, status=status).exclude(user_id=request.user)
-
+    # admins = models.MemberToObject.objects.filter()
     user_entities = models.Entity.objects.filter(
-        type_id__in=entity_ids, user_id__in=user_ids, status=status)
+        Q(type_id__in=entity_ids, user_id=request.user, status=status))
 
     if request.POST.get('field_search_entity'):
-        if request.POST['field_search_entity']=='*':
+        if request.POST['field_search_entity'] == '*':
             entity = models.Entity.objects.filter(
                 type_id__in=entity_ids, status=status).exclude(user_id=request.user)
         else:
