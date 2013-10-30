@@ -417,7 +417,7 @@ function search_book_code(form){
         'join': join
     }
     search = JSON.stringify(search);
-    var csrf = $('.csrf_header').find('div input').val();
+    var csrf = $('.csrf_header').find('input').val();
     var data_1 = advanced_search(search, csrf);
 
     form.find('.place_pink').remove();
@@ -480,7 +480,7 @@ $(document).ready(function(){
             async: false,
             url: '/registry/cheking_book/',
             data: {
-                'csrfmiddlewaretoken': $('.csrf_header').find('div input').val(),
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                 'query': JSON.stringify(query)
             },
             dataType: 'json'
@@ -1572,7 +1572,6 @@ function search_list_authors_titles($this){
                                 var pageCount = 100;
                                 var language = '';
                                 var volumeInfo = data_api[i]['volumeInfo'];
-                                var isbn = volumeInfo['industryIdentifiers'];
                                 var subtitle = '';
                                 var country = '';
                                 var isbn1 = '';
@@ -1615,13 +1614,19 @@ function search_list_authors_titles($this){
 
                                 if('country' in data_api[i]['accessInfo'])
                                     country = data_api[i]['accessInfo']['country'];
-                                if(isbn.length > 0)
-                                    if('identifier' in isbn[0])
-                                        isbn1 = isbn[0]['identifier'];
 
-                                if(isbn.length > 1)
-                                    if('identifier' in isbn[1])
-                                        isbn2 = isbn[1]['identifier'];
+                                    var isbn = '';
+                                    if('industryIdentifiers' in volumeInfo){
+                                        isbn = volumeInfo['industryIdentifiers'];
+
+                                        if(isbn.length > 0)
+                                            if('identifier' in isbn[0])
+                                                isbn1 = isbn[0]['identifier'];
+
+                                        if(isbn.length > 1)
+                                            if('identifier' in isbn[1])
+                                                isbn2 = isbn[1]['identifier'];
+                                }
 
                                 var items = {
                                     'id': data_api[i].id,

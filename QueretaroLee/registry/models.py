@@ -168,7 +168,7 @@ class Travel(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=255)
     meta = models.TextField(max_length=255)
-    user = models.ForeignKey(User)
+    user = models.IntegerField(max_length=10)
     book = models.ForeignKey(Book)
 
     def __unicode__(self):

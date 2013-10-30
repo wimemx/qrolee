@@ -1740,7 +1740,6 @@ def register_ajax_book(request):
             'name': list['genre'],
         }
 
-
         author = 'anonimo'
         picture = ''
         publishedDate = datetime.datetime.today()
@@ -1822,7 +1821,7 @@ def register_ajax_book(request):
     list_travel = {
         'lat': list['lat'],
         'long': list['long'],
-        'user': list['user'],
+        'user': request.user.id,
         'meta': list['meta'],
         'status': 1,
         'type_user': 1
@@ -1891,7 +1890,10 @@ def register_title_click(request):
 
     biography = ' '
     picture = ' '
+    author_e = False
+    id_author = 0
     if len(response['result']) != 0:
+        print response['result']
         if len(response['result'][0]['output']) != 0:
             if len(response['result'][0]['output']['description']) != 0:
                 biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
@@ -1907,15 +1909,26 @@ def register_title_click(request):
             'name': response['result'][0]['name'],
             'picture': picture,
             'biography': biography,
-            'birthday': datetime.datetime.today()
+            'birthday': datetime.datetime.today(),
+            'id_api' : response['result'][0]['id']
         }
 
-        author = account.Author.objects.create(**dict_author)
-        author.save()
+        author_exist = account.Author.objects.filter(id_api=response['result'][0]['id'])
+
+        if not author_exist:
+            author = account.Author.objects.create(**dict_author)
+            author.save()
+        else:
+            author_e = True
+            id_author = author_exist[0]
 
     if len(response['result']) != 0:
-        list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
-        list_author_title.save()
+        if not author_exist:
+            list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
+            list_author_title.save()
+        else:
+            list_author_title = account.AuthorTitle.objects.create(title=title, author=id_author)
+            list_author_title.save()
 
     if title:
         context = {
