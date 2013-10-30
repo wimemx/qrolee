@@ -1674,7 +1674,7 @@ def book(request, **kwargs):
 def qr_book(request, **kwargs):
     template = kwargs['template_name']
     code = kwargs['book_code']
-    url = settings.SITE_URL+'qro_lee/book/'+code
+    url = settings.SITE_URL+'qro_lee/book/'+code+'_1'
     image = generate(url)
     path = os.path.join(os.path.dirname(__file__), '..', 'static/qr/').replace('\\','/')
     file = open(path+code+".png", "wb")
