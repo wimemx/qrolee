@@ -688,6 +688,7 @@ def admin_users(request, **kwargs):
 
 def remove_add_user(request, **kwargs):
     if 'user_email' in request.POST:
+        print request.POST.get('user_email')
         members = models.MemberToObject.objects.filter(
             object=int(request.POST.get('entity')),
             object_type='E', is_admin=1)
@@ -748,6 +749,7 @@ def remove_add_user(request, **kwargs):
         context = simplejson.dumps(context)
         return HttpResponse(context, mimetype='application/json')
     else:
+        print int(request.POST.get('remove'))
         obj = kwargs['user_id']
         obj = models.MemberToObject.objects.get_or_create(
             user_id=int(obj), object_type='E',
