@@ -74,19 +74,7 @@
                     </span>
 
                 </p>
-                <p>Privacidad
-                    <span class="grid-5 fright no-margin">
-                        <span class="grid-2 select no-margin">
-                            <span class="text"></span>
-                            <span class="dropdown"></span>
-                            <select class="change" name="privacy" id="">
-                                <option value="publica">Publica</option>
-                                <option value="privada">Privada</option>
-                            </select>
-                        </span>
-                    </span>
-
-                </p>
+                    <input type="hidden" value="publica" name="privacy"/>
                 <p>Sitio web
                     <input class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>
@@ -144,7 +132,6 @@
         </div>
 
     </div>
-    <div class="some-div">Div</div>
     <script type="text/javascript">
     Dropzone.options.picture = {
         maxFiles: 1,
@@ -183,7 +170,7 @@
 
 
         if($('#map').length > 0)
-            initialize(-100.4057373,20.6144226);
+            initialize(20.6144226,-100.4057373);
         $('form p input').focus(function(){
             $(this).parent().find('.invalid').fadeOut(300);
         });
