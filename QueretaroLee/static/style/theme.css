@@ -241,6 +241,7 @@ p{
     .header .search input{
         background: #fff;
         width: 133px;
+        font-family: arial!important;
     }
     .header .search span .icon{
         width: 27px;
@@ -285,6 +286,9 @@ p{
         float: left;
         width: 90px;
 
+    }
+    .account-settings .user:hover{
+     color: #edde83!important;
     }
 
 .news-feed{
@@ -2446,7 +2450,6 @@ p{
 
 .menu a:hover{
     color: #edde83;
-
 }
 
 .heading .search_entities:focus{
@@ -3465,4 +3468,12 @@ textarea{
 }
 .account-settings:hover{
     cursor: pointer;
+}
+
+.border_header_avatar{
+    width: 14px;
+    height: 40px;
+    float: left;
+    border-right: 1px solid rgb(68, 66, 66);
+    margin-top: 17px;
 }
