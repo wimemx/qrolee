@@ -31,6 +31,7 @@
 
 html{
     background: url('../img/bg.png');
+    text-rendering: optimizeLegibility;
 }
 body{
     height: 100%;
@@ -52,7 +53,7 @@ input, textarea{
     width: 161px;
 }
 input:not([type='submit']){
-    height: 27px;
+    height: 25px;
     width: 100%;
     text-indent: 7px;
     font-family: arial !important;
@@ -164,7 +165,9 @@ input:not([type='submit']){
 }
 
 .header,.header .grid-14,.header .container-14{
-    height: 100px;
+    height: 75px;
+    border-bottom: 2px solid #3e4f4d;
+    font-family: Raleway;
     display: block;
 }
 
@@ -190,9 +193,7 @@ p{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
 }
     .logo{
-        height: 100%;
-        left: 0px;
-        position: relative;
+        height: 75px;
         left: -30px;
         position: relative;
         z-index: 2;
@@ -208,13 +209,13 @@ p{
     left: -20px;
 }
 .nav{
-    margin-top:40px;
+    margin-top:30px;
 }
     .nav a{
         text-decoration: none;
         color: #fff;
         font-size: 13px;
-        margin: 0px 13px 0px 0px;
+        margin: 0px 16px 0px 0px;
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
@@ -224,9 +225,8 @@ p{
     }
 
 .header .search{
-    margin-top: 35px;
+    margin-top: 26px;
     position: relative;
-    left: -25px;
 }
     .header .search span{
         width: 100%;
@@ -239,21 +239,21 @@ p{
         height: auto;
     }
     .header .search input{
-        background: #98a4a3;
+        background: #fff;
         width: 133px;
     }
     .header .search span .icon{
         width: 27px;
-        height: 100%;
+        height: 25px;
         position: absolute;
         background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
         cursor: pointer;
     }
 
 .account-settings{
-    height: 20px;
-    margin-top: 37px;
-    width: 150px;
+    min-height: 20px;
+    margin-top: 26px;
+    width: 122px;
 }
     .account-settings .settings{
         width: 20px;
@@ -281,6 +281,7 @@ p{
         line-height: 20px;
         color: #fff;
         margin-left: 5px;
+        padding-top: 3px;
         float: left;
         width: 90px;
 
@@ -661,13 +662,13 @@ p{
             .sub-menu-h{
                 background: #e7cb92;
                 position: absolute;
-                top: 23px;
-                right: 0px;
+                top: 51px;
+                min-height: 100px;
                 width: 105px;
                 padding-right: 5px;
                 padding-left: 5px;
-                display: none;
-                z-index: 6;
+                z-index: 8;
+                display: block!important;
             }
             .sub-menu-h a{
                     border-bottom: 1px solid #cdb090;
@@ -2415,8 +2416,8 @@ p{
 
 .img_profile_mini{
     width: 25px;
-    height: 25px;
-    margin-top: -2px;
+    height: 23px;
+    border: 1px solid #57776d;
     float: left;
 }
 
@@ -3458,4 +3459,10 @@ textarea{
 
 .text_cent{
     text-align: center
+}
+.account-settings:hover .member{
+    display: block!important;
+}
+.account-settings:hover{
+    cursor: pointer;
 }
