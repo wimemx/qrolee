@@ -90,7 +90,13 @@ var geocoder;
 var map;
 var marker;
 	function initialize(lat,long) {
-			var latlng = new google.maps.LatLng(lat, long);
+
+        if(!lat | !long){
+            lat = 20.589081;
+            long = -100.38826;
+        }
+
+        var latlng = new google.maps.LatLng(lat, long);
 			var settings = {
 				zoom: 13,
 				center: latlng,
@@ -133,16 +139,20 @@ function item_select(all, value){
     var value_sel = $('.sel_spots .value_sel').empty();
     value_sel.fadeOut(0);
     var count = 1;
-    $.each($('.sel_spots select option'),function(){
+    $.each($('.sel_spots .name_spot option'),function(){
         if(count <= 10){
             var cad = $(this).val();
-            if(all)
-                value_sel.append('<span class="grid-3 sel_">'+cad+
-                    '</span>');
-            else{
+            var latln = $(this).attr('class');
+            latln = $('.sel_spots .latln_spot .' + latln).val();
+            if(all){
+                value_sel.append('<span class="grid-3 sel_">'+
+                    '<span>'+cad+'</span><input type="hidden" value="'+latln+'" '+
+                    '/></span>');
+            }else{
                 if(cad.search(value) == 0){
-                    value_sel.append('<span class="grid-3 sel_">'+cad+
-                        '</span>');
+                    value_sel.append('<span class="grid-3 sel_">'+
+                        '<span>'+cad+'</span><input type="hidden" value="'+latln+'" '+
+                        '/></span>');
                 }
             }
         }
@@ -150,7 +160,11 @@ function item_select(all, value){
     });
     value_sel.fadeIn(0);
     $('.sel_').click(function(){
-        $('.sel_spots input').val($(this).text());
+        var name = $(this).find('span').text();
+        var latlong_s = $(this).find('input').val();
+        $('.sel_spots input').val(name);
+        latlong_s = latlong_s.split(',');
+        initialize(latlong_s[0],latlong_s[1]);
         $('.place_spot').val(1);
         $(this).parent().fadeOut(0);
     });

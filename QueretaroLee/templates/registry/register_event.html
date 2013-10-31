@@ -99,9 +99,14 @@
                 <input type="hidden" class="place_spot" name="place_spot" value="0"/>
                 <span class="grid-4 no-margin value_sel">
                 </span>
-                <select>
+                <select class="name_spot">
                     {% for obj in spots %}
-                        <option value="{{ obj.name }}">{{ obj.name }}</option>
+                        <option class="{{ obj.id }}" value="{{ obj.name }}">{{ obj.name }}</option>
+                    {% endfor %}
+                </select>
+            <select class="latln_spot">
+                    {% for obj in spots %}
+                        <option class="{{ obj.id }}" value="{{ obj.lat }},{{ obj.long }}">{{ obj.name }}</option>
                     {% endfor %}
                 </select>
             </p>
@@ -185,10 +190,11 @@
 
             }
             initialize();
+            $('.hour-init').timepicker();
+            $('.hour-end').timepicker();
             $( ".date-init" ).datepicker({
                 dateFormat: 'yy-mm-dd',
                 onSelect: function(dateText) {
-                    $('p').find('input.hour-init').val('00:00:00');
                 },
                 onClose: function( selectedDate ) {
                     $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
@@ -197,7 +203,6 @@
             $( ".date-end" ).datepicker({
                 dateFormat: 'yy-mm-dd',
                 onSelect: function(dateText) {
-                    $('p').find('input.hour-end').val('00:00:00');
                 }
             });
 
