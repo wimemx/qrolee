@@ -86,8 +86,8 @@
                     {% endif %}
                 {% else %}
                     Acualmente está leyendo
-                    <a class="title_author">
-                            {{ act_title.title.title|truncatechars:17 }}
+                    <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author">
+                            {{ act_title.title.title|truncatechars:20 }}
                         </a>
                     {% if user_profile.user.id == user.id %}
                         <span class="green_btn message_alert">
@@ -267,8 +267,8 @@
         </h3>
         {% if user_profile.user.id == user.id %}
             <span class="search fleft grid-4">
-                <input type="text" />
-                <span class="top right search_btn dark_yello_btn">Buscar</span>
+                <input type="text" class="search_entities" />
+                <span class="top search_btn dark_yello_btn"></span>
             </span>
         {% endif %}
     </div>
@@ -673,8 +673,8 @@
                     <input class="my_list_typ" type="hidden" value="0"/>
                     <input class="id_profile" type="hidden"
                            value="{{ user_profile.user.id }}"/>
-                    <input type="text" class="field_list"/>
-                    <span class="top right search_list dark_yello_btn">Buscar</span>
+                    <input type="text" class="field_list search_entities"/>
+                    <span class="top search_list dark_yello_btn"></span>
                 </span>
                 <a href="/registry/register_list/">
                     {% if user_profile.user.id == user.id %}
@@ -834,9 +834,9 @@
                     {% endif %}
                 </h3>
                 <span class="search fleft grid-4">
-                    <input type="text" class="field_pag">
+                    <input type="text" class="field_pag search_entities">
                     <input type="hidden" value="{{ user_profile.user.id }}" class="profile_id_user"/>
-                    <span class="top search_pages right dark_yello_btn">Buscar</span>
+                    <span class="top search_pages dark_yello_btn"></span>
                 </span>
                 {% if user_profile.user.id == user.id %}
                     <a href="/accounts/users/registry_page/">

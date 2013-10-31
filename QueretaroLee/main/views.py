@@ -1770,3 +1770,7 @@ def generate(content, format="png"):
     con.close()
     return image
 
+
+def load_words(request):
+
+    pass

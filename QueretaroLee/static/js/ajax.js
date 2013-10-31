@@ -529,7 +529,7 @@ $(document).ready(function(){
         search_list_authors_titles($(this));
     });
     $('.field_list').keyup(function(){
-        if($(this).val().search(/^\s*$/) != 0)
+        if($(this).val().search(/^\s*$/))
             search_list_authors_titles($('.search_list'));
 
     });
@@ -1928,7 +1928,7 @@ function search_all_header($this){
                             if(Object.keys(data[i]).length>0)
                                 $('.d-results').append('<a class="user_profile person" >' + text + '</a>');
                             $.each(obj,function(i2){
-                                if(count<=3){
+                                if(count<=2){
                                     var href = '';
                                     var name_user = '';
                                     var src = '/static/img/create.png';
@@ -1983,7 +1983,7 @@ function search_all_header($this){
                                     }
 
                                     var a = $('<a title="' + name_user + '" href="' +
-                                        href + '" class="user_profile"></a>');
+                                        href + '" class="user_profile link"></a>');
                                     a.append('<img src="' + src + '" class="img_user" />');
                                     var name = $('<span class="span_name_user" ></span>');
                                     name.append(truncText(name_user,20));
@@ -2160,7 +2160,7 @@ function add_rate($this){
         },
         dataType: 'json'
     }).done(function(data){
-            div = $('.container_rate').fadeOut(300);
+            div = $('.container_rate').fadeOut(0);
             div.empty();
             count_rate = parseFloat(data.count_grade);
             count =  parseInt(data.count_grade);
@@ -2189,7 +2189,7 @@ function add_rate($this){
             div.append(span_count);
             div.append(span_vote);
             div.append(span_my_vote);
-            div.fadeIn(300);
+            div.fadeIn(0);
             $('.rate').click(function(){
                 add_rate($(this));
             });

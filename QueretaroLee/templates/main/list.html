@@ -26,7 +26,7 @@
                     <input class="my_list_typ" type="hidden" value="1"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
                     <input type="text" class="field_list search_entities"/>
-                    <span class="search_list top right dark_yello_btn">Buscar</span>
+                    <span class="search_list top dark_yello_btn"></span>
                 </span>
                     <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
                         Búsqueda avanzada
@@ -114,9 +114,9 @@
                                         {% endif %}
                                     </p>
                                     <p class="fleft margin_left no-margin grid-2">
-                                        {% for k in value.genre %}
+                                        {% for g in value.genre %}
                                             {% if forloop.counter <= 4 %}
-                                                <span class="title_author">{{ k }}</span>
+                                                <span class="title_author">{{ g }}</span>
                                             {% endif %}
                                         {% endfor %}
                                     </p>
