@@ -272,14 +272,17 @@ function findUser($ele, userEmail, entity, $parent){
     });
 }
 
-function update_obj(field, value, $this){
+function update_obj(field, value, $this, event){
+    if(!event)
+        event = 0;
     $.ajax({
                 type: "POST",
                 url: '/registry/update/'+$('input.entity').val()+'/',
                 data: {
                     'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                     'field': field,
-                    'value': value
+                    'value': value,
+                    'event': event
                 },
                 dataType: 'json'
                 }).done(function(data){
