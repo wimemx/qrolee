@@ -9,7 +9,7 @@
 {% block js %}
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
-
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
 {% endblock %}
 
 {% block head %}
@@ -47,12 +47,6 @@
                 <textarea name="description" class="grid-5 alpha fright value">{{ entity.description }}</textarea>
                 <span class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
             </p>
-            <p>Imagen de perfil
-                <span class="close right"></span>
-                <span class="grid-5 omega fright"></span>
-            </p>
-            <p>Imagen de portada
-            </p>
 
             <p>Tipo de evento
                 <span class="controllers_wrapper">
@@ -73,8 +67,8 @@
                             <span class="text">Publica</span>
                             <span class="dropdown"></span>
                             <select class="change value" name="privacy_type">
-                                <option value="publica">Publica</option>
-                                <option value="privada">Privada</option>
+                                <option value="Publica">Publica</option>
+                                <option value="Privada">Privada</option>
                             </select>
                 </span>
                 </span>
@@ -86,7 +80,9 @@
                     <span class="yellow_btn fright">Guardar</span>
                 </span>
                 <span class="close right"></span>
-                <textarea name="address" class="map address value">{{ entity.address }}</textarea>
+                <input type="hidden" class="lat" name="lat"/>
+                <input type="hidden" class="long" name="long"/>
+                <textarea name="location_name" class="map address value">{{ entity.address }}</textarea>
                 <span class="value map">{{ entity.address }}</span>
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
@@ -95,7 +91,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
-            initialize();
+            initialize(20.58991733623943,-100.40271759033203);
             var timeout = 200;
             $('.green_btn').click(function(){
                 $this = $(this).parent();
@@ -147,55 +143,39 @@
                 });
             });
             $('.yellow_btn').click(function(){
-                var field = $(this).parent().find('input.value').attr('name');
-                var value = $(this).parent().find('input.value').val();
-                if($(this).parent().find('textarea.value').length > 0){
-                    value = $(this).parent().find('textarea.value').val();
-                    field = $(this).parent().find('textarea.value').attr('name');
-                }else if($(this).parent().find('.select_wrapper').length > 0){
-                    value = $(this).parent().find('select.value').val();
-                    field = $(this).parent().find('select.value').attr('name');
+                $this_ = $(this).parent().parent();
+                var field = $this_.find('input.value').attr('name');
+                var value = $this_.find('input.value').val();
+                if($this_.find('textarea.value').length > 0){
+                    value = $this_.find('textarea.value').val();
+                    field = $this_.find('textarea.value').attr('name');
+                }else if($this_.find('.select_wrapper').length > 0){
+                    value = $this_.find('select.value').val();
+                    field = $this_.find('select.value').attr('name');
                 }
                 $this = $(this);
-                $.ajax({
-                type: "POST",
-                url: '/registry/update/'+$('input.entity').val()+'/',
-                data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                    'field': field,
-                    'value': value,
-                    'event': 1
-                },
-                dataType: 'json'
-                }).done(function(data){
-                    if($this.parent().find('input.value').length > 0)
-                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
-                    else if($this.parent().find('textarea.value').length > 0)
-                        $this.parent().find('span.value').html($this.parent().find('textarea.value').val());
-                    else
-                        $this.parent().find('span.value').html($this.parent().find('select.value').val());
-                    $this.parent().find('.close').fadeOut(300,function(){
-                    $this.fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }
-                            });
+                update_obj(field,value, $this,1);
+                $this = $(this).parent();
+                $(this).fadeOut(timeout);
+                $this.parent().find('.close').fadeOut(timeout);
+                $this.parent().find('span.green_btn').fadeIn(timeout);
 
-                        });
+                if($this.parent().find('input.value').length > 0){
+                    $this.parent().find('input.value').fadeOut(timeout,function(){
+                        console.log($this.parent().find('input.value').val());
+                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                        $this.parent().find('span.value').fadeIn(timeout);
                     });
-                });
+                }else if($this.parent().find('textarea.value').length > 0){
+                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
+                        $this.parent().find('span.value').fadeIn(timeout);
+                    });
+                }else{
+                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
+                        $this.parent().find('span.value').html($.trim($this.parent().find('select.value').val()));
+                        $this.parent().find('span.value').fadeIn(timeout);
+                    });
+                }
             });
         });
     </script>

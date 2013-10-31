@@ -349,7 +349,7 @@ def update_entity(request, **kwargs):
     field = request.POST.get('field')
     value = request.POST.get('value')
     if field == 'privacy':
-        if value == 'publica':
+        if value == 'Publica':
             value = 0
         else:
             value = 1
@@ -695,9 +695,6 @@ def admin_users(request, **kwargs):
     users = list()
     for member in members:
         users.append(member.user_id)
-
-    members = models.User.objects.filter(
-        id__in=users)
 
     if entity_type.name == 'group':
         entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
