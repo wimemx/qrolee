@@ -54,8 +54,11 @@ def index(request, **kwargs):
     for f in following_entity:
         entity_following_list.append(f.object)
 
+    following_list.append(user.id)
+
     activity = account_models.Activity.objects.filter(
-        Q(user_id__in=following_list) | Q(added_to_object__in=entity_following_list)).order_by('-date')
+        Q(user_id__in=following_list) |
+        Q(added_to_object__in=entity_following_list, added_to_type='E')).order_by('-date')
 
     entities = models.Entity.objects.filter(
         user_id=user)
@@ -63,7 +66,8 @@ def index(request, **kwargs):
     organizations = entities.filter(type__name='organization')
     pages = account_models.Page.objects.filter(user_id=user)
     events = models.Event.objects.filter(
-        Q(owner_id=user) | Q(owner_id__in=following_list))
+        Q(owner_id=user) |
+        Q(location_id__in=entity_following_list)).distinct()
     context = {
         'user': user,
         'profile': profile,

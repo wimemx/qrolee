@@ -29,19 +29,23 @@
         </span>
 
         <span class="data grid-9 fleft no-margin">
-            <p>Nombre {{ entity_type.0 }}
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
+            <p>Nombre
+                <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                </span>
                 <span class="close right"></span>
                 <input name="name" type="text" value="{{ entity.name }}" class="grid-5 alpha fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.name }}</span>
             </p>
             <p class="description">Descripción
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
+                <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                </span>
                 <span class="close right"></span>
                 <textarea name="description" class="grid-5 alpha fright value">{{ entity.description }}</textarea>
-                <span class="value grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
+                <span class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
             </p>
             <p>Imagen de perfil
                 <span class="close right"></span>
@@ -51,8 +55,10 @@
             </p>
 
             <p>Tipo de evento
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
+                <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                </span>
                 <span class="close right"></span>
                 <span class="value grid-5 alpha fright">
                     {% if entity.privacy_type == 0 %}
@@ -74,62 +80,44 @@
                 </span>
 
             </p>
-            <p>Fecha creación
-                <span style="visibility: hidden;" class="green_btn fright">Editar</span>
-                <span class="value grid-5 alpha fright">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
-            </p>
             <p>Lugar del evento
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
+                <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                </span>
                 <span class="close right"></span>
                 <textarea name="address" class="map address value">{{ entity.address }}</textarea>
                 <span class="value map">{{ entity.address }}</span>
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
         </span>
-        <span style="border:none;" class="data grid-9 fleft no-margin">
-            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
-
-        </span>
     </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
             initialize();
+            var timeout = 200;
             $('.green_btn').click(function(){
-                $this = $(this);
-                $(this).parent().find('span.value').fadeOut(300,
-                function(){
+                $this = $(this).parent();
+                $this.parent().find('span.value').fadeOut(timeout, function(){
                     if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
+                        $this.parent().find('input.value').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                            $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                            $this.parent().find('.close').fadeIn(timeout);
 
                         });
                     }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
-
+                        $this.parent().find('textarea.value').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                                     $this.parent().find('.close').fadeIn(timeout);
                         });
                     }else{
-                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-
-                                 });
-                            });
-
+                        $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
+                            $this.parent().find('span.green_btn').fadeOut(timeout);
+                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                                     $this.parent().find('.close').fadeIn(timeout);
                         });
                     }
                 });
@@ -137,27 +125,25 @@
             });
             $('.close').click(function(){
                 $this = $(this);
-                $(this).fadeOut(300,
-                    function(){
-                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
+                $(this).fadeOut(timeout);
+                $this.parent().find('span.yellow_btn').fadeOut(timeout,function(){
+                    $this.parent().find('span.green_btn').fadeIn(timeout,
                             function(){
                                 if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
+                                    $this.parent().find('input.value').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
+                                    });
                                 }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
+                                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
                                     });
                                 }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
+                                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
+                                        $this.parent().find('span.value').fadeIn(timeout);
                                     });
                                 }
                             });
 
-                        });
                 });
             });
             $('.yellow_btn').click(function(){

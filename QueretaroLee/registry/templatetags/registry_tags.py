@@ -44,8 +44,14 @@ def feed_type(feed_id):
     feed = models.Activity.objects.get(
         id=feed_id)
     obj_list = list()
-    obj_list.append(get_objects(feed.added_to_object, feed.added_to_type))
-    obj_list.append(get_objects(feed.object, feed.type))
+    added_to = get_objects(feed.added_to_object, feed.added_to_type)
+    obj = get_objects(feed.object, feed.type)
+    if added_to is None:
+        return
+    if obj is None:
+        return
+    obj_list.append(added_to)
+    obj_list.append(obj)
     img_url = '/static/media/users/'+str(feed.user_id)+'/'
     added_to_img_url = '/static/media/users/'+str(feed.user_id)+'/'
     name = ''
@@ -310,8 +316,12 @@ def feed_type(feed_id):
 
 def get_objects(object, type):
     if type == 'E':
-        obj = rmodels.Entity.objects.get(
-            id=object)
+        obj = rmodels.Entity.objects.filter(
+            id=object, status=True)
+        if obj:
+            obj = obj[0]
+        else:
+            obj = None
     elif type == 'D':
         obj = rmodels.Event.objects.get(
             id=object)

@@ -160,7 +160,6 @@ def user_profile(request, **kwargs):
     dict_entities_user = {}
 
     for obj in entity_user:
-
         entity = registry.Entity.objects.get(id=obj.object)
         count_members = registry.MemberToObject.objects.filter(object=obj.object)
         att = {
@@ -345,7 +344,6 @@ def user_profile(request, **kwargs):
     if birthday:
         birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\
               '-' + str(birthday.year)
-
 
     context = {
         'user_profile': profile,

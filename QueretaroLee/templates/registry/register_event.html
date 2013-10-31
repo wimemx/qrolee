@@ -144,8 +144,6 @@
         Dropzone.options.picture = {
             maxFiles: 1,
             dictDefaultMessage: 'Arrastre aquí el logotipo',
-            dictRemoveFile: 'Quitar',
-            addRemoveLinks: true,
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);
@@ -157,8 +155,6 @@
         }
         Dropzone.options.cover = {
             maxFiles:1,
-            addRemoveLinks: true,
-            dictRemoveFile: 'Quitar',
             dictDefaultMessage: 'Arrastre aquí el cover photo',
             init: function() {
                 this.on("addedfile", function(file) {
