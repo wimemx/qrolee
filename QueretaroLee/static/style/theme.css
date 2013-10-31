@@ -245,6 +245,7 @@ p{
     .header .search input{
         background: #fff;
         width: 133px;
+        opacity: 0.9;
         font-family: arial!important;
     }
     .header .search span .icon{
@@ -253,6 +254,7 @@ p{
         position: absolute;
         background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
         cursor: pointer;
+        opacity: 0.9;
     }
 
 .account-settings{
