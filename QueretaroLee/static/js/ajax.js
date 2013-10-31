@@ -287,8 +287,9 @@ function update_obj(field, value, $this, event){
                 dataType: 'json'
                 }).done(function(data){
                 if($this){
-                    if($this.parent().find('input.value').length > 0)
+                    if($this.parent().find('input.value').length > 0){
                         $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                    }
                     else if($this.parent().find('textarea.value').length > 0)
                         $this.parent().find('span.value').html($this.parent().find('textarea.value').val());
                     else
@@ -541,11 +542,22 @@ $(document).ready(function(){
         search_pages();
     });
     $('.search_field').focusin(function(){
-        $(this).css('background','#e7e7e7');
+        $(this).css({
+            'opacity': 1
+        });
+        $('.header .icon').css({
+            'opacity': 1
+        });
     });
     $('.search_field').focusout(function(){
-        $(this).css('background','#98a4a3');
+        $(this).css({
+            'opacity': 0.9
+        });
+        $('.header .icon').css({
+            'opacity': 0.9
+        });
     });
+
     $('.search_field').keyup(function(){
         search_all_header($('.search_button'));
     });
