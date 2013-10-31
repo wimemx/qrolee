@@ -326,6 +326,8 @@ $(document).ready(function(){
         }
     });
     $('.multi_select span').click(function(){
+        if($(this).closest('p').find('.invalid').length > 0)
+            $(this).closest('p').find('.invalid').remove();
         if($(this).hasClass('active'))
             $(this).removeClass('active');
         else

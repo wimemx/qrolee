@@ -280,7 +280,6 @@ def register(request):
             'object': entity.id,
             'object_type': 'E',
             'user': user
-
         }
         super_user = models.MemberToObject.objects.create(**dict_)
         super_user.save()
@@ -434,6 +433,7 @@ def media_upload(request):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
+
 def handle_uploaded_file(destination, f):
     if f is None:
         return
@@ -441,10 +441,12 @@ def handle_uploaded_file(destination, f):
         for chunk in f.chunks():
                     destination.write(chunk)
 
+
 def register_menu(request, **kwargs):
     template = kwargs['template_name']
     context = {}
     return render(request, template, context)
+
 
 @login_required(login_url='/')
 def register_event(request, **kwargs):
@@ -657,16 +659,27 @@ def get_events(request, **kwargs):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
+
 def edit_event(request, **kwargs):
     template = kwargs['template_name']
     obj = kwargs['entity']
     obj = models.Event.objects.get(
         pk=int(obj))
+    entity_type = models.Type.objects.get(
+        entity__id=obj.location_id)
+    if entity_type.name == 'group':
+        entity_type = ['del grupo', 'group']
+    elif entity_type.name == 'organization':
+        entity_type = ['de la organizacion', 'organization']
+    elif entity_type.name == 'spot':
+        entity_type = ['del spot', 'spot']
 
     context = {
-        'entity': obj
+        'entity': obj,
+        'entity_type': entity_type
     }
     return render(request, template, context)
+
 
 def admin_users(request, **kwargs):
     template = kwargs['template_name']
@@ -1648,15 +1661,15 @@ def update_activity(data):
     Type = E (entity) T (title) L (list) etc...
     Verb = action Actualizo Creo etc...
     """
-
     if data['activity_id'] == 10:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
             added_to_object=data['added_to_object'], added_to_type=data['added_to_type'],
             activity_id=5, type=data['type'])
         if activity:
-            activity[0].activity_id = 10
-            activity[0].save()
+            activity = activity[0]
+            activity.activity_id = 10
+            activity.save()
     else:
         activity = account.Activity.objects.filter(
             user_id=data['user_id'], object=data['object'],
