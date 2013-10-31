@@ -523,13 +523,13 @@ $(document).ready(function(){
         search_entities($(this));
     });
     $('.search_ent_field').keyup(function(){
-        search_entities($('.heading .search span.search_btn'));
+        if($(this).val().search(/^\s*$/) != 0)
+            search_entities($('.heading .search span.search_btn'));
     });
     $('.search_list').click(function(){
         search_list_authors_titles($(this));
     });
     $('.field_list').keyup(function(){
-
         if($(this).val().search(/^\s*$/) != 0)
             search_list_authors_titles($('.search_list'));
 
@@ -539,7 +539,8 @@ $(document).ready(function(){
         search_pages();
     });
     $('.field_pag').keyup(function(){
-        search_pages();
+        if($(this).val().search(/^\s*$/) != 0)
+            search_pages();
     });
     $('.search_field').focusin(function(){
         $(this).css({
