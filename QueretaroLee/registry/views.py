@@ -380,6 +380,7 @@ def logout(request):
 def media_upload(request):
 
     folder = '/entity/'
+
     if 'event_picture' in request.POST:
         folder = '/event/'
     if 'event_cover_picture' in request.POST:
@@ -393,6 +394,19 @@ def media_upload(request):
 
     if 'list_picture' in request.POST:
         folder = '/list/'
+
+    if 'entity' in request.POST:
+        folder = '/entity/'
+        id = request.POST.get('entity')
+        entity = models.Entity.objects.get(id=id)
+
+        if request.POST.get('cover'):
+            entity.cover_picture = str(request.FILES['file'])
+        else:
+            entity.picture = str(request.FILES['file'])
+
+        entity.save()
+
 
     if 'fb_img' in request.POST and 'folder' != '':
         folder = '/event/'
@@ -415,6 +429,7 @@ def media_upload(request):
     context = {
         'file_name': file_name
     }
+
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
@@ -967,21 +982,37 @@ def delete_page(request):
 
 def delete_picture(request):
     type = request.POST.get('type')
+    success = 'False'
 
     if type == 'profile':
-        id_user = int(request.POST.get('id_user'))
+        id_user = int(request.POST.get('id'))
         profile = models.Profile.objects.get(user__id=id_user)
 
         if profile:
-            succes = 'True'
+            success = 'True'
             profile.picture = ''
             profile.save()
         else:
             succes = 'False'
 
-        context = {
-                'succes': succes
-            }
+    if type == 'entity':
+        id_entity = int(request.POST.get('id'))
+        entity= models.Entity.objects.get(id=id_entity)
+
+        if entity:
+            success = 'True'
+            if int(request.POST.get('cover')) == 1:
+                entity.cover_picture = ''
+            else:
+                entity.picture = ''
+
+            entity.save()
+        else:
+            succes = 'False'
+
+    context = {
+            'succes': success
+        }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
@@ -1891,65 +1922,71 @@ def register_title_click(request):
     del list['author']
     del list['id_author']
 
-    title = account.Title.objects.create(**list)
-    title.save()
-    name = str(author_name).replace(' ','+')
-    query = ''
-    key = '&key='+settings.GOOGLE_BOOKS_KEY
-    search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
-    url = 'https://www.googleapis.com/freebase/v1/search?query='+name
-    query += search_author + key
-    url += query
-    response = urllib2.urlopen(url)
-    response = simplejson.load(response)
+    title_exist = account.Title.objects.filter(db_model.Q(id_google=list['id_google'])|db_model.Q(title=list['title']))
 
-    biography = ' '
-    picture = ' '
-    author_e = False
-    id_author = 0
-    if len(response['result']) != 0:
-        print response['result']
-        if len(response['result'][0]['output']) != 0:
-            if len(response['result'][0]['output']['description']) != 0:
-                biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
+    if not title_exist:
+        title = account.Title.objects.create(**list)
+        title.save()
+        name = str(author_name).replace(' ','+')
+        query = ''
+        key = '&key='+settings.GOOGLE_BOOKS_KEY
+        search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
+        url = 'https://www.googleapis.com/freebase/v1/search?query='+name
+        query += search_author + key
+        url += query
+        response = urllib2.urlopen(url)
+        response = simplejson.load(response)
 
-        if len(biography) > 1000:
-            biography = biography[0:900]
+        biography = ' '
+        picture = ' '
+        author_e = False
+        id_author = 0
+        if len(response['result']) != 0:
+            if len(response['result'][0]['output']) != 0:
+                if len(response['result'][0]['output']['description']) != 0:
+                    biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
-        if len(response['result'][0]['mid']) != 0:
-            picture = 'https://www.googleapis.com/freebase/v1/image' + \
-                      response['result'][0]['mid']
+            if len(biography) > 1000:
+                biography = biography[0:900]
 
-        dict_author = {
-            'name': response['result'][0]['name'],
-            'picture': picture,
-            'biography': biography,
-            'birthday': datetime.datetime.today(),
-            'id_api' : response['result'][0]['id']
-        }
+            if len(response['result'][0]['mid']) != 0:
+                picture = 'https://www.googleapis.com/freebase/v1/image' + \
+                          response['result'][0]['mid']
 
-        author_exist = account.Author.objects.filter(id_api=response['result'][0]['id'])
+            dict_author = {
+                'name': response['result'][0]['name'],
+                'picture': picture,
+                'biography': biography,
+                'birthday': datetime.datetime.today(),
+                'id_api' : response['result'][0]['id']
+            }
 
-        if not author_exist:
-            author = account.Author.objects.create(**dict_author)
-            author.save()
+            author_exist = account.Author.objects.filter(id_api=response['result'][0]['id'])
+
+            if not author_exist:
+                author = account.Author.objects.create(**dict_author)
+                author.save()
+            else:
+                author_e = True
+                id_author = author_exist[0]
+
+        if len(response['result']) != 0:
+            if not author_exist:
+                list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
+                list_author_title.save()
+            else:
+                list_author_title = account.AuthorTitle.objects.create(title=title, author=id_author)
+                list_author_title.save()
+
+        if title:
+            context = {
+                'succes': 'True',
+                'id_title': title.id
+            }
         else:
-            author_e = True
-            id_author = author_exist[0]
-
-    if len(response['result']) != 0:
-        if not author_exist:
-            list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
-            list_author_title.save()
-        else:
-            list_author_title = account.AuthorTitle.objects.create(title=title, author=id_author)
-            list_author_title.save()
-
-    if title:
-        context = {
-            'succes': 'True',
-            'id_title': title.id
-        }
+            context = {
+                'succes': 'False'
+            }
     else:
         context = {
             'succes': 'False'

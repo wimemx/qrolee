@@ -1535,6 +1535,7 @@ p{
 
 .d-picture_user{
     float: right;
+    margin-bottom: 20px;
 }
 
 .d-picture_profile{
@@ -2793,12 +2794,12 @@ form p .invalid_messa{
 .wrapper_picture_user{
     height: 200px;
     width: 200px;
+    overflow: hidden;
 }
 .del_pict{
     color: red;
     float: right;
     cursor: pointer;
-    padding-right: 18px;
 }
 .disable_upload{
     display: none;
@@ -3453,4 +3454,8 @@ textarea{
 
 .cursor_p{
     cursor: pointer;
+}
+
+.text_cent{
+    text-align: center
 }
