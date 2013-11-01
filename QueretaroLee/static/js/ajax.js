@@ -520,7 +520,7 @@ $(document).ready(function(){
     var $item = $('.sidebar-a .item').clone();
 
     $('.heading .search span.search_btn').click(function(){
-        search_entities($(this));
+       search_entities($(this));
     });
     $('.search_ent_field').keyup(function(){
         if($(this).val().search(/^\s*$/) != 0)
@@ -1467,7 +1467,7 @@ function search_list_authors_titles($this){
                 overview.parent().find('.loading_image');
                 overview.parent().append('<span class="grid-14 no-pandding no-margin loading_image"'+
                     'style="margin-top:100px;" ><img src="/static/img/loading.gif" class="center" /></span>');
-                overview.fadeOut(300,function(){
+                overview.fadeOut(250,function(){
                     overview.empty();
 
                     if($('.type').val()=="List"){
@@ -1723,7 +1723,7 @@ function search_list_authors_titles($this){
                         }
                     }
 
-                    overview.fadeIn(200,function(){
+                    overview.fadeIn(250,function(){
                         if($('#scrollbar1').length>0)
                             $('#scrollbar1').tinyscrollbar();
                     });
@@ -1887,9 +1887,10 @@ function search_entities($this){
 
                                 text_no_found(message);
                             }
+                        });
+                        $(this).fadeIn(250,function(){
                             $('#scrollbar1').tinyscrollbar();
                         });
-                        $(this).fadeIn(250);
                         if($('.type').val() == 'spot'){
                             dmap(data,1);
                         }

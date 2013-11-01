@@ -15,7 +15,6 @@
 
 {% endblock %}
 
-
 {% block head %}
     {% include 'header.html' %}
 {% endblock %}
@@ -506,9 +505,6 @@
                                 {% if similar_entity.picture == '' %}
                                     <img src="/static/img/create.png" alt="{{ similar_entity.name }}"/>
                                 {% else %}
-                                    {% if owner.id == user.id %}
-                                        <span class="brown_btn edit"></span>
-                                    {% endif %}
                                     <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt="{{ entity.name }}"/>
                                 {% endif %}
                             </span>
@@ -582,8 +578,8 @@
                     {% endautoescape %}
                 </div>
                 <div class="controller center">
-                    <span class="prev fleft"><</span>
-                    <span class="next fright">></span>
+                    <span class="prev fleft"></span>
+                    <span class="next fright"></span>
                 </div>
             </div>
         {% else %}
@@ -656,7 +652,7 @@
                 <span class="search advanced_filter center alpha grid-4">{% csrf_token %}
                     <input type="hidden" class="model" value="auth.user"/>
                     <input class="search" type="text"/>
-                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                    <span class="top search_btn dark_yello_btn"></span>
                 </span>
             </div>
                 <div id="scrollbar1">
