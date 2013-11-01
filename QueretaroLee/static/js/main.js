@@ -1700,17 +1700,19 @@ function dialog_titles(csrf, data, id){
     input = $('<input class="input_add_book" value="" type="text"/>');
     span = $('<span class="dark_yello_btn btn_search_book"></span>');
     input.keyup(function(){
-        if($(this).val().length%2){
+        console.log(99);
+        var words = $(this).val();
+        if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %3 == 0){
 
             $('.dialog_text').find('#scrollbar1').fadeOut(100,function(){
                 $(this).remove();
-                var words = $('.input_add_book').val();
-                if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %3 == 0){
-                    type = 5;
-                    if(id!=4)
-                        type = 2;
-                    type_add_list($('.csrf_header').find('input').val(), type, words);
-                }
+                type = 5;
+
+                if(id!=4)
+                    type = 2;
+
+                type_add_list($('.csrf_header').find('input').val(), type, words);
+
             });
         }
 
@@ -1756,6 +1758,7 @@ function list_title(csrf, data, div_text, type){
     if(type_list=='T'){
 
     titles_l = data[0];
+    console.log(data[0]);
     delete titles_l['response'];
     var array_ids_google = [];
     if(type !=1){
@@ -2981,16 +2984,19 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         and = 0;
         join = {
             'tables':{
-                0: JSON.stringify(['account.author'])
+                0: JSON.stringify(['account.author','account.authortitle']),
+                1: JSON.stringify(['account.rate'])
             },
             'quieres':{
-                0: JSON.stringify(['id'])
+                0: JSON.stringify(['title_id']),
+                1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['name'])
+                0: JSON.stringify(['name']),
+                1: JSON.stringify(['grade'])
             },
             'activity':{
-                0:JSON.stringify(['A'])
+                0:JSON.stringify(['T'])
             }
         }
     }
@@ -3000,7 +3006,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         }
 
         model = 'account.author';
-        fields = ['name','id','picture'];
+        fields = ['name','id','picture','id_api'];
         and = 0;
         join = {
             'tables':{
@@ -3012,7 +3018,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
             },
             'activity':{

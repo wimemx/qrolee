@@ -1741,6 +1741,7 @@ function search_list_authors_titles($this){
 
 
 function search_entities($this){
+    $('.d-not_found').remove();
     var $item = $('.sidebar-a .item').clone();
 
     //if(content_search_entity){
@@ -1781,7 +1782,6 @@ function search_entities($this){
         }).done(function(data) {
 
                 if(data){
-                    $('.d-not_found').remove();
                     $('.overview').fadeOut(250,function(){
                         $('.overview').empty();
                         var len = 0;
@@ -1873,7 +1873,7 @@ function search_entities($this){
                                     $('.overview').append(div);
                                     div.find('.title').html(entity_obj[i].name);
                                     div.find('p').html(truncText(entity_obj[i].
-                                        description,180));
+                                        description,160));
                                     div.find('.img');
                                 }
                             });

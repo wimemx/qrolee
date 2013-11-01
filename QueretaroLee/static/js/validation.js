@@ -139,13 +139,6 @@ $(document).ready(function(){
 
 function type_add_list(csrf, id ,query){
 
-    var data = [];
-    var model = '';
-    var fields;
-    var and = 0;
-    var join;
-    var _query;
-
     var type = 'T';
 
     if($('.d_type_list').length > 0)
@@ -153,113 +146,26 @@ function type_add_list(csrf, id ,query){
     if($('.type_list').length > 0)
         type = $('.type_list').val();
 
+    var data = search_titles_and_author_in_api_bd(type, csrf, query);
 
-    if(type =='A'){
-
-        model = 'account.author';
-        fields = ['name','id','picture','id_api'];
-        and = 0;
-        join = {
-                'tables':{
-                    0: JSON.stringify(['account.title','account.authortitle']),
-                    1: JSON.stringify(['account.rate'])
-
-                },
-                'quieres':{
-                    0: JSON.stringify(['author_id']),
-                    1: JSON.stringify(['element_id'])
-                },
-                'fields':{
-                    0: JSON.stringify(['title']),
-                    1: JSON.stringify(['grade'])
-                },
-                'activity':{
-                    0:JSON.stringify(['A'])
-                }
-            }
-    }
-    if(type == 'T'){
-        model = 'account.title';
-        fields = ['title', 'cover', 'id','id_google'];
-        and = 0;
-        join = {
-            'tables':{
-                0: JSON.stringify(['account.author','account.authortitle']),
-                1: JSON.stringify(['account.rate'])
-            },
-            'quieres':{
-                0: JSON.stringify(['title_id']),
-                1: JSON.stringify(['element_id'])
-            },
-            'fields':{
-                0: JSON.stringify(['name']),
-                1: JSON.stringify(['grade'])
-            },
-            'activity':{
-                0:JSON.stringify(['T'])
-            }
-        }
-    }
-
-    //'pk__in': JSON.stringify([127, 126])
-    if(id==1){
-        if(type == 'T'){
-            _query = {
-            'title__icontains':' '
-        }
-        }else{
-            _query = {
-                'name__icontains': query
-                }
-        }
-    }
-    if(id==2 | id == 4 | id == 5){
-        if(type == 'T'){
-             _query = {
-                'title__icontains':query
-            }
-        }else{
-            _query = {
-                'name__icontains': query
-                }
-        }
-    }
-        join = JSON.stringify(join);
-        var search = {
-            'type': model,
-            'fields': JSON.stringify(fields),
-            'value': JSON.stringify(_query),
-            'and': and,
-            'join': join
-            }
-        search = JSON.stringify(search);
-        data.push(advanced_search(search, csrf));
-        if(id==2 | id==4 | id==5){
-
-            query = query.split(" ");
-            var __query = {
-                'q': JSON.stringify(query),
-                'start_index':{
-                    0: 0
-                },
-                'type': {
-                    0: model
-                }
-            };
-            data.push(search_api(crsf, __query));
-        }
-
-
-        if(id==1)
+    switch (id){
+        case 1:
             dialog_titles(csrf,data,1);
-        if(id==2)
+            break;
+        case 2:
             list_title(csrf,data,$('.dialog_text'),3);
-        if(id==3)
+            break;
+        case 3:
             dialog_titles(csrf,data,2);
-        if(id==4)
+            break;
+        case 4:
             dialog_titles(csrf,data,4);
-        if(id==5)
+            break;
+        case 5:
             list_title(csrf,data,$('.dialog_text'),4);
+            break;
+    }
+
 }
 
 

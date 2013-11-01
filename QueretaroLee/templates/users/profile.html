@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="grid-16">
-    <div class="grid-16 entity no-margin">
+    <div class="grid-16 entity user_pro no-margin">
         <span class="wrapper fleft">
             {% if not user_profile.picture %}
                 <img class="img_size_all" src=/static/img/create.png alt="{{ profile.user}}"/>
@@ -465,10 +465,10 @@
             </p>
             {% if value.id_user == user.id %}
                 <span class="pink_btn size_btn_edit message_alert">
-                    <input class="type_message" type="hidden" value="delete_title"/>
+                   <input class="type_message" type="hidden" value="delete_title"/>
                     -
                 </span>
-                <span class="green_btn message_alert size_btn_edit">
+                    <span class="green_btn message_alert size_btn_edit">
                     <input class="type_message" type="hidden" value="edit_read"/>
                     <input class="name_title" type="hidden" value="{{ value.title }}">
                     Editar
@@ -771,7 +771,7 @@
             <div id="scrollbar1" class="d-margin_group_user" >
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
-                <div class="viewport">
+                <div class="viewport viewport_group">
                     <div class="overview">
                         {% for key, value in entities.items %}
 
@@ -876,7 +876,7 @@
                                             <span class="green_btn size_btn_edit" >Editar</span>
                                         </a>
                                         <span class="pink_btn size_btn_edit message_alert" >
-                                            -
+                                           -
                                             <input class="type_message" type="hidden" value="delete_page">
                                         </span>
                                 {% endif %}

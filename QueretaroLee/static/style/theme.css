@@ -98,6 +98,9 @@ input:not([type='submit']){
 }
 .din-r{
     font-family: 'Conv_fontscore.com_d-dinproregular' !important;
+    font-size: 13px!important;
+    line-height: normal;
+    margin-top: 10px;
 }
 .clear_fix{
     clear: both;
@@ -646,6 +649,7 @@ p{
         }
         .entities a.title{
             margin-top: 25px;
+            font-size: 18px;
         }
         .follower-fix{
             float: right;
@@ -1920,6 +1924,9 @@ p{
     text-decoration: none;
     color: #000000 !important;
 }
+.viewport_group{
+    height: 426px!important;
+}
 
 .img_user{
     width: 18px;
@@ -1972,6 +1979,10 @@ p{
     display: block;
     margin: 0px;
 
+}
+.entities .overview p{
+    font-weight: normal;
+    font-size: 13px;
 }
 
 .page .grid-15 {
@@ -2431,8 +2442,11 @@ p{
 }
 
 .submit_list{
-    margin-left: 805px !important;
+    margin-left: 756px !important;
     width: 72px !important;
+}
+.submit_list .btn{
+    margin-top: 20px;
 }
 
 .radio_btn{
@@ -2779,8 +2793,9 @@ form p .invalid_messa{
 
 .btn_edit_pg{
     margin-left: 10px !important;
-    margin-top: 6px;
-    font-weight: bold;
+    font-weight: 500;
+    text-decoration: none;
+    color: #000;
 }
 
 .btn_edit_biew{
