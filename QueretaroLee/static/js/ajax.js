@@ -1942,6 +1942,8 @@ function search_all_header($this){
                                 text = 'Listas';
                             if(i == "title" & Object.keys(data['title']).length>0)
                                 text = 'Títulos';
+                            if(last_count == 0)
+                                $('.d-results').append('<img class="pt" src="/static/img/triangulo.png">');
                             if(Object.keys(data[i]).length>0)
                                 $('.d-results').append('<a class="user_profile person" >' + text + '</a>');
                             $.each(obj,function(i2){

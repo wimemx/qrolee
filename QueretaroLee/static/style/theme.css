@@ -1938,6 +1938,11 @@ p{
 .search_result{
     position: absolute !important;
     z-index: 10;
+    height: 35px;
+}
+.search_result .pt{
+    margin-top: 15px;
+    margin-left: 122px;
 }
 
 .person{
