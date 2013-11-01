@@ -30,6 +30,9 @@ function truncText (text, maxLength, ellipseText){
 function populateCal(curr_month,$item){
     $('.item').remove();
     $('.d-not_found').remove();
+    var edit = 0;
+    if($('.d-edit-event').length > 0)
+        edit = -1;
     if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
@@ -52,6 +55,7 @@ function populateCal(curr_month,$item){
             },
             dataType: 'json'
         }).done(function(data){
+                var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
                 $.each(data,function(index){
@@ -60,7 +64,6 @@ function populateCal(curr_month,$item){
                     $.each(event,function(i){
                         var $ditem = $item.clone();
                         var e = event[i];
-                        console.log(e);
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
 
                         var picture_url = window.location.origin+'/static/media/users/'+
@@ -97,18 +100,62 @@ function populateCal(curr_month,$item){
                         span_text.append(p);
                         span_text.append(span_time);
                         span_locat = $('<span class="location fright"><span>');
-                        p_2 = $('<p></p>');
-                        var loc = e[7].split('-');
-                        var location_name = loc[0].split("#");
+
+                        p_2 = $('<p class="fright"></p>');
+                        var loc = e[7];
+                        var location_name = loc.split("#");
                         span_place_1 = $('<span class="place">'+truncText(location_name[0],30)+'</span><br>');
                         p_2.append(span_place_1);
                         if(location_name.length>1){
                             span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
                             p_2.append(span_place_2);
                         }
-                        span_apply = $('<span class="apply fright">asistir</span>');
+                        if($.trim($('input.fb-session-required-val').val()) != 0){
+
+                            if(e[10]){
+                                span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
+                                span_apply.click(function(){
+                                    FB.api(
+                                        e[10]+'/attending',
+                                        'post',
+                                        function(response) {
+                                            console.log(response);
+                                        });
+                                });
+                            }else
+                                span_apply = '';
+
+                        }else
+                            span_apply = '';
                         span_locat.append(p_2);
-                        span_locat.append(span_apply);
+                        if(edit == -1){
+                            var aedit = $('<a href="#" class="green_btn size_btn_edit">Editar</a>');
+                            var aerase = $('<a href="#" class="pink_btn size_btn_edit">Borrar</a>');
+                            aedit.attr('href','/registry/edit/event/'+e[6]);
+                            span_locat.append(aedit);
+                            span_locat.append(aerase);
+                            aerase.click(function(evnt){
+                                evnt.preventDefault();
+                                $this = $(this).closest('.item');
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/registry/delete/event/1/',
+                                    data: {
+                                        'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                                        'type': 'registry.event',
+                                        'id': e[6]
+                                    },
+                                    dataType: 'json'
+                                }).done(function(){
+                                        $this.fadeOut(300,function(){
+                                            $(this).remove();
+                                        });
+                                    });
+                                return false;
+                            });
+                        }else{
+                            span_locat.append(span_apply);
+                        }
                         span_text.append(span_locat);
                         span_item.append(span_lin);
                         span_item.append(span_wrap);
@@ -148,18 +195,21 @@ function populateCal(curr_month,$item){
 
                         if((counter+1) == length){
                             $('.sidebar-a .overview *[class*="item_"]').fadeIn(300,function(){
-
-
                             }).css('display','block');
                         }
-
+                        if((counter+1) == length){
+                            //console.log($('#scrollbar').data('overview'));
+                        }
                         counter++;
                     });
+
                 });
                 if(counter==0){
                     text_no_found('eventos para este mes');
+                }else{
+                    //$('#scrollbar').tinyscrollbar();
                 }
-                $('.scroll_events').tinyscrollbar();
+                //$('.scroll_events').tinyscrollbar();
             });
     }
 }

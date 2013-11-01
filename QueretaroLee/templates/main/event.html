@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -17,7 +17,6 @@
 {% endblock %}
 
 {% block main_site %}
-
         <div class="grid-16 events content single">
             <div class="heading d-heading_event grid-14">
                 <h3 class="title grid-3 fleft">Eventos</h3>
@@ -29,6 +28,7 @@
             </div>
         <div class="grid-14 load offset-1 no-margin">
             <div class="sidebar-a grid-9 no-margin_events">
+                <input type="hidden" class="event-fb" value=""/>
                 <span class="month">Septiembre</span>
                 <div id="scrollbar1">
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>

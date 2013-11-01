@@ -1104,6 +1104,9 @@ p{
                 font-weight: 400;
                 margin-top: 0px;
             }
+            .content .sidebar-a .date{
+                min-width: 65px;
+            }
             .content .sidebar-a p{
                 width: 100%;
                 margin-bottom: 20px;
@@ -1126,6 +1129,7 @@ p{
                     font-weight: 400;
                     padding: 2px 10px 2px 10px;
                     margin-top: 10px;
+                    cursor: pointer;
                 }
                 .content .sidebar-a .location p{
                     width: auto;
@@ -1136,8 +1140,6 @@ p{
                 }
                 .content .sidebar-a .location a{
                     position: relative;
-                    top: 12px;
-
                 }
                     .location p span{
                         font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -1552,12 +1554,12 @@ p{
     width: 200px !important;
 }
 
-.d-picture_profile .dz-message span{
+/*.d-picture_profile .dz-message span{
     line-height: 15px !important;
     float: left;
     margin-left: 40px;
     margin-top: 76px;
-}
+}*/
 
 .d-text_picture{
     margin-top: 70px;
@@ -1624,6 +1626,7 @@ p{
         .lightbox.fb-objs span{
             display: block;
             margin-bottom: 20px;
+            position: relative;
         }
             .lightbox.fb-objs .wrapper{
                 width: 100px;

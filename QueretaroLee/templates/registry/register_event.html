@@ -39,9 +39,6 @@
     <div class="grid-16 edit register">
 
     <div style="margin-left:60px;" class="grid-14">
-        {% block entity_menu %}
-                {% include 'blocks/entity_menu.html' %}
-            {% endblock %}
     <form action="/registry/register/event/" class="grid-8 fleft no-margin">
         <input type="hidden" class="type_ent" value="event" />
         <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
@@ -113,8 +110,9 @@
             <p>
                 <span id="map" class="grid-5 omega fright"></span>
             </p>
-            <span class="grid-5 no-margin fright">
+            <span class="grid-5 no-margin fb-session-required fright">
                 <input type="hidden" name="share_fb" value="0"/>
+                <input type="hidden" name="fb_id"/>
                 <p class="checkbox"><span></span>Vincular evento con Facebook</p>
             </span>
             <p>
@@ -127,21 +125,19 @@
 
     </form>
     <span style="margin-top: 77px;display:block;"></span>
-    <form style="margin-top: 0px;" id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+            <form style="margin-top: 0px;" id="picture" class="fright dropzone no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
-            <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+            <form id="cover" class="dropzone fright no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_cover_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
             </form>
-    {% if profile.social_session == 1 %}
-    <span class="fb-connect no-margin fright grid-5">
+    <span class="fb-connect fb-session-required no-margin fright grid-5">
         <p>¿Cuentas ya con una pagina en Facebook?</p>
         <p class="fb events fleft">Ver eventos de
             <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
     </span>
-    {% endif %}
     </div>
     </div>
     <script type="text/javascript">
@@ -178,11 +174,11 @@
             if(date.indexOf('+') > -1){
                 date = date.split('+');
                 date = date[1].split(' ');
-                date = '++'+date[0];
+                date = '+'+date[0];
             }else{
                 date = date.split('-');
                 date = date[1].split(' ');
-                date = '--'+date[0];
+                date = '-'+date[0];
 
             }
             initialize();
@@ -220,14 +216,14 @@
                                 if(data.success != 'False'){
                                     if($('.checkbox span').html() != ''){
                                         var ename = $('input[name=name]').val();
-                                        var estart_time = $('.date-init').val().replace(' ','T')+date;
-                                        var edate_end = $('.date-end').val().replace(' ','T')+date;
+                                        var estart_time = $('.date-init').val().replace(' ','T')+':00'+date;
+                                        var edate_end = $('.date-end').val().replace(' ','T')+':00'+date;
                                         var edescription = $('textarea[name=description]').val();
                                         var elocation = $('input[name=location_name]').val();
                                         var privacy = 'OPEN';
                                         if($('select.change').val() == 'privada')
                                             privacy = 'SECRET';
-                                        FB.api('/me/events','post',{
+                                        var fb_data = {
                                                     name: ename,
                                                     start_time: estart_time,
                                                     end_time:   edate_end,
@@ -235,19 +231,29 @@
                                                     location: elocation,
                                                     privacy_type: privacy
 
-                                                },
-
-                                                function(response) {
-                                                    /*console.log(response);
-                                                     alert(response.id);
-                                                     eventid(response.id);*/
-
-                                                });
+                                                }
+                                        FB.api(
+                                            '/me/events','post',
+                                            fb_data,
+                                            function(response) {
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: '/registry/update/'+data.success+'/',
+                                                    data: {
+                                                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                                                        'field': 'fb_id',
+                                                        'value': response['id'],
+                                                        'event': '1'
+                                                    },
+                                                    dataType: 'json'
+                                                    }).done(function(data){});
+                                            });
 
                                     }
                                     var name = $('input[name=name]').val().charCodeAt(0)+''+
                                             $('input[name=name]').val().charCodeAt(1)+''+
                                             $('input[name=name]').val().charCodeAt(2);
+
                                     window.location.href = site_url+'/qro_lee/events/'+data.success;
 
                                 }else{
@@ -266,10 +272,10 @@
             $('.checkbox span').click(function(){
                 if($.trim($(this).html()) == ''){
                     $(this).html('');
-                    $(this).parent().parent().find('input').val(0);
+                    $(this).parent().parent().find('input.share_fb').val(0);
                 }else{
                     $(this).html('×');
-                    $(this).parent().parent().find('input').val(1);
+                    $(this).parent().parent().find('input.share_fb').val(1);
                 }
 
             });

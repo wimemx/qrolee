@@ -426,7 +426,8 @@ def get_events(request, **kwargs):
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
-            if request.POST.get('id_entity') != None:
+
+            if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(location_id=request.
                     POST['id_entity'], status=status)
@@ -440,25 +441,22 @@ def get_events(request, **kwargs):
             event_date.append(int(event.id))
             events.append(event_date)
 
-
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 start_time__month=int(request.POST.get('curr_month'))+1,
                 location_id=int(entity), status=status).order_by('start_time')
         else:
-            events_ = models.Event.objects.filter(status=status,
-                start_time__month=int(request.POST.get(
+            events_ = models.Event.objects.filter(
+                status=status, start_time__month=int(request.POST.get(
                     'curr_month'))+1).order_by('start_time')
-
-
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
-            if request.POST.get('id_entity') != None:
-                if int(request.POST['id_entity']) != -1:
-                    events_ = models.Event.objects.filter(status=status,
-                        location_id =request.POST['id_entity'])
+            #if request.POST.get('id_entity') is not None:
+            #    if int(request.POST['id_entity']) != -1:
+            #        events_ = models.Event.objects.filter(
+            #            status=status, location_id=request.POST['id_entity'])
 
         events = list()
         for event in events_:
@@ -478,6 +476,7 @@ def get_events(request, **kwargs):
             event_data.append(event.location_name)
             event_data.append(event.owner_id)
             event_data.append(event.start_time.month)
+            event_data.append(event.fb_id)
             events.append(event_data)
     context = {
         'events': list(events)

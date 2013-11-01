@@ -22,11 +22,15 @@ def member_since(date):
         ext = ' meses'
         if (date_now.month - date.month) == 1:
             ext = ' mes'
+        if (date_now.month - date.month) == 12:
+            return '1 año'
         return str(date_now.month - date.month) + ext
     else:
         ext = ' dias'
         if (date_now.day - date.day) == 1:
             ext = ' dia'
+        if (date_now.day - date.day) == 30:
+            return '1 mes'
         return str(date_now.day - date.day) + ext
 
 @register.filter
@@ -47,9 +51,9 @@ def feed_type(feed_id):
     added_to = get_objects(feed.added_to_object, feed.added_to_type)
     obj = get_objects(feed.object, feed.type)
     if added_to is None:
-        return
+        return ''
     if obj is None:
-        return
+        return ''
     obj_list.append(added_to)
     obj_list.append(obj)
     img_url = '/static/media/users/'+str(feed.user_id)+'/'
@@ -90,6 +94,13 @@ def feed_type(feed_id):
         else:
             name = user.username
         trigger_url = '/accounts/users/profile/'+str(user.id)
+    elif feed.added_to_type == 'E':
+        if obj_list[0].picture != '':
+            img_url += 'entity/'+obj_list[0].picture
+        else:
+            img_url = '/static/img/create.png'
+        name = obj_list[0].name
+        trigger_url = '/qro_lee/entity/'+obj_list[0].type.name+'/'+str(obj_list[0].id)
     else:
         if obj_list[0].picture != '':
             img_url += 'entity/'+obj_list[0].picture
@@ -189,7 +200,7 @@ def feed_type(feed_id):
                             <a href="{8}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
                             </a>
-                            <span class="grid-6 content no-margin fleft">
+                            <span class="grid-7 content no-margin fleft">
                                     <span class="trigger din-b"><a href="{8}">{0}</a> </span>
                                     <span class="verb din-r">{7} </span>
                                     <span class="verb din-b"><a href="{9}">{1}</a> </span>
@@ -221,7 +232,7 @@ def feed_type(feed_id):
                             <a href="{8}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
                             </a>
-                            <span class="grid-6 content no-margin fleft">
+                            <span class="grid-7 content no-margin fleft">
                                     <span class="trigger din-b"><a href="{8}">{0}</a> </span>
                                     <span class="verb din-r">{7} </span>
                                     <span class="verb din-b"><a href="{11}">{10}</a> </span>
@@ -257,7 +268,7 @@ def feed_type(feed_id):
               <a href="{5}" class="wrapper fleft">
                 <img src="{2}" alt=""/>
               </a>
-              <span class="grid-6 content no-margin fleft">
+              <span class="grid-7 content no-margin fleft">
               <span class="trigger din-b"><a href="{5}">{0}</a> </span>
               <span class="verb din-r">{4} </span>
               <span class="verb din-b"><a href="{6}">{1}</a> </span></span>
@@ -287,7 +298,7 @@ def feed_type(feed_id):
                             <a href="{7}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
                             </a>
-                            <span class="grid-6 content no-margin fleft">
+                            <span class="grid-7 content no-margin fleft">
                                     <span class="trigger din-b"><a href="{7}">{0}</a> </span>
                                     <span class="verb din-r">{4} </span>
                                     <span class="verb din-b"><a href="{8}">{1}</a> </span>
@@ -323,8 +334,12 @@ def get_objects(object, type):
         else:
             obj = None
     elif type == 'D':
-        obj = rmodels.Event.objects.get(
-            id=object)
+        obj = rmodels.Event.objects.filter(
+            id=object, status=True)
+        if obj:
+            obj = obj[0]
+        else:
+            obj = None
     elif type == 'A':
         obj = models.Author.objects.get(
             id=object)
@@ -335,8 +350,12 @@ def get_objects(object, type):
         obj = models.Title.objects.get(
             id=object)
     elif type == 'U':
-        obj = auth_models.User.objects.get(
-            id=object)
+        obj = auth_models.User.objects.filter(
+            id=object, is_active=True)
+        if obj:
+            obj = obj[0]
+        else:
+            obj = None
     else:
         obj = None
 
@@ -354,14 +373,32 @@ def img_autoescape(text):
             end = str(src[1]).find('"')
             src_img = str(src[1])[0:end]
 
-    return  src_img
+    return src_img
 
 
 @register.filter
 def replace(text, char):
 
-    text = text.replace('#',' ')
+    text = text.replace('#', ' ')
 
-    return  text
+    return text
 
+
+@register.filter
+def fsocial_session(user):
+    user = auth_models.User.objects.filter(
+        id=user.id)
+    if not user:
+        return False
+    profile = rmodels.Profile.objects.get(
+        user_id=user)
+    if profile.social_session == 1:
+        return True
+    else:
+        return False
+
+
+@register.filter
+def geturl(request):
+    print request
 

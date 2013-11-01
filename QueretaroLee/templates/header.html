@@ -1,9 +1,11 @@
 {% load staticfiles %}
+{% load registry_tags %}
 <div class="grid-15 center">
     <a class="grid-2 alpha logo" href="/">
         <span></span>
     </a>
     <div class="nav grid-8 alpha omega menu">
+        <input type="hidden" value="{{ user|geturl }}"/>
         <a href="/qro_lee/entities/organization/">Organizaciones</a>
         <a href="/qro_lee/entities/group/">Grupos</a>
         <a href="/qro_lee/events/">Eventos</a>

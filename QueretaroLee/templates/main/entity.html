@@ -280,7 +280,7 @@
     <div class="grid-16 news-feed load no-margin" style="display: block">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
 
-        <div style="margin: 30px; 0px 0px 30px;" class="grid-8 left">
+        <div style="margin: 30px; 0px 0px 30px;" class="grid-9 left">
             {% if activity  %}
             <h3 class="title">Actividad</h3>
             <div style="margin:0px;" id="scrollbar1">
@@ -638,7 +638,9 @@
         <div class="grid-16 discussion load no-margin">
         <div class="grid-15 center">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
+            {% if member %}
             <span style="background-image: none;" class="brown_btn fright discuss">Crear nueva discusión</span>
+            {% endif %}
             <div class="grid-5 fleft alpha">
             <h3 class="title main">Discusiones
                 <span class="select_wrapper grid-2 alpha fright">

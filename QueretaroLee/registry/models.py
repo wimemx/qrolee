@@ -128,6 +128,7 @@ class Event(models.Model):
     privacy_type = models.BooleanField(default=False)
     status = models.BooleanField(default=True)
     share_fb = models.BooleanField(default=False)
+    fb_id = models.CharField(max_length=45)
     location = models.ForeignKey(Entity)
     owner = models.ForeignKey(User)
 

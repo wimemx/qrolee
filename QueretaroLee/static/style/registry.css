@@ -127,7 +127,7 @@ span.green_btn,span.yellow_btn{
         float: left;
         margin-right: 5px;
         position: relative;
-        top: 1px;
+        top: 8px;
         border: 1px solid #9d9c97;
         font-size: 10px;
         line-height: 9px;
@@ -281,7 +281,6 @@ select{
 }
 #cover{
     height: 180px;
-    width: 282px;
 }
 .preview,.dz-message{
         height: 180px;

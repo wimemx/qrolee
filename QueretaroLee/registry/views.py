@@ -8,11 +8,14 @@ from django.contrib.auth import models as auth_models
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.timezone import utc
+from django.db import models as db_model
+from django.db.models.loading import get_model
+
 from account import models as account
 from registry import models, settings
 from decimal import Decimal
 from QueretaroLee import settings as main_settings
-from django.db import models as db_model
+
 
 import calendar
 import urllib2
@@ -334,6 +337,21 @@ def edit_entity(request, **kwargs):
 
 
 def delete_entity(request, **kwargs):
+    if request.POST:
+        print request.POST.get('id')
+        app = str(request.POST.get('type')).split('.')
+        app_label = app[0]
+        model_name = app[1]
+        model = get_model(app_label, model_name)
+        obj = model.objects.get(
+            id=int(request.POST.get('id')))
+        obj.status = False
+        obj.save()
+        context = {
+
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, mimetype='application/json')
 
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -359,8 +377,7 @@ def update_entity(request, **kwargs):
     dictionary = {
         field: value
     }
-
-    if request.POST.get('event') == '1' and request.POST.get('event') is not None:
+    if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
     else:
@@ -406,9 +423,17 @@ def media_upload(request):
             entity.picture = str(request.FILES['file'])
 
         entity.save()
+    if 'event' in request.POST:
+        id = request.POST.get('event')
+        entity = models.Event.objects.get(id=id)
 
+        if 'event_cover_picture' in request.POST:
+            entity.cover_picture = str(request.FILES['file'])
+        else:
+            entity.picture = str(request.FILES['file'])
 
-    if 'fb_img' in request.POST and 'folder' != '':
+        entity.save()
+    if 'fb_img' in request.POST and folder != '':
         folder = '/event/'
     path_extension = str(request.user.id)+folder
     path = os.path.join(
@@ -513,10 +538,7 @@ def ajax_register_event(request):
     event = copy
 
     event = models.Event.objects.create(**event)
-
-    if event.share_fb == 1:
-        post_event_fb(event, request.user, profile)
-
+    event.save()
     if place_spot == 0:
         event.place_spot = 0
         event.save()
@@ -527,9 +549,6 @@ def ajax_register_event(request):
             event.lat = spot[0].lat
             event.long = spot[0].long
             event.save()
-
-    event.save()
-    success = 'False'
     if event is not None:
         success = event.id
         activity_data = {
@@ -620,7 +639,6 @@ def event(request, **kwargs):
 def get_events(request, **kwargs):
     entity = kwargs['entity'].split('_', 1)
     entity = entity[1]
-
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
@@ -652,6 +670,7 @@ def get_events(request, **kwargs):
             event_data.append(event.id)
             event_data.append(event.location_name)
             event_data.append(event.owner_id)
+            event_data.append(event.share_fb)
             events.append(event_data)
     context = {
         'events': list(events)
@@ -980,7 +999,7 @@ def delete_page(request):
 def delete_picture(request):
     type = request.POST.get('type')
     success = 'False'
-
+    print type
     if type == 'profile':
         id_user = int(request.POST.get('id'))
         profile = models.Profile.objects.get(user__id=id_user)
@@ -989,12 +1008,10 @@ def delete_picture(request):
             success = 'True'
             profile.picture = ''
             profile.save()
-        else:
-            succes = 'False'
 
-    if type == 'entity':
+    elif type == 'entity':
         id_entity = int(request.POST.get('id'))
-        entity= models.Entity.objects.get(id=id_entity)
+        entity = models.Entity.objects.get(id=id_entity)
 
         if entity:
             success = 'True'
@@ -1004,8 +1021,18 @@ def delete_picture(request):
                 entity.picture = ''
 
             entity.save()
-        else:
-            succes = 'False'
+    elif type == 'event':
+        id_entity = int(request.POST.get('id'))
+        entity = models.Event.objects.get(id=id_entity)
+
+        if entity:
+            success = 'True'
+            if int(request.POST.get('cover')) == 1:
+                entity.cover_picture = ''
+            else:
+                entity.picture = ''
+
+            entity.save()
 
     context = {
             'succes': success
