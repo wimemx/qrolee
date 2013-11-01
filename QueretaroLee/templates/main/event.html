@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -17,13 +16,14 @@
 {% endblock %}
 
 {% block main_site %}
+
         <div class="grid-16 events content single">
             <div class="heading d-heading_event grid-14">
                 <h3 class="title grid-3 fleft">Eventos</h3>
                 <span class="search fleft grid-4">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ entity_type }}"/>
                     <input type="text" class="d_field_search search_ent_field search_entities"/>
-                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                    <span class="top search_btn dark_yello_btn"></span>
                 </span>
             </div>
         <div class="grid-14 load offset-1 no-margin">
@@ -76,15 +76,12 @@
                 </div>
                 <hr>
                 <div class="controller center">
-                    <span class="prev fleft"><</span>
-                    <span class="next fright">></span>
+                    <span class="prev fleft"></span>
+                    <span class="next fright"></span>
                 </div>
             </div>
         </div>
 
         </div>
-
-
-
 
 {% endblock %}

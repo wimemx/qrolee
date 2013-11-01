@@ -7,21 +7,26 @@
     <div class="nav grid-8 alpha omega menu">
         <input type="hidden" value="{{ user|geturl }}"/>
         <a href="/qro_lee/entities/organization/">Organizaciones</a>
-        <a href="/qro_lee/entities/group/">Grupos</a>
+        <a href="/qro_lee/entities/group/">Grupos de lectura</a>
         <a href="/qro_lee/events/">Eventos</a>
-        <a href="/qro_lee/entities/spot/">Spots</a>
-        <span class="link_book" >
-            <span>
-                <a href="/qro_lee/book/titles/">Libros</a>
+        <a href="/qro_lee/entities/spot/">Lugares</a>
+
+            <span class="link_book" >
+                <span>
+                    <a href="/qro_lee/book/titles/">Libros</a>
+                </span>
+                <span class="sub-menu-book sub">
+                    <img class="pt" src="/static/img/triangulo.png"/>
+                    <a href="/qro_lee/book/titles/">Titulos</a>
+                    <span class="lin"></span>
+                    <a href="/qro_lee/book/authors/">Autores</a>
+                    <span class="lin"></span>
+                    <a href="/qro_lee/book_crossing/" style="border-bottom: none"
+                            >Book Crossing</a>
+                </span>
             </span>
-            <span class="sub-menu-book">
-                <a href="/qro_lee/book/titles/">Titulos</a>
-                <a href="/qro_lee/book/authors/">Autores</a>
-                <a href="/qro_lee/book_crossing/" style="border-bottom: none"
-                        >Book Crossing</a>
-            </span></span>
-        <a href="/qro_lee/list/">Listas</a>
-        <a class="last" href="/qro_lee/list/">Páginas</a>
+
+        <a class="last" href="/qro_lee/list/">Listas</a>
 
     </div>
     <div class="grid-3 alpha omega search">
@@ -38,15 +43,21 @@
             {% else %}
                 <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}
-            <span class="user">{{ user|truncatechars:16 }}</span>
+            <span class="user">{{ user|truncatechars:21 }}</span>
         <span class="member grid-3 no-margin" style="min-height: 57px;display: none;position: absolute">
             <input type="hidden" class="sesion_user" value="{{ user.id }}">
-            <span class="sub-menu-h" >
+            <img class="pt" src="/static/img/triangulo.png"/>
+            <span class="sub-menu-h sub" >
                 <a href="/accounts/users/profile/{{ user.id }}">Ver mi perfil</a>
-                <a href="/accounts/users/edit_profile/3">Mi información</a>
-                <a href="/accounts/users/edit_account/">Mi cuenta</a>
+                <span class="lin"></span>
                 <a href="#">Mis libros</a>
+                <span class="lin"></span>
                 <a href="#">Mis listas</a>
+                <span class="lin"></span>
+                <a href="/accounts/users/edit_profile/{{ user.id }}">Mi información</a>
+                <span class="lin"></span>
+                <a href="/accounts/users/edit_account/">Mi cuenta</a>
+                <span class="lin"></span>
                 <a style="border:none;" href="/registry/logout">Salir</a>
             </span>
         </span>

@@ -81,20 +81,15 @@
                             <span class="text"></span>
                             <span class="dropdown"></span>
                             <select class="change" name="privacy" id="">
-
                                 <option value="publica">Publica</option>
                                 <option value="privada">Privada</option>
                             </select>
                         </span>
                     </span>
-
                 </p>
                 {% else %}
                     <input type="hidden" value="publica" name="privacy"/>
                 {% endif %}
-                <p>Sitio web
-                    <input placeholder="http://qrolee.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
-                </p>
                 <p>Dirección
                     <input type="hidden" class="lat" name="lat"/>
                     <input type="hidden" class="long" name="long"/>
@@ -105,11 +100,14 @@
                         <span id="map"></span>
                     </span>
                 </p>
+                <p>Sitio web
+                    <input placeholder="www.ejemplo.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
+                </p>
                 <p>Página de Facebook
-                    <input placeholder="qrolee" class="grid-5 social regex_social fright no-margin" type="text" value="" name="fb"/>
+                    <input placeholder="pagina de facebook" class="grid-5 social regex_social fright no-margin" type="text" value="" name="fb"/>
                 </p>
                 <p>Página de twitter
-                    <input placeholder="qrolee" class="grid-5 social regex_social fright no-margin" type="text" value="" name="twitter"/>
+                    <input placeholder="nombre de twitter" class="grid-5 social regex_social fright no-margin" type="text" value="" name="twitter"/>
                 </p>
                 <p>
                     <span class="message fright"></span>

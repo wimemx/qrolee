@@ -11,7 +11,6 @@
     <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
 {% endblock %}
 
-
 {% block head %}
     {% include 'header.html' %}
 {% endblock %}
@@ -24,7 +23,7 @@
                     <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
                     <input type="text" class="search_entities search_ent_field"/>
-                    <span class="top right search_btn dark_yello_btn">Buscar</span>
+                    <span class="top search_btn dark_yello_btn"></span>
                 </span>
                 <a href="/registry/register_entity/{{ entity_type.1 }}">
                     <span style="background-image: none;padding-right: 9px;" class="brown_btn grid-1 fright">Crear</span>

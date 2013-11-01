@@ -35,13 +35,13 @@
                 </div>
 
                 <div class="d-name-event">
-                    <b>
+                    <span class="title" >
                         {{ event.name }}
-                    </b>
+                    </span>
                 </div>
 
                 <div class="d-by grid-5 no-margin">
-                    Organizado por
+                    <span class="title">Organizado por</span>
                     <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
                         {{ event.owner }}
                     </a>

@@ -89,7 +89,8 @@ input:not([type='submit']){
         background: #F0D6A7;
     }
 .din-m{
-    font-family: 'Conv_DINPro-Medium';
+    font-family: 'Raleway' sans-serif;
+    font-weight: 400;
     color: #000;
 }
 .din-b{
@@ -102,8 +103,8 @@ input:not([type='submit']){
     clear: both;
 }
 .dark_yello_btn{
-    background: #edde84;
-    padding: 0px 10px 0px 10px;
+    background: #faf3e1 url('../img/search_icon_1.png') no-repeat 50% 50%;
+    width: 25px;
 }
 .green_btn{
     background: #cccc66;
@@ -111,8 +112,8 @@ input:not([type='submit']){
     cursor: pointer;
     padding: 2px 8px 2px 8px;
     font-size: 10px;
-
 }
+
 .brown_btn{
     background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
     color: #fff;
@@ -172,10 +173,10 @@ input:not([type='submit']){
 }
 
 .fb_btn,.twitter_btn{
-    width: 62px;
-    height: 17px;
+    width: 61px;
+    height: 18px;
     display: block;
-    margin:6px 0px 0px 10px;
+    margin: 0px 5px 0px 10px;
 }
 .no-display{
     display: none !important;
@@ -214,11 +215,15 @@ p{
     .nav a{
         text-decoration: none;
         color: #fff;
+        float: left;
         font-size: 13px;
         margin: 0px 16px 0px 0px;
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
+    }
+    .nav a:hover{
+        transition: all ease-in 0.3s;
     }
     .nav a.last{
         margin: 0px;
@@ -268,6 +273,11 @@ p{
         text-decoration: none;
         width: 120px;
         display: block;
+    }
+    .account-settings .member .pt{
+        position: absolute;
+        right: 54px;
+        bottom: 6px;
     }
 
     .account-settings .settings{
@@ -428,7 +438,7 @@ p{
     display: block;
 }
     .entities .grid-14{
-        height: 640px;
+        height: 670px;
         padding: 40px 60px 40px 60px;
         background: #fffcf5;
         display: block;
@@ -520,7 +530,6 @@ p{
     .entity .wrapper{
         width: 176px;
         height: 176px;
-        border:2px solid #fff;
         display: block;
         overflow: hidden;
         margin-bottom: 20px;
@@ -550,7 +559,7 @@ p{
             font-size: 25px;
             text-align: left;
             width: 100%;
-            font-weight: 400;
+            font-weight: 500;
             font-family: 'Raleway' sans-serif;
             margin-bottom: 0px;
             margin-top: 0px;
@@ -648,9 +657,7 @@ p{
                 position: absolute;
                 top: 23px;
                 right: 0px;
-                width: 105px;
-                padding-right: 5px;
-                padding-left: 5px;
+                width: 115px;
                 display: none;
                 z-index: 6;
             }
@@ -660,8 +667,6 @@ p{
                 top: 23px;
                 right: 0px;
                 width: 105px;
-                padding-right: 5px;
-                padding-left: 5px;
                 display: none;
                 z-index: 6;
             }
@@ -670,26 +675,30 @@ p{
                 position: absolute;
                 top: 51px;
                 min-height: 100px;
-                width: 105px;
-                padding-right: 5px;
-                padding-left: 5px;
+                width: 130px;
                 z-index: 8;
                 display: block!important;
             }
             .sub-menu-h a{
-                    border-bottom: 1px solid #cdb090;
-                    color: #000;
-                    text-align: right;
-                    float: left;
-                    width: 100%;
-                    height: 25px;
-                    font-size: 11px;
-                    line-height: 25px;
-                    text-decoration: none;
-                    font-family: 'Conv_fontscore.com_d-dinproregular';
-                }
+                text-align: right;
+                float: left;
+                width: 106px;
+                padding: 2px 10px 2px 13px;
+                font-size: 11px;
+                line-height: 25px;
+                text-decoration: none;
+            }
+            .sub .lin{
+                border-bottom: 1px solid #cdb090;
+                width: 82%;
+                margin-left: 14px;
+                float: left;
+            }
+            .link_book .sub .lin{
+                margin-left:9px;
+            }
+
             .sub-menu a{
-                    border-bottom: 1px solid #cdb090;
                     color: #000;
                     text-align: right;
                     float: left;
@@ -698,20 +707,11 @@ p{
                     font-size: 11px;
                     line-height: 25px;
                     text-decoration: none;
-                    font-family: 'Conv_fontscore.com_d-dinproregular';
                 }
                 .brown_btn .sub-menu a{
-                    border-bottom: 1px solid #cdb090;
-                    color: #000;
-                    text-align: right;
-                    float: left;
-                    width: 100%;
-                    height: 25px;
-                    font-size: 11px;
-                    line-height: 25px;
-                    text-decoration: none;
-                    font-family: 'Conv_fontscore.com_d-dinproregular';
+                    padding: 2px 12px 2px 10px;
                 }
+
         .entity .member .follow{
             margin-top: 0px;
             float: left;
@@ -768,9 +768,10 @@ p{
             font-size: 11px;
             cursor: pointer;
             border: 1px solid #d8bfa3;
-            margin-right: 10px;
-            font-family: 'MS Reference Sans Serif';
-            color:#454545 !important;
+            margin-right: 5px;
+            font-weight: 500;
+            font-family: 'Raleway' sans-serif;
+            color:#000 !important;
         }
         .entity .nav .btn:hover,.entity .nav .btn.active{
             background: #cccc66;
@@ -809,7 +810,7 @@ p{
             cursor: pointer;
         }
         .noday{
-            background: #DBC8A2 !important;
+            background: #fffcf5 !important;
         }
         .content.single.events .apply{
             background: #f89883 !important;
@@ -976,8 +977,8 @@ p{
             background: #7a7a7a;
             float: right !important;
             margin-bottom: 15px;
-            font-family: 'Conv_fontscore.com_d-dinproregular';
-            font-size: 14px;
+            font-family: 'Raleway' sans-serif;
+            font-size: 12px;
             line-height: 19px;
         }
         .content .sidebar-a #scrollbar1 .viewport{
@@ -1022,7 +1023,7 @@ p{
                         position: relative;
                         left: 20px !important;
                         top: 10px !important;
-                        width: 220px !important;
+                        width: 240px !important;
                     }
 
                 .item .general-info{
@@ -1109,7 +1110,7 @@ p{
             }
             .content .sidebar-a p{
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom:8px;
                 float: left;
                 font-size: 12px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -1122,13 +1123,13 @@ p{
                 position: relative;
             }
                 .content .sidebar-a .location .apply{
-                    font-family: 'Conv_fontscore.com_d-dinproregular';
+                    font-family: 'Raleway' ,sans-serif;
                     color: #fff;
                     font-size: 14px;
                     background: #cccc66;
-                    font-weight: 400;
+                    font-weight: 500;
                     padding: 2px 10px 2px 10px;
-                    margin-top: 10px;
+                    margin-top: 4px;
                     cursor: pointer;
                 }
                 .content .sidebar-a .location p{
@@ -1164,11 +1165,11 @@ p{
         }
 
             .sidebar-b .title{
-                font-weight: 400;
+                font-weight: 500;
                 font-family: 'Raleway' sans-serif;
                 font-size: 14px;
                 text-align: left;
-                padding: 0px 0px 10px 25px;
+                padding: 0px 0px 10px 0px;
                 border-bottom: 1px solid #acacac;
             }
             .sidebar-b .fix.title{
@@ -1249,7 +1250,7 @@ p{
 
             .sidebar-b .overview{
                 width: 100%;
-                height: 300px;
+                height: 255px;
                 display: block;
                 overflow: hidden;
             }
@@ -1284,18 +1285,25 @@ p{
 
                     }
                         .sidebar-b .month .month{
-                            font-family: 'Conv_fontscore.com_d-dinproregular';
                             font-size: 12px;
                             cursor: pointer;
+                            font-weight: 400;
                         }
                     .sidebar-b .month td{
                         text-align: center;
-                        border:5px solid #fffcf5;
+                        border-top:5px solid #fffcf5;
+                        border-right:5px solid #fffcf5;
                         height: 25px;
                         background: #f4e5c8;
                         width: 25px;
-                        font-family: 'Raleway' sans-serif;
+                        font-family: sans-serif; font-size: 11px;
+                        font-weight: lighter
 
+                    }
+                    .sidebar-b .month td:hover{
+                        background: #e2c388;
+                        cursor: pointer;
+                        transition:all ease-in 0.3s;
                     }
                         .sidebar-b .active-event{
                             background: #d1b75c !important;
@@ -1305,6 +1313,21 @@ p{
             width: 65px;
             height: 25px;
             margin-top: 15px;
+        }
+
+        .controller .prev{
+            background: #e2c388 url("/static/img/left_cal.png") no-repeat 8px 6px!important;
+        }
+        .controller .prev:hover{
+            background: #D5B16E url("/static/img/left_cal.png") no-repeat 8px 6px!important;
+            transition:all ease-in 0.3s;
+        }
+        .controller .next{
+            background: #e2c388 url("/static/img/right_cal.png") no-repeat 8px 6px!important;
+        }
+        .controller .next:hover{
+            background: #D5B16E url("/static/img/right_cal.png") no-repeat 8px 6px!important;
+            transition: all ease-in 0.3s;
         }
             .sidebar-b .controller span{
                 height: 100%;
@@ -1316,6 +1339,7 @@ p{
                 width: 25px;
                 text-align: center;
                 cursor: pointer;
+
             }
 
 
@@ -1326,15 +1350,17 @@ p{
     height: 40px;
 }
     .footer .nav{
-        margin-top: 0px;
+        margin-top: 10px;
     }
         .footer .nav a{
             margin: 0px 10px 0px 10px;
-            color: #444;
+            float: left;
             text-decoration: none;
             font-size: 11px;
             display: inline-block;
-            font-family: sans-serif;
+            color: #555;
+            font-family: 'Raleway' sans-serif!important;
+            font-weight:500;
         }
         .footer .nav a:hover{
             color: #000;
@@ -1348,7 +1374,6 @@ p{
         }
         .footer a.social span{
             position: relative;
-            top: 4px;
         }
         .footer p{
             font-size: 11px;
@@ -1356,7 +1381,7 @@ p{
 
 
 #scrollbar1 { width: 100%; clear: both; position:relative;}
-#scrollbar1 .viewport { width: 100%; height: 490px; overflow: hidden; position: relative; }
+#scrollbar1 .viewport { width: 100%; height: 510px; overflow: hidden; position: relative; }
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #b69035; }
@@ -1492,6 +1517,16 @@ p{
 
     width: 100%;
 
+}
+.d-width-container-event h3{
+    margin-top: 0px;
+    font-family: Raleway;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.d-width-container-event .time{
+    margin-top: 10px!important;
 }
 
 .d-top-data{
@@ -1805,6 +1840,9 @@ p{
     left: 50%;
     top: 50px;
 }
+.dialog-confirm .dark_yello_btn{
+    padding: 4px 10px 5px 10px !important;
+}
 
 .dialog_btn{
     width: 75px;
@@ -1881,28 +1919,33 @@ p{
     width: 100%;
     z-index: 9;
     float: left;
-    background-color: #edd5a5;
+    background-color: #e7cb92;
     text-decoration: none;
     color: #000000 !important;
 }
 
 .img_user{
-    width: 15px;
+    width: 18px;
     padding: 4px 4px 4px 4px;
-    height: 15px;
+    height: 18px;
     float: left;
 }
 
 .span_name_user{
-    padding: 4px 4px 4px 0px;
+    padding: 7px 4px 7px 3px;
     float: left;
-    width: 129px !important;
+    width: 126px !important;
     height: 15px !important;
 }
 
 .search_result{
     position: absolute !important;
     z-index: 10;
+    height: 35px;
+}
+.search_result .pt{
+    margin-top: 15px;
+    margin-left: 122px;
 }
 
 .person{
@@ -1967,27 +2010,23 @@ p{
 .sub-menu-book{
     background: #e7cb92;
     position: absolute;
-    top: 18px;
-    right: 54px;
+    top: 47px;
+    right: 0px;
     width: 98px;
-    padding-right: 5px;
-    padding-left: 5px;
     display: none;
     z-index: 10;
 }
 
+.sub-menu-book .pt{
+    position: absolute;
+    left: 13px;
+    top: -11px;
+}
+
 .sub-menu-book a{
-    border-bottom: 1px solid #cdb090;
-    color: #000;
     text-align: left;
     float: left;
-    padding-left: 5px;
-    width: 100%;
-    height: 25px;
-    font-size: 11px;
-    line-height: 25px;
-    text-decoration: none;
-    font-family: sans-serif;
+    padding: 2px 9px 2px 10px!important;
 }
 
 .profile .btn:hover{
@@ -2168,6 +2207,9 @@ p{
 
 .btn_fb_profile{
     margin-right: 10px;
+    height: 18px;
+    float: left;
+    width: 55px;
 }
 
 .text_list{
@@ -2224,7 +2266,8 @@ p{
 }
 .link_book{
     cursor: pointer;
-    padding-bottom: 2px;
+    padding-bottom: 33px;
+    float: left;
 }
 
 .text_title{
@@ -2238,7 +2281,8 @@ p{
 
 .text_rate{
     padding: 0px 4px 0px 4px;
-    font-family: 'Raleway' sans-serif;
+    font-size: 13px;
+    font-weight: lighter;
 }
 
 .border_right{
@@ -2783,6 +2827,7 @@ form p .invalid_messa{
 
 .stars_title{
     height: 20px;
+    padding-top: 5px;
 }
 
 .link_book:hover .sub-menu-book{
@@ -2863,11 +2908,12 @@ textarea{
 }
 .container_message .remove{
     position: relative !important;
-    padding: 5px 15px 5px 15px!important;
+    padding: 2px 8px 2px 8px!important;
 }
 .container_message .create-discussion-wrapper{
     padding: 30px 0px 40px 0px;
 }
+
     .container_message .create-discussion{
         height: 290px;
     }
@@ -3471,6 +3517,10 @@ textarea{
 .account-settings:hover .member{
     display: block!important;
 }
+.account-settings .member{
+    top: 26px;
+    right: -40px;
+}
 .account-settings:hover{
     cursor: pointer;
 }
@@ -3479,6 +3529,45 @@ textarea{
     width: 14px;
     height: 40px;
     float: left;
-    border-right: 1px solid rgb(68, 66, 66);
+    border-right: 1px solid #2f3635;
     margin-top: 17px;
+}
+
+.sub{
+    font-family: Raleway;
+    font-weight:500;
+    border-bottom: 1px solid #ceaf70;
+    border-left: 1px solid #ceaf70;
+    border-right: 1px solid #ceaf70;
+}
+
+.sub a{
+    color: #444;
+    float: left;
+    width: 81%;
+    padding: 2px 12px 2px 13px;
+    font-size: 11px;
+    line-height: 25px;
+    text-decoration: none;
+}
+.sub a:hover{
+    background-color: #edd9af;
+    transition: all ease-in 0.3s;
+    color: #000;
+}
+
+.line_footer{
+    border-right: 1px solid #000;
+    float: left;
+    width: 5px;
+    height: 15px;
+}
+
+.t_qro_lee{
+    font-family: sans-serif;
+}
+
+.link:hover{
+    background-color: #edd9af;
+    transition: all ease-in 0.3s;
 }

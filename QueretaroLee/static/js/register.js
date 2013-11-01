@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    load_words();
     $('.main_btn, .register .login, .reset').click(function(e){
         var login = false;
         var reset = false;
@@ -109,3 +110,44 @@ $(document).ready(function(){
         return false;
     });
 });
+
+
+function load_words(){
+
+    var words = {
+        'No es posible vivir sin libros': 'Thomas Jefferson',
+        'Un libro debe ser el hacha que rompa el mar helado que hay dentro de nosotros': 'Franz Kafka',
+        'El que lee mucho y anda mucho, ve mucho y sabe mucho': 'Miguel de Cervantes Saavedra',
+        'Allí donde se queman los libros, se acaba por quemar a los hombres':'Heinrich Heine',
+        'Los libros son amigos que nunca decepcionan': 'Thomas Carlyle',
+        'La literatura es el arte de la palabra': 'Manuel Gayol',
+        'La escritura es la pintura de la voz': 'Voltaire',
+        'La literatura es siempre una expedición a la verdad': 'Franz Kafka',
+        'Más libros, más libres': 'Enrique Tierno Galván',
+        'Los libros han ganado más batallas que las armas': 'Argensola',
+        'El mundo está lleno de libros preciosos que nadie lee': 'Umberto Eco',
+        'La lectura es el viaje de los que no pueden tomar el tren': 'Francis de Croisset',
+        'Para viajar lejos, no hay mejor nave que un libro': 'Emily Dickinson',
+        'Un hogar sin libros es como un cuerpo sin alma': 'Cicerón',
+        'Una vez que has aprendido a leer, serás libre por siempre': 'Frederick Douglas',
+        'Siempre imaginé que el Paraíso sería algún tipo de biblioteca': 'Jorge Luis Borges',
+        'El que lee mucho intentará algún día escribir': 'William Cowper',
+        'Los libros tienen su orgullo: cuando se prestan, no vuelven nunca': 'Theodor Fontane',
+        'La literatura es libertad': 'Susan Sontag',
+        'Carecer de libros propios es el colmo de la miseria': 'Benjamin Franklin',
+        'Uno es de donde tiene los libros': 'Luis Señor',
+        'Un hogar sin libros es como un cuerpo sin alma': 'Marco Tulio Cicerón',
+        'Un libro es un regalo que puedes abrir una y otra vez': 'Garrison Keillor',
+        'No puedes abrir un libro sin aprender algo': 'Confucio'
+    }
+    var random = parseInt((Math.random()*Object.keys(words).length)+1);
+    var index = 1;
+    $.each(words, function(i){
+        if(index == random){
+            $('.caption .c').html(i);
+            $('.caption .au').html(words[i]);
+        }
+        index++;
+    })
+
+}
