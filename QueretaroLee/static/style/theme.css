@@ -2905,11 +2905,12 @@ textarea{
 }
 .container_message .remove{
     position: relative !important;
-    padding: 5px 15px 5px 15px!important;
+    padding: 2px 8px 2px 8px!important;
 }
 .container_message .create-discussion-wrapper{
     padding: 30px 0px 40px 0px;
 }
+
     .container_message .create-discussion{
         height: 290px;
     }

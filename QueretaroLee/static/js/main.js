@@ -723,6 +723,8 @@ function show_text($elem, message){
 
 $(document).ready(function(){
 
+    link_active();
+
     $('.address').keyup(function(){
         search_map_address($(this).val());
      });
@@ -3481,4 +3483,37 @@ function show_index_items($this){
         $this.find('input').val('1');
         $this.find('span').html('Ver más');
     }
+}
+
+function link_active(){
+
+    var url_ = location.href.split('/');
+    url_ = url_[url_.length-2];
+    var text_url = '';
+
+    switch (url_) {
+        case 'events':
+            text_url = 'Eventos';
+            break;
+        case 'list':
+            text_url = 'Listas';
+            break;
+        case 'titles':
+            text_url = 'Libros';
+            break;
+        case 'spot':
+            text_url = 'Lugares';
+            break;
+        case 'group':
+            text_url = 'Grupos de lectura';
+            break;
+        case 'organization':
+            text_url = 'Organizaciones';
+            break;
+    }
+
+    $.each($('.menu a'), function(){
+        if($(this).html() == text_url)
+            $(this).css({'color':'#edde83'});
+    });
 }

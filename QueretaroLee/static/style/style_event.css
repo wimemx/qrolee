@@ -37,17 +37,23 @@
 
 }
 
-.d-name-event{
-
-    font-size: 14pt;
-    color: #222222;
-    padding: 10pt 0pt 0pt 0pt;
+.d-name-event .title{
+    font-size: 18px
 }
 
 .d-by{
-
-    font-size: 10pt;
     padding: 0pt 0pt 0pt 0pt;
+}
+
+.d-by .title{
+    font-weight: 400!important;
+    font-size: 14px!important;
+    padding-right: 2px;;
+}
+
+.d-by .place_pink{
+    font-weight: 400!important;
+    font-size: 14px!important;
 }
 
 .d-btn_event{
