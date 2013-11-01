@@ -181,7 +181,7 @@ def get_entities(request, **kwargs):
         if entity_type == 'group':
             entity_type = ['grupos', 'group']
         elif entity_type == 'spot':
-            entity_type = ['spots', 'spot']
+            entity_type = ['lugares', 'spot']
         else:
             entity_type == 'organization'
             entity_type = ['organizaciones', 'organization']
@@ -215,7 +215,7 @@ def get_entities(request, **kwargs):
             context = simplejson.dumps(context)
             return HttpResponse(context, mimetype='application/json')
 
-        if entity_type[0] == 'spots':
+        if entity_type[1] == 'spot':
             context['classspot'] = 'class=scrollspot';
             context['classimage'] = 'd-wrapperspot';
 

@@ -523,8 +523,10 @@ $(document).ready(function(){
        search_entities($(this));
     });
     $('.search_ent_field').keyup(function(){
-        if($(this).val().search(/^\s*$/) != 0)
-            search_entities($('.heading .search span.search_btn'));
+
+        if($(this).val().search(/^\s*$/) != 0 | $(this).val().length == 0){
+           search_entities($('.heading .search span.search_btn'));
+        }
     });
     $('.search_list').click(function(){
         search_list_authors_titles($(this));
@@ -1779,6 +1781,7 @@ function search_entities($this){
         }).done(function(data) {
 
                 if(data){
+                    $('.d-not_found').remove();
                     $('.overview').fadeOut(250,function(){
                         $('.overview').empty();
                         var len = 0;
@@ -1874,7 +1877,7 @@ function search_entities($this){
                                     div.find('.img');
                                 }
                             });
-                            $('.d-not_found').remove();
+                            //$('.d-not_found').remove();
 
                             if(!empty){
                                 var message = 'organizaciones';
@@ -1888,7 +1891,8 @@ function search_entities($this){
                                 text_no_found(message);
                             }
                         });
-                        $(this).fadeIn(250,function(){
+                        $('.overview').fadeIn(250,function(){
+
                             $('#scrollbar1').tinyscrollbar();
                         });
                         if($('.type').val() == 'spot'){
