@@ -210,7 +210,7 @@ p{
         }
 .header .nav{
     position: relative;
-    left: -20px;
+    left: -30px;
 }
 .nav{
     margin-top:30px;
@@ -280,7 +280,7 @@ p{
     .account-settings .member .pt{
         position: absolute;
         right: 54px;
-        bottom: 6px;
+        bottom: 30px;
     }
 
     .account-settings .settings{
@@ -677,7 +677,7 @@ p{
             .sub-menu-h{
                 background: #e7cb92;
                 position: absolute;
-                top: 51px;
+                top: 27px;
                 min-height: 100px;
                 width: 130px;
                 z-index: 8;
@@ -2306,7 +2306,7 @@ p{
 
 .container_text_rate{
     float: left;
-    margin: 3px 0px 0px 5px;
+    margin: 1px 0px 0px 8px;
 }
 
 .p_mini_book{
@@ -3530,7 +3530,7 @@ textarea{
     display: block!important;
 }
 .account-settings .member{
-    top: 26px;
+    top: 50px;
     right: -40px;
 }
 .account-settings:hover{

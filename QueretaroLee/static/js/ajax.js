@@ -560,7 +560,16 @@ $(document).ready(function(){
             'opacity': 0.9
         });
     });
-
+    $('.search_entities').focusin(function(){
+        $('.dark_yello_btn').css({
+            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%'
+        });
+    });
+    $('.search_entities').focusout(function(){
+        $('.dark_yello_btn').css({
+            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%'
+        });
+    });
     $('.search_field').keyup(function(){
         search_all_header($('.search_button'));
     });
@@ -1570,7 +1579,7 @@ function search_list_authors_titles($this){
                         var array_id_api = append_titles(overview, data, false);
                         var csrf = $('.csrf_header').find('input').val();
                         var value = $('.field_list').val();
-                        if(value.length != 0){
+                       if(value.length != 0){
                             var data_api = search_titles_and_author_in_api_bd('T', csrf, value);
                             data_api = data_api[1];
                             data_api = data_api['result_api']['items'];
@@ -1634,17 +1643,17 @@ function search_list_authors_titles($this){
                                     if('country' in data_api[i]['accessInfo'])
                                         country = data_api[i]['accessInfo']['country'];
 
-                                        var isbn = '';
-                                        if('industryIdentifiers' in volumeInfo){
-                                            isbn = volumeInfo['industryIdentifiers'];
+                                    var isbn = '';
+                                    if('industryIdentifiers' in volumeInfo){
+                                        isbn = volumeInfo['industryIdentifiers'];
 
-                                            if(isbn.length > 0)
-                                                if('identifier' in isbn[0])
-                                                    isbn1 = isbn[0]['identifier'];
+                                        if(isbn.length > 0)
+                                            if('identifier' in isbn[0])
+                                                isbn1 = isbn[0]['identifier'];
 
-                                            if(isbn.length > 1)
-                                                if('identifier' in isbn[1])
-                                                    isbn2 = isbn[1]['identifier'];
+                                        if(isbn.length > 1)
+                                            if('identifier' in isbn[1])
+                                                isbn2 = isbn[1]['identifier'];
                                     }
 
                                     var items = {
@@ -1741,7 +1750,6 @@ function search_list_authors_titles($this){
 
 
 function search_entities($this){
-    $('.d-not_found').remove();
     var $item = $('.sidebar-a .item').clone();
 
     //if(content_search_entity){
@@ -1877,7 +1885,7 @@ function search_entities($this){
                                     div.find('.img');
                                 }
                             });
-                            //$('.d-not_found').remove();
+                            $('.d-not_found').remove();
 
                             if(!empty){
                                 var message = 'organizaciones';
@@ -1892,8 +1900,7 @@ function search_entities($this){
                             }
                         });
                         $('.overview').fadeIn(250,function(){
-
-                            $('#scrollbar1').tinyscrollbar();
+                             $('#scrollbar1').tinyscrollbar();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);
