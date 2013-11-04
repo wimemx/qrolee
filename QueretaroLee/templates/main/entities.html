@@ -18,7 +18,7 @@
     <div class="grid-16 entities">
         <div class="grid-14">
             <div class="heading">
-                <h3 class="title grid-3 fleft">{{ entity_type.0|capfirst }}</h3>
+                <h3 class="title grid-4 fleft">{{ entity_type.0|capfirst }}</h3>
                 <span class="search fleft grid-4">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>

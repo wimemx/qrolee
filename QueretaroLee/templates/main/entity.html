@@ -396,7 +396,7 @@
     <div class="grid-16 load no-margin">
     {% endif %}
     {% if entity.privacy == 0 or member or owner.id == user.id %}
-        <div class="sidebar-a grid-11">
+        <div class="sidebar-a grid-11 {{ entity_type.1 }}">
             <h3 class="title main">Información General</h3>
             <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
@@ -451,7 +451,6 @@
 
             {% if entity_type.1 == 'organization' %}
                 </div>
-
             {% endif %}
 
             {% if entity_type.1 == 'organization' %}
@@ -462,8 +461,10 @@
                         <p>
                             <a class="link_"  href="/{{ owner.email }}/">{{ owner.email }}</a>
                         </p>
-                        <p>{{ profile.phone }}</p>
-                        <p><a class="link_" href="/{{ entity.website }}/" >{{ entity.website }}</a></p>
+                        <p>{{ profile.phone }}{{ profile.user.username }}</p>
+                        <p>
+                            <a class="link_" href="/{{ entity.website }}/" >{{ entity.website }}</a>
+                        </p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
                         <p>{{ entity.address.0 }} <br>
                             <span>{{ entity.address.1 }}</span></p>
