@@ -67,7 +67,7 @@
 
         {% if entity_type.1 == 'group' or entity_type.1 == 'spot' %}
             <span class="member grid-3">
-                <span class="grid-2 no-margin fright">
+                <span class="grid-3 no-margin fright">
                     {% if member and entity.privacy == 0 %}
                         <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
@@ -120,17 +120,17 @@
 
         {% if entity_type.1 == 'organization' %}
             <span class="member grid-6 no-margin">
-                <span class="grid-2 no-margin fright">
+                <span class="grid-3 no-margin fright">
 
                 {% if member and entity.privacy == 0 %}
-                    <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                    <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
                         <input type="submit" class="btn " value="Eres seguidor">
                     </form>
                 {% elif member and entity.privacy != 0 %}
 
-                    <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                    <form id="form_member" class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
                         <input type="submit" class="btn" value="Eres seguidor">
@@ -138,12 +138,12 @@
                 {% else %}
 
                     {% if entity.privacy != 0 %}
-                        <span class="btn no-ajax fleft">Seguir</span>
+                        <span class="btn no-ajax fright">Seguir</span>
                             <p class="private-icon fright">
                                 <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                             </p>
                     {% else %}
-                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                        <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn " value="Seguir">
@@ -459,10 +459,11 @@
                     <span class="ruler"></span>
                     <span class="contact">
                         <h3 class="title main">Contacto</h3>
-
-                        <p>{{ owner.email }}</p>
+                        <p>
+                            <a class="link_"  href="/{{ owner.email }}/">{{ owner.email }}</a>
+                        </p>
                         <p>{{ profile.phone }}</p>
-                        <p>{{ entity.website }}</p>
+                        <p><a class="link_" href="/{{ entity.website }}/" >{{ entity.website }}</a></p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
                         <p>{{ entity.address.0 }} <br>
                             <span>{{ entity.address.1 }}</span></p>

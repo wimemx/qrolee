@@ -562,12 +562,15 @@ $(document).ready(function(){
     });
     $('.search_entities').focusin(function(){
         $('.dark_yello_btn').css({
-            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%'
+            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'border': '1px solid #faf3e1',
+            'border-left': '0px'
         });
     });
     $('.search_entities').focusout(function(){
         $('.dark_yello_btn').css({
-            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%'
+            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'border': '0px'
         });
     });
     $('.search_field').keyup(function(){
@@ -1364,7 +1367,7 @@ function append_titles(overview, data, in_api){
         h3 = $('<h3 title="' + data[i].title +
             '" class="title title_book margin_left no-margin' +
             ' grid-2 fleftt"></h3>');
-        h3.append(truncText(data[i].title,8));
+        h3.append(truncText(data[i].title,12));
         a_title.append(h3);
         div_item.append(a_title);
         var name_author = data[i].author;
@@ -1879,7 +1882,8 @@ function search_entities($this){
                                     p = $('<p></p>');
                                     div.append(p);
                                     $('.overview').append(div);
-                                    div.find('.title').html(entity_obj[i].name);
+                                    div.find('.title').html(truncText(entity_obj[i].name, 20));
+                                    div.find('.title').attr('title',truncText(entity_obj[i].name, 20));
                                     div.find('p').html(truncText(entity_obj[i].
                                         description,160));
                                     div.find('.img');

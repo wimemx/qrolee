@@ -1700,7 +1700,7 @@ function dialog_titles(csrf, data, id){
     input = $('<input class="input_add_book" value="" type="text"/>');
     span = $('<span class="dark_yello_btn btn_search_book"></span>');
     input.keyup(function(){
-        console.log(99);
+
         var words = $(this).val();
         if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %3 == 0){
 
@@ -1758,7 +1758,6 @@ function list_title(csrf, data, div_text, type){
     if(type_list=='T'){
 
     titles_l = data[0];
-    console.log(data[0]);
     delete titles_l['response'];
     var array_ids_google = [];
     if(type !=1){
@@ -2218,10 +2217,12 @@ function list_title(csrf, data, div_text, type){
             }
         });
 
-            div_text.find('.btn_save').remove();
-            div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
-            if(count_id!==0)
-                div_text.append(div_btn_save);
+
+        div_text.find('.btn_save').remove();
+        div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
+        if(count_id!==0)
+            div_text.append(div_btn_save);
+        if($('.input_add_book').val().length != 0)
             div_btn_save.append('<span class=" green_btn ">Guardar</span>');
 
 
@@ -2964,7 +2965,6 @@ function show_dialog(){
 }
 
 
-
 function search_titles_and_author_in_api_bd(type, csrf, words){
 
     var data = [];
@@ -3039,6 +3039,9 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
     }
     search = JSON.stringify(search);
     data.push(advanced_search(search, csrf));
+
+    if(words.search(/^\s*$/) == 0 | words.length == 0)
+        words ='a';
 
     words = words.split(" ");
     var query = {

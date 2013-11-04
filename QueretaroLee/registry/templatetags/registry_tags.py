@@ -29,15 +29,18 @@ def member_since(date):
             ext = ' dia'
         return str(date_now.day - date.day) + ext
 
+
 @register.filter
 def total_members(followers):
     return len(followers)
+
 
 @register.filter
 def get_num_followers(entity):
     followers = rmodels.MemberToObject.objects.filter(
         object_type='E', is_member=True, object=entity.id)
     return len(followers)
+
 
 @register.filter
 def feed_type(feed_id):
@@ -279,9 +282,9 @@ def feed_type(feed_id):
         rating = ''
         for i in range(1, 6):
             if i <= grade:
-                rating += '<span class="rate rated"></span>'
+                rating += '<span class="rated"></span>'
             else:
-                rating += '<span class="rate unrated"></span>'
+                rating += '<span class="unrated"></span>'
 
         ret_value = u"""<span class="create feed">
                             <a href="{7}" class="wrapper fleft">
