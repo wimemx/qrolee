@@ -338,14 +338,23 @@ def edit_entity(request, **kwargs):
 
 def delete_entity(request, **kwargs):
     if request.POST:
-        print request.POST.get('id')
         app = str(request.POST.get('type')).split('.')
         app_label = app[0]
         model_name = app[1]
         model = get_model(app_label, model_name)
-        obj = model.objects.get(
-            id=int(request.POST.get('id')))
-        obj.status = False
+        if 'is_event' in request.POST:
+            event = models.Event.objects.get(
+                id=int(request.POST.get('id')))
+            obj = model.objects.get_or_create(
+                event=event,
+                user=request.user)
+            obj = obj[0]
+            obj.is_attending = True
+            obj.save()
+        else:
+            obj = model.objects.get_or_create(
+                id=int(request.POST.get('id')))
+            obj.status = False
         obj.save()
         context = {
 
@@ -741,7 +750,8 @@ def remove_add_user(request, **kwargs):
         users = list()
         users.append(request.user.id)
         for member in members:
-            users.append(member.user_id)
+            if request.user.id != member.user_id:
+                users.append(member.user_id)
 
         if request.POST.get('user_email') == '-1':
             members = models.MemberToObject.objects.filter(
@@ -767,19 +777,37 @@ def remove_add_user(request, **kwargs):
                 users.append(member.user_id)
             objs = models.User.objects.filter(
                 id__in=users)
-        else:
+        # Get members of group
+        elif request.POST.get('user_email') == '-4':
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+            users = list()
+            for member in members:
+                if request.user.id != member.user_id:
+                    users.append(member.user_id)
             objs = models.User.objects.filter(
-                email__icontains=request.POST.get('user_email')).exclude(id__in=users)
+                id__in=users)
+        else:
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+            members_list = list()
+            for member in members:
+                if request.user.id != member.user_id:
+                    members_list.append(member.user_id)
+            objs = models.User.objects.filter(
+                email__icontains=request.POST.get('user_email'), id__in=members_list).exclude(id__in=users)
 
         users = list()
         for obj in objs:
-
             obj_data = list()
             profile = models.Profile.objects.filter(
                 user_id=obj.id)
-            member = models.MemberToObject.objects.filter(user_id=obj.id)
+            member = models.MemberToObject.objects.filter(
+                user_id=obj.id)
+            bio = ''
             for data in profile:
                 obj_data.append(data.picture)
+                bio = data.biography
             obj_data.append(obj.id)
             obj_data.append(obj.username)
             obj_data.append(datetime.datetime.now().month - obj.date_joined.month)
@@ -787,6 +815,7 @@ def remove_add_user(request, **kwargs):
             if member:
                 super_user = member[0].super_user
             obj_data.append(super_user)
+            obj_data.append(bio)
             users.append(obj_data)
 
         context = {

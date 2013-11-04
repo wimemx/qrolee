@@ -138,6 +138,12 @@ class Event(models.Model):
         return '%s, %s' % (self.name, self.description)
 
 
+class AssistEvent(models.Model):
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(User)
+    is_attending = models.BooleanField(default=False)
+
+
 class Book(models.Model):
     code = models.CharField(max_length=255)
     title = models.CharField(max_length=255)

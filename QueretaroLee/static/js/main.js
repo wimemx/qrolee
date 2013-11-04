@@ -170,6 +170,22 @@ function item_select(all, value){
     });
 }
 
+function post_to_fb(caption, description, content, redirect, url){
+    FB.ui(
+        {
+            method: 'feed',
+            name: 'Qro_lee',
+            link: 'http://localhost:8000/',
+            caption: caption,
+            description: description,
+            message: content
+        },
+        function(response) {
+            if (redirect)
+                window.location.href = url;
+        });
+}
+
 $(document).ready(function(){
 
     $('.sel_spots .dropdown').click(function(){

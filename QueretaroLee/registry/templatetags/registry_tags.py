@@ -87,7 +87,7 @@ def feed_type(feed_id):
         elif profile.picture.strip() == '':
             img_url = '/static/img/create.png'
         else:
-            img_url += 'profile/'+profile.picture
+            img_url += 'list/'
 
         if user.first_name != '':
             name = user.first_name + ' '+user.last_name
@@ -398,7 +398,4 @@ def fsocial_session(user):
         return False
 
 
-@register.filter
-def geturl(request):
-    print request
 

@@ -237,69 +237,49 @@ def get_entity(request, **kwargs):
 
     request_sent = False
     if request.POST:
+        activity_id = -1
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
-                entityuser[0].is_member = True
-                entityuser[0].save()
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 5
-                }
-                views.update_activity(activity_data)
+                activity_id = 5
             else:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 10
-                }
-                views.update_activity(activity_data)
+                activity_id = 10
                 entityuser[0].is_member = False
                 entityuser[0].save()
+
         elif 'follow_private' in request.POST:
             membership = int(request.POST.get('follow_private'))
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 5
-                }
-                views.update_activity(activity_data)
+                activity_id = 5
                 request_sent = True
                 entityuser[0].request = True
                 entityuser[0].save()
             else:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 10
-                }
-                views.update_activity(activity_data)
+                activity_id = 10
                 entityuser[0].request = False
                 entityuser[0].is_member = False
                 entityuser[0].save()
+        activity_data = {
+            'user_id': request.user.id,
+            'object': entity.id,
+            'added_to_object': request.user.id,
+            'type': 'E',
+            'added_to_type': 'U',
+            'activity_id': activity_id
+        }
+        if activity_id != -1:
+            views.update_activity(activity_data)
     else:
         entityuser = models.MemberToObject.objects.filter(
             user_id=request.user.id, object=entity.id, object_type='E')
         if entityuser:
             request_sent = entityuser[0].request
+
+    print request_sent
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -477,6 +457,16 @@ def get_events(request, **kwargs):
             event_data.append(event.owner_id)
             event_data.append(event.start_time.month)
             event_data.append(event.fb_id)
+            is_attending = False
+            assist_event = models.AssistEvent.objects.filter(
+                user=request.user)
+            if assist_event:
+                if assist_event[0].is_attending:
+                    is_attending = True
+
+            if event.owner_id == request.user.id:
+                is_attending = True
+            event_data.append(is_attending)
             events.append(event_data)
     context = {
         'events': list(events)
@@ -486,7 +476,7 @@ def get_events(request, **kwargs):
     return HttpResponse(context, mimetype='application/json')
 
 @login_required(login_url='/')
-def event_view(request,**kwargs):
+def event_view(request, **kwargs):
 
     template = kwargs['template_name']
     entity = kwargs['event_id']
@@ -520,13 +510,24 @@ def event_view(request,**kwargs):
         'month': month,
         'year': year
     }
+    assist_event = models.AssistEvent.objects.filter(
+        user=request.user.id)
+    is_attending = False
+
+    if assist_event:
+        if assist_event[0].is_attending:
+            is_attending = True
+
+    if event.owner_id == request.user.id:
+        is_attending = True
 
     context = {
         'event': event,
         'date': date,
         'spot': spot,
         'list_event': list_events,
-        'address': address.split('#')
+        'address': address.split('#'),
+        'is_attending': is_attending
     }
 
     if 'post' in request.POST:

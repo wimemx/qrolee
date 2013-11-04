@@ -136,18 +136,24 @@
                         <input type="submit" class="btn" value="Eres seguidor">
                     </form>
                 {% else %}
-
-                    {% if entity.privacy != 0 %}
+                    {% if entity.privacy != 0 and not request_sent %}
                         <span class="btn no-ajax fleft">Seguir</span>
                             <p class="private-icon fright">
                                 <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                             </p>
                     {% else %}
-                        <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="membership" value="1"/>
-                            <input type="submit" class="btn " value="Seguir">
-                        </form>
+                        {% if request_sent %}
+                            <span style="width: 100px;left: -30px;position: relative;" class="btn no-action no-ajax fleft">Solicitud enviada</span>
+                            <p class="private-icon fright">
+                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            </p>
+                        {% else %}
+                            <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="membership" value="1"/>
+                                <input type="submit" class="btn " value="Seguir">
+                            </form>
+                        {% endif %}
                     {% endif %}
 
                 {% endif %}

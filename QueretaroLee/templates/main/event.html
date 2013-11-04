@@ -16,7 +16,16 @@
 {% endblock %}
 
 {% block main_site %}
+<div class="wrapper_message">
+        <div class="container-16 container_message">
+            <div class="fb-accept alert-message gray">{% csrf_token %}
+                <p>Tu solicitud sera aceptada por medio de facebook</p>
+                <span class="accept green_btn fleft">Aceptar</span>
+                <span style="margin-left: 5px;" class="reject fleft">Rechazar</span>
 
+            </div>
+        </div>
+    </div>
         <div class="grid-16 events content single">
             <div class="heading d-heading_event grid-14">
                 <h3 class="title grid-3 fleft">Eventos</h3>
@@ -56,6 +65,7 @@
                                     <span class="location fright">
                                         <p>
                                             <span class="place">Centro Historico</span><br>
+
                                             <span class="place2">Queretaro</span>
                                         </p>
                                         <span class="apply fright">asistir</span>

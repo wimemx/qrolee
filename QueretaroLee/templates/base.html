@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load staticfiles %}
+    {% load registry_tags %}
     <title>Querétaro Lee</title>
     <!-- Head tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,6 +27,7 @@
     <script type="text/javascript" src="{% static "js/prefixfree.min.js" %}"></script>
 
     <script>
+    {% if user %}
     {% if user|fsocial_session %}
               window.fbAsyncInit = function() {
                 // init the FB JS SDK
@@ -46,11 +48,10 @@
                  fjs.parentNode.insertBefore(js, fjs);
                }(document, 'script', 'facebook-jssdk'));
     {% endif %}
+    {% endif %}
     $(document).ready(function(){
         if($.trim($('input.fb-session-required-val').val()) == 0)
-            $('.fb-session-required').css({
-                'display': 'none'
-            });
+            $('.fb-session-required').remove();
     });
     </script>
 
