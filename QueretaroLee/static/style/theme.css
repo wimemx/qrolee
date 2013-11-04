@@ -92,12 +92,17 @@ input:not([type='submit']){
     font-family: 'Raleway' sans-serif;
     font-weight: 400;
     color: #000;
+    padding: 0px 8px 0px 0px;
 }
 .din-b{
-    font-family: 'Conv_DINPro-Bold';
+    font-family: 'Raleway' sans-serif;
+    font-weight: 600
 }
 .din-r{
-    font-family: 'Conv_fontscore.com_d-dinproregular' !important;
+    font-family: 'Raleway' sans-serif!important;
+    font-size: 13px!important;
+    line-height: normal;
+    margin-top: 6px;
 }
 .clear_fix{
     clear: both;
@@ -105,6 +110,7 @@ input:not([type='submit']){
 .dark_yello_btn{
     background: #faf3e1 url('../img/search_icon_1.png') no-repeat 50% 50%;
     width: 25px;
+    height: 25px!important;
 }
 .green_btn{
     background: #cccc66;
@@ -188,7 +194,7 @@ input:not([type='submit']){
         background: #f89883;
 }
 p{
-    line-height: 14px;
+    line-height:normal;
 }
 .header{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
@@ -207,7 +213,7 @@ p{
         }
 .header .nav{
     position: relative;
-    left: -20px;
+    left: -30px;
 }
 .nav{
     margin-top:30px;
@@ -253,7 +259,7 @@ p{
         width: 27px;
         height: 25px;
         position: absolute;
-        background: #fff url('../img/search_icon.png') no-repeat 50% 50%;
+        background: #fff url('../img/search_icon_header.png') no-repeat 50% 50%;
         cursor: pointer;
         opacity: 0.9;
     }
@@ -277,7 +283,7 @@ p{
     .account-settings .member .pt{
         position: absolute;
         right: 54px;
-        bottom: 6px;
+        bottom: 30px;
     }
 
     .account-settings .settings{
@@ -362,6 +368,7 @@ p{
         height: 40px !important;
         width: 100%;
         display: block;
+        margin-top: 3px;
     }
         .news-feed .item .gray_text{
             margin-top: 5px;
@@ -390,17 +397,24 @@ p{
     padding-bottom: 10px;
 }
 .rate{
-    width: 13px;
-    height: 12px;
+    width: 18px;
+    height: 17px;
     display: block;
-    margin-right: 5px;
     float: left;
 }
 .unrated{
-    background: url('../img/unrate.png') no-repeat 0px 0px;
+    background: url('../img/backgroundStar.png') no-repeat 0px 0px;
+    background-size: 13px 12px;
+    height: 13px;
+    float: left;
+    width: 12px;
 }
 .rated{
-    background: url('../img/rated.png') no-repeat 0px 0px;
+    background: url('../img/comunityStar.png') no-repeat 0px 0px;
+    background-size: 13px 12px;
+    height: 13px;
+    float: left;
+    width: 12px;
 }
     .feed .wrapper{
         width: 70px;
@@ -431,6 +445,7 @@ p{
         }
         .feed .action .wrap{
             width: 215px;
+            margin-left: -5px;
         }
 .entities{
     /*height: 720px;*/
@@ -453,8 +468,7 @@ p{
                 height: 140px;
                 display: block;
                 float: left;
-                border:3px solid #f9e8bc;
-                margin-right: 20px;
+                margin-right: 15px;
                 overflow:hidden;
                 position: relative;
             }
@@ -610,11 +624,10 @@ p{
             font-size: 25px;
             text-decoration: none;
             font-weight:100 ;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
     .entity .member{
         float: right;
-        margin-top: 30px;
         position: relative;
     }
 
@@ -646,6 +659,8 @@ p{
         }
         .entities a.title{
             margin-top: 25px;
+            font-size: 18px;
+            line-height: normal;
         }
         .follower-fix{
             float: right;
@@ -673,7 +688,7 @@ p{
             .sub-menu-h{
                 background: #e7cb92;
                 position: absolute;
-                top: 51px;
+                top: 27px;
                 min-height: 100px;
                 width: 130px;
                 z-index: 8;
@@ -691,7 +706,7 @@ p{
             .sub .lin{
                 border-bottom: 1px solid #cdb090;
                 width: 82%;
-                margin-left: 14px;
+                margin-left: 12px;
                 float: left;
             }
             .link_book .sub .lin{
@@ -762,10 +777,11 @@ p{
         margin-top: 0px;
         margin-bottom: 15px;
     }
+
         .entity .nav .btn{
             background: #edd5a5;
             padding:3px 10px 3px 10px;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
             border: 1px solid #d8bfa3;
             margin-right: 5px;
@@ -782,7 +798,7 @@ p{
             border-color: #e35e47;
         }
         .entity .nav.organization .btn:hover,.entity .nav.organization .btn.active{
-            background: #7ca680;
+            background: #8ab493;
             border-color: #5a885e;
         }
 .content.single{
@@ -811,6 +827,7 @@ p{
         }
         .noday{
             background: #fffcf5 !important;
+            cursor: inherit!important;
         }
         .content.single.events .apply{
             background: #f89883 !important;
@@ -968,8 +985,8 @@ p{
              right: 8px;
          }
     .content .sidebar-a{
-        margin-top: 20px;
-        margin-left: 20px;
+        margin-top: 25px;
+        margin-left: 30px;
     }
         .content .sidebar-a .month{
             color: #fff;
@@ -1023,7 +1040,7 @@ p{
                         position: relative;
                         left: 20px !important;
                         top: 10px !important;
-                        width: 240px !important;
+                        width: 223px !important;
                     }
 
                 .item .general-info{
@@ -1038,11 +1055,12 @@ p{
         }
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
-            font-weight: 400;
+            font-weight: 500;
+            font-size: 18px;
         }
         .content .sidebar-a .cover-picture{
             width: 100%;
-            height: 150px;
+            height: 180px;
             overflow: hidden;
             display: block;
             margin-bottom: 20px;
@@ -1072,8 +1090,13 @@ p{
         .content .sidebar-a div.contact{
             margin-left: 20px;
         }
+        .organization .contact .link_{
+            color: #8ab493;
+            text-decoration: underline
+        }
         .content .contact .title.main{
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 500;
         }
         .spot .grid-6.overview{
             margin-left: 40px;
@@ -1112,7 +1135,7 @@ p{
                 width: 100%;
                 margin-bottom:8px;
                 float: left;
-                font-size: 12px;
+                font-size: 13px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .content .sidebar-a .time,.content .sidebar-a .info{
@@ -1288,6 +1311,9 @@ p{
                             font-size: 12px;
                             cursor: pointer;
                             font-weight: 400;
+                            float: left;
+                            margin-top: 5px;
+                            margin-left: -5px;
                         }
                     .sidebar-b .month td{
                         text-align: center;
@@ -1729,7 +1755,6 @@ p{
     display: block;
     float: left;
     border-radius: 2px;
-    border: 2px solid #fa907e;
     margin-right: 20px;
     overflow: hidden;
     position: relative;
@@ -1919,14 +1944,19 @@ p{
     width: 100%;
     z-index: 9;
     float: left;
+    border-left: 1px solid #ceaf70;
+    border-right: 1px solid #ceaf70;
     background-color: #e7cb92;
     text-decoration: none;
     color: #000000 !important;
 }
+.viewport_group{
+    height: 426px!important;
+}
 
 .img_user{
     width: 18px;
-    padding: 4px 4px 4px 4px;
+    padding: 6px 4px 6px 4px;
     height: 18px;
     float: left;
 }
@@ -1976,6 +2006,11 @@ p{
     margin: 0px;
 
 }
+.entities .overview p{
+    font-weight: normal;
+    font-size: 13px;
+    line-height: normal;
+}
 
 .page .grid-15 {
     min-height: 680px !important;
@@ -1988,8 +2023,6 @@ p{
 .wrapper_book{
     width: 100px !important;
     height: 130px !important;
-    border-radius: 2px;
-    border: 2px solid #fa907e !important;
 }
 
 .margin_left{
@@ -2000,11 +2033,6 @@ p{
     color: #b69035 !important;
     text-decoration:underline !important;
     margin-top: 10px !important;
-}
-
-.borde_author{
-    border: 3px solid #a4713e !important;
-    border-radius: 3px;
 }
 
 .sub-menu-book{
@@ -2280,7 +2308,7 @@ p{
 }
 
 .text_rate{
-    padding: 0px 4px 0px 4px;
+    padding: 0px 2px 0px 5px;
     font-size: 13px;
     font-weight: lighter;
 }
@@ -2298,7 +2326,7 @@ p{
 
 .container_text_rate{
     float: left;
-    margin: 3px 0px 0px 5px;
+    margin: 1px 0px 0px 8px;
 }
 
 .p_mini_book{
@@ -2434,8 +2462,11 @@ p{
 }
 
 .submit_list{
-    margin-left: 805px !important;
+    margin-left: 756px !important;
     width: 72px !important;
+}
+.submit_list .btn{
+    margin-top: 20px;
 }
 
 .radio_btn{
@@ -2477,6 +2508,7 @@ p{
 .link_search_all{
     text-align: right !important;
     color: #ffffff !important;
+    border-bottom: 1px solid #ceaf70;
     background-color: #5a885e !important;
     width: 145px !important;
     padding-right: 10px;
@@ -2503,6 +2535,9 @@ p{
 
 .heading .search_entities:focus{
     background: #FCF8EF;
+    border: 1px solid #faf3e1;
+    border-right: 0px;
+
 }
 .heading .search_entities{
     background: #faf3e1;
@@ -2782,8 +2817,9 @@ form p .invalid_messa{
 
 .btn_edit_pg{
     margin-left: 10px !important;
-    margin-top: 6px;
-    font-weight: bold;
+    font-weight: 500;
+    text-decoration: none;
+    color: #000;
 }
 
 .btn_edit_biew{
@@ -3518,8 +3554,8 @@ textarea{
     display: block!important;
 }
 .account-settings .member{
-    top: 26px;
-    right: -40px;
+    top: 50px;
+    right: -38px;
 }
 .account-settings:hover{
     cursor: pointer;
@@ -3529,7 +3565,7 @@ textarea{
     width: 14px;
     height: 40px;
     float: left;
-    border-right: 1px solid #2f3635;
+    border-right: 1px solid #3e4f4d;
     margin-top: 17px;
 }
 
@@ -3544,6 +3580,7 @@ textarea{
 .sub a{
     color: #444;
     float: left;
+    font-weight: 500;
     width: 81%;
     padding: 2px 12px 2px 13px;
     font-size: 11px;

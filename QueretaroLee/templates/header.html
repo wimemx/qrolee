@@ -12,7 +12,7 @@
 
             <span class="link_book" >
                 <span>
-                    <a href="/qro_lee/book/titles/">Libros</a>
+                    <a>Libros</a>
                 </span>
                 <span class="sub-menu-book sub">
                     <img class="pt" src="/static/img/triangulo.png"/>
@@ -37,12 +37,14 @@
     </div>
     <div class="border_header_avatar"></div>
     <div class="account-settings omega alpha fright">
+        <a href="/accounts/users/profile/{{ user.id }}">
             {% if not user_profile.picture %}
                 <img class="img_profile_mini" src="/static/img/create.png"/>
             {% else %}
                 <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}
-            <span class="user">{{ user|truncatechars:21 }}</span>
+            <span class="user">{{ user|truncatechars:17 }}</span>
+        </a>
         <span class="member grid-3 no-margin" style="min-height: 57px;display: none;position: absolute">
             <input type="hidden" class="sesion_user" value="{{ user.id }}">
             <img class="pt" src="/static/img/triangulo.png"/>

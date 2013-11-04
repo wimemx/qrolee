@@ -26,7 +26,7 @@
                     <span class="top search_btn dark_yello_btn"></span>
                 </span>
                 <a href="/registry/register_entity/{{ entity_type.1 }}">
-                    <span style="background-image: none;padding-right: 9px;" class="brown_btn grid-1 fright">Crear</span>
+                    <span style="background-image: none;padding-right: 9px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
                 </a>
             </div>
             <p class="content">{{ content }}</p>
@@ -55,9 +55,9 @@
                     </a>
                     <a class="green_btn" href="/registry/edit/{{ entity.id }}/">Editar</a>
                     </span>
-
                 {% if entity_type.1 == 'spot' %}
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+
                         <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
                     <div class="d-text_spot ">
                     <p>
@@ -71,9 +71,9 @@
                     </p>
                     </div>
                 {% else %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
-                       class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:28 }}</a>
-                    <p>{{ entity.description|truncatewords:21 }}</p>
+                    <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
+                       class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
+                    <p>{{ entity.description|truncatechars:160 }}</p>
                 {% endif %}
                 </div>
             {% endfor %}
@@ -101,8 +101,8 @@
                     </a>
 
                 {% if entity_type.1 == 'spot' %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
-                        <img src="" class="d-icon_m ap" /> {{ entity.name|capfirst }}</a>
+                    <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_m ap" /> {{ entity.name|capfirst|truncatechars:20 }}</a>
                     <div class="d-text_spot ">
                     <p>
                         {% if entity.address.0 != '' %}
@@ -114,8 +114,8 @@
                     </p>
                     </div>
                 {% else %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst }}</a>
-                    <p>{{ entity.description|truncatewords:21 }}</p>
+                    <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
+                    <p>{{ entity.description|truncatechars:160 }}</p>
                 {% endif %}
                 </div>
             {% endfor %}

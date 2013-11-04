@@ -624,7 +624,19 @@ $(document).ready(function(){
             'opacity': 0.9
         });
     });
-
+    $('.search_entities').focusin(function(){
+        $('.dark_yello_btn').css({
+            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'border': '1px solid #faf3e1',
+            'border-left': '0px'
+        });
+    });
+    $('.search_entities').focusout(function(){
+        $('.dark_yello_btn').css({
+            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'border': '0px'
+        });
+    });
     $('.search_field').keyup(function(){
         search_all_header($('.search_button'));
     });
@@ -1437,7 +1449,7 @@ function append_titles(overview, data, in_api){
         h3 = $('<h3 title="' + data[i].title +
             '" class="title title_book margin_left no-margin' +
             ' grid-2 fleftt"></h3>');
-        h3.append(truncText(data[i].title,8));
+        h3.append(truncText(data[i].title,12));
         a_title.append(h3);
         div_item.append(a_title);
         var name_author = data[i].author;
@@ -1716,17 +1728,17 @@ function search_list_authors_titles($this){
                                     if('country' in data_api[i]['accessInfo'])
                                         country = data_api[i]['accessInfo']['country'];
 
-                                        var isbn = '';
-                                        if('industryIdentifiers' in volumeInfo){
-                                            isbn = volumeInfo['industryIdentifiers'];
+                                    var isbn = '';
+                                    if('industryIdentifiers' in volumeInfo){
+                                        isbn = volumeInfo['industryIdentifiers'];
 
-                                            if(isbn.length > 0)
-                                                if('identifier' in isbn[0])
-                                                    isbn1 = isbn[0]['identifier'];
+                                        if(isbn.length > 0)
+                                            if('identifier' in isbn[0])
+                                                isbn1 = isbn[0]['identifier'];
 
-                                            if(isbn.length > 1)
-                                                if('identifier' in isbn[1])
-                                                    isbn2 = isbn[1]['identifier'];
+                                        if(isbn.length > 1)
+                                            if('identifier' in isbn[1])
+                                                isbn2 = isbn[1]['identifier'];
                                     }
 
                                     var items = {
@@ -1865,7 +1877,6 @@ function search_entities($this){
         }).done(function(data) {
 
                 if(data){
-                    $('.d-not_found').remove();
                     $('.overview').fadeOut(250,function(){
                         $('.overview').empty();
                         var div;
@@ -1955,14 +1966,15 @@ function search_entities($this){
                                     p = $('<p></p>');
                                     div.append(p);
                                     $('.overview').append(div);
-                                    div.find('.title').html(entity_obj[i].name);
+                                    div.find('.title').html(truncText(entity_obj[i].name, 20));
+                                    div.find('.title').attr('title',truncText(entity_obj[i].name, 20));
                                     div.find('p').html(truncText(entity_obj[i].
-                                        description,180));
+                                        description,160));
                                     div.find('.img');
 
                                 }
                             });
-                            //$('.d-not_found').remove();
+                            $('.d-not_found').remove();
 
                             if(!empty){
                                 var message = 'organizaciones';
@@ -1978,8 +1990,7 @@ function search_entities($this){
                         });
                         $('.overview').fadeIn(250,function(){
 
-                            $($(this), scroll)[0].innerHTML = '';
-			                scroll.tinyscrollbar_update();
+                            $('#scrollbar1').tinyscrollbar();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);

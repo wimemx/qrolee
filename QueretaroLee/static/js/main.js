@@ -1723,17 +1723,19 @@ function dialog_titles(csrf, data, id){
     input = $('<input class="input_add_book" value="" type="text"/>');
     span = $('<span class="dark_yello_btn btn_search_book"></span>');
     input.keyup(function(){
-        if($(this).val().length%2){
+
+        var words = $(this).val();
+        if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %3 == 0){
 
             $('.dialog_text').find('#scrollbar1').fadeOut(100,function(){
                 $(this).remove();
-                var words = $('.input_add_book').val();
-                if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %3 == 0){
-                    type = 5;
-                    if(id!=4)
-                        type = 2;
-                    type_add_list($('.csrf_header').find('input').val(), type, words);
-                }
+                type = 5;
+
+                if(id!=4)
+                    type = 2;
+
+                type_add_list($('.csrf_header').find('input').val(), type, words);
+
             });
         }
 
@@ -2238,10 +2240,12 @@ function list_title(csrf, data, div_text, type){
             }
         });
 
-            div_text.find('.btn_save').remove();
-            div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
-            if(count_id!==0)
-                div_text.append(div_btn_save);
+
+        div_text.find('.btn_save').remove();
+        div_btn_save = $('<div class="btn_save grid-4 fright no-margin"></div>');
+        if(count_id!==0)
+            div_text.append(div_btn_save);
+        if($('.input_add_book').val().length != 0)
             div_btn_save.append('<span class=" green_btn ">Guardar</span>');
 
 
@@ -2984,7 +2988,6 @@ function show_dialog(){
 }
 
 
-
 function search_titles_and_author_in_api_bd(type, csrf, words){
 
     var data = [];
@@ -3004,16 +3007,19 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         and = 0;
         join = {
             'tables':{
-                0: JSON.stringify(['account.author'])
+                0: JSON.stringify(['account.author','account.authortitle']),
+                1: JSON.stringify(['account.rate'])
             },
             'quieres':{
-                0: JSON.stringify(['id'])
+                0: JSON.stringify(['title_id']),
+                1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['name'])
+                0: JSON.stringify(['name']),
+                1: JSON.stringify(['grade'])
             },
             'activity':{
-                0:JSON.stringify(['A'])
+                0:JSON.stringify(['T'])
             }
         }
     }
@@ -3023,7 +3029,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
         }
 
         model = 'account.author';
-        fields = ['name','id','picture'];
+        fields = ['name','id','picture','id_api'];
         and = 0;
         join = {
             'tables':{
@@ -3035,7 +3041,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
                 1: JSON.stringify(['element_id'])
             },
             'fields':{
-                0: JSON.stringify(['first_name','last_name']),
+                0: JSON.stringify(['name']),
                 1: JSON.stringify(['grade'])
             },
             'activity':{
@@ -3056,6 +3062,9 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
     }
     search = JSON.stringify(search);
     data.push(advanced_search(search, csrf));
+
+    if(words.search(/^\s*$/) == 0 | words.length == 0)
+        words ='a';
 
     words = words.split(" ");
     var query = {
