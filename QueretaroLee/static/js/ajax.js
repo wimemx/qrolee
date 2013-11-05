@@ -571,7 +571,9 @@ $(document).ready(function(){
     $('.search_entities').focusout(function(){
         $('.dark_yello_btn').css({
             'background': '#faf3e1 url("/static/img/search_icon_1.png") no-repeat 50% 50%',
-            'border': '0px'
+            'border': '0px',
+            'border': '1px solid #faf3e1',
+            'border-right': '0px'
         });
     });
     $('.search_field').keyup(function(){

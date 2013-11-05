@@ -110,6 +110,8 @@ input:not([type='submit']){
 .dark_yello_btn{
     background: #faf3e1 url('../img/search_icon_1.png') no-repeat 50% 50%;
     width: 25px;
+    border: 1px solid #faf3e1;
+    border-right: 0px;
     height: 25px!important;
 }
 .green_btn{
@@ -854,7 +856,7 @@ p{
         }
             .discussion .heading input:not([type='submit']){
                 width: 161px;
-                height: 20px;
+                height: 25px;
                 line-height: 20px;
             }
             .discussion .heading .search_btn{
@@ -1018,7 +1020,7 @@ p{
     height: 128px !important;
 }
 
-.item p{
+.organization .item p,.group .item p{
     min-height: 45px;
 }
                 .item .wrapper{
@@ -1086,9 +1088,8 @@ p{
         .content .sidebar-a div .ruler{
             position: absolute;
             right: 0px;
-            top: 20px;
             width: 1px;
-            height: 160px;
+            height: 180px;
             display: block;
             background: #acacac;
         }
@@ -1196,7 +1197,7 @@ p{
             .sidebar-b .title{
                 font-weight: 500;
                 font-family: 'Raleway' sans-serif;
-                font-size: 14px;
+                font-size: 16px;
                 margin-top: 0px;
                 text-align: left;
                 padding: 0px 0px 10px 0px;
@@ -1243,6 +1244,7 @@ p{
                         display: block;
                         font-weight: 100;
                         font-size: 11px;
+                        color: #777;
                         font-family: 'Conv_fontscore.com_d-dinproregular';
                         width: 100%;
                     }
@@ -2546,6 +2548,8 @@ p{
 }
 .heading .search_entities{
     background: #faf3e1;
+    border: 1px solid #faf3e1;
+    border-right: 0px;
 }
 .desc_group{
     margin-top: 0px;

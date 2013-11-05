@@ -749,6 +749,10 @@ $(document).ready(function(){
 
     link_active();
 
+    $('.create-discussion .remove').click(function(){
+        $('.container_message').fadeOut(200);
+    });
+
     $('.address').keyup(function(){
         search_map_address($(this).val());
      });
