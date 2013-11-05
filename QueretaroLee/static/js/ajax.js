@@ -430,6 +430,7 @@ function search_api(csrf, query, aux_api){
     var ret = null;
     if(!aux_api)
         aux_api = 0;
+
     $.ajax({
         type: "POST",
         async: false,
@@ -564,6 +565,7 @@ $(document).ready(function(){
         return search_book_code($(this));
      });
     $('#form_isbn').submit(function(e){
+
         var isbn = $(this).find('input[name=isbn]').val();
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353

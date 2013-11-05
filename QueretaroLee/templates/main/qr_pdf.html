@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <style type="text/css">
+        #qr-code{
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            width: 160px;
+            height: 160px;
+        }
+        .inner{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>
+                <img id="qr-code" src="{{ site_url }}static/qr/{{ qr }}.png" alt=""/>
+                <div class="inner">
+                    <img src="{{ site_url }}static/img/x.png" alt=""/>
+                </div>
+
+            </th>
+        </tr>
+    </table>
+</body>
+</html>

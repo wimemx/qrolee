@@ -3,6 +3,8 @@ $(document).ready(function(){
 
     $('#form_member').submit(function(e){
         $('.dialog-confirm').empty();
+        e.preventDefault();
+        $this_ = $(this);
         span_text = $('<span></span>');
         var href = '';
         text = '¿ Estas seguro de que deseas dejar de seguir '+
@@ -27,9 +29,9 @@ $(document).ready(function(){
         btn_acept.click(function(){
            removeUser($(this),parseInt($('.sesion_user').val()),3,$('.d-entity_id').val());
            $('.container_message_2').fadeOut(250);
-            window.location.href = site_url + '/qro_lee/entity/group/'+$('.id_group_red').val();
+            //window.location.href = site_url + '/qro_lee/entity/group/'+$('.id_group_red').val();
+            $this_.unbind('submit').submit();
         });
-        return false;
     });
 
     $('.input_val').keyup(function(){

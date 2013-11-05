@@ -844,6 +844,7 @@ def remove_add_user(request, **kwargs):
 
         if int(request.POST.get('remove')) == 3:
             obj.is_member = 0
+            obj.is_admin = False
 
         obj.save()
     context = {}
@@ -1069,6 +1070,7 @@ def delete_picture(request):
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
 
 def add_rate(request):
 

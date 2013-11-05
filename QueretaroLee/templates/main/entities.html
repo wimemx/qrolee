@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -35,6 +36,7 @@
             <div class="viewport error">
                 <div class="overview">
                 {% for entity in user_entities %}
+
                 {% if entity_type.1 == 'spot' %}
                 <div class="grid-7 omega d-spot">
 
@@ -45,6 +47,7 @@
                             <div class="grid-7 alpha">
                         {% endif %}
                 {% endif %}
+
                     <span class="wrapper {{ classimage }}">
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/">
                         {% if not entity.picture %}
@@ -74,9 +77,11 @@
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
                        class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
                     <p>{{ entity.description|truncatechars:160 }}</p>
+                    <p class="gray_text small fleft">{{ entity|get_num_followers }} miembros</p>
                 {% endif %}
                 </div>
             {% endfor %}
+
             {% for entity in entities %}
 
                 {% if entity_type.1 == 'spot' %}
@@ -116,6 +121,7 @@
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
                     <p>{{ entity.description|truncatechars:160 }}</p>
+                    <p class="gray_text small fleft">{{ entity|get_num_followers }} miembros</p>
                 {% endif %}
                 </div>
             {% endfor %}

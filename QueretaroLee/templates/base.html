@@ -68,7 +68,7 @@
 <div class="header">
     <div class="container-16">
 
-        <input type="hidden" class="fb-session-required-val" value="{% if user|fsocial_session %}1{% else %}0{% endif %}"/>
+        <input type="hidden" class="fb-session-required-val" value="{% if user %}{% if user|fsocial_session %}1{% else %}0{% endif %}{% endif %}"/>
     {% block head %}
 
     {% endblock %}

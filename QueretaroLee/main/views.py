@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db import models as db_model
+from django.template.loader import get_template
+from django.template import Context
 from django.db.models import Q
 from django.core import serializers
 
@@ -26,9 +28,10 @@ import urllib2
 import urllib
 import httplib
 import os
-import urlparse
-import urllib
 from xml.dom import minidom
+import xhtml2pdf.pisa as pisa
+import cStringIO as StringIO
+import cgi
 
 
 @login_required(login_url='/')
@@ -244,9 +247,12 @@ def get_entity(request, **kwargs):
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
                 activity_id = 5
+                entityuser[0].is_member = True
+                entityuser[0].save()
             else:
                 activity_id = 10
                 entityuser[0].is_member = False
+                entityuser[0].is_admin = False
                 entityuser[0].save()
 
         elif 'follow_private' in request.POST:
@@ -262,6 +268,7 @@ def get_entity(request, **kwargs):
                 activity_id = 10
                 entityuser[0].request = False
                 entityuser[0].is_member = False
+                entityuser[0].is_admin = False
                 entityuser[0].save()
         activity_data = {
             'user_id': request.user.id,
@@ -1483,11 +1490,21 @@ def search_api(request, **kwargs):
     if int(request.POST.get('aux_api')) == -1:
         isbn = request.POST.get('search')
         url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
-        response = urllib2.urlopen(url).read()
-        dom = minidom.parseString(response)
-        context = {
-            'result_api': dom.childNodes.__contains__('error')
-        }
+        error = dict()
+        try:
+            response = urllib2.urlopen(url).read()
+        except Exception as e:
+            error = e.__dict__
+
+        if 'code' in error:
+            context = {
+                'result_api': -1
+            }
+        else:
+            dom = minidom.parseString(response)
+            context = {
+                'result_api': dom.childNodes.__contains__('error')
+            }
         context = simplejson.dumps(context)
         return HttpResponse(context, mimetype='application/json')
     search = ast.literal_eval(request.POST.get('search'))
@@ -1774,3 +1791,27 @@ def generate(content, format="png"):
 def load_words(request):
 
     pass
+
+
+def write_pdf(template_src, context_dict):
+    template = get_template(template_src)
+    context = Context(context_dict)
+    html = template.render(context)
+    result = StringIO.StringIO()
+    pdf = pisa.pisaDocument(StringIO.StringIO(
+        html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(
+            result.getvalue(), mimetype='application/pdf')
+    return HttpResponse('Gremlins ate your pdf! %s' % cgi.escape(html))
+
+
+def qr_to_pdf(request, **kwargs):
+    template = kwargs['template_name']
+    context = {
+        'site_url': settings.SITE_URL,
+        'qr': kwargs['qr_code']
+    }
+    return write_pdf(template, context)
+
+
