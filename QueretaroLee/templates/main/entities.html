@@ -16,21 +16,21 @@
     {% include 'header.html' %}
 {% endblock %}
 {% block main_site %}
-    <div class="grid-16 entities">
+    <div class="grid-16 entities {{ entity_type.1 }}">
         <div class="grid-14">
-            <div class="heading">
+            <div class="heading fleft">
                 <h3 class="title grid-4 fleft">{{ entity_type.0|capfirst }}</h3>
-                <span class="search fleft grid-4">{% csrf_token %}
+                <span class="search fright grid-4 no-margin">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
                     <input type="text" class="search_entities search_ent_field"/>
                     <span class="top search_btn dark_yello_btn"></span>
                 </span>
-                <a href="/registry/register_entity/{{ entity_type.1 }}">
-                    <span style="background-image: none;padding-right: 9px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
-                </a>
             </div>
-            <p class="content">{{ content }}</p>
+            <p class="content grid-9">{{ content }}</p>
+            <a href="/registry/register_entity/{{ entity_type.1 }}">
+                <span style="background-image: none;padding-right: 9px;margin-top: 40px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
+            </a>
             <div id="scrollbar1" {{ classspot }} >
             <div class="scrollbar" style="right:-40px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
             <div class="viewport error">

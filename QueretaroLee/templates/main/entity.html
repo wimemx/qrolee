@@ -449,7 +449,7 @@
                         </p>
                     </span>
                     {% if entity.description|length > 679 %}
-                        <span class="place_pink fleft show_text" style="margin-top: 5px" >
+                        <span class="place_pink fright show_text" style="margin-top: 5px;margin-right: 30px;" >
                             <span>Ver más</span>
                             <input type="hidden" value="1" />
                         </span>
@@ -520,7 +520,7 @@
                                 {% endif %}
                             </span>
                             <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.id }}">
-                                <h3 class="title fleft">{{ similar_entity.name }}
+                                <h3 class="title fleft">{{ similar_entity.name|truncatechars:14 }}
                                     {% if entity_type.1 == 'spot' %}
                                         <span class="view">Ver lugar</span>
                                     {% else %}
@@ -593,6 +593,8 @@
                     <span class="next fright"></span>
                 </div>
             </div>
+            <div class="border_bottom grid-4 no-margin fright"
+                 style="margin-right: 40px;margin-top: 20px;"></div>
         {% else %}
             <p class="private-message margin-50 center">Este grupo es privado,
                 <br> para ver la información solicitada

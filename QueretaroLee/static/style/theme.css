@@ -51,6 +51,7 @@ input, textarea{
 }
 .search input.search_entities{
     width: 161px;
+    margin-left: 32px;
 }
 input:not([type='submit']){
     height: 25px;
@@ -99,7 +100,7 @@ input:not([type='submit']){
     font-weight: 600
 }
 .din-r{
-    font-family: 'Raleway' sans-serif!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif!important;
     font-size: 13px!important;
     line-height: normal;
     margin-top: 6px;
@@ -225,7 +226,7 @@ p{
         color: #fff;
         float: left;
         font-size: 13px;
-        margin: 0px 16px 0px 0px;
+        margin: 0px 17px 0px 0px;
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
@@ -497,6 +498,7 @@ p{
             }
             .entities .content{
                 margin: 25px 0px 35px 0px;
+                font-size: 14px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .entities .members{
@@ -591,6 +593,8 @@ p{
         .title.organization, a.organization{
             color: #8ab493 !important;
             float: none;
+            font-weight: 400!important;
+            line-height: normal;
         }
         .title.group, a.group{
             color: #cccc66;
@@ -1116,7 +1120,7 @@ p{
             text-decoration: underline
         }
         .content .contact .title.main{
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
         }
         .spot .grid-6.overview{
@@ -1137,6 +1141,9 @@ p{
         }
         .group .contact p{
             margin-bottom: 20px!important;
+        }
+        .group .viewport .title{
+            margin-top: 18px!important;
         }
         .content .content.overview p{
             height: 100px;
@@ -1169,10 +1176,10 @@ p{
                 .content .sidebar-a .location .apply{
                     font-family: 'Raleway' ,sans-serif;
                     color: #fff;
-                    font-size: 13px;
-                    background: #cccc66;
+                    font-size: 12px;
+                    background: #f89883;
                     font-weight: 500;
-                    padding: 2px 10px 2px 10px;
+                    padding: 3px 9px;
                     margin-top: 4px;
                 }
                 .content .sidebar-a .location p{
@@ -1242,7 +1249,7 @@ p{
                     font-size: 14px;
                     height: auto;
                     margin-top: 18px;
-                    min-width: 100px;
+                    min-width: 120px;
                     text-align: left;
                     border: none;
                     font-family: 'Raleway' ,sans-serif;
@@ -1356,7 +1363,7 @@ p{
                         transition:all ease-in 0.3s;
                     }
                         .sidebar-b .active-event{
-                            background: #d1b75c !important;
+                            background: #f89883 !important;
                             cursor:pointer;
                         }
         .sidebar-b .controller{
@@ -1877,11 +1884,13 @@ p{
 }
 
 .place_pink{
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Raleway' sans-serif;
     color: #f89883;
     text-decoration: underline;
-    font-size: 12px !important;
-    text-transform:  capitalize;
+    font-size: 13px !important;
+    font-weight: 400;
+    cursor: pointer;
+
 }
 
 .d-text_opacity{
@@ -2367,6 +2376,7 @@ p{
 .input_add_book{
     background: #f9f2e1;
     width: 172px!important;
+    height: 27px!important;
 }
 
 .btn_search_book{
@@ -3654,4 +3664,7 @@ textarea{
     float: left;
     height: 172px;
     overflow: hidden;
+}
+.text_event{
+    min-height: 45px;
 }
