@@ -1879,7 +1879,7 @@ function search_entities($this){
                                     a2 = $('<a href="'+href+'" class="title alpha' +
                                         ' grid-4"></a>');
                                     div.append(a2);
-                                    p = $('<p></p>');
+                                    p = $('<p class="grid-4 no-margin" ></p>');
                                     div.append(p);
                                     $('.overview').append(div);
                                     div.find('.title').html(truncText(entity_obj[i].name, 20));

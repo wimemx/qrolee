@@ -774,7 +774,6 @@
                 <div class="viewport viewport_group">
                     <div class="overview">
                         {% for key, value in entities.items %}
-
                             {% if forloop.counter|divisibleby:2 %}
                                 <div class="grid-7 omega">
                             {% else %}
@@ -800,7 +799,7 @@
                             <input type="hidden" class="name"
                                    value="{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}"/>
 
-                            {% if user_profile.user.id == user.id %}
+                            {% if user_profile.user.id == user.id and not value.is_admin.is_admin %}
                                 <span class="d-pink_buttom message_alert fright">
                                 Abandonar
                                 <input class="type_message" type="hidden" value="out_group"/>

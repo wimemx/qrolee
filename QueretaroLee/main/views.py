@@ -154,9 +154,10 @@ def get_entities(request, **kwargs):
                 if str(data) == 'user':
                     field_value = str(obj.__getattribute__(str(data)).id)
                 context_fields[str(data)] = field_value
-
+        count = models.MemberToObject.objects.filter(object=obj.id).values('object').\
+            annotate(count = db_model.Count('user'))
+        print count
         value[obj.id] = context_fields
-
     for obj in user_entities:
         context_fields = {}
         for data in fields:

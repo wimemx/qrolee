@@ -162,11 +162,14 @@ def user_profile(request, **kwargs):
     for obj in entity_user:
         entity = registry.Entity.objects.get(id=obj.object)
         count_members = registry.MemberToObject.objects.filter(object=obj.object)
+        is_admin = registry.MemberToObject.objects.get(object_type='E', object=obj.object, user__id=id_user)
         att = {
             'entity': entity,
-            'followers': count_members
+            'followers': count_members,
+            'is_admin': is_admin
         }
-        dict_entities_user[int(obj.object)] = att
+        if entity.type.name == 'group':
+            dict_entities_user[int(obj.object)] = att
 
     list = models.List.objects.filter(user=id_user, default_type=-1, status=True)
 
@@ -361,7 +364,7 @@ def user_profile(request, **kwargs):
         'city': city,
         'birthday': birthday
     }
-
+    #print dict_entities_user
     return render(request, template, context)
 
 

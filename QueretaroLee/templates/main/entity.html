@@ -431,8 +431,7 @@
                     </span>
                 </div>
             {% endif %}
-
-            {% if entity_type.1 == 'organization' %}
+            {% if entity_type.1 == 'organization' or entity_type.1 == 'group' %}
                 <div class="grid-7 no-margin">
                 <span class="ruler"></span>
             {% endif %}
@@ -440,20 +439,29 @@
             {% if entity_type.1 == 'spot' %}
                 <div style="padding: 0px 40px 0px 40px;" class="overvieww no-margin fright grid-7 content">
                     <span class="ruler"></span>
-                    <p >{{ entity.description }}</p>
+                    <p >{{ entity.description}}</p>
                 </div>
-
             {% else %}
                 <div class="overvieww content">
-                    <p {% ifequal entity_type.1 "organization"%} style="width:90%;margin:0 auto !important;"{% endifequal %}>{{ entity.description }}</p>
+                    <span class="text_" >
+                        <p style="width:90%;margin:0 auto !important;" >
+                            {{ entity.description }}
+                        </p>
+                    </span>
+                    {% if entity.description|length > 679 %}
+                        <span class="place_pink fleft show_text" style="margin-top: 5px" >
+                            <span>Ver más</span>
+                            <input type="hidden" value="1" />
+                        </span>
+                    {% endif %}
                 </div>
             {% endif %}
 
-            {% if entity_type.1 == 'organization' %}
+            {% if entity_type.1 == 'organization' or entity_type.1 == 'group' %}
                 </div>
             {% endif %}
 
-            {% if entity_type.1 == 'organization' %}
+            {% if entity_type.1 == 'organization'%}
                 <div class="grid-4 contact fright no-margin">
                     <span class="ruler"></span>
                     <span class="contact">
@@ -461,10 +469,10 @@
                         <p>
                             <a class="link_"  href="/{{ owner.email }}/">{{ owner.email }}</a>
                         </p>
-                        <p>{{ profile.phone }}{{ profile.user.username }}</p>
                         <p>
                             <a class="link_" href="/{{ entity.website }}/" >{{ entity.website }}</a>
                         </p>
+                        <p>{{ profile.phone }}</p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
                         <p>{{ entity.address.0 }} <br>
                             <span>{{ entity.address.1 }}</span></p>
@@ -472,22 +480,23 @@
                 </div>
             {% endif %}
 
-
             {% if entity_type.1 == 'group' %}
-                <div class="more-info">
-                    <span class="grid-3 alpha">
-                    <h3 class="title main">Miembros <span>{{ followers|total_members }}</span></h3>
-                    </span>
-                    <span class="grid-4">
-                        <h3 class="title main">Contacto <span>{{ owner.email }}</span></h3>
-                    </span>
-                    <span class="grid-3 omega">
+                <div class="grid-4 contact fright no-margin">
+                    <span class="ruler"></span>
+                    <span class="contact">
+                        <h3 class="title main">Contacto</h3>
+                        <p>
+                            <a class="link_"  href="/{{ owner.email }}/">{{ owner.email }}</a>
+                        </p>
+                        <h3 class="title main">Miembros
+                            <p>{{ followers|total_members }}</p>
+                        </h3>
                         <h3 class="title main">Administrador/es
                             {% for admin in admins %}
                                 {% if admin.first_name == '' %}
-                                    <span>{{ admin.username }}</span>
+                                    <p>{{ admin.username }}</p>
                                 {% else %}
-                                    <span>{{ admin.first_name }}</span>
+                                    <p>{{ admin.first_name }}</p>
                                 {% endif %}
                             {% endfor %}
                         </h3>

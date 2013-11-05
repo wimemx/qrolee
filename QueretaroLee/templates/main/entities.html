@@ -73,7 +73,14 @@
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
                        class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
-                    <p>{{ entity.description|truncatechars:160 }}</p>
+                    <p class="grid-4 no-margin">
+                        {{ entity.description|truncatechars:160 }}
+                    </p>
+                    {% if entity_type.1 == 'group' %}
+                        <p class="grid-3 no-margin" style="margin-top: 10px">
+                            0 usuarios inscritos
+                        </p>
+                    {% endif %}
                 {% endif %}
                 </div>
             {% endfor %}
@@ -115,7 +122,14 @@
                     </div>
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
-                    <p>{{ entity.description|truncatechars:160 }}</p>
+                    <p class="grid-4 no-margin">
+                        {{ entity.description|truncatechars:160 }}
+                    </p>
+                    {% if entity_type.1 == 'group' %}
+                        <p class="grid-3 no-margin" style="margin-top: 10px">
+                            0 usuarios inscritos
+                        </p>
+                    {% endif %}
                 {% endif %}
                 </div>
             {% endfor %}
