@@ -990,13 +990,13 @@ p{
     }
         .content .sidebar-a .month{
             color: #fff;
-            padding: 0px 10px 0px 10px;
+            padding: 4px 9px;
             background: #7a7a7a;
             float: right !important;
             margin-bottom: 15px;
             font-family: 'Raleway' sans-serif;
             font-size: 12px;
-            line-height: 19px;
+            line-height: normal;
         }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
@@ -1016,6 +1016,10 @@ p{
             }
 .item{
     height: 128px !important;
+}
+
+.item p{
+    min-height: 45px;
 }
                 .item .wrapper{
                     width: 100px;
@@ -1149,7 +1153,7 @@ p{
                 .content .sidebar-a .location .apply{
                     font-family: 'Raleway' ,sans-serif;
                     color: #fff;
-                    font-size: 14px;
+                    font-size: 13px;
                     background: #cccc66;
                     font-weight: 500;
                     padding: 2px 10px 2px 10px;
@@ -1563,7 +1567,7 @@ p{
 
 .d-margin_calendar{
     margin-left: 60px !important;
-    margin-top: 17px !important;
+    margin-top: 25px !important;
 
 }
 

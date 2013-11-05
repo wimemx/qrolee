@@ -562,14 +562,14 @@ $(document).ready(function(){
     });
     $('.search_entities').focusin(function(){
         $('.dark_yello_btn').css({
-            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'background': '#FCF8EF url("../static/style/../img/search_icon_1.png") no-repeat 50% 50%',
             'border': '1px solid #faf3e1',
             'border-left': '0px'
         });
     });
     $('.search_entities').focusout(function(){
         $('.dark_yello_btn').css({
-            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'background': '#faf3e1 url("../static/style/../img/search_icon_1.png") no-repeat 50% 50%',
             'border': '0px'
         });
     });
