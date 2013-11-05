@@ -154,10 +154,21 @@ def get_entities(request, **kwargs):
                 if str(data) == 'user':
                     field_value = str(obj.__getattribute__(str(data)).id)
                 context_fields[str(data)] = field_value
+
         if obj.type.name == 'group':
             count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
                 annotate(count = db_model.Count('user'))
             context_fields['members'] = count[0]['count']
+
+        if obj.type.name == 'spot':
+            categorys = models.EntityCategory.objects.filter(entity__id=obj.id)
+            tags = {}
+            for tag in categorys:
+                tags[tag.id] = {
+                    'name': tag.category.name
+                }
+            context_fields['tags'] = tags
+
         value[obj.id] = context_fields
 
     for obj in user_entities:
@@ -170,10 +181,21 @@ def get_entities(request, **kwargs):
                 if str(data) == 'user':
                     field_value = str(obj.__getattribute__(str(data)).id)
                 context_fields[str(data)] = field_value
+
         if obj.type.name == 'group':
             count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
                 annotate(count = db_model.Count('user'))
             context_fields['members'] = count[0]['count']
+
+        if obj.type.name == 'spot':
+            categorys = models.EntityCategory.objects.filter(entity__id=obj.id)
+            tags = {}
+            for tag in categorys:
+                tags[tag.id] = {
+                    'name': tag.category.name
+                }
+            context_fields['tags'] = tags
+
         user_entities_value[obj.id] = context_fields
 
     if is_ajax_call:
@@ -211,6 +233,7 @@ def get_entities(request, **kwargs):
             e.address = e.address.split('#')
         entity = value
         user_entities = user_entities_value
+
         context = {
             'entities': entity,
             'entity_type': entity_type,

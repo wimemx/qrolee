@@ -316,6 +316,9 @@ p{
     margin: 40px 10px 30px 10px;
     display: block;
 }
+.news-feed .grid-8{
+    margin-left: 30px!important;
+}
 .news-feed .user{
     min-height: 55px;
     width: 100%;
@@ -1474,9 +1477,14 @@ p{
 }
 
 .d-text_spot{
-
     width: 244px;
-    margin-left: 143px;
+    float: left;
+    margin-bottom: 0px;
+}
+
+.d-text_spot p{
+    margin-top: 0px;
+    margin-bottom: 4px;
 }
 
 .d-spot{
@@ -3278,7 +3286,7 @@ textarea{
 }
 .item_member{
     margin-left: 33px!important;
-    margin-top: 25px!important;;
+    margin-top: 10px!important;;
 }
 .affiliate .title{
     margin-left: 0px;

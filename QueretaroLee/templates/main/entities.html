@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -56,25 +57,23 @@
                     <a class="green_btn" href="/registry/edit/{{ entity.id }}/">Editar</a>
                     </span>
                 {% if entity_type.1 == 'spot' %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
-
-                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
+                    <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_m ap" /> {{ entity.name|capfirst|truncatechars:20 }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {% if entity.address.0 != '' %}
-                            {{ entity.address.0 }} {{ entity.address.1 }}
-                        {% else %}
-                            Querétaro
-                        {% endif %}
-                        <br>
-                        <a class="d-pink" href="" >Biblioteca</a>
+                        {% for pos in entity.address|split:'#' %}
+                            {{ pos }}
+                        {% endfor %}
                     </p>
+                    {% for key, tag in entity.tags.items %}
+                        <a class="d-pink" >{{ tag.name }}</a>
+                    {% endfor %}
                     </div>
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
                        class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
                     <p class="grid-4 no-margin">
-                        {{ entity.description|truncatechars:160 }}
+                        {{ entity.description|truncatechars:150 }}
                     </p>
                     {% if entity_type.1 == 'group' %}
                         <p class="grid-3 no-margin" style="margin-top: 10px">
@@ -111,18 +110,18 @@
                         <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_m ap" /> {{ entity.name|capfirst|truncatechars:20 }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {% if entity.address.0 != '' %}
-                            {{ entity.address.0 }} {{ entity.address.1 }}
-                        {% else %}
-                            Querétaro
-                        {% endif %}
-                        <a class="d-pink" href="" >Biblioteca</a>
+                        {% for pos in entity.address|split:'#' %}
+                            {{ pos }}
+                        {% endfor %}
                     </p>
+                    {% for key, tag in entity.tags.items %}
+                        <a class="d-pink" >{{ tag.name }}</a>
+                    {% endfor %}
                     </div>
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
                     <p class="grid-4 no-margin">
-                        {{ entity.description|truncatechars:160 }}
+                        {{ entity.description|truncatechars:150 }}
                     </p>
                     {% if entity_type.1 == 'group' %}
                         <p class="grid-3 no-margin" style="margin-top: 10px">

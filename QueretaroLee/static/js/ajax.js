@@ -1841,8 +1841,15 @@ function search_entities($this){
                                     div.find('.title').html(entity_obj[i].name);
                                     div.find('.title').append('<img src="/static/img/markers/marker'+
                                         count + '.png" class="d-icon_map fleft">');
-                                    div.find('p').html(truncText(entity_obj[i].address,180)+
-                                        '<br>' +'<a class="d-pink" href="">Biblioteca</a>');
+                                    var address = entity_obj[i].address.split('#');
+                                    $.each(address, function(inde){
+                                        div.find('p').append(address[inde]);
+                                    });
+
+                                    var tag = entity_obj[i].tags;
+                                    $.each(tag, function(ind){
+                                        div.find('.d-text_spot').append('<a class="d-pink" >'+tag[ind].name+'</a>');
+                                    });
                                     count++;
 
                                 }else{
@@ -1891,7 +1898,7 @@ function search_entities($this){
                                     div.find('.title').html(truncText(entity_obj[i].name, 20));
                                     div.find('.title').attr('title',truncText(entity_obj[i].name, 20));
                                     div.find('.p_').html(truncText(entity_obj[i].
-                                        description,160));
+                                        description,150));
                                     div.find('.img');
                                 }
                             });
