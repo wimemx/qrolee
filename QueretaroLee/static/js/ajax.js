@@ -1369,8 +1369,8 @@ function append_titles(overview, data, in_api){
         a_title = $('<a ' + href + ' ></a>');
         h3 = $('<h3 title="' + data[i].title +
             '" class="title title_book margin_left no-margin' +
-            ' grid-2 fleftt"></h3>');
-        h3.append(truncText(data[i].title,12));
+            ' fleft"></h3>');
+        h3.append(truncText(data[i].title,15));
         a_title.append(h3);
         div_item.append(a_title);
         var name_author = data[i].author;

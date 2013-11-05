@@ -787,7 +787,6 @@
                                 {% else %}
                                     <img src="/static/media/users/{{ value.entity.user.id }}/entity/{{ value.entity.picture }}"
                                          class="img_group" />
-
                                 {% endif %}
                             </a>
                         </span>
@@ -798,7 +797,7 @@
                         <p class="d-text_group_user" >{{ value.followers.count }} usuarios inscritos
                             <input type="hidden" class="name"
                                    value="{{ obj.entity.name|cut:" " }}_{{ obj.entity.id }}"/>
-
+                            {{ value.is_admin.is_admin }}
                             {% if user_profile.user.id == user.id and not value.is_admin.is_admin %}
                                 <span class="d-pink_buttom message_alert fright">
                                 Abandonar

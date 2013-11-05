@@ -279,9 +279,9 @@
     <div class="grid-16 news-feed load no-margin" style="display: block">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
 
-        <div style="margin: 30px; 0px 0px 30px;" class="grid-8 left">
-            {% if activity  %}
+        <div style="margin: 25px; 0px 0px 30px;" class="grid-8 left">
             <h3 class="title">Actividad</h3>
+            {% if activity  %}
             <div style="margin:0px;" id="scrollbar1">
                 <div class="scrollbar" style="right: -35px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">
@@ -542,7 +542,7 @@
     {% endif %}
     </div>
 
-    <div class="grid-16 load no-margin">
+    <div class="grid-16 load tags_events no-margin">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
@@ -602,6 +602,7 @@
 
     {% if entity_type.1 == 'group' %}
         <div class="grid-16 members load no-margin">
+        <h3 class="title main">Miembros del grupo</h3>
         {% if entity.privacy == 0 or member or owner.id == user.id %}
             <div id="scrollbar1 ">
                 <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
@@ -625,7 +626,7 @@
                                         <span class="fleft">Se unio hace
                                             {{ follower.date_joined|member_since }}
                                         </span>
-                                        <a class="fleft spot din-r" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
+                                        <a class="fleft place_pink" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
                                     </h3>
                             </span>
                         {% endfor %}
