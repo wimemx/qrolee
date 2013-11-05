@@ -1879,12 +1879,15 @@ function search_entities($this){
                                     a2 = $('<a href="'+href+'" class="title alpha' +
                                         ' grid-4"></a>');
                                     div.append(a2);
-                                    p = $('<p class="grid-4 no-margin" ></p>');
+                                    p = $('<p class="p_ grid-4 no-margin" ></p>');
                                     div.append(p);
+                                    if(entity_obj[i].type == 'group')
+                                        div.append('<p class="grid-3 no-margin" style="margin-top: 10px">' +
+                                            entity_obj[i].members + ' usuarios inscritos</p>');
                                     $('.overview').append(div);
                                     div.find('.title').html(truncText(entity_obj[i].name, 20));
                                     div.find('.title').attr('title',truncText(entity_obj[i].name, 20));
-                                    div.find('p').html(truncText(entity_obj[i].
+                                    div.find('.p_').html(truncText(entity_obj[i].
                                         description,160));
                                     div.find('.img');
                                 }
