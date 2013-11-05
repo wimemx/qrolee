@@ -402,3 +402,12 @@ def fsocial_session(user):
 
 
 
+@register.filter
+def split(text, char):
+
+    s_split = str(text)
+    s_split =  s_split.split(str(char))
+    return  s_split
+
+
+

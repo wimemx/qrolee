@@ -90,10 +90,13 @@ function populateCal(curr_month,$item){
                         a.append(img);
                         span_wrap.append(a);
                         span_item.append(span_wrap);
-                        span_text = $('<span class="grid-7 fleft no-margin"></span>');
+                        var grid = 'grid-8';
+                        if($('.type').val() == 'Event')
+                            grid = 'grid-7';
+                        span_text = $('<span class="'+grid+' fleft no-margin"></span>');
                         a_2 = $('<a class="d-link_event" href="'+href+'" ><h3>'+e[0]+'</h3></a>');
                         p = $('<p></p>');
-                        span_info = $('<span class="info grid-6 alpha">'+truncText(e[4],160)+'</span>');
+                        span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
                         p.append(span_info);
                         span_time = $('<span class="time fleft">'+e[5]+'</span>');
                         span_text.append(a_2);
@@ -618,6 +621,7 @@ $(document).ready(function(){
             'opacity': 1
         });
     });
+
     $('.search_field').focusout(function(){
         $(this).css({
             'opacity': 0.9
@@ -628,15 +632,17 @@ $(document).ready(function(){
     });
     $('.search_entities').focusin(function(){
         $('.dark_yello_btn').css({
-            'background': '#FCF8EF url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
+            'background': '#FCF8EF url("/static/img/search_icon_1.png") no-repeat 50% 50%',
             'border': '1px solid #faf3e1',
             'border-left': '0px'
         });
     });
     $('.search_entities').focusout(function(){
         $('.dark_yello_btn').css({
-            'background': '#faf3e1 url("http://localhost:8000/static/style/../img/search_icon_1.png") no-repeat 50% 50%',
-            'border': '0px'
+            'background': '#faf3e1 url("/static/img/search_icon_1.png") no-repeat 50% 50%',
+            'border': '0px',
+            'border': '1px solid #faf3e1',
+            'border-right': '0px'
         });
     });
     $('.search_field').keyup(function(){
@@ -1450,8 +1456,8 @@ function append_titles(overview, data, in_api){
         a_title = $('<a ' + href + ' ></a>');
         h3 = $('<h3 title="' + data[i].title +
             '" class="title title_book margin_left no-margin' +
-            ' grid-2 fleftt"></h3>');
-        h3.append(truncText(data[i].title,12));
+            ' fleft"></h3>');
+        h3.append(truncText(data[i].title,15));
         a_title.append(h3);
         div_item.append(a_title);
         var name_author = data[i].author;
@@ -1926,8 +1932,15 @@ function search_entities($this){
                                     div.find('.title').html(entity_obj[i].name);
                                     div.find('.title').append('<img src="/static/img/markers/marker'+
                                         count + '.png" class="d-icon_map fleft">');
-                                    div.find('p').html(truncText(entity_obj[i].address,180)+
-                                        '<br>' +'<a class="d-pink" href="">Biblioteca</a>');
+                                    var address = entity_obj[i].address.split('#');
+                                    $.each(address, function(inde){
+                                        div.find('p').append(address[inde]);
+                                    });
+
+                                    var tag = entity_obj[i].tags;
+                                    $.each(tag, function(ind){
+                                        div.find('.d-text_spot').append('<a class="d-pink" >'+tag[ind].name+'</a>');
+                                    });
                                     count++;
 
                                 }else{
@@ -1965,13 +1978,16 @@ function search_entities($this){
                                     a2 = $('<a href="'+href+'" class="title alpha' +
                                         ' grid-4"></a>');
                                     div.append(a2);
-                                    p = $('<p></p>');
+                                    p = $('<p class="p_ grid-4 no-margin" ></p>');
                                     div.append(p);
+                                    if(entity_obj[i].type == 'group')
+                                        div.append('<p class="grid-3 no-margin" style="margin-top: 10px">' +
+                                            entity_obj[i].members + ' usuarios inscritos</p>');
                                     $('.overview').append(div);
                                     div.find('.title').html(truncText(entity_obj[i].name, 20));
                                     div.find('.title').attr('title',truncText(entity_obj[i].name, 20));
-                                    div.find('p').html(truncText(entity_obj[i].
-                                        description,160));
+                                    div.find('.p_').html(truncText(entity_obj[i].
+                                        description,150));
                                     div.find('.img');
 
                                 }

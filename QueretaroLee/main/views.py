@@ -158,6 +158,20 @@ def get_entities(request, **kwargs):
                     field_value = str(obj.__getattribute__(str(data)).id)
                 context_fields[str(data)] = field_value
 
+        if obj.type.name == 'group':
+            count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
+                annotate(count = db_model.Count('user'))
+            context_fields['members'] = count[0]['count']
+
+        if obj.type.name == 'spot':
+            categorys = models.EntityCategory.objects.filter(entity__id=obj.id)
+            tags = {}
+            for tag in categorys:
+                tags[tag.id] = {
+                    'name': tag.category.name
+                }
+            context_fields['tags'] = tags
+
         value[obj.id] = context_fields
 
     for obj in user_entities:
@@ -171,6 +185,20 @@ def get_entities(request, **kwargs):
                     field_value = str(obj.__getattribute__(str(data)).id)
                 context_fields[str(data)] = field_value
 
+        if obj.type.name == 'group':
+            count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
+                annotate(count = db_model.Count('user'))
+            context_fields['members'] = count[0]['count']
+
+        if obj.type.name == 'spot':
+            categorys = models.EntityCategory.objects.filter(entity__id=obj.id)
+            tags = {}
+            for tag in categorys:
+                tags[tag.id] = {
+                    'name': tag.category.name
+                }
+            context_fields['tags'] = tags
+
         user_entities_value[obj.id] = context_fields
 
     if is_ajax_call:
@@ -182,7 +210,7 @@ def get_entities(request, **kwargs):
         return HttpResponse(context, mimetype='application/json')
     else:
         if entity_type == 'group':
-            entity_type = ['grupos', 'group']
+            entity_type = ['grupos de lectura', 'group']
         elif entity_type == 'spot':
             entity_type = ['lugares', 'spot']
         else:
@@ -190,22 +218,15 @@ def get_entities(request, **kwargs):
             entity_type = ['organizaciones', 'organization']
         content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. ' \
-                  'Aenean ultricies mi vitae est. Mauris placerat eleifend leo.' \
-                  ' Quisque sit amet est et sapien ullamcorper pharetra. ' \
-                  'Vestibulum erat wisi, condimentum sed, commodo vitae, ' \
-                  'ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt ' \
-                  'condimentum, eros ipsum rutrum orci, sagittis tempus lacus ' \
-                  'enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. ' \
-                  'Praesent dapibus, neque id cursus faucibus, tortor neque ' \
-                  'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
-                  'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
+                  'tortor qprofileuam, feugiat vitae, ultricies eget, tempor sit ' \
+                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
 
         for e in entity:
             e.address = e.address.split('#')
         for e in user_entities:
             e.address = e.address.split('#')
+        entity = value
+        user_entities = user_entities_value
 
         context = {
             'entities': entity,

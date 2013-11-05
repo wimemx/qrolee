@@ -188,6 +188,30 @@ function post_to_fb(caption, description, content, redirect, url){
 
 $(document).ready(function(){
 
+    $('.show_text').click(function(){
+        var active = parseInt($(this).find('input').val());
+        var height = 172;
+        var value = 1;
+        var message = 'ver más';
+        var $this = $(this);
+
+        if(active == 1){
+            height = $(this).parent().find('.text_ p').css('height');
+            value = 0;
+            message = 'ver menos';
+        }
+        $this.find('span').fadeOut(200, function(){
+            $(this).text(message);
+            $this.find('input').val(value);
+            $(this).fadeIn(200);
+        });
+        $(this).parent().find('.text_').animate({
+            'height': height
+        },250, function() {
+
+        });
+    });
+
     $('.sel_spots .dropdown').click(function(){
         item_select(true, '');
         combo_act = true;
@@ -749,6 +773,10 @@ function show_text($elem, message){
 $(document).ready(function(){
 
     link_active();
+
+    $('.create-discussion .remove').click(function(){
+        $('.container_message').fadeOut(200);
+    });
 
     $('.address').keyup(function(){
         search_map_address($(this).val());

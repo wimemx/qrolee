@@ -16,27 +16,26 @@
     {% include 'header.html' %}
 {% endblock %}
 {% block main_site %}
-    <div class="grid-16 entities">
+    <div class="grid-16 entities {{ entity_type.1 }}">
         <div class="grid-14">
-            <div class="heading">
-                <h3 class="title grid-3 fleft">{{ entity_type.0|capfirst }}</h3>
-                <span class="search fleft grid-4">{% csrf_token %}
+            <div class="heading fleft">
+                <h3 class="title grid-4 fleft">{{ entity_type.0|capfirst }}</h3>
+                <span class="search fright grid-4 no-margin">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ entity_type.1 }}"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
                     <input type="text" class="search_entities search_ent_field"/>
                     <span class="top search_btn dark_yello_btn"></span>
                 </span>
-                <a href="/registry/register_entity/{{ entity_type.1 }}">
-                    <span style="background-image: none;padding-right: 9px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
-                </a>
             </div>
-            <p class="content">{{ content }}</p>
+            <p class="content grid-9">{{ content }}</p>
+            <a href="/registry/register_entity/{{ entity_type.1 }}">
+                <span style="background-image: none;padding-right: 9px;margin-top: 40px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
+            </a>
             <div id="scrollbar1" {{ classspot }} >
             <div class="scrollbar" style="right:-40px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
             <div class="viewport error">
                 <div class="overview">
-                {% for entity in user_entities %}
-
+                {% for obj, entity in user_entities.items %}
                 {% if entity_type.1 == 'spot' %}
                 <div class="grid-7 omega d-spot">
 
@@ -53,37 +52,39 @@
                         {% if not entity.picture %}
                             <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
                         {% else %}
-                            <img class="img_size_all" src="/static/media/users/{{ entity.user_id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                            <img class="img_size_all" src="/static/media/users/{{ entity.user }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
                         {% endif %}
                     </a>
                     <a class="green_btn" href="/registry/edit/{{ entity.id }}/">Editar</a>
                     </span>
                 {% if entity_type.1 == 'spot' %}
-                    <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
-
-                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_map fleft" /> {{ entity.name|capfirst }}</a>
+                    <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4 d-title_spot">
+                        <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_m ap" /> {{ entity.name|capfirst|truncatechars:20 }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {% if entity.address.0 != '' %}
-                            {{ entity.address.0 }} {{ entity.address.1 }}
-                        {% else %}
-                            Querétaro
-                        {% endif %}
-                        <br>
-                        <a class="d-pink" href="" >Biblioteca</a>
+                        {% for pos in entity.address|split:'#' %}
+                            {{ pos }}
+                        {% endfor %}
                     </p>
+                    {% for key, tag in entity.tags.items %}
+                        <a class="d-pink" >{{ tag.name }}</a>
+                    {% endfor %}
                     </div>
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/"
                        class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
-                    <p>{{ entity.description|truncatechars:160 }}</p>
-                    <p class="gray_text small fleft">{{ entity|get_num_followers }} miembros</p>
+                    <p class="grid-4 no-margin">
+                        {{ entity.description|truncatechars:150 }}
+                    </p>
+                    {% if entity_type.1 == 'group' %}
+                        <p class="grid-3 no-margin" style="margin-top: 10px">
+                            {{ entity.members }} usuarios inscritos
+                        </p>
+                    {% endif %}
                 {% endif %}
                 </div>
             {% endfor %}
-
-            {% for entity in entities %}
-
+            {% for obj, entity in entities.items %}
                 {% if entity_type.1 == 'spot' %}
 
                 <div class="grid-7 omega d-spot">
@@ -100,7 +101,7 @@
                             {% if not entity.picture %}
                                 <img class="img_size_all" src="/static/img/create.png" alt="{{ entity.name }}"/>
                             {% else %}
-                                <img class="img_size_all" src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
+                                <img class="img_size_all" src="/static/media/users/{{ entity.user }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
                             {% endif %}
                         </span>
                     </a>
@@ -110,18 +111,24 @@
                         <img src="/static/img/markers/marker{{ forloop.counter }}.png" class="d-icon_m ap" /> {{ entity.name|capfirst|truncatechars:20 }}</a>
                     <div class="d-text_spot ">
                     <p>
-                        {% if entity.address.0 != '' %}
-                            {{ entity.address.0 }} {{ entity.address.1 }}
-                        {% else %}
-                            Querétaro
-                        {% endif %}
-                        <a class="d-pink" href="" >Biblioteca</a>
+                        {% for pos in entity.address|split:'#' %}
+                            {{ pos }}
+                        {% endfor %}
                     </p>
+                    {% for key, tag in entity.tags.items %}
+                        <a class="d-pink" >{{ tag.name }}</a>
+                    {% endfor %}
                     </div>
                 {% else %}
                     <a title="{{ entity.name }}" href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" class="title alpha grid-4">{{ entity.name|capfirst|truncatechars:20 }}</a>
-                    <p>{{ entity.description|truncatechars:160 }}</p>
-                    <p class="gray_text small fleft">{{ entity|get_num_followers }} miembros</p>
+                    <p class="grid-4 no-margin">
+                        {{ entity.description|truncatechars:150 }}
+                    </p>
+                    {% if entity_type.1 == 'group' %}
+                        <p class="grid-3 no-margin" style="margin-top: 10px">
+                            {{ entity.members }} usuarios inscritos
+                        </p>
+                    {% endif %}
                 {% endif %}
                 </div>
             {% endfor %}

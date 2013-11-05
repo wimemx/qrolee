@@ -51,6 +51,7 @@ input, textarea{
 }
 .search input.search_entities{
     width: 161px;
+    margin-left: 32px;
 }
 input:not([type='submit']){
     height: 25px;
@@ -102,7 +103,7 @@ input:not([type='submit']){
     font-weight: 600
 }
 .din-r{
-    font-family: 'Raleway' sans-serif!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif!important;
     font-size: 13px!important;
     line-height: normal;
     margin-top: 6px;
@@ -113,6 +114,8 @@ input:not([type='submit']){
 .dark_yello_btn{
     background: #faf3e1 url('../img/search_icon_1.png') no-repeat 50% 50%;
     width: 25px;
+    border: 1px solid #faf3e1;
+    border-right: 0px;
     height: 25px!important;
 }
 .green_btn{
@@ -226,7 +229,7 @@ p{
         color: #fff;
         float: left;
         font-size: 13px;
-        margin: 0px 16px 0px 0px;
+        margin: 0px 17px 0px 0px;
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
@@ -317,6 +320,9 @@ p{
     margin: 40px 10px 30px 10px;
     display: block;
 }
+.news-feed .grid-8{
+    margin-left: 30px!important;
+}
 .news-feed .user{
     min-height: 55px;
     width: 100%;
@@ -342,9 +348,12 @@ p{
         color: inherit;
     }
 .news-feed .title{
-    font-size: 15px;
     width: 100%;
     float: left;
+    font-family: 'Raleway' sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin-top: 0px;
 }
 .news-feed .main.title{
     font-size: 12px;
@@ -492,6 +501,7 @@ p{
             }
             .entities .content{
                 margin: 25px 0px 35px 0px;
+                font-size: 14px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .entities .members{
@@ -499,6 +509,9 @@ p{
                 display: block;
                 margin-top: 15px;
 
+            }
+            .members .title{
+                margin-left: 30px;
             }
 
 .heading{
@@ -509,7 +522,6 @@ p{
     .heading .title{
         float: left;
         margin-top: 0px;
-        text-transform: capitalize;
         font-weight: 500;
         font-size: 20px;
     }
@@ -584,6 +596,8 @@ p{
         .title.organization, a.organization{
             color: #8ab493 !important;
             float: none;
+            font-weight: 400!important;
+            line-height: normal;
         }
         .title.group, a.group{
             color: #cccc66;
@@ -802,6 +816,7 @@ p{
         }
         .entity .nav.organization .btn:hover,.entity .nav.organization .btn.active{
             background: #8ab493;
+            transition:all ease-in 0.3s;
             border-color: #5a885e;
         }
 .content.single{
@@ -846,7 +861,7 @@ p{
 
     }
         .brown_btn.discuss{
-            margin-top: 20px;
+            margin-top: 25px;
         }
         .discussion .heading{
             margin-top: 20px;
@@ -857,7 +872,7 @@ p{
         }
             .discussion .heading input:not([type='submit']){
                 width: 161px;
-                height: 20px;
+                height: 25px;
                 line-height: 20px;
             }
             .discussion .heading .search_btn{
@@ -874,12 +889,15 @@ p{
                     font-size: 10px;
                 }
         .discussion .item{
-            height: 73px !important;
+            height: 90px !important;
             border-top: 1px solid #f9f2e1;
             border-bottom: 1px solid #f9f2e1;
             width: 100%;
             display: block;
             padding-top: 10px;
+        }
+        .discussion .main{
+            margin-top: 25px;
         }
         .discussion .item:nth-child(1){
             border-top: none;
@@ -984,6 +1002,9 @@ p{
     .content.single .members.load{
         padding-top: 0px;
     }
+    .tags_events .sidebar-b .title{
+        margin-top: 30px;
+    }
          .content.single .members.load #scrollbar1 .scrollbar{
              right: 8px;
          }
@@ -993,13 +1014,13 @@ p{
     }
         .content .sidebar-a .month{
             color: #fff;
-            padding: 0px 10px 0px 10px;
+            padding: 4px 9px;
             background: #7a7a7a;
             float: right !important;
             margin-bottom: 15px;
             font-family: 'Raleway' sans-serif;
             font-size: 12px;
-            line-height: 19px;
+            line-height: normal;
         }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
@@ -1019,6 +1040,10 @@ p{
             }
 .item{
     height: 128px !important;
+}
+
+.organization .item p,.group .item p{
+    min-height: 45px;
 }
                 .item .wrapper{
                     width: 100px;
@@ -1059,6 +1084,7 @@ p{
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
             font-weight: 500;
+            margin-bottom: 10px;
             font-size: 18px;
         }
         .content .sidebar-a .cover-picture{
@@ -1084,9 +1110,8 @@ p{
         .content .sidebar-a div .ruler{
             position: absolute;
             right: 0px;
-            top: 20px;
             width: 1px;
-            height: 200px;
+            height: 180px;
             display: block;
             background: #acacac;
         }
@@ -1098,7 +1123,7 @@ p{
             text-decoration: underline
         }
         .content .contact .title.main{
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
         }
         .spot .grid-6.overview{
@@ -1114,8 +1139,14 @@ p{
                 float: right;
             }
         .content .sidebar-a .contact p{
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             font-size: 12px;
+        }
+        .group .contact p{
+            margin-bottom: 20px!important;
+        }
+        .group .viewport .title{
+            margin-top: 18px!important;
         }
         .content .content.overview p{
             height: 100px;
@@ -1151,10 +1182,10 @@ p{
                 .content .sidebar-a .location .apply{
                     font-family: 'Raleway' ,sans-serif;
                     color: #fff;
-                    font-size: 14px;
-                    background: #cccc66;
+                    font-size: 12px;
+                    background: #f89883;
                     font-weight: 500;
-                    padding: 2px 10px 2px 10px;
+                    padding: 3px 9px;
                     margin-top: 4px;
                     cursor: pointer;
                 }
@@ -1187,13 +1218,14 @@ p{
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
         .sidebar-b{
-            margin-top: 60px;
+            margin-top: 52px;
         }
 
             .sidebar-b .title{
                 font-weight: 500;
                 font-family: 'Raleway' sans-serif;
-                font-size: 14px;
+                font-size: 16px;
+                margin-top: 0px;
                 text-align: left;
                 padding: 0px 0px 10px 0px;
                 border-bottom: 1px solid #acacac;
@@ -1205,7 +1237,7 @@ p{
             }
             .sidebar-b .wrapper{
                 width: 100%;
-                margin-top: 20px;
+                margin-top: 15px;
                 display: block;
                 float: left;
 
@@ -1222,10 +1254,10 @@ p{
                     font-size: 14px;
                     height: auto;
                     margin-top: 18px;
-                    min-width: 100px;
+                    min-width: 120px;
                     text-align: left;
                     border: none;
-                    font-family: 'Conv_DINPro-Bold';
+                    font-family: 'Raleway' ,sans-serif;
                     text-transform: capitalize;
                     padding: 0px;
                 }
@@ -1238,7 +1270,8 @@ p{
                         float: left;
                         display: block;
                         font-weight: 100;
-                        font-size: 10px;
+                        font-size: 11px;
+                        color: #777;
                         font-family: 'Conv_fontscore.com_d-dinproregular';
                         width: 100%;
                     }
@@ -1335,7 +1368,7 @@ p{
                         transition:all ease-in 0.3s;
                     }
                         .sidebar-b .active-event{
-                            background: #d1b75c !important;
+                            background: #f89883 !important;
                             cursor:pointer;
                         }
         .sidebar-b .controller{
@@ -1441,8 +1474,6 @@ p{
 
     width: 93%;
     height: 100%;
-    border-radius: 5px;
-    border: 3px solid #959595;
     margin: auto;
     background-color: transparent!important;
     background: url("/static/img/loading.gif")no-repeat 30px 100px;
@@ -1458,9 +1489,14 @@ p{
 }
 
 .d-text_spot{
-
     width: 244px;
-    margin-left: 143px;
+    float: left;
+    margin-bottom: 0px;
+}
+
+.d-text_spot p{
+    margin-top: 0px;
+    margin-bottom: 4px;
 }
 
 .d-spot{
@@ -1565,7 +1601,7 @@ p{
 
 .d-margin_calendar{
     margin-left: 60px !important;
-    margin-top: 17px !important;
+    margin-top: 25px !important;
 
 }
 
@@ -1821,9 +1857,12 @@ p{
 .title_book{
     margin-bottom: 0px !important;
     margin-top: 20px !important;
-
 }
 
+.Title .title_book{
+    margin-left: 15px;
+    width: 130px;
+}
 .p-d-text{
     font-size: 12px !important;
     margin-bottom: 5px !important;
@@ -1851,11 +1890,13 @@ p{
 }
 
 .place_pink{
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Raleway' sans-serif;
     color: #f89883;
     text-decoration: underline;
-    font-size: 12px !important;
-    text-transform:  capitalize;
+    font-size: 13px !important;
+    font-weight: 400;
+    cursor: pointer;
+
 }
 
 .d-text_opacity{
@@ -2011,7 +2052,8 @@ p{
 }
 .entities .overview p{
     font-weight: normal;
-    font-size: 13px;
+    font-size: 12px;
+    color: #777;
     line-height: normal;
     margin-bottom: 0px;
 }
@@ -2345,6 +2387,7 @@ p{
 .input_add_book{
     background: #f9f2e1;
     width: 172px!important;
+    height: 27px!important;
 }
 
 .btn_search_book{
@@ -2549,6 +2592,8 @@ p{
 }
 .heading .search_entities{
     background: #faf3e1;
+    border: 1px solid #faf3e1;
+    border-right: 0px;
 }
 .desc_group{
     margin-top: 0px;
@@ -3252,10 +3297,20 @@ textarea{
 .container_txt{
     width: 80px!important;
 }
-
+.members .container_txt{
+    width: 122px!important;
+    margin-left: 15px;
+    margin-top: 28px;
+}
+.members .place_pink{
+    margin-top: 5px;
+}
 .item_member{
     margin-left: 33px!important;
-    margin-top: 33px!important;;
+    margin-top: 10px!important;;
+}
+.affiliate .title{
+    margin-left: 0px;
 }
 
 .book_cro .grid-15{
@@ -3609,7 +3664,7 @@ textarea{
     color: #444;
     float: left;
     font-weight: 500;
-    width: 81%;
+    width: 82%;
     padding: 2px 12px 2px 13px;
     font-size: 11px;
     line-height: 25px;
@@ -3635,4 +3690,12 @@ textarea{
 .link:hover{
     background-color: #edd9af;
     transition: all ease-in 0.3s;
+}
+.text_{
+    float: left;
+    height: 172px;
+    overflow: hidden;
+}
+.text_event{
+    min-height: 45px;
 }
