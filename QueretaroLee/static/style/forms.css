@@ -19,6 +19,7 @@
         display: inline-block;
         position: relative;
         margin-top: 0px;
+
     }
     #registry .invalid{
         top: -35px !important;
