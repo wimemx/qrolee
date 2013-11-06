@@ -1676,7 +1676,10 @@ p{
 .d-picture_profile .dz-message{
     width: 200px !important;
 }
-
+.dz-image-preview img{
+    margin-left: 42%;
+    margin-top: 14%;
+}
 /*.d-picture_profile .dz-message span{
     line-height: 15px !important;
     float: left;
