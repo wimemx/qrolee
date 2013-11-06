@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="grid-16 entities registry">
+    <div class="grid-16 entities registry list_reg">
         <div class="grid-15 registry">
             <div class="heading">
                 <h3 class="title grid-13 no-margin fleft">Crear nueva lista</h3>
@@ -69,20 +69,19 @@
                         <textarea class="grid-5 fright no-margin" name="description"></textarea>
                     </p>
                     <p>
-                        Selecciona si deseas tener una lista de títulos o una lista de autores
-                        <br><br>
-                    <span class="grid-3 fleft no-margin" >
-                        <img src="/static/img/radioOn.png" class="radio_btn rad_ti radio_buttom"/>
-                        <span class="radio_btn" >Lista de libros</span>
-                        <input type="hidden" class="active_title" value="1"/>
-                        <input type="hidden" class="radio_value" value="title"/>
-                    </span>
-                    <span class="grid-3 fleft no-margin">
-                        <img src="/static/img/radioOff.png" class="radio_btn rad_aut radio_buttom"/>
-                        <span class="radio_btn">Lista de autores</span>
-                        <input type="hidden" class="active_author" value="0"/>
-                        <input type="hidden" class="radio_value" value="author"/>
-                    </span>
+                        <span class="fleft">Typo de lista</span>
+                        <span class="grid-5 fright no-margin" style="margin-top: 10px!important;" >
+                            <img src="/static/img/radioOn.png" class="radio_btn rad_ti fleft radio_buttom"/>
+                            <span class="radio_btn text_rad" >Lista de libros</span>
+                            <input type="hidden" class="active_title" value="1"/>
+                            <input type="hidden" class="radio_value" value="title"/>
+                        </span>
+                        <span class="grid-5 fright no-margin">
+                            <img src="/static/img/radioOff.png" class="radio_btn rad_aut fleft radio_buttom"/>
+                            <span class="radio_btn text_rad">Lista de autores</span>
+                            <input type="hidden" class="active_author" value="0"/>
+                            <input type="hidden" class="radio_value" value="author"/>
+                        </span>
                     </p>
                     <p class="submit submit_list">
                         <input id="submit" class="btn" value="Guardar" type="submit"/>
@@ -130,7 +129,7 @@
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);
-                });
+               });
             },
             success: function(file) {
                 $('.profile-pic').val(file.name);
@@ -153,12 +152,13 @@
                 else
                     upload_valid = true;
                 $form = $(this);
-                $(this).find('input[type=submit]').fadeOut(200);
+
 
                 if($(this).find('input[type=submit]').hasClass('msg-ok'))
                     window.location.href = site_url;
                 if(valid_form_list($(this)) && upload_valid){
 
+                    $form.find('input[type=submit]').fadeOut(200);
                     $.ajax({
                         type: "POST",
                         url: $(this).attr('action'),

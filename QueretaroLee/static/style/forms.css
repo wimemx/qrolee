@@ -9,15 +9,17 @@
     padding: 0px;
 }
     #registry p{
-        font-size: 12px;
+        font-size: 13px;
         font-family: 'Raleway' sans-serif;
         height: 27px;
+        font-weight: 400;
         line-height: 27px;
         float: left;
         width: 100%;
         display: inline-block;
         position: relative;
         margin-top: 0px;
+
     }
     #registry .invalid{
         top: -35px !important;
