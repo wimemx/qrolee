@@ -185,7 +185,7 @@ input:not([type='submit']){
 }
 
 .fb_btn,.twitter_btn{
-    width: 61px;
+    width: 70px;
     height: 18px;
     display: block;
     margin: 0px 5px 0px 10px;
@@ -500,7 +500,7 @@ p{
                 position: relative;
             }
             .entities .content{
-                margin: 25px 0px 35px 0px;
+                margin: 5px 0px 45px 0px;
                 font-size: 14px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
