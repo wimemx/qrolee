@@ -512,6 +512,7 @@ def register_event(request, **kwargs):
 
 def ajax_register_event(request):
     event = dict(request.POST)
+    print event
     event['owner_id'] = int(request.user.id)
     profile = models.Profile.objects.filter(
         user__id=request.user.id)[0]
