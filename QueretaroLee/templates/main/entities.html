@@ -29,7 +29,7 @@
             </div>
             <p class="content grid-9">{{ content }}</p>
             <a href="/registry/register_entity/{{ entity_type.1 }}">
-                <span style="background-image: none;padding-right: 9px;margin-top: 40px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
+                <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
             </a>
             <div id="scrollbar1" {{ classspot }} >
             <div class="scrollbar" style="right:-40px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
@@ -66,7 +66,7 @@
                         {% endfor %}
                     </p>
                     {% for key, tag in entity.tags.items %}
-                        <a class="d-pink" >{{ tag.name }}</a>
+                        <a class="d-pink tags_spot" >{{ tag.name }}</a>
                     {% endfor %}
                     </div>
                 {% else %}
@@ -115,7 +115,7 @@
                         {% endfor %}
                     </p>
                     {% for key, tag in entity.tags.items %}
-                        <a class="d-pink" >{{ tag.name }}</a>
+                        <a class="d-pink tags_spot" >{{ tag.name }}</a>
                     {% endfor %}
                     </div>
                 {% else %}

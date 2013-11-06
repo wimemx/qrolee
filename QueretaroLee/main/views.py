@@ -364,44 +364,7 @@ def get_entity(request, **kwargs):
         my_vot = my_rate[0].grade
 
     events = models.Event.objects.all()
-    events_months = []
-    for event in events:
-        # Event date = Month, day, id
-        event_date = list()
-        event_date.append(event.start_time.month)
-        event_date.append(event.start_time.day)
-        event_date.append(int(event.id))
-        events_months.append(event_date)
-    hc = calendar.HTMLCalendar(calendar.MONDAY)
-    hc = hc.formatyear(datetime.datetime.now().year)
-    hc = hc.replace('Sun', 'D')
-    hc = hc.replace('Mon', 'L')
-    hc = hc.replace('Tue', 'M')
-    hc = hc.replace('Wed', 'M')
-    hc = hc.replace('Thu', 'J')
-    hc = hc.replace('Fri', 'V')
-    hc = hc.replace('Sat', 'S')
-    hc = hc.replace('January', 'Enero')
-    hc = hc.replace('February', 'Febrero')
-    hc = hc.replace('March', 'Marzo')
-    hc = hc.replace('April', 'Abril')
-    hc = hc.replace('May', 'Mayo')
-    hc = hc.replace('June', 'Junio')
-    hc = hc.replace('July', 'Julio')
-    hc = hc.replace('August', 'Agosto')
-    hc = hc.replace('September', 'Septiembre')
-    hc = hc.replace('October', 'Octubre')
-    hc = hc.replace('November', 'Noviembre')
-    hc = hc.replace('December', 'Diciembre')
-
-    if entity_type.name == 'group':
-        entity_type = ['grupos', 'group', 'grupo']
-    elif entity_type.name == 'organization':
-        entity_type = ['organizaciones', 'organization', 'organización']
-    elif entity_type.name == 'spot':
-        entity_type = ['spots', 'spot']
-    html_parser = HTMLParser.HTMLParser()
-    unescaped = html_parser.unescape(hc)
+    unescaped = load_calendar(events)
 
     if not entityuser:
         member = False
@@ -563,39 +526,7 @@ def event(request, **kwargs):
     template = kwargs['template_name']
     context = {'entity_type':'Event'}
     events = models.Event.objects.all()
-    events_months = []
-    for event in events:
-        # Event date = Month, day, id
-        event_date = []
-        event_date.append(event.start_time.month)
-        event_date.append(event.start_time.day)
-        event_date.append(int(event.id))
-        events_months.append(event_date)
-    hc = calendar.HTMLCalendar(calendar.SUNDAY)
-    hc = hc.formatyear(datetime.datetime.now().year)
-    hc = hc.replace('Sun', 'D')
-    hc = hc.replace('Mon', 'L')
-    hc = hc.replace('Tue', 'M')
-    hc = hc.replace('Wed', 'M')
-    hc = hc.replace('Thu', 'J')
-    hc = hc.replace('Fri', 'V')
-    hc = hc.replace('Sat', 'S')
-    hc = hc.replace('January', 'Enero')
-    hc = hc.replace('February', 'Febrero')
-    hc = hc.replace('March', 'Marzo')
-    hc = hc.replace('April', 'Abril')
-    hc = hc.replace('May', 'Mayo')
-    hc = hc.replace('June', 'Junio')
-    hc = hc.replace('July', 'Julio')
-    hc = hc.replace('August', 'Agosto')
-    hc = hc.replace('September', 'Septiembre')
-    hc = hc.replace('October', 'Octubre')
-    hc = hc.replace('November', 'Noviembre')
-    hc = hc.replace('December', 'Diciembre')
-
-
-    html_parser = HTMLParser.HTMLParser()
-    unescaped = html_parser.unescape(hc)
+    unescaped = load_calendar(events)
 
     context = {
         'entity_type': 'Event',
@@ -893,17 +824,7 @@ def get_list(request,**kwargs):
     content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
                   'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. ' \
-                  'Aenean ultricies mi vitae est. Mauris placerat eleifend leo.' \
-                  ' Quisque sit amet est et sapien ullamcorper pharetra. ' \
-                  'Vestibulum erat wisi, condimentum sed, commodo vitae, ' \
-                  'ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt ' \
-                  'condimentum, eros ipsum rutrum orci, sagittis tempus lacus ' \
-                  'enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. ' \
-                  'Praesent dapibus, neque id cursus faucibus, tortor neque ' \
-                  'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
-                  'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
-
+                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
 
     fields_related_objects = account_models.List._meta.get_all_related_objects(
         local_only=True)
@@ -993,16 +914,7 @@ def get_titles(request,**kwargs):
     content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
                   'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. ' \
-                  'Aenean ultricies mi vitae est. Mauris placerat eleifend leo.' \
-                  ' Quisque sit amet est et sapien ullamcorper pharetra. ' \
-                  'Vestibulum erat wisi, condimentum sed, commodo vitae, ' \
-                  'ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt ' \
-                  'condimentum, eros ipsum rutrum orci, sagittis tempus lacus ' \
-                  'enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. ' \
-                  'Praesent dapibus, neque id cursus faucibus, tortor neque ' \
-                  'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
-                  'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
+                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
 
     list_author = account_models.AuthorTitle.objects.all()
 
@@ -1035,7 +947,7 @@ def get_titles(request,**kwargs):
         if len(rate_title) != 0:
             grade_title = rate_title[0]['score']
 
-        author_name = 'autor anonimo'
+        author_name = 'Autor Anónimo'
         id_author = 0
         author =  account_models.AuthorTitle.objects.filter(title=obj)
 
@@ -1082,17 +994,7 @@ def get_authors(request, **kwargs):
     content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
                   'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. ' \
-                  'Aenean ultricies mi vitae est. Mauris placerat eleifend leo.' \
-                  ' Quisque sit amet est et sapien ullamcorper pharetra. ' \
-                  'Vestibulum erat wisi, condimentum sed, commodo vitae, ' \
-                  'ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt ' \
-                  'condimentum, eros ipsum rutrum orci, sagittis tempus lacus ' \
-                  'enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. ' \
-                  'Praesent dapibus, neque id cursus faucibus, tortor neque ' \
-                  'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
-                  'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
-
+                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
     context = {
         'authors':authors,
         'content':content,
@@ -1256,7 +1158,7 @@ def get_profile(request, **kwargs):
             if len(rate_title) != 0:
                 grade_title = rate_title[0]['score']
 
-            author_name = 'autor anonimo'
+            author_name = 'Autor Anónimo'
 
             author =  account_models.AuthorTitle.objects.filter(title=obj.title)
 
@@ -1328,7 +1230,7 @@ def get_profile(request, **kwargs):
                                                        list__default_type=-1)
         author = account_models.AuthorTitle.objects.filter(title=profile)
 
-        name_author = 'autor anonimo'
+        name_author = 'Autor Anónimo'
         id_author = 0
         if len(author) != 0:
             name_author = author[0].author.name
@@ -1791,7 +1693,40 @@ def generate(content, format="png"):
     con.close()
     return image
 
+def load_calendar(events):
+    events_months = []
+    for event in events:
+        # Event date = Month, day, id
+        event_date = []
+        event_date.append(event.start_time.month)
+        event_date.append(event.start_time.day)
+        event_date.append(int(event.id))
+        events_months.append(event_date)
+    hc = calendar.HTMLCalendar(calendar.SUNDAY)
+    hc = hc.formatyear(datetime.datetime.now().year)
+    year = ' '+ str(datetime.datetime.now().year)
+    hc = hc.replace('Sun', 'D')
+    hc = hc.replace('Mon', 'L')
+    hc = hc.replace('Tue', 'M')
+    hc = hc.replace('Wed', 'M')
+    hc = hc.replace('Thu', 'J')
+    hc = hc.replace('Fri', 'V')
+    hc = hc.replace('Sat', 'S')
+    hc = hc.replace('January', 'Enero' + year)
+    hc = hc.replace('February', 'Febrero' + year)
+    hc = hc.replace('March', 'Marzo' + year)
+    hc = hc.replace('April', 'Abril' + year)
+    hc = hc.replace('May', 'Mayo' + year)
+    hc = hc.replace('June', 'Junio' + year)
+    hc = hc.replace('July', 'Julio' + year)
+    hc = hc.replace('August', 'Agosto' + year)
+    hc = hc.replace('September', 'Septiembre'+ year)
+    hc = hc.replace('October', 'Octubre' + year)
+    hc = hc.replace('November', 'Noviembre' + year)
+    hc = hc.replace('December', 'Diciembre' + year)
 
-def load_words(request):
 
-    pass
+    html_parser = HTMLParser.HTMLParser()
+    unescaped = html_parser.unescape(hc)
+
+    return unescaped

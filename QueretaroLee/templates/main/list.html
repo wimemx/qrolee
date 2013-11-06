@@ -19,29 +19,28 @@
 {% block main_site %}
         <div class="grid-16 entities list__ {{ type.1|capfirst }}">
         <div class="grid-14">
-            <div class="heading">
+            <div class="heading fleft">
                 <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
-                <span class="search fleft grid-4">{% csrf_token %}
+                <span class="search fright grid-4 no-margin">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
                     <input class="my_list_typ" type="hidden" value="1"/>
                     <input class="id_user" type="hidden" value="{{ user.id }}"/>
                     <input type="text" class="field_list search_entities"/>
                     <span class="search_list top dark_yello_btn"></span>
                 </span>
-                <a href="/qro_lee/advanced_search/" class="place_pink avanced_search">
+                <a href="/qro_lee/advanced_search/" class="place_pink fright avanced_search">
                     Búsqueda avanzada
                 </a>
-                <a href="/registry/register_list/">
-                    <span style="background-image: none;padding-right: 9px;" class="brown_btn fright">Crear listas</span>
-                </a>
             </div>
-            <p class="content">{{ content }}</p>
+            <p class="content content grid-9 no-margin">{{ content }}</p>
+            <a class="grid-3 no-margin fright" href="/registry/register_list/">
+                <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear listas</span>
+            </a>
             <div id="scrollbar1">
             <div class="scrollbar"><div class="track"><div class="thumb">
                 <div class="end"></div></div></div></div>
             <div class="viewport">
                 <div class="overview ">
-
                      {% for key, value in list.items %}
                             <div class="item_list grid-14 no-margin" >
                                 <a href="/qro_lee/profile/list/{{ value.id }}">
@@ -56,24 +55,13 @@
                                     </span>
                                 </a>
                                 <span class="container_data grid-12 no-margin">
-                                    <span class=" grid-9 no-margin">
+                                    <span class=" grid-12 no-margin">
                                         <a title="{{ value.name }}" href="/qro_lee/profile/list/{{ value.id }}"
                                             class="title alpha title_book">
                                             {{ value.name }}
                                         </a>
                                     </span>
-                                    <p class="grid-3 no-margin">
-                                        <span class="fright">
-                                            {% for x in 'xxxxx' %}
-                                                {% if forloop.counter < value.grade %}
-                                                    <img src="/static/img/comunityStar.png" />
-                                                {% else %}
-                                                    <img src="/static/img/backgroundStar.png" />
-                                                {% endif %}
-                                            {% endfor %}
-                                        </span>
-                                    </p>
-                                    <p class="d-text_list grid-12 d-text_opacity no-margin" >
+                                    <p class="d-text_list grid-9 d-text_opacity no-margin" >
                                         Lista con {{ value.count }}
                                         {% if value.type == 'T' %}
                                             libros
@@ -85,8 +73,19 @@
                                             <span class="d-pink">{{ value.user }}</span>
                                         </a>
                                     </p>
-                                    <p class="d-text_list grid-12 no-margin" >
-                                        {{ value.description|truncatechars:520 }}</p>
+                                    <p class="grid-3 no-margin">
+                                        <span class="fright mini_rate">
+                                            {% for x in 'xxxxx' %}
+                                                {% if forloop.counter < value.grade %}
+                                                    <img src="/static/img/comunityStar.png" />
+                                                {% else %}
+                                                    <img src="/static/img/backgroundStar.png" />
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </p>
+                                    <p class="d-text_list grid-8 no-margin" >
+                                        {{ value.description|truncatechars:245 }}</p>
                                 </span>
                             </div>
                      {% endfor %}
@@ -105,7 +104,7 @@
                                         </h3>
                                     </a>
                                     <p class="fleft margin_left no-margin grid-2">
-                                        {% if value.author != 'autor anonimo' %}
+                                        {% if value.author != 'Autor Anónimo' %}
                                             <a href="/qro_lee/profile/author/{{ value.id_author }}"
                                                    class="title_author" >
                                                 {{ value.author|truncatechars:17 }}

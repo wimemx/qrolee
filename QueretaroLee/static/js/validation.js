@@ -146,7 +146,6 @@ function type_add_list(csrf, id ,query){
     if($('.type_list').length > 0)
         type = $('.type_list').val();
     var data = search_titles_and_author_in_api_bd(type, csrf, query);
-
     switch (id){
         case 1:
             dialog_titles(csrf,data,1);

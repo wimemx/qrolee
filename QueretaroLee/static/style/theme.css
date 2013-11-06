@@ -1120,7 +1120,7 @@ p{
             text-decoration: underline
         }
         .content .contact .title.main{
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 500;
         }
         .spot .grid-6.overview{
@@ -1253,7 +1253,6 @@ p{
                     text-align: left;
                     border: none;
                     font-family: 'Raleway' ,sans-serif;
-                    text-transform: capitalize;
                     padding: 0px;
                 }
                 .wrapper.grid-5 .title{
@@ -1274,7 +1273,7 @@ p{
                          float: left;
                         display: block;
                         font-weight: 100;
-                        font-size: 10px;
+                        font-size: 11px;
                         font-family: 'Conv_fontscore.com_d-dinproregular';
                         width: 100%;
                         color: #f89883;
@@ -1300,7 +1299,9 @@ p{
 
                      }
                      
-
+            .events .sidebar-b .overview{
+                margin-left: 7px;
+            }
 
             .sidebar-b .overview{
                 width: 100%;
@@ -1343,6 +1344,8 @@ p{
                             cursor: pointer;
                             font-weight: 400;
                             float: left;
+                            text-align: left;
+                            width: 110px;
                             margin-top: 5px;
                             margin-left: -5px;
                         }
@@ -1629,7 +1632,7 @@ p{
 }
 
 .d-title_profile{
-    color: #000000 !important;
+    color: #b69035 !important;
     margin-top: 0px;
 }
 
@@ -1796,6 +1799,7 @@ p{
 .d-text_list{
     font-size: 12px !important;
     margin-top: 5px !important;
+    color: #777;
 }
 
 .item_list{
@@ -1855,7 +1859,8 @@ p{
 
 .Title .title_book{
     margin-left: 15px;
-    width: 130px;
+    width: 135px;
+    margin-top: 30px!important;
 }
 .p-d-text{
     font-size: 12px !important;
@@ -2023,13 +2028,15 @@ p{
 }
 
 .avanced_search{
-    margin-left: 10px;
-    font-size: 14px !important;
+    margin-right: -13px;
+    margin-top: 5px!important;
+    font-size: 13px !important;
     cursor: pointer;
 }
 
 .container_data{
     float: left;
+    margin-top: 14px!important;
 }
 
 .list_scroll .entities .grid-15{
@@ -3667,4 +3674,26 @@ textarea{
 }
 .text_event{
     min-height: 45px;
+}
+.tags_spot{
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+}
+
+.list .d-title_profile{
+    color: #000!important;
+}
+.mini_rate img{
+    width: 16px;
+    height: 15px;
+}
+
+.list_reg{
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.text_rad{
+    float: left;
+    margin-top: -5px;
+    margin-left: 5px;
 }
