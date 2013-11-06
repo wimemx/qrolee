@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load staticfiles %}
+    {% load registry_tags %}
     <title>Querétaro Lee</title>
     <link rel="icon" type="image/x-icon" href="/static/img/favicon.png" %}" />
     <!-- Head tags -->
@@ -27,10 +28,12 @@
     <script type="text/javascript" src="{% static "js/prefixfree.min.js" %}"></script>
 
     <script>
+    {% if user %}
+    {% if user|fsocial_session %}
               window.fbAsyncInit = function() {
                 // init the FB JS SDK
                   FB.init({
-                      appId      : '476600992414046', //   '570894232960484', //                     // App ID from the app dashboard
+                      appId      : '570894232960484', //  '476600992414046', //                   // App ID from the app dashboard
                       channelUrl : 'http://localhost:8000/', // Channel file for x-domain comms
                       status     : true,                                 // Check Facebook Login status
                       xfbml      : true                                  // Look for social plugins on the page
@@ -45,9 +48,14 @@
                  js.src = "//connect.facebook.net/en_US/all.js";
                  fjs.parentNode.insertBefore(js, fjs);
                }(document, 'script', 'facebook-jssdk'));
-
-
+    {% endif %}
+    {% endif %}
+    $(document).ready(function(){
+        if($.trim($('input.fb-session-required-val').val()) == 0)
+            $('.fb-session-required').remove();
+    });
     </script>
+
     {% block js %}{% endblock %}
 
 
@@ -59,6 +67,8 @@
 <body >
 <div class="header">
     <div class="container-16">
+
+        <input type="hidden" class="fb-session-required-val" value="{% if user %}{% if user|fsocial_session %}1{% else %}0{% endif %}{% endif %}"/>
     {% block head %}
 
     {% endblock %}

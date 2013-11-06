@@ -19,7 +19,17 @@
 {% endblock %}
 
 {% block main_site %}
-<div class="erase"></div>
+    <div class="wrapper_message">
+        <div class="container-16 container_message">
+            <div class="fb-accept alert-message gray">{% csrf_token %}
+                <p>Tu solicitud sera aceptada por medio de facebook</p>
+                <span class="accept green_btn fleft">Aceptar</span>
+                <span style="margin-left: 5px;" class="reject fleft">Rechazar</span>
+            </div>
+        </div>
+    </div>
+
+
 <div class="grid-16 entities">
     <div class="grid-14 container_event">
         <div class="d-container-1 border_bottom">
@@ -54,9 +64,11 @@
                     </span>
                 {% endif %}
                 <div class="offset-7">
-                    <div class="d-buttoms">
+                    <div class="d-buttoms fb-session-required">
                     <input type="button" id="d-btn-facebook" value="facebook" />
+                    {% if event.fb_id and not is_attending %}
                     <input type="button" id="d-btn-attend" value="Asistir" />
+                    {% endif %}
                     </div>
                 </div>
                 <div class="d-line"></div>
@@ -72,6 +84,8 @@
                 </div>
 
                 <div class="grid-2">
+                    <input type="hidden" class="fb_event_id" {% if event.fb_id %} value="{{ event.fb_id }}" {% else %} value="-1" {% endif %}/>
+                    <input type="hidden" class="event_id" value="{{ event.id }}"/>
                     <div class="d-date">
                         <p><b>Fecha</b></p>
                         <p>{{ date.weekday }} {{ date.day }}

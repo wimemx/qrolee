@@ -66,6 +66,9 @@ input:not([type='submit']){
 .margin-50{
     margin-top: 50px !important;
 }
+.margin-30{
+    margin-top: 30px !important;
+}
 .container-16 .clear{
     clear: both;
     float: left;
@@ -581,7 +584,7 @@ p{
                 font-size: 12px;
             }
         .entity .general-info .title{
-            color: #cccc66;
+            color: #C3C361;
             font-size: 25px;
             text-align: left;
             width: 100%;
@@ -597,7 +600,7 @@ p{
             line-height: normal;
         }
         .title.group, a.group{
-            color: #cccc66;
+            color: #C3C361;
             float: none;
             display: inline-block;
         }
@@ -614,7 +617,7 @@ p{
         a.color_btn{
             font-family: 'Raleway' sans-serif;
             padding: 3px 8px 3px 8px;
-            background: #cccc66;
+            background: #C3C361;
             color: #000;
             margin-bottom: 10px;
             display: block;
@@ -672,7 +675,7 @@ p{
             color: #222;
         }
         .entities a.title{
-            margin-top: 25px;
+            margin-top: 12px;
             font-size: 18px;
             line-height: normal;
         }
@@ -804,7 +807,7 @@ p{
             color:#000 !important;
         }
         .entity .nav .btn:hover,.entity .nav .btn.active{
-            background: #cccc66;
+            background: #C3C361;
             border-color: #b8b84d;
         }
         .entity .nav.spot .btn:hover,.entity .nav.spot .btn.active{
@@ -857,6 +860,15 @@ p{
     .discussion{
 
     }
+        .discussion .ruler{
+            position: absolute;
+            top: 25px;
+            right: -30px;
+            width: 1px;
+            height: 100%;
+            display: block;
+            background: #c4c4c4;
+        }
         .brown_btn.discuss{
             margin-top: 25px;
         }
@@ -886,18 +898,25 @@ p{
                     font-size: 10px;
                 }
         .discussion .item{
-            height: 90px !important;
+            height: 60px;
             border-top: 1px solid #f9f2e1;
             border-bottom: 1px solid #f9f2e1;
             width: 100%;
             display: block;
-            padding-top: 10px;
+            padding: 10px;
         }
+            .discussion .item .title{
+                font-size: 16px;
+            }
         .discussion .main{
             margin-top: 25px;
+            font-size: 20px;
         }
         .discussion .item:nth-child(1){
             border-top: none;
+        }
+        .discussion .item.active, .discussion .item:hover{
+            background: #faf3e3;
         }
 
     .discussion .discuss .title{
@@ -1036,7 +1055,7 @@ p{
 
             }
 .item{
-    height: 128px !important;
+    height: 128px;
 }
 
 .organization .item p,.group .item p{
@@ -1159,6 +1178,9 @@ p{
                 font-weight: 400;
                 margin-top: 0px;
             }
+            .content .sidebar-a .date{
+                min-width: 65px;
+            }
             .content .sidebar-a p{
                 width: 100%;
                 margin-bottom:8px;
@@ -1181,6 +1203,7 @@ p{
                     font-weight: 500;
                     padding: 3px 9px;
                     margin-top: 4px;
+                    cursor: pointer;
                 }
                 .content .sidebar-a .location p{
                     width: auto;
@@ -1191,8 +1214,6 @@ p{
                 }
                 .content .sidebar-a .location a{
                     position: relative;
-                    top: 12px;
-
                 }
                     .location p span{
                         font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -1558,7 +1579,7 @@ p{
 }
 
 .d-entity_title{
-    color: #cccc66;
+    color: #C3C361;
 
 }
 
@@ -1652,12 +1673,12 @@ p{
     width: 200px !important;
 }
 
-.d-picture_profile .dz-message span{
+/*.d-picture_profile .dz-message span{
     line-height: 15px !important;
     float: left;
     margin-left: 40px;
     margin-top: 76px;
-}
+}*/
 
 .d-text_picture{
     margin-top: 70px;
@@ -1724,6 +1745,7 @@ p{
         .lightbox.fb-objs span{
             display: block;
             margin-bottom: 20px;
+            position: relative;
         }
             .lightbox.fb-objs .wrapper{
                 width: 100px;
@@ -2056,7 +2078,12 @@ p{
     font-size: 12px;
     color: #777;
     line-height: normal;
+    margin-bottom: 0px;
 }
+    .entities .overview .small{
+        font-size:11px;
+        margin-top: 10px;
+    }
 
 .page .grid-15 {
     min-height: 680px !important;
@@ -3354,16 +3381,29 @@ textarea{
     left: 20px!important;
 }
 
+.qr-div{
+    margin-top: 40px;
+}
+    .qr-div h3.title{
+        margin-top: 50px;
+        float: none;
+    }
+    .qr-div .main.title{
+        margin-top: 0px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
 .qr-wrapper{
     background: #fffcf5;
-    height: 300px;
+    height: 260px;
     padding-top: 50px;
     margin-bottom: 100px !important;
     border: 2px dashed #000000;
     border-radius: 8px;
 }
     .qr{
-        height: 220px;
+        height: 160px;
         display: block;
     }
         .qr img{
@@ -3371,13 +3411,20 @@ textarea{
             height: 100%;
         }
     .qr-link{
-        margin-top: 30px;
         clear: both;
     }
+
     .view-pdf{
-        margin-top: 30px;
+        margin-top: 20px;
         cursor: pointer;
-    }.book_register .title{
+        clear: right;
+        text-align: center;
+        padding-bottom: 6px;
+        padding-top: 6px;
+
+    }
+
+.book_register .title{
     font-size: 12px!important;
     margin-bottom: 10px!important;
 }
@@ -3696,4 +3743,25 @@ textarea{
     float: left;
     margin-top: -5px;
     margin-left: 5px;
+}
+
+
+::-webkit-input-placeholder {
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+:-ms-input-placeholder {
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
 }

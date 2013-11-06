@@ -32,7 +32,7 @@
                 <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear {{ entity_type.0 }}</span>
             </a>
             <div id="scrollbar1" {{ classspot }} >
-            <div class="scrollbar" style="right:-40px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+            <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
             <div class="viewport error">
                 <div class="overview">
                 {% for obj, entity in user_entities.items %}
@@ -46,6 +46,7 @@
                             <div class="grid-7 alpha">
                         {% endif %}
                 {% endif %}
+
                     <span class="wrapper {{ classimage }}">
                     <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/">
                         {% if not entity.picture %}

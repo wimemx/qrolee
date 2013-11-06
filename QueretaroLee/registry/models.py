@@ -128,6 +128,7 @@ class Event(models.Model):
     privacy_type = models.BooleanField(default=False)
     status = models.BooleanField(default=True)
     share_fb = models.BooleanField(default=False)
+    fb_id = models.CharField(max_length=45)
     location = models.ForeignKey(Entity)
     owner = models.ForeignKey(User)
 
@@ -135,6 +136,12 @@ class Event(models.Model):
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.description)
+
+
+class AssistEvent(models.Model):
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(User)
+    is_attending = models.BooleanField(default=False)
 
 
 class Book(models.Model):

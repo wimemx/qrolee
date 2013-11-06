@@ -16,7 +16,16 @@
 {% endblock %}
 
 {% block main_site %}
+<div class="wrapper_message">
+        <div class="container-16 container_message">
+            <div class="fb-accept alert-message gray">{% csrf_token %}
+                <p>Tu solicitud sera aceptada por medio de facebook</p>
+                <span class="accept green_btn fleft">Aceptar</span>
+                <span style="margin-left: 5px;" class="reject fleft">Rechazar</span>
 
+            </div>
+        </div>
+    </div>
         <div class="grid-16 events content single">
             <div class="heading d-heading_event grid-14">
                 <h3 class="title grid-4 fleft">Eventos</h3>
@@ -28,6 +37,7 @@
             </div>
         <div class="grid-14 load offset-1 no-margin">
             <div class="sidebar-a grid-9 no-margin_events">
+                <input type="hidden" class="event-fb" value=""/>
                 <span class="month">Septiembre</span>
                 <div id="scrollbar1">
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
@@ -55,6 +65,7 @@
                                     <span class="location fright">
                                         <p>
                                             <span class="place">Centro Historico</span><br>
+
                                             <span class="place2">Queretaro</span>
                                         </p>
                                         <span class="apply fright">asistir</span>
@@ -80,6 +91,7 @@
                 </div>
             </div>
         </div>
+
         </div>
 
 {% endblock %}

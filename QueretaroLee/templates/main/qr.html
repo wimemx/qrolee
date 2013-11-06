@@ -18,29 +18,31 @@
     {% include 'header.html' %}
 {% endblock %}
 {% block main_site %}
-    <div class="grid-16">
+    <div class="grid-16 qr-div">
+    <div class="grid-16 news-feed no-margin" style="display: block">
+        <div style="padding-bottom: 20px;border-bottom: 1px solid #c4c4c4;" class="grid-10 center">
         <h3 class="title center">¡Listo!</h3>
-        <h4 class="title center">Imprime, recorta y pega esta etiqueta en la contra parte de tu libro</h4>
-        <div class="grid-10 center margin-50 qr-wrapper">
-            <div class="grid-9 center">
-                <span class="qr grid-4 no-margin fleft">
+        <p class="din-r center">Imprime, recorta y pega esta etiqueta en la contra parte de tu libro</p>
+            </div>
+        <div class="grid-9 center margin-30 qr-wrapper">
+            <div class="grid-8 center">
+                <span class="qr grid-3 no-margin fleft">
                     <img src="/static/qr/{{ code }}.png" alt=""/>
                 </span>
-                <span style="height: 220px;" class="grid-5 no-margin fright">
-                    <h3 class="main no-margin title">Hola, este libro no está perdido.
-                    Se encuentra viajando por el mundo</h3>
+                <span class="grid-5 no-margin fright">
+                    <h3 class="main no-margin title">Hola, este libro se encuentra viajando por el mundo</h3>
                     <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
                         Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.
-                        Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
-                        Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
-                        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. </p>
+                        Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
 
 
                     <h4 class="left">código: {{ code }}</h4>
+                    <a class="qr-link fleft" href="{{ url }}">{{ url }}</a>
                 </span>
-                <a class="qr-link fleft" href="{{ url }}">{{ url }}</a>
-                <p class="grid-2 view-pdf category fright">Ver pdf</p>
+
+                <a href="/qro_lee/qr_to_pdf/{{ code }}" target="_blank" class="view-pdf green_btn fright">Imprimir</a>
             </div>
+        </div>
         </div>
     </div>
 {% endblock %}

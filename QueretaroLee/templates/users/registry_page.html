@@ -124,21 +124,11 @@
 
                                 if(data.success == 'True'){
                                     if($('.fb_session').val()=='1'){
-                                        FB.ui(
-                                                {
-                                                    method: 'feed',
-                                                    name: 'Qro_lee',
-                                                    link: 'http://localhost:8000/',
-                                                    caption: page_name,
-                                                    description: $('.user_name').val()
-                                                            + ' ha creado la pagina ' + page_name,
-                                                    message: content
-                                                },
-                                                function(response) {
-                                                    window.location.href = site_url +
-                                                            '/qro_lee/user/' + data.user_id +
-                                                            '/page/'+data.page_id;
-                                                });
+                                        post_to_fb(
+                                                page_name,
+                                                $('.user_name').val()+ ' ha creado la pagina ' + page_name,
+                                                content,
+                                                true, site_url +'/qro_lee/user/' + data.user_id +'/page/'+data.page_id);
                                     }else{
                                         window.location.href = site_url +
                                                             '/qro_lee/user/' + data.user_id +

@@ -137,17 +137,24 @@
                     </form>
                 {% else %}
 
-                    {% if entity.privacy != 0 %}
+                    {% if entity.privacy != 0 and not request_sent %}
                         <span class="btn no-ajax fright">Seguir</span>
                             <p class="private-icon fright">
                                 <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                             </p>
                     {% else %}
-                        <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="membership" value="1"/>
-                            <input type="submit" class="btn " value="Seguir">
-                        </form>
+                        {% if request_sent %}
+                            <span style="width: 100px;left: -30px;position: relative;" class="btn no-action no-ajax fleft">Solicitud enviada</span>
+                            <p class="private-icon fright">
+                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                            </p>
+                        {% else %}
+                            <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="membership" value="1"/>
+                                <input type="submit" class="btn " value="Seguir">
+                            </form>
+                        {% endif %}
                     {% endif %}
 
                 {% endif %}
@@ -279,7 +286,7 @@
     <div class="grid-16 news-feed load no-margin" style="display: block">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
 
-        <div style="margin: 25px; 0px 0px 30px;" class="grid-8 left">
+        <div style="margin: 30px; 0px 0px 30px;" class="grid-9 left">
             <h3 class="title">Actividad</h3>
             {% if activity  %}
             <div style="margin:0px;" id="scrollbar1">
@@ -648,18 +655,21 @@
         <div class="grid-16 discussion load no-margin">
         <div class="grid-15 center">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
+            {% if member %}
             <span style="background-image: none;" class="brown_btn fright discuss">Crear nueva discusión</span>
+            {% endif %}
             <div class="grid-5 fleft alpha">
+            <span class="ruler"></span>
             <h3 class="title main">Discusiones
                 <span class="select_wrapper grid-2 alpha fright">
-                <span class="grid-2 select no-margin">
+               <!-- <span class="grid-2 select no-margin">
                             <span class="text">Publica</span>
                             <span class="dropdown"></span>
                             <select class="change value" name="privacy">
                                 <option value="publica">Publica</option>
                                 <option value="privada">Privada</option>
                             </select>
-                </span>
+                </span>-->
                 </span>
             </h3>
             <div class="heading">

@@ -30,6 +30,9 @@ function truncText (text, maxLength, ellipseText){
 function populateCal(curr_month,$item){
     $('.item').remove();
     $('.d-not_found').remove();
+    var edit = 0;
+    if($('.d-edit-event').length > 0)
+        edit = -1;
     if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
@@ -52,6 +55,7 @@ function populateCal(curr_month,$item){
             },
             dataType: 'json'
         }).done(function(data){
+                var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
                 $.each(data,function(index){
@@ -60,7 +64,6 @@ function populateCal(curr_month,$item){
                     $.each(event,function(i){
                         var $ditem = $item.clone();
                         var e = event[i];
-                        console.log(e);
                         //Event name, day#,Week num ex Mon, picture,description, time, id, user_id
 
                         var picture_url = window.location.origin+'/static/media/users/'+
@@ -100,18 +103,60 @@ function populateCal(curr_month,$item){
                         span_text.append(p);
                         span_text.append(span_time);
                         span_locat = $('<span class="location fright"><span>');
-                        p_2 = $('<p></p>');
-                        var loc = e[7].split('-');
-                        var location_name = loc[0].split("#");
+
+                        p_2 = $('<p class="fright"></p>');
+                        var loc = e[7];
+                        var location_name = loc.split("#");
                         span_place_1 = $('<span class="place">'+truncText(location_name[0],30)+'</span><br>');
                         p_2.append(span_place_1);
                         if(location_name.length>1){
                             span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
                             p_2.append(span_place_2);
                         }
-                        span_apply = $('<span class="apply fright">asistir</span>');
+                        if($.trim($('input.fb-session-required-val').val()) != 0){
+
+                            if(e[10]){
+                                if(!e[11]){
+                                    span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
+                                    span_apply.click(function(){
+                                        assist_fb_event(e[10], span_apply);
+                                    });
+                                }else
+                                span_apply = '';
+                            }else
+                                span_apply = '';
+
+                        }else
+                            span_apply = '';
                         span_locat.append(p_2);
-                        span_locat.append(span_apply);
+                        if(edit == -1){
+                            var aedit = $('<a href="#" class="green_btn size_btn_edit">Editar</a>');
+                            var aerase = $('<a href="#" class="pink_btn size_btn_edit">Borrar</a>');
+                            aedit.attr('href','/registry/edit/event/'+e[6]);
+                            span_locat.append(aedit);
+                            span_locat.append(aerase);
+                            aerase.click(function(evnt){
+                                evnt.preventDefault();
+                                $this = $(this).closest('.item');
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/registry/delete/event/1/',
+                                    data: {
+                                        'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                                        'type': 'registry.event',
+                                        'id': e[6]
+                                    },
+                                    dataType: 'json'
+                                }).done(function(){
+                                        $this.fadeOut(300,function(){
+                                            $(this).remove();
+                                        });
+                                    });
+                                return false;
+                            });
+                        }else{
+                            span_locat.append(span_apply);
+                        }
                         span_text.append(span_locat);
                         span_item.append(span_lin);
                         span_item.append(span_wrap);
@@ -151,18 +196,21 @@ function populateCal(curr_month,$item){
 
                         if((counter+1) == length){
                             $('.sidebar-a .overview *[class*="item_"]').fadeIn(300,function(){
-
-
                             }).css('display','block');
                         }
-
+                        if((counter+1) == length){
+                            //console.log($('#scrollbar').data('overview'));
+                        }
                         counter++;
                     });
+
                 });
                 if(counter==0){
                     text_no_found('eventos para este mes');
+                }else{
+                    //$('#scrollbar').tinyscrollbar();
                 }
-                $('.scroll_events').tinyscrollbar();
+                //$('.scroll_events').tinyscrollbar();
             });
     }
 }
@@ -188,8 +236,40 @@ function removeUser($ele,user_id, remove, entity){
     });
 }
 
-function findUser($ele, userEmail, entity, $parent){
+function assist_fb_event(event_fb_id, $ele, id){
+    if(!id)
+        id = -1;
+    $('.container_message .alert-message').fadeOut(300,function(){
+        $('.container_message').fadeIn(300,function(){
+            $('.container_message .fb-accept').fadeIn(300);
+        });
+    });
+    $('.fb-accept .accept').click(function(){
+        FB.api(
+            event_fb_id+'/attending',
+            'post',
+            function(response) {
+                $ele.remove();
+                if(id != -1){
+                    $.ajax({
+                        type: "POST",
+                        url: '/registry/delete/event/1/',
+                        data: {
+                            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                            'type': 'registry.assistevent',
+                            'id': id,
+                            'is_event': true
+                        },
+                        dataType: 'json'
+                    });
+                }
+            });
+    });
+}
 
+function findUser($ele, userEmail, entity, $parent, member){
+    if(!member)
+        member = -1;
     $item = $parent.find('.affiliate').clone();
     $.ajax({
         type: "POST",
@@ -198,7 +278,8 @@ function findUser($ele, userEmail, entity, $parent){
         data: {
             'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
             'user_email': userEmail,
-            'entity': entity
+            'entity': entity,
+            'member': member
         }
     }).done(function(data) {
             $.each(data,function(index){
@@ -216,6 +297,13 @@ function findUser($ele, userEmail, entity, $parent){
                         span.find('.user-id').val(user[i][1]);
                         span.find('img').attr('src',img_url);
                         span.find('.since').html('Se únio hace '+user[i][3]+' meses');
+                        if(user[i][5]){
+                            span.append($('<p>'+truncText(user[i][5],100)+'</p>'));
+                            span.find('.name').parent().css({
+                                'margin-top': 10
+                            });
+                        }
+                        console.log(user[i]);
                         span.appendTo($parent);
                         span.fadeIn(300);
                         if(user[i][4])
@@ -323,40 +411,6 @@ function update_obj(field, value, $this, event){
 }
 
 function advanced_search(search_params, csrf){
-    /*
-        query = {
-                'title__icontains': 'String de busqueda',
-                'pk__in': JSON.stringify([1,2]) (como en django para la busqueda de pk)
-            }
-            fields = ['title', 'cover']; campos en los que bas a buscar
-            and = 1; is es un query tipo and o tipo or
-            join = { (las tablas con las que haces relacion)
-                'tables':{
-                    0: JSON.stringify(['account.author','account.authortitle']),
-                    1: JSON.stringify(['account.rate'])
-                },
-                'quieres':{
-                    0: JSON.stringify(['title_id']),
-                    1: JSON.stringify(['element_id'])
-                },
-                'fields':{
-                    0: JSON.stringify(['first_name','last_name']),
-                    1: JSON.stringify(['grade'])
-                }
-            }
-            join = JSON.stringify(join); conviertes el join en un string
-
-            search = {
-                'type': type, el modelo en el que vas a buscar account.title account.list etc...
-                'fields': JSON.stringify(fields),
-                'value': JSON.stringify(query),
-                'and': and,
-                'join': join
-            }
-            search = JSON.stringify(search); conviertes el objeto a string
-            var csrf = el csrf
-            result = advanced_search(search, csrf);
-    */
     var result;
     $.ajax({
         type: "POST",
@@ -379,6 +433,7 @@ function search_api(csrf, query, aux_api){
     var ret = null;
     if(!aux_api)
         aux_api = 0;
+
     $.ajax({
         type: "POST",
         async: false,
@@ -498,11 +553,22 @@ $(document).ready(function(){
             });
 
     });
+    $('#d-btn-attend').click(function(){
+        if($('input.fb_event_id').val() != -1)
+            assist_fb_event($('input.fb_event_id').val(), $(this), $('.event_id').val());
+    });
+    $('#d-btn-facebook').click(function(){
+        var caption = 'Acompañenme a este evento!';
+        var description = $('.title').html()+' organizado por '+$('.d-by .place_pink').html();
+        var content = truncText($('.d-description p').html(), 100);
+        post_to_fb(caption, description, content, false);
+    });
 
     $('#form_search').submit(function(e){
         return search_book_code($(this));
      });
     $('#form_isbn').submit(function(e){
+
         var isbn = $(this).find('input[name=isbn]').val();
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
@@ -808,6 +874,14 @@ $(document).ready(function(){
         findUser($('.alert-message'), '-1',
             $('.alert-message').find('.entity').val(), $('.admin'));
     });
+    $('.entity .admin_nav.nav .btn:eq(1)').click(function(){
+        $('.load.add').find("*[class*='user_']").each(function(){
+            $(this).remove();
+        });
+        $('input.type').val(1);
+        findUser($('.alert-message'), '-4',
+            $('.alert-message').find('.entity').val(), $('.add'));
+    });
     $('.entity .admin_nav.nav .btn.members').click(function(){
         $('.mmembers').find("*[class*='user_']").each(function(){
             $(this).remove();
@@ -844,6 +918,16 @@ $(document).ready(function(){
          add_rate($(this));
     });
 
+    $('.search_result').fadeOut(250);
+    if(!set_act)
+        $('.sub-menu-h').fadeOut(250);
+    set_act = false;
+    if(!men_1)
+        $('.sub-menu').fadeOut(250);
+    men_1 = false;
+    if(!combo_act)
+        $('.value_sel').fadeOut(200);
+    combo_act = false;
 
     $('.text_act').click(function(){
         show_title_act($(this));
@@ -857,6 +941,10 @@ $(document).ready(function(){
 
     if($('.discussion.load').length > 0){
         $('.discussion.load a.title').click(function(e){
+            $(this).parent().parent().find('.item').each(function(){
+                $(this).removeClass('active');
+            });
+            $(this).parent().addClass('active');
             $('.discussion_contents .discuss').remove();
             e.preventDefault();
             discussion($(this).attr('id'));
@@ -931,6 +1019,10 @@ function create_discussion(entity_id, name, content){
                 '<a class="spot category" href="#">' +discuss.username+'</a></p>' +
                 '<p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
             $span.find('a.title').click(function(e){
+                $(this).parent().parent().find('.item').each(function(){
+                    $(this).removeClass('active');
+                });
+                $(this).parent().addClass('active');
                 $('.discussion_contents .discuss').remove();
                     e.preventDefault();
                     discussion($(this).attr('id'));
@@ -1586,6 +1678,7 @@ function search_list_authors_titles($this){
                         var value = $('.field_list').val();
                        if(value.length != 0){
 
+                        if(value.length != 0){
                             var data_api = search_titles_and_author_in_api_bd('T', csrf, value);
                             data_api = data_api[1];
                            if (data_api != null){
@@ -1758,8 +1851,10 @@ function search_list_authors_titles($this){
 
 
 function search_entities($this){
+    var scroll = jQuery('#scrollbar1');
+    scroll.tinyscrollbar();
     var $item = $('.sidebar-a .item').clone();
-
+    var all_ = ''
     //if(content_search_entity){
     if($this.parent().find('.type').val()=='Event'){
 
@@ -1800,8 +1895,10 @@ function search_entities($this){
                 if(data){
                     $('.overview').fadeOut(250,function(){
                         $('.overview').empty();
+                        var div;
                         var len = 0;
                         var empty = false;
+
                         $.each(data,function(index){
                             var entity_obj = data[index];
 
@@ -1856,8 +1953,6 @@ function search_entities($this){
 
                                 }else{
 
-                                    var div;
-
                                     if(len%2 == 0)
                                         div = $('<div class="grid-7 alpha">' +
                                             '</div>');
@@ -1902,6 +1997,7 @@ function search_entities($this){
                                     div.find('.p_').html(truncText(entity_obj[i].
                                         description,150));
                                     div.find('.img');
+
                                 }
                             });
                             $('.d-not_found').remove();
@@ -1919,7 +2015,8 @@ function search_entities($this){
                             }
                         });
                         $('.overview').fadeIn(250,function(){
-                             $('#scrollbar1').tinyscrollbar();
+
+                            $('#scrollbar1').tinyscrollbar();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);
@@ -2178,20 +2275,6 @@ function search_pages(){
 
     show_dialog();
 }
-
-$(document).click(function(){
-    $('.search_result').fadeOut(250);
-    if(!set_act)
-        $('.sub-menu-h').fadeOut(250);
-    set_act = false;
-    if(!men_1)
-        $('.sub-menu').fadeOut(250);
-    men_1 = false;
-    if(!combo_act)
-        $('.value_sel').fadeOut(200);
-    combo_act = false;
-
-});
 
 function add_rate($this){
     $.ajax({

@@ -10,6 +10,7 @@
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
 {% endblock %}
 
 {% block head %}
@@ -17,18 +18,21 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="erase"></div>
     <div class="grid-16 edit">
-    <div class="grid-14 center">
-        <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
+        <div class="grid-14 center">
+            <input type="hidden" value="event" class="type" />
+            <input type="hidden" class="id_object" value="{{ entity.id }}" />
+            <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <span class="title main">Editar evento
             <a href="/qro_lee/events/{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
-             {% block entity_menu %}
+            {% block entity_menu %}
                 {% include 'blocks/entity_menu.html' %}
             {% endblock %}
         </span>
 
+
         <span class="data grid-9 fleft no-margin">
+
             <p>Nombre
                 <span class="controllers_wrapper">
                     <span class="green_btn fright">Editar</span>
@@ -121,9 +125,78 @@
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
         </span>
-    </div>
+        <span class="d-picture_user grid-4 no-margin fright"  >
+            {% if entity.picture %}
+                <span class="del_pict grid-4 no-margin show_upload text_cent">Quitar logotipo</span>
+                <span class="d-picture_user wrapper_picture_user">
+                    <img class="img_size_all"
+                         src="/static/media/users/{{ entity.owner_id }}/event/{{ entity.picture }}" />
+                </span>
+                <span class="dropzone_user disable_upload">
+                    <!--<span class="grid-4 no-margin text_cent">logotipo</span>-->
+                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="event_picture" value="1"/>
+                        <input type="hidden" name="event" value="{{ entity.id }}"/>
+                    </form>
+                </span>
+            {% else %}
+                <span class="dropzone_user ">
+                    <!--<span class="grid-4 no-margin text_cent">logotipo</span>-->
+                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="event_picture" value="1"/>
+                        <input type="hidden" name="event" value="{{ entity.id }}"/>
+                    </form>
+                </span>
+            {% endif %}
+    </span>
+    <span class="d-picture_user grid-4 no-margin fright"  >
+                {% if entity.cover_picture %}
+                    <span class="del_pict grid-4 no-margin show_upload cover text_cent">Quitar cover foto</span>
+                    <span class="d-picture_user wrapper_picture_user">
+                        <img src="/static/media/users/{{ entity.owner_id }}/event/{{ entity.cover_picture }}" />
+                    </span>
+                    <span class="dropzone_user disable_upload">
+                        <form id="cover" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                            <input type="hidden" name="event" value="{{ entity.id }}"/>
+                            <input type="hidden" name="event_cover_picture" value="1"/>
+                        </form>
+                    </span>
+                {% else %}
+                    <span class="dropzone_user ">
+                        <form id="cover" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                            <input type="hidden" name="event_cover_picture" value="1"/>
+                            <input type="hidden" name="event" value="{{ entity.id }}"/>
+                        </form>
+                    </span>
+                {% endif %}
+     </span>
+        </div>
     </div>
     <script type="text/javascript">
+    Dropzone.options.picture = {
+            maxFiles: 1,
+            dictDefaultMessage: 'Inserte aquí su foto',
+            init: function() {
+               this.on("addedfile", function(file) {
+                    $('#picture .dz-message ').fadeOut(300);
+                });
+            },
+            success: function(file) {
+                $('.profile-pic').val(file.name);
+            }
+        };
+    Dropzone.options.cover = {
+            maxFiles:1,
+            dictDefaultMessage: 'Arrastre aquí el cover photo',
+            init: function() {
+                this.on("addedfile", function(file) {
+                    $('#cover .dz-message').fadeOut(300);
+                });
+            },
+            success: function(file) {
+                $('.cover-pic').val(file.name);
+            }
+        }
         $(document).ready(function(){
             initialize(20.58991733623943,-100.40271759033203);
             var timeout = 200;

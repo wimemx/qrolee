@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db import models as db_model
+from django.template.loader import get_template
+from django.template import Context
 from django.db.models import Q
 from django.core import serializers
 
@@ -26,9 +28,10 @@ import urllib2
 import urllib
 import httplib
 import os
-import urlparse
-import urllib
 from xml.dom import minidom
+import xhtml2pdf.pisa as pisa
+import cStringIO as StringIO
+import cgi
 
 
 @login_required(login_url='/')
@@ -258,69 +261,53 @@ def get_entity(request, **kwargs):
 
     request_sent = False
     if request.POST:
+        activity_id = -1
         if 'membership' in request.POST:
             membership = int(request.POST.get('membership'))
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
+                activity_id = 5
                 entityuser[0].is_member = True
                 entityuser[0].save()
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 5
-                }
-                views.update_activity(activity_data)
             else:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 10
-                }
-                views.update_activity(activity_data)
+                activity_id = 10
                 entityuser[0].is_member = False
+                entityuser[0].is_admin = False
                 entityuser[0].save()
+
         elif 'follow_private' in request.POST:
             membership = int(request.POST.get('follow_private'))
             entityuser = models.MemberToObject.objects.get_or_create(
                 user_id=request.user.id, object=entity.id, object_type='E')
             if membership == 1:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 5
-                }
-                views.update_activity(activity_data)
+                activity_id = 5
                 request_sent = True
                 entityuser[0].request = True
                 entityuser[0].save()
             else:
-                activity_data = {
-                    'user_id': request.user.id,
-                    'object': entity.id,
-                    'added_to_object': request.user.id,
-                    'type': 'E',
-                    'added_to_type': 'U',
-                    'activity_id': 10
-                }
-                views.update_activity(activity_data)
+                activity_id = 10
                 entityuser[0].request = False
                 entityuser[0].is_member = False
+                entityuser[0].is_admin = False
                 entityuser[0].save()
+        activity_data = {
+            'user_id': request.user.id,
+            'object': entity.id,
+            'added_to_object': request.user.id,
+            'type': 'E',
+            'added_to_type': 'U',
+            'activity_id': activity_id
+        }
+        if activity_id != -1:
+            views.update_activity(activity_data)
     else:
         entityuser = models.MemberToObject.objects.filter(
             user_id=request.user.id, object=entity.id, object_type='E')
         if entityuser:
             request_sent = entityuser[0].request
+
+    print request_sent
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -410,7 +397,8 @@ def get_events(request, **kwargs):
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
-            if request.POST.get('id_entity') != None:
+
+            if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(location_id=request.
                     POST['id_entity'], status=status)
@@ -424,25 +412,22 @@ def get_events(request, **kwargs):
             event_date.append(int(event.id))
             events.append(event_date)
 
-
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 start_time__month=int(request.POST.get('curr_month'))+1,
                 location_id=int(entity), status=status).order_by('start_time')
         else:
-            events_ = models.Event.objects.filter(status=status,
-                start_time__month=int(request.POST.get(
+            events_ = models.Event.objects.filter(
+                status=status, start_time__month=int(request.POST.get(
                     'curr_month'))+1).order_by('start_time')
-
-
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
-            if request.POST.get('id_entity') != None:
-                if int(request.POST['id_entity']) != -1:
-                    events_ = models.Event.objects.filter(status=status,
-                        location_id =request.POST['id_entity'])
+            #if request.POST.get('id_entity') is not None:
+            #    if int(request.POST['id_entity']) != -1:
+            #        events_ = models.Event.objects.filter(
+            #            status=status, location_id=request.POST['id_entity'])
 
         events = list()
         for event in events_:
@@ -462,6 +447,17 @@ def get_events(request, **kwargs):
             event_data.append(event.location_name)
             event_data.append(event.owner_id)
             event_data.append(event.start_time.month)
+            event_data.append(event.fb_id)
+            is_attending = False
+            assist_event = models.AssistEvent.objects.filter(
+                user=request.user)
+            if assist_event:
+                if assist_event[0].is_attending:
+                    is_attending = True
+
+            if event.owner_id == request.user.id:
+                is_attending = True
+            event_data.append(is_attending)
             events.append(event_data)
     context = {
         'events': list(events)
@@ -471,7 +467,7 @@ def get_events(request, **kwargs):
     return HttpResponse(context, mimetype='application/json')
 
 @login_required(login_url='/')
-def event_view(request,**kwargs):
+def event_view(request, **kwargs):
 
     template = kwargs['template_name']
     entity = kwargs['event_id']
@@ -505,13 +501,24 @@ def event_view(request,**kwargs):
         'month': month,
         'year': year
     }
+    assist_event = models.AssistEvent.objects.filter(
+        user=request.user.id)
+    is_attending = False
+
+    if assist_event:
+        if assist_event[0].is_attending:
+            is_attending = True
+
+    if event.owner_id == request.user.id:
+        is_attending = True
 
     context = {
         'event': event,
         'date': date,
         'spot': spot,
         'list_event': list_events,
-        'address': address.split('#')
+        'address': address.split('#'),
+        'is_attending': is_attending
     }
 
     if 'post' in request.POST:
@@ -1406,11 +1413,21 @@ def search_api(request, **kwargs):
     if int(request.POST.get('aux_api')) == -1:
         isbn = request.POST.get('search')
         url = 'https://www.goodreads.com/book/isbn?format=xml&isbn='+isbn.replace('"', '')+'&key='+settings.GOODREADS_KEY
-        response = urllib2.urlopen(url).read()
-        dom = minidom.parseString(response)
-        context = {
-            'result_api': dom.childNodes.__contains__('error')
-        }
+        error = dict()
+        try:
+            response = urllib2.urlopen(url).read()
+        except Exception as e:
+            error = e.__dict__
+
+        if 'code' in error:
+            context = {
+                'result_api': -1
+            }
+        else:
+            dom = minidom.parseString(response)
+            context = {
+                'result_api': dom.childNodes.__contains__('error')
+            }
         context = simplejson.dumps(context)
         return HttpResponse(context, mimetype='application/json')
     search = ast.literal_eval(request.POST.get('search'))
@@ -1729,4 +1746,28 @@ def load_calendar(events):
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
 
-    return unescaped
+    return unescaped    pass
+
+
+def write_pdf(template_src, context_dict):
+    template = get_template(template_src)
+    context = Context(context_dict)
+    html = template.render(context)
+    result = StringIO.StringIO()
+    pdf = pisa.pisaDocument(StringIO.StringIO(
+        html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(
+            result.getvalue(), mimetype='application/pdf')
+    return HttpResponse('Gremlins ate your pdf! %s' % cgi.escape(html))
+
+
+def qr_to_pdf(request, **kwargs):
+    template = kwargs['template_name']
+    context = {
+        'site_url': settings.SITE_URL,
+        'qr': kwargs['qr_code']
+    }
+    return write_pdf(template, context)
+
+

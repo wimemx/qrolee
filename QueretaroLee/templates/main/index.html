@@ -46,7 +46,7 @@
                     {% for event in events %}
                         <span class="item">
                         <p class="main title no-margin"><a href="/qro_lee/events/{{ event.id }}">{{ event.name }}</a></p>
-                        <a class="category spot din-r" href="{% ifequal event.place_spot 1%}/qro_lee/entity/spot/{{ event.location_id }}{% endifequal %}">{{ event.location_name|truncatechars:42|lower }}</a>
+                        <a class="category spot din-r" href="{% ifequal event.place_spot 1%}/qro_lee/entity/spot/{{ event.location_id }}{% endifequal %}">{{ event.location_name|truncatechars:40|lower }}</a>
                         </span>
                     {% endfor %}
                 {% else %}
@@ -122,7 +122,7 @@
             <span class="spot bold more fright">ver todos</span>
             {% endif %}
             <a href="/accounts/users/registry_page/">
-                <span style="clear:both;" class="brown_btn fleft">
+                <span style="clear:both;background-image: none;" class="brown_btn fleft">
                     Crear página
                 </span>
             </a>
@@ -134,7 +134,7 @@
             <span></span>
         </div>
 
-        <div class="grid-8 left">
+        <div class="grid-9 left">
             {% if activity  %}
             <h3 style="margin-top: 30px;" class="title">Actividad receinte</h3>
             <div id="scrollbar1">

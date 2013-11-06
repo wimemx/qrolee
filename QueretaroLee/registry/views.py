@@ -8,11 +8,14 @@ from django.contrib.auth import models as auth_models
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.timezone import utc
+from django.db import models as db_model
+from django.db.models.loading import get_model
+
 from account import models as account
 from registry import models, settings
 from decimal import Decimal
 from QueretaroLee import settings as main_settings
-from django.db import models as db_model
+
 
 import calendar
 import urllib2
@@ -334,6 +337,30 @@ def edit_entity(request, **kwargs):
 
 
 def delete_entity(request, **kwargs):
+    if request.POST:
+        app = str(request.POST.get('type')).split('.')
+        app_label = app[0]
+        model_name = app[1]
+        model = get_model(app_label, model_name)
+        if 'is_event' in request.POST:
+            event = models.Event.objects.get(
+                id=int(request.POST.get('id')))
+            obj = model.objects.get_or_create(
+                event=event,
+                user=request.user)
+            obj = obj[0]
+            obj.is_attending = True
+            obj.save()
+        else:
+            obj = model.objects.get_or_create(
+                id=int(request.POST.get('id')))
+            obj.status = False
+        obj.save()
+        context = {
+
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, mimetype='application/json')
 
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -359,8 +386,7 @@ def update_entity(request, **kwargs):
     dictionary = {
         field: value
     }
-
-    if request.POST.get('event') == '1' and request.POST.get('event') is not None:
+    if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
             id=kwargs['entity_id']).update(**dictionary)
     else:
@@ -406,9 +432,17 @@ def media_upload(request):
             entity.picture = str(request.FILES['file'])
 
         entity.save()
+    if 'event' in request.POST:
+        id = request.POST.get('event')
+        entity = models.Event.objects.get(id=id)
 
+        if 'event_cover_picture' in request.POST:
+            entity.cover_picture = str(request.FILES['file'])
+        else:
+            entity.picture = str(request.FILES['file'])
 
-    if 'fb_img' in request.POST and 'folder' != '':
+        entity.save()
+    if 'fb_img' in request.POST and folder != '':
         folder = '/event/'
     path_extension = str(request.user.id)+folder
     path = os.path.join(
@@ -513,10 +547,7 @@ def ajax_register_event(request):
     event = copy
 
     event = models.Event.objects.create(**event)
-
-    if event.share_fb == 1:
-        post_event_fb(event, request.user, profile)
-
+    event.save()
     if place_spot == 0:
         event.place_spot = 0
         event.save()
@@ -527,9 +558,6 @@ def ajax_register_event(request):
             event.lat = spot[0].lat
             event.long = spot[0].long
             event.save()
-
-    event.save()
-    success = 'False'
     if event is not None:
         success = event.id
         activity_data = {
@@ -620,7 +648,6 @@ def event(request, **kwargs):
 def get_events(request, **kwargs):
     entity = kwargs['entity'].split('_', 1)
     entity = entity[1]
-
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
@@ -652,6 +679,7 @@ def get_events(request, **kwargs):
             event_data.append(event.id)
             event_data.append(event.location_name)
             event_data.append(event.owner_id)
+            event_data.append(event.share_fb)
             events.append(event_data)
     context = {
         'events': list(events)
@@ -722,7 +750,8 @@ def remove_add_user(request, **kwargs):
         users = list()
         users.append(request.user.id)
         for member in members:
-            users.append(member.user_id)
+            if request.user.id != member.user_id:
+                users.append(member.user_id)
 
         if request.POST.get('user_email') == '-1':
             members = models.MemberToObject.objects.filter(
@@ -748,19 +777,37 @@ def remove_add_user(request, **kwargs):
                 users.append(member.user_id)
             objs = models.User.objects.filter(
                 id__in=users)
-        else:
+        # Get members of group
+        elif request.POST.get('user_email') == '-4':
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+            users = list()
+            for member in members:
+                if request.user.id != member.user_id:
+                    users.append(member.user_id)
             objs = models.User.objects.filter(
-                email__icontains=request.POST.get('user_email')).exclude(id__in=users)
+                id__in=users)
+        else:
+            members = models.MemberToObject.objects.filter(
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+            members_list = list()
+            for member in members:
+                if request.user.id != member.user_id:
+                    members_list.append(member.user_id)
+            objs = models.User.objects.filter(
+                email__icontains=request.POST.get('user_email'), id__in=members_list).exclude(id__in=users)
 
         users = list()
         for obj in objs:
-
             obj_data = list()
             profile = models.Profile.objects.filter(
                 user_id=obj.id)
-            member = models.MemberToObject.objects.filter(user_id=obj.id)
+            member = models.MemberToObject.objects.filter(
+                user_id=obj.id)
+            bio = ''
             for data in profile:
                 obj_data.append(data.picture)
+                bio = data.biography
             obj_data.append(obj.id)
             obj_data.append(obj.username)
             obj_data.append(datetime.datetime.now().month - obj.date_joined.month)
@@ -768,6 +815,7 @@ def remove_add_user(request, **kwargs):
             if member:
                 super_user = member[0].super_user
             obj_data.append(super_user)
+            obj_data.append(bio)
             users.append(obj_data)
 
         context = {
@@ -796,6 +844,7 @@ def remove_add_user(request, **kwargs):
 
         if int(request.POST.get('remove')) == 3:
             obj.is_member = 0
+            obj.is_admin = False
 
         obj.save()
     context = {}
@@ -980,7 +1029,7 @@ def delete_page(request):
 def delete_picture(request):
     type = request.POST.get('type')
     success = 'False'
-
+    print type
     if type == 'profile':
         id_user = int(request.POST.get('id'))
         profile = models.Profile.objects.get(user__id=id_user)
@@ -989,12 +1038,10 @@ def delete_picture(request):
             success = 'True'
             profile.picture = ''
             profile.save()
-        else:
-            succes = 'False'
 
-    if type == 'entity':
+    elif type == 'entity':
         id_entity = int(request.POST.get('id'))
-        entity= models.Entity.objects.get(id=id_entity)
+        entity = models.Entity.objects.get(id=id_entity)
 
         if entity:
             success = 'True'
@@ -1004,8 +1051,18 @@ def delete_picture(request):
                 entity.picture = ''
 
             entity.save()
-        else:
-            succes = 'False'
+    elif type == 'event':
+        id_entity = int(request.POST.get('id'))
+        entity = models.Event.objects.get(id=id_entity)
+
+        if entity:
+            success = 'True'
+            if int(request.POST.get('cover')) == 1:
+                entity.cover_picture = ''
+            else:
+                entity.picture = ''
+
+            entity.save()
 
     context = {
             'succes': success
@@ -1013,6 +1070,7 @@ def delete_picture(request):
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
 
 def add_rate(request):
 

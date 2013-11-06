@@ -3,6 +3,8 @@ $(document).ready(function(){
 
     $('#form_member').submit(function(e){
         $('.dialog-confirm').empty();
+        e.preventDefault();
+        $this_ = $(this);
         span_text = $('<span></span>');
         var href = '';
         text = '¿ Estas seguro de que deseas dejar de seguir '+
@@ -27,9 +29,9 @@ $(document).ready(function(){
         btn_acept.click(function(){
            removeUser($(this),parseInt($('.sesion_user').val()),3,$('.d-entity_id').val());
            $('.container_message_2').fadeOut(250);
-            window.location.href = site_url + '/qro_lee/entity/group/'+$('.id_group_red').val();
+            //window.location.href = site_url + '/qro_lee/entity/group/'+$('.id_group_red').val();
+            $this_.unbind('submit').submit();
         });
-        return false;
     });
 
     $('.input_val').keyup(function(){
@@ -80,8 +82,11 @@ $(document).ready(function(){
                             value += 'constraseña nuevamente';
                         }
                         span.html(value);
-                        $(this).append(span);
-                        $(this).find('.invalid').fadeIn(300);
+                        $(this).find('input').css({
+                            'border': '1px solid #f89883'
+                        });
+                        //$(this).append(span);
+                        //$(this).find('.invalid').fadeIn(300);
 
                 }
 
@@ -104,9 +109,12 @@ $(document).ready(function(){
                     var span = $('<span class="invalid"></span>');
                     var value = regex_validation[1];
                     span.html(value);
+                    $(this).css({
+                            'border': '1px solid #f89883'
+                        });
                     $(this).parent().find('.invalid').remove();
-                    $(this).parent().append(span);
-                    $(this).parent().find('.invalid').fadeIn(300);
+                    //$(this).parent().append(span);
+                    //$(this).parent().find('.invalid').fadeIn(300);
                 }
             }
         });
@@ -123,14 +131,21 @@ $(document).ready(function(){
                     var span = $('<span class="invalid"></span>');
                     var value = 'Favor de escoger una categoria';
                     span.html(value);
-                    $('.select_value').parent().parent().parent().find('.invalid').remove();
-                    $('.select_value').parent().parent().parent().append(span);
-                    $('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
+                    //$('.select_value').parent().parent().parent().find('.invalid').remove();
+                    //$('.select_value').parent().parent().parent().append(span);
+                    //$('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
+                    $('.select_value').parent().css({
+                            'border': '1px solid #f89883'
+                        });
             }
         }
 
-        if(valid != required)
+        if(valid != required){
             e.preventDefault();
+            $('html,body').animate({
+                scrollTop: 0
+            }, 1000);
+        }
         else
             valid_form = true;
     });

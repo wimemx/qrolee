@@ -170,6 +170,22 @@ function item_select(all, value){
     });
 }
 
+function post_to_fb(caption, description, content, redirect, url){
+    FB.ui(
+        {
+            method: 'feed',
+            name: 'Qro_lee',
+            link: 'http://localhost:8000/',
+            caption: caption,
+            description: description,
+            message: content
+        },
+        function(response) {
+            if (redirect)
+                window.location.href = url;
+        });
+}
+
 $(document).ready(function(){
 
     $('.show_text').click(function(){
@@ -206,7 +222,12 @@ $(document).ready(function(){
         item_select(false, value);
 
     });
-
+    $('.sidebar-b .month .month').click(function(){
+        $('.d-width-container-event').find('.item').fadeIn(300);
+        $('.d-width-container-event').find('.item').css({
+            'display': 'block'
+        });
+    });
     $('.book_crossing .show_t').click(function(){
         var count = $(this).parent().find('.container_crossing').find('.grid-7').length;
         var item_height = count * 107;
@@ -319,6 +340,7 @@ $(document).ready(function(){
                 search = '/me/accounts?fields=description,name,location,perms,category,username,website,picture,cover';
             else if($(this).hasClass('events'))
                 search = '/me/events?fields=cover,description,end_time,name,start_time,rsvp_status,location'
+
             if($(this).hasClass("update"))
                 fb_obj_search(search, -1);
             else
@@ -381,6 +403,7 @@ function fb_obj_search(search, type){
     });
     $('.lightbox-wrapper').fadeIn(300);
     FB.api(search, function(response) {
+        console.log(response);
         if(response.error){
             $('.fb-objs .scrollbar').fadeOut(300, function(){
                 $('.fb-objs .overview').append(
@@ -618,6 +641,7 @@ function dmap(data,id){
         var counter = 1;
         $.each(data,function(ind){
             var companyPos = new google.maps.LatLng(data[ind].lat,data[ind].long);
+            if (data.response != 0){
             var companyMarker = new google.maps.Marker({
                 position: companyPos,
                 map: map,
@@ -631,6 +655,7 @@ function dmap(data,id){
                 ),
                 title:data[ind]['book'][0]
             });
+            }
             counter++;
         });
     }
