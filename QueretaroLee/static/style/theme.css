@@ -806,6 +806,11 @@ p{
             font-family: 'Raleway' sans-serif;
             color:#000 !important;
         }
+        .organization .nav .active, .organization .nav .btn:hover{
+            background-color: #88b497!important;
+            border:1px solid #6b9e7c!important;
+
+        }
         .entity .nav .btn:hover,.entity .nav .btn.active{
             background: #C3C361;
             border-color: #b8b84d;
@@ -819,6 +824,10 @@ p{
             transition:all ease-in 0.3s;
             border-color: #5a885e;
         }
+
+.general-info .organization{
+    color: #89b598;
+}
 .content.single{
     min-height: 500px;
     background: #fffcf5;
@@ -1816,7 +1825,7 @@ p{
     display: block;
     float: left;
     border-radius: 2px;
-    margin-right: 20px;
+    margin-right: 11px;
     overflow: hidden;
     position: relative;
 }
@@ -2404,11 +2413,11 @@ p{
 .container_text_rate{
     float: left;
     margin: 1px 0px 0px 8px;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 
 .p_mini_book{
-
-    font-size: 12px !important;
+    font-size: 13px !important;
 }
 
 .input_add_book{
@@ -2430,9 +2439,10 @@ p{
 }
 
 .title_book_mini{
-    font-size: 13px;
-    text-transform: capitalize;
+    font-size: 14px;
+    margin-top: 7px;
     margin-bottom: 5px !important;
+    text-transform: none;
 
 }
 

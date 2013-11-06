@@ -1851,7 +1851,7 @@ function list_title(csrf, data, div_text, type){
                 item_title.append(div_item);
                 a = $('<a title="' + titles_l[i].title + '" class="title title_book_mini alpha ' +
                     type_add + '"></a>');
-                a.append(truncText(titles_l[i].title,15));
+                a.append(truncText(titles_l[i].title,11));
                 div_container_text.append(a);
                 p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                     ' no-margin" ></p>');
@@ -2003,7 +2003,7 @@ function list_title(csrf, data, div_text, type){
                         div_item.append(div_container_text);
                         item_title.append(div_item);
                         a = $('<a title="' + attribute['title'] + '" class="title title_book_mini alpha ' + type_add + '"></a>');
-                        a.append(truncText(attribute['title'],13));
+                        a.append(truncText(attribute['title'],11));
                         div_container_text.append(a);
                         p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                             ' no-margin" ></p>');
