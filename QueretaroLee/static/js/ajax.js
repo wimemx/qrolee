@@ -1841,12 +1841,13 @@ function search_list_authors_titles($this){
                     });
                     overview.parent().find('.loading_image').remove();
                     show_dialog();
+                }
                 });
 
             }else{
                 overview.fadeOut(200);
             }
-        });
+    });
 }
 
 

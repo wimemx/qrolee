@@ -1746,7 +1746,7 @@ def load_calendar(events):
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
 
-    return unescaped    pass
+    return unescaped
 
 
 def write_pdf(template_src, context_dict):
