@@ -521,10 +521,14 @@ def ajax_register_event(request):
     else:
         event['privacy_type'] = 1
 
-    if event['share_fb'][0] == '0':
-        event['share_fb'] = 0
-    else:
-        event['share_fb'] = 1
+    if 'share_fb' in event:
+
+        if event['share_fb'][0] == '0':
+            event['share_fb'] = 0
+        else:
+            event['share_fb'] = 1
+
+
     del event['csrfmiddlewaretoken']
     copy = event
     for e, val in event.iteritems():

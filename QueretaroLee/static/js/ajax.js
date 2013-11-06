@@ -210,7 +210,8 @@ function populateCal(curr_month,$item){
                 }else{
                     //$('#scrollbar').tinyscrollbar();
                 }
-                $('#scrollbar1').tinyscrollbar();
+
+                $('#scrollbar1').tinyscrollbar_update();
             });
     }
 }
@@ -2033,7 +2034,7 @@ function search_entities($this){
                         });
                         $('.overview').fadeIn(250,function(){
 
-                            $('#scrollbar1').tinyscrollbar();
+                            $('#scrollbar1').tinyscrollbar_update();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);
