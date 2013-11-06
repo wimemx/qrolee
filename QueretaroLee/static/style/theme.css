@@ -860,7 +860,7 @@ p{
     .discussion{
 
     }
-        .discussion .ruler{
+        .discussion .ruler, .titles_author .ruler{
             position: absolute;
             top: 25px;
             right: -30px;
@@ -868,6 +868,10 @@ p{
             height: 100%;
             display: block;
             background: #c4c4c4;
+        }
+        .titles_author .ruler{
+            left: -20px !important;
+            top:0px;
         }
         .brown_btn.discuss{
             margin-top: 25px;
@@ -2246,7 +2250,7 @@ p{
 }
 
 .titles_author{
-    margin-top: 40px !important;
+    margin-top: 58px !important;
 }
 
 
@@ -2278,7 +2282,6 @@ p{
 }
 
 .container_titles{
-    margin-left: 18px !important;
     overflow: hidden;
     height: 336px;
 }
@@ -2339,13 +2342,13 @@ p{
     margin-top: 0px;
 }
 
-.info_profile{
-    margin-top: 0px;
-}
-.title_my_list{
-    font-size: 12px;
-    float: left;
+.info_profile.title{
     margin-bottom: 0px;
+}
+.title_my_list.title{
+    font-size: 14px;
+    float: left;
+    margin-top: 20px;
 }
 .text_list_by{
     float: left!important;
@@ -2560,11 +2563,17 @@ p{
 .text_act{
     cursor: pointer;
 }
-.my_items{
+.my_items.place_pink{
+    font-size: 12px !important;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
     padding: 0px 5px 0px 5px;
-    font-size: 10px;
 }
-
+.my_items.place_pink.first{
+    padding-left: 0px;
+}
+.container_items{
+    min-height: 20px;
+}
 .img_profile_mini{
     width: 25px;
     height: 23px;
