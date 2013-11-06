@@ -172,11 +172,15 @@
                          </h3>
                          <span class="container_items grid-4 no-margin">
                              {% for obj in list_genre %}
-                                 {% if forloop.counter <= 3 %}
-                                    <span title="{{ obj.genre.name }}"
-                                          class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
-                                        {{ obj.genre.name|truncatechars:11 }}
-                                     </span>
+                                 {% if obj.genre.name %}
+                                     {% if forloop.counter <= 3 %}
+                                        <span title="{{ obj.genre.name }}"
+                                              class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
+                                            {{ obj.genre.name|truncatechars:11 }}
+                                         </span>
+                                     {% endif %}
+                                 {% else %}
+                                     <span class="place_pink my_items">No tienes libros, agrega a tu lista</span>
                                  {% endif %}
                              {% endfor %}
                          </span>
