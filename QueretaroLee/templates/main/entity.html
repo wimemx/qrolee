@@ -405,7 +405,7 @@
     {% if entity.privacy == 0 or member or owner.id == user.id %}
         <div class="sidebar-a grid-11 {{ entity_type.1 }}">
             <h3 class="title main">Información General</h3>
-            <span class="cover-picture wrapper">{{ entity_type.1 }}
+            <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
                     {% if not entity.cover_picture %}
                         <img src="/static/img/create.png" alt="{{ entity.name }}"/>
@@ -527,7 +527,7 @@
                                 {% endif %}
                             </span>
                             <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.id }}">
-                                <h3 class="title fleft">{{ similar_entity.name|truncatechars:14 }}
+                                <h3 class="title fleft">{{ similar_entity.name|truncatechars:17 }}
                                     {% if entity_type.1 == 'spot' %}
                                         <span class="view">Ver lugar</span>
                                     {% else %}

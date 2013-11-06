@@ -97,6 +97,7 @@ input:not([type='submit']){
     font-weight: 400;
     color: #000;
     padding: 0px 8px 0px 0px;
+    text-align: right;
 }
 .din-b{
     font-family: 'Raleway' sans-serif;
@@ -836,7 +837,7 @@ p{
 }
 .content.single.events{
     margin-top: 20px !important;
-    min-height: 750px;
+    min-height: 400px!important;
 }
     .content.single.events .load{
         display: block;
@@ -846,7 +847,7 @@ p{
             margin-right: 20px;
         }
         .content.events .sidebar-a #scrollbar1 .viewport{
-            height: 700px;
+            height: 550px;
         }
         .content.single.events .active-event{
             background: #f89883 !important;
@@ -1169,7 +1170,7 @@ p{
             }
         .content .sidebar-a .contact p{
             margin-bottom: 3px;
-            font-size: 12px;
+            font-size: 13px;
         }
         .group .contact p{
             margin-bottom: 20px!important;
@@ -1437,12 +1438,17 @@ p{
             }
 
 
-
-
 .footer{
     border-top: 1px solid #acacac;
     height: 40px;
 }
+    .footer .social{
+        opacity: 0.8;
+        margin-top: -4px!important;
+    }
+    .footer .social:hover{
+        opacity: 1;
+    }
     .footer .nav{
         margin-top: 10px;
     }
@@ -1640,7 +1646,7 @@ p{
 .d-not_found{
     margin: 50px auto !important;
     color: #f89883;
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Raleway' sans-serif;
     text-align: center;
 }
@@ -2456,7 +2462,10 @@ p{
 
     height: 100px !important;
 }
-
+.events .item{
+    height: 128px!important;
+    margin-bottom: 0px!important;
+}
 .container_title{
     margin-top: 25px;
     max-height: 281px;
