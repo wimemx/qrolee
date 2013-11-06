@@ -69,9 +69,9 @@ def feed_type(feed_id):
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)
         if not profile.picture:
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         elif profile.picture.strip() == '':
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         else:
             img_url += 'profile/'+profile.picture
         if obj_list[0].first_name != '':
@@ -86,9 +86,9 @@ def feed_type(feed_id):
         profile = rmodels.Profile.objects.get(
             user_id=user.id)
         if not profile.picture:
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         elif profile.picture.strip() == '':
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         else:
             img_url += 'list/'
 
@@ -117,9 +117,9 @@ def feed_type(feed_id):
         profile = rmodels.Profile.objects.get(
             user_id=obj_list[1].id)
         if not profile.picture:
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         elif profile.picture.strip() == '':
-            img_url = '/static/img/create.png'
+            img_url = '/static/img/no_profile.png'
         else:
             img_url += 'profile/'+profile.picture
         if obj_list[1].first_name != '':

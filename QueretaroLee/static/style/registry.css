@@ -24,7 +24,7 @@
 .edit{
     margin:40px 10px 20px 10px;
     background: #fffcf5 ;
-    padding: 40px 0px 50px 0px;
+    padding: 30px 0px 50px 0px;
     min-height: 500px;
     border-bottom: 0px;
 }
@@ -491,6 +491,7 @@ p.advanced_search_btn{
             width: 16px;
             height: 25px;
             margin-top: 4px;
+            top: 0px;
             border:none;
             background: url('../img/filter_sprite.png') no-repeat 0px 0px;
 

@@ -1085,7 +1085,7 @@ function discussion(id){
                             $discussion_response.find('.answer p').html(discussion.content);
                             $discussion_response.find('.name.title').html(discussion.username);
                             if(!discussion.user_pic){
-                                discussion.user_pic = '/static/img/create.png';
+                                discussion.user_pic = '/static/img/no_profile.png';
                             }else{
                                 discussion.user_pic = '/static/media/users/'+discussion.user+'/profile/'+discussion.user_pic;
                             }
@@ -1184,7 +1184,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                     $discussion_response.find('.name.title').html(discussion.username);
 
                     if(!discussion.user_pic){
-                        discussion.user_pic = '/static/img/create.png';
+                        discussion.user_pic = '/static/img/no_profile.png';
                     }else{
                         discussion.user_pic = '/static/media/users/'+discussion.user+'/profile/'+discussion.user_pic;
                     }
@@ -1605,6 +1605,8 @@ function search_list_authors_titles($this){
                             if(data[i].picture != '')
                                 src = '/static/media/users/' + data[i].id_user + '/list/' +
                                     data[i].picture ;
+                            else
+                                src = '/static/img/no_profile.png';
                             img = $('<img class="img_size_all" src="' + src + '"/>');
                             span.append(img);
                             if(my_list_type==0){
@@ -2081,6 +2083,8 @@ function search_all_header($this){
                                         if(obj[i2].picture!='')
                                             src = '/static/media/users/' + obj[i2].id +
                                                 '/profile/' + obj[i2].picture;
+                                        else
+                                            src = '/static/img/no_profile.png';
                                         name_user = obj[i2].name + ' ' + obj[i2].name_2;
                                     }
                                     if(i == "author"){
@@ -2159,7 +2163,7 @@ function load_img_profile(){
         },
         dataType: 'json'
     }).done(function(data){
-            var src_picture = '/static/img/create.png';
+            var src_picture = '/static/img/no_profile.png';
             if(data.picture!='')
                 src_picture = '/static/media/users/' +
                     data.id_user + '/profile/' + data.picture;

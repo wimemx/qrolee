@@ -54,7 +54,7 @@ input, textarea{
     margin-left: 32px;
 }
 input:not([type='submit']){
-    height: 25px;
+    height: 27px;
     width: 100%;
     text-indent: 7px;
     font-family: arial !important;
@@ -263,7 +263,7 @@ p{
     }
     .header .search span .icon{
         width: 27px;
-        height: 25px;
+        height: 27px;
         position: absolute;
         background: #fff url('../img/search_icon_header.png') no-repeat 50% 50%;
         cursor: pointer;
@@ -1674,7 +1674,7 @@ p{
     margin: 30px auto !important;
 }
 .d-picture_profile .dz-message{
-    width: 200px !important;
+    width: 232px !important;
 }
 .dz-image-preview img{
     margin-left: 42%;
@@ -1925,6 +1925,9 @@ p{
     font-weight: 400;
     cursor: pointer;
 
+}
+.place_pink.fix{
+    font-size: 12px !important;
 }
 
 .d-text_opacity{

@@ -1487,10 +1487,15 @@ function create_template(type, result,i, create_user){
         item.append(a_wrapper);
         var img = $('<img src="" attr="">');
         var url = '/static/img/create.png';
+
         if(result[i].extras[1])
-            if(result[i].extras[1][0] != 'None')
-                url = '/static/media/users/'+result[i].id+
+            if(result[i].extras[1][0] != 'None'){
+                if(result[i].extras[1][0] != ''){
+                    url = '/static/media/users/'+result[i].id+
                     '/profile/'+result[i].extras[1][0];
+                }else
+                    url = '/static/img/no_profile.png';
+            }
         wrapper_fleft.append(img);
         var h3 = $('<h3 class="title no-margin grid-4 fright"></h3>');
         if(type == 'account.author' || create_user){
@@ -2170,7 +2175,7 @@ function list_title(csrf, data, div_text, type){
                         item_title.append('<input type="hidden" class="title_inte" value="0"/>');
                         span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
                         div_item.append(span_wrapper);
-                        url = '/static/img/create.png';
+                        url = '/static/img/no_profile.png';
 
                         if( "/common/topic/image" in attribute ){
                             img_a = attribute['/common/topic/image'];

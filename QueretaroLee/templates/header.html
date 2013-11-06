@@ -39,7 +39,7 @@
     <div class="account-settings omega alpha fright">
         <a href="/accounts/users/profile/{{ user.id }}">
             {% if not user_profile.picture %}
-                <img class="img_profile_mini" src="/static/img/create.png"/>
+                <img class="img_profile_mini" src="/static/img/no_profile.png"/>
             {% else %}
                 <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}

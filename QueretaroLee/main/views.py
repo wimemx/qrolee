@@ -307,7 +307,6 @@ def get_entity(request, **kwargs):
         if entityuser:
             request_sent = entityuser[0].request
 
-    print request_sent
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -364,6 +363,7 @@ def get_entity(request, **kwargs):
 
     discussions = account_models.Discussion.objects.filter(
         entity__id=entity.id, parent_discussion_id=None).order_by('-date')
+    print entity_type
     context = {
         'entity': entity,
         'calendar': unescaped,

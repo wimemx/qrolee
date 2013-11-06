@@ -261,9 +261,7 @@ hyu
 
         Dropzone.options.picture = {
         maxFiles: 1,
-        dictRemoveFile: 'Quitar',
-        addRemoveLinks: true,
-        dictDefaultMessage: 'Inserte aquí su nueva <br> foto de perfil',
+        dictDefaultMessage: 'Inserte aquí su nueva foto de perfil',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#picture .dz-message ').fadeOut(300);

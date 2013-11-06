@@ -234,8 +234,8 @@ def user_profile(request, **kwargs):
 
     user = registry.User.objects.get(id=id_user)
     list_genre = models.ListGenre.objects.filter(list__user=user, status=True)
-    titles_read = models.ListTitle.objects.filter(list__default_type=1,
-                                                       list__user=user, list__status=True)
+    titles_read = models.ListTitle.objects.filter(
+        list__default_type=1, list__user=user, list__status=True)
 
     fields_related_objects = models.Title._meta.get_all_related_objects(
         local_only=True)

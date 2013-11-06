@@ -28,7 +28,7 @@
     <div class="grid-16 entity user_pro no-margin">
         <span class="wrapper fleft">
             {% if not user_profile.picture %}
-                <img class="img_size_all" src=/static/img/create.png alt="{{ profile.user}}"/>
+                <img class="img_size_all" src=/static/img/no_profile.png alt="{{ profile.user}}"/>
             {% else %}
                 {% if owner.id == user.id %}
                     <span class="brown_btn edit"></span>
@@ -171,23 +171,27 @@
                              Géneros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
+                         {% if list_genre %}
                              {% for obj in list_genre %}
-                                 {% if obj.genre.name %}
+
                                      {% if forloop.counter <= 3 %}
                                         <span title="{{ obj.genre.name }}"
                                               class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
                                             {{ obj.genre.name|truncatechars:11 }}
                                          </span>
+
                                      {% endif %}
-                                 {% else %}
-                                     <span class="place_pink my_items">No tienes libros, agrega a tu lista</span>
-                                 {% endif %}
                              {% endfor %}
+                         {% else %}
+                         <span class="place_pink first my_items">No tienes libros, agrega a tu lista</span>
+
+                         {% endif %}
                          </span>
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
+                         {% if list_titles.0.items %}
                              {% for key, value in list_titles.0.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
@@ -195,18 +199,22 @@
                                         border_right
                                     {% endif %}
                                     ">
-                                        <a class="place_pink" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
+                                        <a class="place_pink fix" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
                                             {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
-                                        <a class="place_pink" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
+                                        <a class="place_pink fix" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
                                             {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% endif %}
                              {% endfor %}
+                         {% else %}
+                         <span class="place_pink first my_items">No tienes libros, agrega a tu lista</span>
+
+                         {% endif %}
                              {% if list_titles.0 and list_titles.0|length > 3 %}
                                  <span class="place_pink span_all">
                                      <span>Ver más</span>
@@ -219,6 +227,7 @@
                          </h3>
                          <span class="container_items grid-4 no-margin">
                             <span class="container_items grid-4 no-margin">
+                            {% if list_titles.1.items %}
                                 {% for key, value in list_titles.1.items %}
                                  {% if forloop.counter <= 3 %}
                                     <span class=" my_items
@@ -226,20 +235,24 @@
                                         border_right
                                     {% endif %}
                                     ">
-                                        <a title="{{ value.title }}" class="place_pink"
+                                        <a title="{{ value.title }}" class="place_pink fix"
                                            href="/qro_lee/profile/title/{{ key }}/">
                                             {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
-                                        <a title="{{ value.title }}" class="place_pink"
+                                        <a title="{{ value.title }}" class="place_pink fix"
                                            href="/qro_lee/profile/title/{{ key }}/">
                                             {{ value.title|truncatechars:11 }}
                                         </a>
                                      </span>
                                  {% endif %}
                              {% endfor %}
+                            {% else %}
+                         <span class="place_pink first my_items">No tienes libros, agrega a tu lista</span>
+
+                         {% endif %}
                              {% if list_titles.1 and list_titles.1|length > 3 %}
                                  <span class="place_pink span_all">
                                      <span>Ver más</span>
