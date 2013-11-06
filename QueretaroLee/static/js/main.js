@@ -742,7 +742,8 @@ function map_cheking(country, state, city){
 }
 
 function update_latlog(lat_long){
-    $('.lat_long').val(lat_long['latLng']['lb']+','+lat_long['latLng']['mb']);
+
+    $('.lat_long').val(lat_long['latLng']['nb']+','+lat_long['latLng']['ob']);
 }
 
 function map_select(){
@@ -771,6 +772,18 @@ function show_text($elem, message){
 }
 
 $(document).ready(function(){
+
+    $('.btn_fr').click(function(){
+        var opc_1 = '.tab_2';
+        var opc_2 = '.tab_1';
+        if($(this).hasClass('t_1')){
+            opc_1 = '.tab_1';
+            opc_2 = '.tab_2';
+        }
+        $(opc_1).fadeOut(250,function(){
+                $(opc_2).fadeIn(250);
+        });
+    });
 
     link_active();
 

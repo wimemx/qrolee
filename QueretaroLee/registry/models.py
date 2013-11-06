@@ -193,6 +193,15 @@ class MemberToObject(models.Model):
     user = models.ForeignKey(User)
 
 
+class ExternalUser(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    status = models.BooleanField(default=1)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.email)
+
+
 class FacebookSessionError(Exception):
     def __init__(self, error_type, message):
         self.message = message

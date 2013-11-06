@@ -94,7 +94,7 @@ function populateCal(curr_month,$item){
                         if($('.type').val() == 'Event')
                             grid = 'grid-7';
                         span_text = $('<span class="'+grid+' fleft no-margin"></span>');
-                        a_2 = $('<a class="d-link_event" href="'+href+'" ><h3>'+e[0]+'</h3></a>');
+                        a_2 = $('<a class="d-link_event" href="'+href+'" ><h3 title="'+e[0]+'" >'+truncText(e[0],47)+'</h3></a>');
                         p = $('<p></p>');
                         span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
                         p.append(span_info);
@@ -210,7 +210,7 @@ function populateCal(curr_month,$item){
                 }else{
                     //$('#scrollbar').tinyscrollbar();
                 }
-                //$('.scroll_events').tinyscrollbar();
+                $('#scrollbar1').tinyscrollbar();
             });
     }
 }
@@ -563,6 +563,21 @@ $(document).ready(function(){
         var content = truncText($('.d-description p').html(), 100);
         post_to_fb(caption, description, content, false);
     });
+    $('#form_external').submit(function(e){
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(data){
+                if(data['success'] == 'True')
+                    console.log('success');
+            });
+
+       return false;
+    });
 
     $('#form_search').submit(function(e){
         return search_book_code($(this));
@@ -573,6 +588,7 @@ $(document).ready(function(){
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
         var data_ = api_isbn_search(isbn);
+
         if(data_ == -1){
             e.preventDefault();
             $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +

@@ -842,12 +842,15 @@ p{
     .content.single.events .load{
         display: block;
     }
+        .events .sidebar-a #scrollbar1 .scrollbar{
+            right: -42px;
+        }
         .events .member{
             margin-top: 20px;
             margin-right: 20px;
         }
         .content.events .sidebar-a #scrollbar1 .viewport{
-            height: 550px;
+            height: 480px;
         }
         .content.single.events .active-event{
             background: #f89883 !important;
@@ -1510,7 +1513,7 @@ p{
 
 .d-map_spot{
 
-    width: 93%;
+    width: 100%;
     height: 100%;
     margin: auto;
     background-color: transparent!important;
@@ -3535,11 +3538,11 @@ textarea{
     padding: 4px 8px 4px 8px!important;
 }
 .container_pop .social{
-    margin-left: 20px;
+    margin-left: 13px;
 }
 .container_pop .log{
     margin-left: 25px!important;
-    margin-bottom: 0px!important;
+    margin-bottom: 10px!important;
     margin-top: 10px;
 }
 .container_pop p{
@@ -3552,10 +3555,12 @@ textarea{
 }
 .container_pop .text_log{
     margin-left: 25px;
-    margin-top: 22px;
+    margin-top: 18px;
     font-size: 11px;
 }
+.container_tab img{
 
+}
 .container_mini_crossing .borde_author{
     border-width: 2px!important;
 }
@@ -3752,6 +3757,7 @@ textarea{
 }
 .text_event{
     min-height: 45px;
+    color: #777;
 }
 .tags_spot{
     font-family: 'Conv_fontscore.com_d-dinproregular';

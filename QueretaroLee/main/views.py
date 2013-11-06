@@ -1680,7 +1680,7 @@ def book(request, **kwargs):
     else:
         state_2 = False
 
-    if len(count_user) < 1:
+    if len(count_user) == 1:
         count_user = ''
 
     context = {
