@@ -461,7 +461,7 @@ p{
         }
 .entities{
     /*height: 720px;*/
-    margin: 40px 10px 30px 10px;
+    margin: 20px 10px 30px 10px;
     display: block;
 }
     .entities .grid-14{
@@ -826,7 +826,7 @@ p{
     padding-bottom: 50px;
 }
 .content.single.events{
-    margin-top: 40px !important;
+    margin-top: 20px !important;
     min-height: 750px;
 }
     .content.single.events .load{
@@ -1676,10 +1676,6 @@ p{
 .d-picture_profile .dz-message{
     width: 200px !important;
 }
-.dz-image-preview img{
-    margin-left: 42%;
-    margin-top: 14%;
-}
 /*.d-picture_profile .dz-message span{
     line-height: 15px !important;
     float: left;
@@ -1977,8 +1973,10 @@ p{
 
 .p_text_dialog{
     padding-top: 10px !important;
-    font-size: 16px;
-    margin-bottom: 15px !important;
+    font-size: 18px;
+    font-family: 'Raleway';
+    font-weight: 500;
+    margin-bottom: 7px !important;
     color: #222222 !important;
 }
 
@@ -2820,6 +2818,8 @@ form p .invalid_messa{
     .alert-message p{
         font-family: 'Raleway' sans-serif;
         text-align: center;
+        font-weight: 500;
+        margin-bottom: 7px;
     }
     .alert-message .accept{
         margin-left: 40px;

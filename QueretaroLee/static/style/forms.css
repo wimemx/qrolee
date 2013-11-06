@@ -69,6 +69,7 @@
         .select,#registry p input:not([type='submit']),#registry p textarea{
             color: #424242;
             height: 100%;
+            text-indent: 5px;
             outline: none;
             display: block;
             border:1px solid #e4e4e4;
