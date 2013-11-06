@@ -23,7 +23,6 @@ urlpatterns = patterns('',
     url(r'^registry/', include('registry.urls')),
     url(r'^qro_lee/', include('main.urls')),
     url(r'^accounts/', include('account.urls')),
-    url(r'^html2pdf/', include('djangoproject.urls')),
     # url(r'^tinymce/', include('tinymce.urls')),
 )
 

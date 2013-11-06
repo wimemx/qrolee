@@ -95,7 +95,7 @@
                     <input type="hidden" class="long" name="long"/>
                     <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
                 </p>
-                <p style="margin:0px 0px 30px 0px;" class="textarea entity_map">Ubicación
+                <p style="margin:0px 0px 30px 0px;" class="textarea entity_map">
                     <span class="grid-5 map fright no-margin">
                         <span id="map"></span>
                     </span>
@@ -122,11 +122,19 @@
             <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <div class="del-wrapper">
+                    <span class="spot del center picture">Eliminar foto</span>
+                </div>
             </form>
+
+
             {% if entity_type.1 == 'group' %}
             <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="cover" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <div class="del-wrapper">
+                    <span class="spot del center cover">Eliminar foto</span>
+                </div>
             </form>
                 <div class="fb-img-preview grid-6 fright no-margin">
 
@@ -151,6 +159,8 @@
     <script type="text/javascript">
     Dropzone.options.picture = {
         maxFiles: 1,
+        thumbnailWidth: 130,
+        thumbnailHeight: 130,
         dictDefaultMessage: 'Arrastre aquí el logotipo',
         init: function() {
             this.on("addedfile", function(file) {
@@ -159,21 +169,45 @@
         },
         success: function(file) {
             $('.profile-pic').val(file.name);
+            $('.del.picture').css({
+                'display': 'block'
+            });
+            var this_ = this;
+            $('.del.picture').click(function(){
+                this_.removeAllFiles();
+                $('.del.picture').fadeOut(300);
+                $('.dz-default.dz-message').fadeIn(300);
+                $('.profile-pic').val('');
+            });
+
+
         }
     };
     Dropzone.options.cover = {
         maxFiles:1,
+        thumbnailWidth: 130,
+        thumbnailHeight: 130,
         dictDefaultMessage: 'Arrastre aquí el cover photo',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#cover .dz-message').fadeOut(300);
             });
              this.on("removedfile", function(file) {
-                alert();
+
               });
         },
         success: function(file) {
             $('.cover-pic').val(file.name);
+            $('.del.cover').css({
+                'display': 'block'
+            });
+            var this_ = this;
+            $('.del.cover').click(function(){
+                this_.removeAllFiles();
+                $('.del.cover').fadeOut(300);
+                $('.dz-default.dz-message').fadeIn(300);
+                $('.cover-pic').val('');
+            });
         }
     };
 

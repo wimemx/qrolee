@@ -82,8 +82,11 @@ $(document).ready(function(){
                             value += 'constraseña nuevamente';
                         }
                         span.html(value);
-                        $(this).append(span);
-                        $(this).find('.invalid').fadeIn(300);
+                        $(this).find('input').css({
+                            'border': '1px solid #f89883'
+                        });
+                        //$(this).append(span);
+                        //$(this).find('.invalid').fadeIn(300);
 
                 }
 
@@ -106,9 +109,12 @@ $(document).ready(function(){
                     var span = $('<span class="invalid"></span>');
                     var value = regex_validation[1];
                     span.html(value);
+                    $(this).css({
+                            'border': '1px solid #f89883'
+                        });
                     $(this).parent().find('.invalid').remove();
-                    $(this).parent().append(span);
-                    $(this).parent().find('.invalid').fadeIn(300);
+                    //$(this).parent().append(span);
+                    //$(this).parent().find('.invalid').fadeIn(300);
                 }
             }
         });
@@ -125,14 +131,21 @@ $(document).ready(function(){
                     var span = $('<span class="invalid"></span>');
                     var value = 'Favor de escoger una categoria';
                     span.html(value);
-                    $('.select_value').parent().parent().parent().find('.invalid').remove();
-                    $('.select_value').parent().parent().parent().append(span);
-                    $('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
+                    //$('.select_value').parent().parent().parent().find('.invalid').remove();
+                    //$('.select_value').parent().parent().parent().append(span);
+                    //$('.select_value').parent().parent().parent().find('.invalid').fadeIn(300);
+                    $('.select_value').parent().css({
+                            'border': '1px solid #f89883'
+                        });
             }
         }
 
-        if(valid != required)
+        if(valid != required){
             e.preventDefault();
+            $('html,body').animate({
+                scrollTop: 0
+            }, 1000);
+        }
         else
             valid_form = true;
     });

@@ -941,6 +941,10 @@ $(document).ready(function(){
 
     if($('.discussion.load').length > 0){
         $('.discussion.load a.title').click(function(e){
+            $(this).parent().parent().find('.item').each(function(){
+                $(this).removeClass('active');
+            });
+            $(this).parent().addClass('active');
             $('.discussion_contents .discuss').remove();
             e.preventDefault();
             discussion($(this).attr('id'));
@@ -1015,6 +1019,10 @@ function create_discussion(entity_id, name, content){
                 '<a class="spot category" href="#">' +discuss.username+'</a></p>' +
                 '<p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
             $span.find('a.title').click(function(e){
+                $(this).parent().parent().find('.item').each(function(){
+                    $(this).removeClass('active');
+                });
+                $(this).parent().addClass('active');
                 $('.discussion_contents .discuss').remove();
                     e.preventDefault();
                     discussion($(this).attr('id'));

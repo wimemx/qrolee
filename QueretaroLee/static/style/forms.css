@@ -10,7 +10,7 @@
 }
     #registry p{
         font-size: 12px;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         height: 27px;
         line-height: 27px;
         float: left;
@@ -89,9 +89,9 @@
                 display: block;
                 margin-top: 5px;
                 cursor: pointer;
-                font-size: 11px;
+                font-size: 13px;
                 text-indent: 7px;
-                font-family: Arial, sans-serif;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .multi_select .active{
                 background: #cccc66;
@@ -99,7 +99,7 @@
         #registry input[type='submit']{
             background: #cccc66;
             padding: 3px 10px 3px 10px;
-            font-family: 'Montserrat' sans-serif;
+            font-family: 'Raleway' sans-serif;
         }
         .green_btn{
             padding: 2px 8px 2px 8px;
@@ -141,7 +141,7 @@ form p .invalid{
 
     .preview,.dz-message{
         height: 180px;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         text-align: center;
         color: #000;
         float: right;
@@ -162,18 +162,18 @@ form p .invalid{
     }
     .dz-remove{
         color: #ed8571;
-        font-family: 'Montserrat' sans-serif;
+        font-family: 'Raleway' sans-serif;
         font-size: 10px;
     }
     .dz-preview{
-        width: 100px;
+        width: 130px;
         display: block;
-        margin: 30px auto;
+        margin: 20px auto;
     }
 
 .message{
     display: none;
-    font-family: 'Montserrat' sans-serif;
+    font-family: 'Raleway' sans-serif;
     font-size: 12px;
 
 }
@@ -186,12 +186,26 @@ form p .invalid{
 
 #picture{
     height: 180px;
-    margin-bottom: 50px;
     width: 282px;
+    position: relative;
 }
 #cover{
     height: 180px;
     width: 282px;
+    position: relative;
+    margin-top: 40px;
+}
+.del-wrapper{
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+}
+.del-wrapper span.del{
+    text-align: center;
+    display: none;
+    cursor: pointer;
+    font-family: 'Raleway' sans-serif;
+    text-decoration: underline;
 }
 
 textarea{

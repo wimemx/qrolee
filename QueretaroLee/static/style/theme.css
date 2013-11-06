@@ -584,7 +584,7 @@ p{
                 font-size: 12px;
             }
         .entity .general-info .title{
-            color: #cccc66;
+            color: #C3C361;
             font-size: 25px;
             text-align: left;
             width: 100%;
@@ -600,7 +600,7 @@ p{
             line-height: normal;
         }
         .title.group, a.group{
-            color: #cccc66;
+            color: #C3C361;
             float: none;
             display: inline-block;
         }
@@ -617,7 +617,7 @@ p{
         a.color_btn{
             font-family: 'Raleway' sans-serif;
             padding: 3px 8px 3px 8px;
-            background: #cccc66;
+            background: #C3C361;
             color: #000;
             margin-bottom: 10px;
             display: block;
@@ -807,7 +807,7 @@ p{
             color:#000 !important;
         }
         .entity .nav .btn:hover,.entity .nav .btn.active{
-            background: #cccc66;
+            background: #C3C361;
             border-color: #b8b84d;
         }
         .entity .nav.spot .btn:hover,.entity .nav.spot .btn.active{
@@ -860,6 +860,15 @@ p{
     .discussion{
 
     }
+        .discussion .ruler{
+            position: absolute;
+            top: 25px;
+            right: -30px;
+            width: 1px;
+            height: 100%;
+            display: block;
+            background: #c4c4c4;
+        }
         .brown_btn.discuss{
             margin-top: 25px;
         }
@@ -889,18 +898,25 @@ p{
                     font-size: 10px;
                 }
         .discussion .item{
-            height: 90px !important;
+            height: 60px;
             border-top: 1px solid #f9f2e1;
             border-bottom: 1px solid #f9f2e1;
             width: 100%;
             display: block;
-            padding-top: 10px;
+            padding: 10px;
         }
+            .discussion .item .title{
+                font-size: 16px;
+            }
         .discussion .main{
             margin-top: 25px;
+            font-size: 20px;
         }
         .discussion .item:nth-child(1){
             border-top: none;
+        }
+        .discussion .item.active, .discussion .item:hover{
+            background: #faf3e3;
         }
 
     .discussion .discuss .title{
@@ -1039,7 +1055,7 @@ p{
 
             }
 .item{
-    height: 128px !important;
+    height: 128px;
 }
 
 .organization .item p,.group .item p{
@@ -1560,7 +1576,7 @@ p{
 }
 
 .d-entity_title{
-    color: #cccc66;
+    color: #C3C361;
 
 }
 
@@ -3698,4 +3714,25 @@ textarea{
 }
 .text_event{
     min-height: 45px;
+}
+
+
+::-webkit-input-placeholder {
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+:-ms-input-placeholder {
+   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
 }
