@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div class="grid-16">
+    <div class="grid-16 {{ entity.type.name }}">
     <input type="hidden" class="d-entity_id" value="{{ entity.id }}"/>
     <input type="hidden" class="d-name_ent" value="{{ entity.name }}"/>
     <input type="hidden" class="type" value="{{ entity.type }}"/>
@@ -181,7 +181,7 @@
             {% endif %}
         </span>
         <span class="general-info no-margin grid-7">
-            <h3 class="title {{ entity_type.1 }}">{{ entity.name|capfirst }}</h3>
+            <h3 class="title {{ entity.type.name }}">{{ entity.name|capfirst }}</h3>
             <span class="social grid-7 no-margin">
                 {% if entity.fb != '' %}
                     <a href="https://facebook.com/{{ entity.fb }}" target="_blank">
@@ -405,7 +405,7 @@
     {% if entity.privacy == 0 or member or owner.id == user.id %}
         <div class="sidebar-a grid-11 {{ entity_type.1 }}">
             <h3 class="title main">Información General</h3>
-            <span class="cover-picture wrapper">
+            <span class="cover-picture wrapper">{{ entity_type.1 }}
                 {% if entity_type.1 == 'group' %}
                     {% if not entity.cover_picture %}
                         <img src="/static/img/create.png" alt="{{ entity.name }}"/>

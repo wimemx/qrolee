@@ -307,6 +307,7 @@ def get_entity(request, **kwargs):
         if entityuser:
             request_sent = entityuser[0].request
 
+
     categories_ids = list()
     for ele in categories:
         categories_ids.append(ele.category_id)
@@ -352,6 +353,13 @@ def get_entity(request, **kwargs):
     events = models.Event.objects.all()
     unescaped = load_calendar(events)
 
+    if entity_type.name == 'group':
+        entity_type = ['grupos de lectura', 'group', 'grupo']
+    elif entity_type.name == 'organization':
+        entity_type = ['organizaciones', 'organization', 'organización']
+    elif entity_type.name == 'spot':
+        entity_type = ['lugares', 'spot']
+
     if not entityuser:
         member = False
     else:
@@ -363,7 +371,6 @@ def get_entity(request, **kwargs):
 
     discussions = account_models.Discussion.objects.filter(
         entity__id=entity.id, parent_discussion_id=None).order_by('-date')
-    print entity_type
     context = {
         'entity': entity,
         'calendar': unescaped,

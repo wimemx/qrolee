@@ -461,7 +461,7 @@ p{
         }
 .entities{
     /*height: 720px;*/
-    margin: 40px 10px 30px 10px;
+    margin: 20px 10px 30px 10px;
     display: block;
 }
     .entities .grid-14{
@@ -806,6 +806,11 @@ p{
             font-family: 'Raleway' sans-serif;
             color:#000 !important;
         }
+        .organization .nav .active, .organization .nav .btn:hover{
+            background-color: #88b497!important;
+            border:1px solid #6b9e7c!important;
+
+        }
         .entity .nav .btn:hover,.entity .nav .btn.active{
             background: #C3C361;
             border-color: #b8b84d;
@@ -819,6 +824,10 @@ p{
             transition:all ease-in 0.3s;
             border-color: #5a885e;
         }
+
+.general-info .organization{
+    color: #89b598;
+}
 .content.single{
     min-height: 500px;
     background: #fffcf5;
@@ -826,7 +835,7 @@ p{
     padding-bottom: 50px;
 }
 .content.single.events{
-    margin-top: 40px !important;
+    margin-top: 20px !important;
     min-height: 750px;
 }
     .content.single.events .load{
@@ -1676,10 +1685,6 @@ p{
 .d-picture_profile .dz-message{
     width: 232px !important;
 }
-.dz-image-preview img{
-    margin-left: 42%;
-    margin-top: 14%;
-}
 /*.d-picture_profile .dz-message span{
     line-height: 15px !important;
     float: left;
@@ -1820,7 +1825,7 @@ p{
     display: block;
     float: left;
     border-radius: 2px;
-    margin-right: 20px;
+    margin-right: 11px;
     overflow: hidden;
     position: relative;
 }
@@ -1980,8 +1985,10 @@ p{
 
 .p_text_dialog{
     padding-top: 10px !important;
-    font-size: 16px;
-    margin-bottom: 15px !important;
+    font-size: 18px;
+    font-family: 'Raleway';
+    font-weight: 500;
+    margin-bottom: 7px !important;
     color: #222222 !important;
 }
 
@@ -2409,11 +2416,11 @@ p{
 .container_text_rate{
     float: left;
     margin: 1px 0px 0px 8px;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 
 .p_mini_book{
-
-    font-size: 12px !important;
+    font-size: 13px !important;
 }
 
 .input_add_book{
@@ -2435,9 +2442,10 @@ p{
 }
 
 .title_book_mini{
-    font-size: 13px;
-    text-transform: capitalize;
+    font-size: 14px;
+    margin-top: 7px;
     margin-bottom: 5px !important;
+    text-transform: none;
 
 }
 
@@ -2823,6 +2831,8 @@ form p .invalid_messa{
     .alert-message p{
         font-family: 'Raleway' sans-serif;
         text-align: center;
+        font-weight: 500;
+        margin-bottom: 7px;
     }
     .alert-message .accept{
         margin-left: 40px;
