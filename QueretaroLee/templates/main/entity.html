@@ -491,22 +491,20 @@
                 <div class="grid-4 contact fright no-margin">
                     <span class="ruler"></span>
                     <span class="contact">
-                        <h3 class="title main">Contacto</h3>
+                        <h3 class="title main fleft">Contacto</h3>
                         <p>
-                            <a class="link_"  href="/{{ owner.email }}/">{{ owner.email }}</a>
+                            <a class="link_ spot"  href="/{{ owner.email }}/">{{ owner.email }}</a>
                         </p>
-                        <h3 class="title main">Miembros
-                            <p>{{ followers|total_members }}</p>
-                        </h3>
-                        <h3 class="title main">Administrador/es
-                            {% for admin in admins %}
+                        <h3 class="title main fleft">Miembros</h3>
+                        <p>{{ followers|total_members }}</p>
+                        <h3 class="title main fleft">Administrador/es</h3>
+                        {% for admin in admins %}
                                 {% if admin.first_name == '' %}
                                     <p>{{ admin.username }}</p>
                                 {% else %}
                                     <p>{{ admin.first_name }}</p>
                                 {% endif %}
                             {% endfor %}
-                        </h3>
                     </span>
                 </div>
             {% endif %}
@@ -613,7 +611,7 @@
         <div class="grid-16 members load no-margin">
         <h3 class="title main">Miembros del grupo</h3>
         {% if entity.privacy == 0 or member or owner.id == user.id %}
-            <div id="scrollbar1 ">
+            <div id="scrollbar1">
                 <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">
                     <div class="overview">
