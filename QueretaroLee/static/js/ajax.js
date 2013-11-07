@@ -1111,7 +1111,7 @@ function discussion(id){
 
                             var parent_id = id;
                             if(index != 0){
-                                $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
+                                $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion+' id_'+discussion.id);
                                 $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
                                 $discussion_response.find('.respond_btn').remove();
                                 if(discussion.user != $discussion_response.find('.answer').find('.u_id').val())
@@ -1126,6 +1126,14 @@ function discussion(id){
                             }
                             if($discussion_response.find('.answer').find('.erase_btn').length > 0){
                                 $discussion_response.find('.answer').find('.erase_btn').click(function(){
+                                    $('.discussion_response').each(function(){
+                                        if($(this).hasClass("child_"+discussion.id)){
+                                            var child_id = $(this).attr('class').split('child_');
+                                            child_id = parseInt(child_id[1]);
+                                            erase_discussion(child_id, $(this));
+                                        }
+
+                                    });
                                     erase_discussion(discussion.id, $discussion_response);
                                 });
                             }
@@ -1210,7 +1218,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
 
                     if(is_son){
                         $discussion_response.find('.respond_btn').remove();
-                        $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion);
+                        $discussion_response.removeClass('grid-9 fleft').addClass('grid-8 fright child_'+discussion.parent_discussion+' id_'+discussion.id);
                         $discussion_response.find('.answer').removeClass('grid-8').addClass('grid-7');
                         $discussion_response.insertBefore($ele.parent());
 

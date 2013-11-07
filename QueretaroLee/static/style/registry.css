@@ -31,7 +31,7 @@
 .edit .title{
     font-size: 20px;
     display: block;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 .title .heading{
     color: #cccc66;
@@ -117,13 +117,16 @@ span.green_btn,span.yellow_btn{
         padding: 10px 8px 0px 8px;
     }
     .data .value.map{
-        width: 182px;
+        width: 167px;
         max-height: 50px;
         position: absolute;
         top: 30px;
         left: 0px;
         padding: 10px 8px 5px 8px;
 
+    }
+    .data #map{
+        padding: 0px 8px 0px 8px;
     }
     .checkbox{
         font-size: 10px;
@@ -168,6 +171,9 @@ span.green_btn,span.yellow_btn{
     background: #fbf6ea;
     padding: 0px 0px 0px 5px;
     height: 20px;
+    border: 1px solid #c2baab;
+    position: relative;
+    left: -16px;
 }
  .select .dropdown{
      position: absolute;

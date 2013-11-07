@@ -1078,9 +1078,7 @@ p{
     height: 128px;
 }
 
-.organization .item p,.group .item p{
-    min-height: 45px;
-}
+
                 .item .wrapper{
                     width: 100px;
                     height: 100px;
@@ -1695,7 +1693,7 @@ p{
     margin: 0px auto !important;
 }
 .d-picture_profile .dz-message{
-    width: 232px !important;
+    width: 220px !important;
 }
 /*.d-picture_profile .dz-message span{
     line-height: 15px !important;
@@ -3006,6 +3004,8 @@ form p .invalid_messa{
 .wrapper_picture_user{
     height: 200px;
     overflow: hidden;
+    width: 100%;
+    display: block;
 }
 .del_pict{
     color: red;
@@ -3847,3 +3847,20 @@ textarea{
     cursor: auto;
     font-size: 12px;
 }
+.no-padding{
+    padding: 0px !important;
+}
+.padding-fix{
+
+}
+    .padding-fix .grid-3{
+        width: 168px;
+    }
+        .padding-fix .grid-3 input{
+            position: relative;
+            right: -10px;
+        }
+    .padding-fix .grid-2 input{
+        position: relative;
+        left: -16px;
+    }

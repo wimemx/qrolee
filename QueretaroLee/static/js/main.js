@@ -217,11 +217,12 @@ $(document).ready(function(){
         item_select(true, '');
         combo_act = true;
     });
-    $('.loaded.del-wrapper .del').click(function(){
+    $('.loaded.del-wrapper .del, .func.del-wrapper .del').click(function(){
         $(this).fadeOut(250, function(){
 
             $(this).closest('.wrapper_picture_user').fadeOut(250,function(){
-                $('.dropzone_user').fadeIn(250);
+                console.log($(this).parent().attr('class'));
+                $(this).parent().find('.dropzone_user').fadeIn(250);
             });
         });
         show_upload($(this), true);
