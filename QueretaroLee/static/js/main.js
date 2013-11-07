@@ -5,7 +5,7 @@ var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var men_1 = false;
-var value,tim;
+var value,timer;
 var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
@@ -771,17 +771,6 @@ function show_text($elem, message){
     });
 }
 
-function set_timer(value_, functtion){
-    clearTimeout(tim);
-    var str = value_;
-    if (value != str) {
-        tim = setTimeout(function() {
-            value = str;
-            setTimeout(functtion,function(){});
-        }, 1000);
-    }
-}
-
 $(document).ready(function(){
 
     $('.btn_fr').click(function(){
@@ -802,11 +791,15 @@ $(document).ready(function(){
         $('.container_message').fadeOut(200);
     });
 
-    /*$('.address').keyup(function(){
-        search_map_address($(this).val());
-     });*/
     $('.address').keyup(function(){
-        set_timer($(this).val());
+        clearTimeout(timer);
+        var str = $(this).val();
+        if (value != str) {
+            timer = setTimeout(function() {
+                value = str;
+                search_map_address(value);
+            }, 1000);
+        }
     });
 
     $('.book_register .btn_ra').click(function(){
