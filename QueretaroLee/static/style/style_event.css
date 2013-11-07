@@ -34,27 +34,16 @@
 
     width: 25%;
     float: left;
-
 }
 
-
-.d-by{
-
-}
-
-.d-by .title{
+.d-by .title,.d-by .place_pink{
     font-weight: 400!important;
     font-size: 14px!important;
     padding-right: 2px;
     font-family: 'Conv_fontscore.com_d-dinproregular'!important;
 
-
 }
 
-.d-by .place_pink{
-    font-weight: 400!important;
-    font-size: 14px!important;
-}
 
 .d-btn_event{
 
@@ -97,6 +86,9 @@ p,b{
     border-bottom: 1px solid #999999;
     width: 95%;
     font-size: 10pt;
+}
+.sub_title p{
+    margin-top: 3px!important;
 }
 .sub_title{
     width: 130px!important;
@@ -187,7 +179,7 @@ p,b{
 }
 
 .d-text_event{
-    width: 40%;
+    width: 50%;
     height: 100%;
     float: left;
     margin-left: 10px;
