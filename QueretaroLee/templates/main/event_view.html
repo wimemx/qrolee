@@ -49,7 +49,6 @@
                         {{ event.name }}
                     </span>
                 </div>
-
                 <div class="d-by grid-5 no-margin">
                     <span class="title">Organizado por</span>
                     <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
@@ -58,17 +57,17 @@
                     <input type="hidden" class="d-latlon" value="{{ event.lat }},{{ event.long }}" />
                 </div>
                 {% if event.privacy_type %}
-                    <span class="grid-2">
+                    <span class="grid-2 private_event">
                         <img class="mini_priv" src="/static/img/private_icon.png"/>
-                        Evento Privado
+                        <span>Evento Privado</span>
                     </span>
                 {% endif %}
-                <div class="offset-7">
+                <div class="grid-3 no-margin fright">
                     <div class="d-buttoms fb-session-required">
-                    <input type="button" id="d-btn-facebook" value="facebook" />
                     {% if event.fb_id and not is_attending %}
-                    <input type="button" id="d-btn-attend" value="Asistir" />
+                        <span  id="d-btn-attend" class="btn_social" >Asistir</span>
                     {% endif %}
+                    <span id="d-btn-facebook" class="btn_social">facebook</span>
                     </div>
                 </div>
                 <div class="d-line grid-6 no-margin"></div>

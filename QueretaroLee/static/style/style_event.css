@@ -53,26 +53,29 @@
 
 }
 
-#d-btn-facebook {
-    background-color: rgb(41, 78, 155);
-    width: 49pt;
-    height: 15pt;
-    text-align: center;
-    color: #ffffff;
-    font-weight: bold;
+.btn_social{
+    padding: 3px 9px;
+    cursor: pointer;
+    font-size: 12px;
+    height: 17px;
+    line-height: 17px;
+    font-weight: 500;
+    float: right;
+    color: #000;
+    font-family: 'Raleway';
+}
 
+#d-btn-facebook {
+    background: #003cb3;
 }
 
 #d-btn-attend{
-    background-color: rgb(250, 102, 82);
-    width: 49pt;
-    height: 15pt;
+
     text-align: center;
     color: #ffffff;
-    font-weight: bold;
-    font-size: 9pt;
+    font-family: 'Raleway';
     margin-left: 10pt;
-
+    background: #f89883;
 }
 
 p,b{
@@ -186,6 +189,20 @@ p,b{
 
 }
 
+.mini_priv{
+    padding-right: 5px;
+    float: left;
+}
+.private_event{
+    font-family: Raleway;
+    font-weight: 500;
+    margin-left: 60px;
+    margin-top: 6px;
+}
+.private_event span{
+    margin-top: -1px;
+    float: left;
+}
 .d-data-event{
     font-size: 11px;
     color: #777;
@@ -199,9 +216,6 @@ p,b{
     margin-top: 10px!important;
 }
 .d-buttoms{
-
-    width: 90%;
-    padding-left: 37pt;
 
 }
 
