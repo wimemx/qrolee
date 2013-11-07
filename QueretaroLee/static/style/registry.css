@@ -22,15 +22,16 @@
     position: relative !important;
 }
 .edit{
-    margin:40px 10px 20px 10px;
+    margin:20px 10px 20px 10px;
     background: #fffcf5 ;
-    padding: 40px 0px 50px 0px;
+    padding: 30px 0px 50px 0px;
     min-height: 500px;
     border-bottom: 0px;
 }
 .edit .title{
     font-size: 20px;
     display: block;
+    margin-top: 0px;
 }
 .title .heading{
     color: #cccc66;
@@ -67,9 +68,8 @@ span.green_btn,span.yellow_btn{
     display: none;
 }
 .data{
-    margin-top: 20px !important;
+    margin-top: 40px !important;
     padding-bottom: 20px;
-    border-bottom: 1px solid #9d9c97;
 }
 
 .data p{
@@ -80,10 +80,12 @@ span.green_btn,span.yellow_btn{
     margin-top: 0px;
     margin-bottom: 12px;
     font-weight: 500;
+    font-size: 14px;
 }
     .data p .value{
         font-family: 'Conv_fontscore.com_d-dinproregular';
-        color: #454545;
+        color: #777;
+        font-size: 13px;
 
     }
     .data p .controllers_wrapper{
@@ -92,30 +94,39 @@ span.green_btn,span.yellow_btn{
         right: 0px;
         display: inline-block;
         float: right;
+        display: none;
     }
     .data p input:not([type=submit]){
-        background: #faf3e1;
-        height: 27px;
-        line-height: 27px;
+        background: #fbf6ea;
+        height: 23px;
+        line-height: 23px;
         display: none;
+        border: 1px solid #c2baab;
+        padding: 0px 8px 0px 8px;
+        text-indent: 0px;
+        font-family: 'Conv_fontscore.com_d-dinproregular';
     }
     .data p textarea{
         background: #fbf6ea;
         display: none;
-        padding: 0px 0px 0px 5px;
         border: none;
-        margin-right: 5px;
         height: 100px;
         margin-top: 0px;
         margin-bottom: 0px;
+        border: 1px solid #c2baab;
+        padding: 10px 8px 0px 8px;
     }
     .data .value.map{
-        width: 126px;
-        min-height: 60px;
+        width: 167px;
+        max-height: 50px;
         position: absolute;
-        top: 40px;
+        top: 30px;
         left: 0px;
+        padding: 10px 8px 5px 8px;
 
+    }
+    .data #map{
+        padding: 0px 8px 0px 8px;
     }
     .checkbox{
         font-size: 10px;
@@ -160,6 +171,9 @@ span.green_btn,span.yellow_btn{
     background: #fbf6ea;
     padding: 0px 0px 0px 5px;
     height: 20px;
+    border: 1px solid #c2baab;
+    position: relative;
+    left: -16px;
 }
  .select .dropdown{
      position: absolute;
@@ -205,6 +219,9 @@ select{
     }
     .data p .area{
         line-height: 15px;
+    }
+    .data p span.area.value{
+        padding-left: 0px;
     }
         .edit.register .data input:not([type=submit]), .edit.register .data textarea{
             display: block;
@@ -283,23 +300,39 @@ select{
     height: 180px;
 }
 .preview,.dz-message{
-        height: 180px;
-        font-family: 'Raleway' sans-serif;
-        text-align: center;
-        color: #000;
-        float: right;
-        width: 280px;
-        border: 3px dashed #acacac;
-        border-radius: 10px;
-        margin-bottom: 50px;
-        position: absolute;
-        right: 0px;
-        top: 0px;
-    }
+    height: 180px;
+    font-family: 'Raleway' sans-serif;
+    text-align: center;
+    color: #000;
+    float: right;
+    width: 280px;
+    border: 2px dashed #777;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+}
 
 .dz-message{
         line-height: 180px;
     }
+    .dz-message span{
+        position: relative;
+    }
+        .dz-message .legend{
+            position: absolute;
+            bottom: -18px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            line-height: 14px;
+            font-size: 11px !important;
+            font-weight: 400;
+        }
 
     .dz-filename,.dz-size,.dz-success-mark,.dz-error-mark{
         display: none;
@@ -312,11 +345,6 @@ select{
         text-align: center;
         display: block;
 
-    }
-    .dz-preview{
-        width: 100px;
-        display: block;
-        margin: 30px auto;
     }
 
     .message.success{
@@ -484,13 +512,15 @@ p.advanced_search_btn{
         background: #FEF1D5 ;
         height: 30px;
         line-height: 30px;
-        font-size: 13px;
+        font-size: 12px;
         cursor: pointer;
+        font-family: 'Raleway' sans-serif;
     }
         .filter .checkbox span{
             width: 16px;
             height: 25px;
             margin-top: 4px;
+            top: 0px;
             border:none;
             background: url('../img/filter_sprite.png') no-repeat 0px 0px;
 

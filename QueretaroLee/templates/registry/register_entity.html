@@ -54,14 +54,6 @@
                 <p class="textarea">Descripción
                     <textarea class="grid-5 fix fright no-margin" name="description"></textarea>
                 </p>
-                <!--<p>Photo de portada
-                <span class="grid-5 fright no-margin">
-                    <span class="green_btn fleft">Subir imagen</span>
-                    <span class="grid-3 filename fleft"></span>
-                    <input type="file" name="cover_picture"/>
-                </span>
-                </p>-->
-
                 <p style="height: 100px;">{% if entity_type.1 == 'spot' %}Tags{% else %}Categoría{% endif %}
                 <input type="hidden" name="category_ids" value=""/>
                     <span style="height: 100%;" class="grid-5 fright no-margin">
@@ -121,7 +113,7 @@
             </form>
             <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="picture" value="1"/>
-                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
@@ -131,7 +123,7 @@
             {% if entity_type.1 == 'group' %}
             <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="cover" value="1"/>
-                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>

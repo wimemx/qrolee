@@ -28,7 +28,7 @@
     <div class="grid-16 entity user_pro no-margin">
         <span class="wrapper fleft">
             {% if not user_profile.picture %}
-                <img class="img_size_all" src=/static/img/create.png alt="{{ profile.user}}"/>
+                <img class="img_size_all" src=/static/img/no_profile.png alt="{{ profile.user}}"/>
             {% else %}
                 {% if owner.id == user.id %}
                     <span class="brown_btn edit"></span>
@@ -171,6 +171,7 @@
                              Géneros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
+                         {% if list_genre %}
                              {% for obj in list_genre %}
                                  {% if obj.genre.name %}
                                      {% if forloop.counter <= 3 %}
@@ -187,6 +188,7 @@
                                      <span class="gray_7 my_items">Ningun género favorito</span>
                                  {% endif %}
                              {% endfor %}
+                             {% endif %}
                          </span>
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
@@ -271,7 +273,7 @@
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
-        <h3 class="title grid-4 fleft title_header_list">
+        <h3 class="title main grid-4 fleft">
             {% if user_profile.user.id == user.id %}
                 Mis libros favoritos
             {% else %}

@@ -54,7 +54,7 @@ input, textarea{
     margin-left: 32px;
 }
 input:not([type='submit']){
-    height: 25px;
+    height: 27px;
     width: 100%;
     text-indent: 7px;
     font-family: arial !important;
@@ -234,6 +234,7 @@ p{
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
+        transition: all ease-in 0.3s;
     }
     .nav a:hover{
         transition: all ease-in 0.3s;
@@ -264,7 +265,7 @@ p{
     }
     .header .search span .icon{
         width: 27px;
-        height: 25px;
+        height: 27px;
         position: absolute;
         background: #fff url('../img/search_icon_header.png') no-repeat 50% 50%;
         cursor: pointer;
@@ -1077,9 +1078,7 @@ p{
     height: 128px;
 }
 
-.organization .item p,.group .item p{
-    min-height: 45px;
-}
+
                 .item .wrapper{
                     width: 100px;
                     height: 100px;
@@ -1111,10 +1110,7 @@ p{
 
                 }
         .content .sidebar-a .title{
-            font-size: 16px;
-            text-align: left;
-            font-family: 'Conv_DINPro-Bold';
-            margin-top: 0px;
+
         }
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
@@ -1690,13 +1686,14 @@ p{
 .d-picture_user{
     float: right;
     margin-bottom: 20px;
+    margin-top: 40px !important;
 }
 
 .d-picture_profile{
-    margin: 30px auto !important;
+    margin: 0px auto !important;
 }
 .d-picture_profile .dz-message{
-    width: 200px !important;
+    width: 220px !important;
 }
 /*.d-picture_profile .dz-message span{
     line-height: 15px !important;
@@ -1861,10 +1858,11 @@ p{
     text-align: center;
     color: #000;
     width: 198px;
-    border: 3px dashed #acacac;
+    border: 2px dashed #777;
     border-radius: 10px;
     right: 0px;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .line_divide{
@@ -1931,7 +1929,7 @@ p{
     font-family: 'Raleway' sans-serif !important;
     color: #000000;
     font-weight: normal !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .place_pink{
@@ -1942,6 +1940,9 @@ p{
     font-weight: 400;
     cursor: pointer;
 
+}
+.place_pink.fix{
+    font-size: 12px !important;
 }
 
 .d-text_opacity{
@@ -3000,8 +3001,9 @@ form p .invalid_messa{
 
 .wrapper_picture_user{
     height: 200px;
-    width: 200px;
     overflow: hidden;
+    width: 100%;
+    display: block;
 }
 .del_pict{
     color: red;
@@ -3128,13 +3130,7 @@ textarea{
     left: 132px!important;
 }
 
-.List .viewport{
-    height: 430px !important;
-}
 
-.Title .viewport{
-    height: 468px !important;
-}
 
 .out_group{
     margin-left: 60px;
@@ -3777,6 +3773,7 @@ textarea{
 
 .list .d-title_profile{
     color: #000!important;
+    font-weight: 400 !important;
 }
 .mini_rate img{
     width: 16px;
@@ -3815,8 +3812,58 @@ textarea{
     font-size: 12px;
 }
 
+.Author #scrollbar1 .overview .title{
+    margin-top: 16px;
+}
+.loaded.del-wrapper{
+    bottom: 0px;
+}
+    .loaded.del-wrapper .del{
+        display: block;
+    }
+.del-wrapper{
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+}
+.del-wrapper span.del{
+    text-align: center;
+    display: none;
+    cursor: pointer;
+    font-family: 'Raleway' sans-serif;
+    text-decoration: underline;
+}
+.dz-preview{
+        width: 130px;
+        display: block;
+        margin: 20px auto;
+    }
+
+.green_btn.main, .yellow_btn.main{
+    position: relative;
+    display: block;
+    margin-right: 10px;
+}
+
 .gray_7{
     color: #777;
     cursor: auto;
     font-size: 12px;
 }
+.no-padding{
+    padding: 0px !important;
+}
+.padding-fix{
+
+}
+    .padding-fix .grid-3{
+        width: 168px;
+    }
+        .padding-fix .grid-3 input{
+            position: relative;
+            right: -10px;
+        }
+    .padding-fix .grid-2 input{
+        position: relative;
+        left: -16px;
+    }

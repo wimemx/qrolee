@@ -27,17 +27,12 @@ hyu
     </div>
     <div class="grid-16 edit">
     <div class="grid-14 center">
+    <span class="d-pink_buttom fright message_alert" >Eliminar Cuenta</span>
         {% csrf_token %}
         <input type="hidden" class="type" value="{{ type }}" />
         <input type="hidden" class="id_object" value="{{ user_profile.user.id }}" />
-        <span class="title main">Editar información de
-            {% if type == 'profile' %}
-                <a class="d-link_perfil" href="/accounts/users/profile/{{ user.id }}">tu perfil</a>
-            {% endif %}
-            {% if type == 'account' %}
-                tu cuenta
-            {% endif %}
-        </span>
+        <span class="title grid-9 fleft no-margin main">Editar información de tu perfil</span>
+
         {% if type == 'profile' %}
             <span style="border: none" class="data grid-8 fleft no-margin">
             <p>Nombre
@@ -70,8 +65,8 @@ hyu
             </p>
             <p>Email
                 <span class="controllers_wrapper">
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
+                <!--<span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>-->
                     </span>
                 <span class="close right"></span>
                 {% if user_profile.user.email  %}
@@ -104,10 +99,10 @@ hyu
                 <span class="close right"></span>
                 {% if user_profile.biography  %}
                     <textarea name="biography" type="text"  class="grid-5 alpha fright value ">{{ user_profile.biography }}</textarea>
-                    <span class="value grid-5 alpha fright">{{ user_profile.biography }}</span>
+                    <span class="value area grid-5 alpha fright">{{ user_profile.biography }}</span>
                 {% else %}
                     <textarea name="biography" type="text"  class="grid-5 alpha fright value "></textarea>
-                    <span class="value grid-5 alpha fright"></span>
+                    <span class="value area grid-5 alpha fright"></span>
                 {% endif %}
             </p>
             <p>Fecha de nacimiento
@@ -143,7 +138,7 @@ hyu
                 {% endif %}
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
-            <p>codigo postal
+            <p>Codigo postal
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
@@ -200,29 +195,40 @@ hyu
                 {% endif %}
             </p>
         </span>
-        <span class="d-picture_user grid-4" >
+        <span class="d-picture_user grid-4 fright no-margin" >
             {% if user_profile.picture %}
-                <span class="del_pict grid-2 no-margin show_upload">Quitar foto</span>
+
                 <span class="d-picture_user wrapper_picture_user">
                     <img class="img_size_all"
                          src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" />
+                    <span class="del-wrapper loaded">
+                        <span class="spot del center picture">Eliminar foto</span>
+                    </span>
                 </span>
+
                 <span class="dropzone_user disable_upload">
                     <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                         <input type="hidden" name="edit_profile" value="1"/>
+                        <div class="del-wrapper">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </div>
                     </form>
                 </span>
+
             {% else %}
                 <span class="dropzone_user ">
                     <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                         <input type="hidden" name="edit_profile" value="1"/>
+                        <div class="del-wrapper">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </div>
                     </form>
                 </span>
             {% endif %}
         </span>
     {% endif %}
-        {% if type == 'account' %}
-            <span style="border: none" class="data grid-9 fleft no-margin">
+    <span style="border: none;" class="data grid-8 fleft no-margin">
+        <span style="margin-bottom: 30px;" class="title main">Editar información de tu cuenta</span>
             <p>Nombre
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
@@ -246,8 +252,8 @@ hyu
                 <span class="value grid-5 alpha fright">{{ user_account.date_joined }}3</span>
             </p>
         </span>
-        <span class="d-pink_buttom fright message_alert" >Eliminar Cuenta</span>
-        {% endif %}
+
+
     </div>
     </div>
     <script type="text/javascript">
@@ -261,9 +267,9 @@ hyu
 
         Dropzone.options.picture = {
         maxFiles: 1,
-        dictRemoveFile: 'Quitar',
-        addRemoveLinks: true,
-        dictDefaultMessage: 'Inserte aquí su nueva <br> foto de perfil',
+        thumbnailWidth: 130,
+        thumbnailHeight: 130,
+        dictDefaultMessage: 'Nueva foto de perfil <span class="legend din-r">(176px - 176px)</span>',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#picture .dz-message ').fadeOut(300);
@@ -271,7 +277,17 @@ hyu
         },
         success: function(file) {
             $('.profile-pic').val(file.name);
-            load_img_profile();
+            //load_img_profile();
+            $('.del.picture').css({
+                'display': 'block'
+            });
+            var this_ = this;
+            $('.del.picture').click(function(){
+                this_.removeAllFiles();
+                $('.del.picture').fadeOut(300);
+                $('.dz-default.dz-message').fadeIn(300);
+                $('.profile-pic').val('');
+            });
         }
     }
         $(document).ready(function(){

@@ -35,11 +35,11 @@
                          alt="{{ profile.picture }}"/>
                 {% endif %}
             </span>
-            <span class="general-info no-margin grid-9">
+            <span class="general-info no-margin grid-7">
                 <h3 class="title d-title_profile">
                         {{ profile.name|title }}
                 </h3>
-                <span class="grid-9 no-margin container_rate">
+                <span class="grid-7 no-margin container_rate">
                       <span class="container_starts_rate fleft">
                           {% if my_grade == 0 %}
                                 {% for x in range %}
@@ -77,7 +77,7 @@
                         {% endif %}
                     </span>
                 </span>
-                <span class="grid-9 no-margin">
+                <span class="grid-7 no-margin">
                     <p >
                         {% if count == 0 %}
                             no tiene títulos
@@ -90,8 +90,8 @@
                         {% endif %}
                     </p>
                 </span>
-                <p >
-                    {{ profile.biography|truncatechars:330 }}
+                <p class="grid-6 fleft alpha">
+                    {{ profile.biography|truncatechars:230 }}
                 </p>
             </span>
         {% endif %}
