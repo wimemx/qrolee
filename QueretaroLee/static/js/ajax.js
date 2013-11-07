@@ -1521,9 +1521,9 @@ function append_titles(overview, data, in_api){
         p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2"></p>');
         for(ind = 0;ind<5;ind++){
             if(ind<data[i].grade)
-                p_stars.append('<img class="starts_mini" src="/static/img/comunityStar.png">');
+                p_stars.append('<img class="starts_mini" src="/static/img/comunityStarmini.png">');
             else
-                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStar.png">');
+                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStarmini.png">');
         }
         div_item.append(p_genre);
         div_item.append(p_stars);
@@ -1675,9 +1675,9 @@ function search_list_authors_titles($this){
                             span_stars = $('<span class="fright mini_rate" ></span>');
                             for(ind = 0;ind<5;ind++){
                                 if(ind<data[i].grade)
-                                    span_stars.append('<img src="/static/img/comunityStar.png">');
+                                    span_stars.append('<img src="/static/img/comunityStarmini.png">');
                                 else
-                                    span_stars.append('<img src="/static/img/backgroundStar.png">');
+                                    span_stars.append('<img src="/static/img/backgroundStarmini.png">');
                             }
                             if(data[i].type == 'T')
                                 type = 'libros';

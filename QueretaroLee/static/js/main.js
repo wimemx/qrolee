@@ -1957,7 +1957,6 @@ function list_title(csrf, data, div_text, type){
                     author_att = 'De ' + truncText(titles_l[i]['extras'][1][0],13);
                 a_author.append(author_att);
                 p_text_author.append(a_author);
-                console.log(titles_l[i]);
                 div_container_text.append(p_text_author);
                 container_stars = $('<span class="grid-3 no-margin"></span>');
                 var grade = 5;
@@ -2209,9 +2208,9 @@ function list_title(csrf, data, div_text, type){
                 var grade = 5;
                 for(var index = 0;index<5;index++){
                     if(index<grade){
-                        container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+                        container_stars.append('<img class="fleft" src="/static/img/comunityStarmini.png" />');
                     }else{
-                        container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                        container_stars.append('<img class="fleft" src="/static/img/backgroundStarmini.png" />');
                     }
                 }
 
@@ -2531,9 +2530,9 @@ function add_my_title(csrf, array_title, type){
                         p_stars = $('<p class="no-margin stars_grade grid-2"></p>');
                         for(ind = 0;ind<5;ind++){
                             if(ind<title[i2].grade)
-                                p_stars.append('<img class="starts_mini" src="/static/img/comunityStar.png">');
+                                p_stars.append('<img class="starts_mini" src="/static/img/comunityStarmini.png">');
                             else
-                                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStar.png">');
+                                p_stars.append('<img class="starts_mini" src="/static/img/backgroundStarmini.png">');
                         }
 
                         span.append(img);
@@ -2679,9 +2678,9 @@ function get_titles_authors(list, csrf){
                 span_stars = $('<span class="grid-3 no-margin marg_bot"></span>');
                 for(ind = 0;ind<5;ind++){
                     if(ind<title[i2].extras[0][0])
-                        span_stars.append('<img src="/static/img/comunityStar.png">');
+                        span_stars.append('<img src="/static/img/comunityStarmini.png">');
                     else
-                        span_stars.append('<img src="/static/img/backgroundStar.png">');
+                        span_stars.append('<img src="/static/img/backgroundStarmini.png">');
                 }
                 span.append(img);
                 div.append(input_id);
@@ -3338,9 +3337,9 @@ function list_titles_and_author(data, type, $container, type_message){
             var grade = 5;
             for(var index = 0;index<5;index++){
                 if(index<grade){
-                    container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+                    container_stars.append('<img class="fleft" src="/static/img/comunityStarmini.png" />');
                 }else{
-                    container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                    container_stars.append('<img class="fleft" src="/static/img/backgroundStarmini.png" />');
                 }
             }
 
@@ -3468,9 +3467,9 @@ function list_titles_and_author(data, type, $container, type_message){
                     var grade = 5;
                     for(var index = 0;index<5;index++){
                         if(index<grade){
-                            container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+                            container_stars.append('<img class="fleft" src="/static/img/comunityStarmini.png" />');
                         }else{
-                            container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                            container_stars.append('<img class="fleft" src="/static/img/backgroundStarmini.png" />');
                         }
                     }
                     div_container_text.append(container_stars);

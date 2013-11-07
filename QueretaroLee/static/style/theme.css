@@ -2027,7 +2027,13 @@ p{
 .overview_list{
     height: 434px !important;
 }
-
+.add_my_list  .title{
+    font-size: 16px!important;
+}
+.add_my_list  .p-d-text{
+    font-size: 12px!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif;
+}
 .user_profile{
     width: 100%;
     z-index: 9;
@@ -2275,9 +2281,13 @@ p{
     border-bottom: 1px solid #acacac !important;
 }
 
+.user_pro .titles_author{
+    margin-left: 60px;
+}
+
+
 .titles_author{
     margin-top: 58px !important;
-    margin-left: 60px;
 }
 
 
@@ -2657,11 +2667,6 @@ p{
 }
 .desc_group{
     margin-top: 0px;
-}
-
-.starts_mini{
-    height: 15px;
-    width: 15px;
 }
 
 .rate_perfil_list{
@@ -3809,6 +3814,11 @@ textarea{
 :-ms-input-placeholder {
    font-family: 'Conv_fontscore.com_d-dinproregular';
     font-size: 12px;
+}
+
+.author .container_titles, .list .container_titles ,.title .container_titles{
+    margin-left: 20px!important;
+    margin-bottom: 20px;
 }
 
 .Author #scrollbar1 .overview .title{
