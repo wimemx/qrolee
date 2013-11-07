@@ -1195,7 +1195,7 @@ p{
             }
             .content .sidebar-a p{
                 width: 100%;
-                margin-bottom:8px;
+                margin-bottom: 4px;
                 float: left;
                 font-size: 13px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -1642,13 +1642,16 @@ p{
     margin-top: 25px !important;
 
 }
-
+.d-margin_calendar .title{
+    padding-left: 5px;
+}
 .d-not_found{
-    margin: 50px auto !important;
+    margin: 23% auto !important;
     color: #f89883;
-    font-size: 14px;
-    font-family: 'Raleway' sans-serif;
+    font-size: 14px!important;
+    font-family: 'Raleway' sans-serif!important;
     text-align: center;
+    width: 100%!important;
 }
 
 .d-info_event{

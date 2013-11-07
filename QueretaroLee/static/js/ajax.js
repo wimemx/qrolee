@@ -97,7 +97,7 @@ function populateCal(curr_month,$item){
                         span_text = $('<span class="'+grid+' fleft no-margin"></span>');
                         a_2 = $('<a class="d-link_event" href="'+href+'" ><h3 title="'+e[0]+'" >'+truncText(e[0],47)+'</h3></a>');
                         p = $('<p></p>');
-                        span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
+                        span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],180)+'</span>');
                         p.append(span_info);
                         span_time = $('<span class="time fleft">'+e[5]+' hrs.</span>');
                         span_text.append(a_2);

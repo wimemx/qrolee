@@ -48,7 +48,7 @@ function text_no_found(message){
         $(this).remove();
     });
 
-    var error_msg = $('<p class="center grid-3 d-not_found" >No se pudieron encontrar '+message+'</div> ');
+    var error_msg = $('<p class="center grid-3 d-not_found" >No se han encontrado '+message+'</div> ');
     $('.error').append(error_msg);
 }
 
