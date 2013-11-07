@@ -5,7 +5,7 @@ var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var men_1 = false;
-var value,timer;
+var input_val, timer;
 var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
@@ -794,10 +794,10 @@ $(document).ready(function(){
     $('.address').keyup(function(){
         clearTimeout(timer);
         var str = $(this).val();
-        if (value != str) {
+        if (input_val != str) {
             timer = setTimeout(function() {
-                value = str;
-                search_map_address(value);
+                input_val = str;
+                search_map_address(input_val);
             }, 500);
         }
     });
