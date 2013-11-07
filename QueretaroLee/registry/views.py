@@ -152,18 +152,20 @@ def account_register(request):
 
         if user_exits:
             success = 'False'
-            url = 'Usario ya existente'
+            url = 'Usuario ya existente'
         else:
             password_md5 = hashlib.md5(request.POST.get('password')).hexdigest()
             del user['password']
             del user['password_match']
             del user['csrfmiddlewaretoken']
             user['password'] = password_md5
+
             for key, value in user.iteritems():
                 copy = dict(user)
                 if len(value) <= 1:
                     copy[key] = str(value[0])
                 user = copy
+
             user = auth_models.User.objects.create(**user)
             user.save()
             create_default_list(user)
@@ -1234,7 +1236,7 @@ def add_my_title(request):
 
                             if len(response['result'][0]['mid']) != 0:
                                 picture = 'https://www.googleapis.com/freebase/v1/image' +\
-                                          response['result'][0]['mid']
+                                          response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
 
                             dict_author = {
                                 'name': response['result'][0]['name'],
@@ -1302,7 +1304,7 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['biography'])
                     li ={
                         'name': str(obj['it']['attribute']['name']),
-                        'picture': str(obj['it']['attribute']['picture']),
+                        'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
                         'biography': desc[0:800],
                         'birthday': datetime.datetime.today(),
                         'id_api': str(obj['it']['attribute']['id_api'])
@@ -2011,7 +2013,7 @@ def register_title_click(request):
 
             if len(response['result'][0]['mid']) != 0:
                 picture = 'https://www.googleapis.com/freebase/v1/image' + \
-                          response['result'][0]['mid']
+                          response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
 
             dict_author = {
                 'name': response['result'][0]['name'],

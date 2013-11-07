@@ -71,14 +71,18 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% if count_vot == 0 %}
+                        <span class="text_rate"> {{ count_vot }} votaciones </span>
+                    {% else %}
+                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% endif %}
                         {% if my_grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
                     </span>
                 </span>
                 <span class="grid-7 no-margin">
-                    <p >
+                    <p class="text_by" >
                         {% if count == 0 %}
                             no tiene títulos
                         {% endif %}
@@ -90,7 +94,7 @@
                         {% endif %}
                     </p>
                 </span>
-                <p class="grid-6 fleft alpha">
+                <p class="grid-6 fleft alpha descrip_list">
                     {{ profile.biography|truncatechars:230 }}
                 </p>
             </span>
@@ -152,7 +156,11 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% if count_vot == 0 %}
+                        <span class="text_rate"> {{ count_vot }} votaciones </span>
+                    {% else %}
+                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% endif %}
                         {% if my_grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
@@ -172,9 +180,9 @@
                         leyendo este libro
                     </p>
                 </span>
-                <span class="grid-9 no-margin ">
+                <span class="grid-6 no-margin ">
                     <p class="text_profile">
-                        {{ profile.description|truncatechars:420 }}
+                        {{ profile.description|truncatechars:280 }}
                     </p>
                 </span>
             </span>
@@ -233,14 +241,18 @@
                 </span>
                 <span class="container_text_rate">
                     <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
-                    <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% if count_vot == 0 %}
+                        <span class="text_rate"> {{ count_vot }} votaciones </span>
+                    {% else %}
+                        <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                    {% endif %}
                         {% if my_grade >= 1 %}
                             <span class="text_rate"> mi voto: {{ my_vot }} </span>
                         {% endif %}
                     </span>
                 </span>
-                <p class="descrip_list">
-                    {{ profile.description|truncatechars:420 }}
+                <p class="descrip_list grid-6 no-margin">
+                    {{ profile.description|truncatechars:280 }}
                 </p>
             </span>
         {% endif %}

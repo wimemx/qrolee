@@ -171,7 +171,6 @@
                              Géneros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
-                         {% if list_genre %}
                              {% for obj in list_genre %}
                                  {% if obj.genre.name %}
                                      {% if forloop.counter <= 3 %}
@@ -188,7 +187,6 @@
                                      <span class="gray_7 my_items">Ningun género favorito</span>
                                  {% endif %}
                              {% endfor %}
-                             {% endif %}
                          </span>
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros favoritos
@@ -269,7 +267,7 @@
             </div>
         </div>
     </div>
-    <div class="grid-16 load prevent_scroll no-margin">
+    <div class="grid-16 load prevent_scroll no-margin my_books">
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">

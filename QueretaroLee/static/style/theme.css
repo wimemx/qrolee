@@ -117,7 +117,7 @@ input:not([type='submit']){
     width: 25px;
     border: 1px solid #faf3e1;
     border-right: 0px;
-    height: 25px!important;
+    height: 27px!important;
 }
 .green_btn{
     background: #cccc66;
@@ -1894,6 +1894,10 @@ p{
     float: left;
 }
 
+.my_books .title_book{
+    margin-top: 0px!important;
+}
+
 .title_book{
     margin-bottom: 0px !important;
     margin-top: 20px !important;
@@ -2285,6 +2289,10 @@ p{
     margin-left: 60px;
 }
 
+.user_pro .d-title_profile{
+    color: #000!important;
+    font-weight: 400!important;
+}
 
 .titles_author{
     margin-top: 58px !important;
@@ -2429,7 +2437,9 @@ p{
 }
 
 .descrip_list{
-    padding-top: 29px;
+    margin-top: 6px!important;
+    float: left;
+    font-size: 13px!important;
 }
 .icon_social{
     cursor: pointer;
@@ -3781,6 +3791,9 @@ textarea{
     color: #000!important;
     font-weight: 400 !important;
 }
+.author .d-title_profile{
+    margin-bottom: 6px!important;
+}
 .mini_rate img{
     width: 16px;
     height: 15px;
@@ -3833,8 +3846,16 @@ textarea{
 .title .text_profile, .list .text_profile,.author .text_profile{
     margin-top: 0px!important;
 }
-.title .d-title_profile{
+.title .d-title_profile ,.author .d-title_profile,.list .d-title_profile{
     margin-top: 10px!important;
+}
+.list .text_by{
+    margin-bottom: 6px!important;
+    font-size: 13px;
+}
+.author .text_by{
+    margin-bottom: 0px!important;
+    margin-top: 6px;
 }
 .Author #scrollbar1 .overview .title{
     margin-top: 16px;
