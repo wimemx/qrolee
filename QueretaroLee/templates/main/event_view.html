@@ -30,9 +30,9 @@
     </div>
 
 
-<div class="grid-16 entities">
-    <div class="grid-14 container_event">
-        <div class="d-container-1 border_bottom">
+<div class="grid-16 entity event_view no-margin">
+        <div class="grid-15 fleft event-content no-margin">
+        <div class="grid-10 no-margin fleft border_bottom">
 
             <div class="d-container-name"  >
 
@@ -73,7 +73,7 @@
                 </div>
                 <div class="d-line"></div>
 
-                <div class="d-data1">
+                <div class="grid-7 no-margin fleft">
                     <div class="d-description" >
                         <p>
                             {{ event.description }}
@@ -83,16 +83,16 @@
                     </div>
                 </div>
 
-                <div class="grid-2">
+                <div class="grid-3 no-margin fright">
                     <input type="hidden" class="fb_event_id" {% if event.fb_id %} value="{{ event.fb_id }}" {% else %} value="-1" {% endif %}/>
                     <input type="hidden" class="event_id" value="{{ event.id }}"/>
                     <div class="d-date">
-                        <p><b>Fecha</b></p>
+                        <p class="title">Fecha</p>
                         <p>{{ date.weekday }} {{ date.day }}
                             <br/>{{ date.month }} {{ date.year }}</p>
                     </div>
                     <div class="d-address">
-                        <p><b>Lugar</b></p>
+                        <p class="title">Lugar</p>
                         {% if event.place_spot %}
                             <a class="place_pink" href="/qro_lee/entity/spot/{{ spot.0.id }}">
                                 {{ event.location_name|replace:'#' }}
@@ -129,12 +129,11 @@
                         </div>
                         <div class="d-text_event">
                             <a href="/qro_lee/events/{{ event.id }}/" >
-                                <b class="d-name-event-mini">{{ event.name }}</b>
+                                <p class="d-name-event-mini no-margin">{{ event.name }}</p>
                             </a>
-                            <br>
-                            <b class="d-data-event">
-                            {{ event.start_time }} hrs
-                            </b>
+                            <p class="d-data-event din-r no-margin">
+                            {{ event.start_time|time_format}} hrs
+                            </p>
                         </div>
 
                     </div>
