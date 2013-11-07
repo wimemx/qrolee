@@ -798,7 +798,7 @@ $(document).ready(function(){
             timer = setTimeout(function() {
                 value = str;
                 search_map_address(value);
-            }, 1000);
+            }, 500);
         }
     });
 
