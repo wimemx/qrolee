@@ -313,9 +313,7 @@ p{
         width: 90px;
 
     }
-    .account-settings .user:hover{
-     color: #edde83!important;
-    }
+
 
 .news-feed{
     background: #fffcf5;
@@ -590,11 +588,11 @@ p{
                 font-size: 12px;
             }
         .entity .general-info .title{
-            color: #C3C361;
+            color: #b8b84d;
             font-size: 25px;
             text-align: left;
             width: 100%;
-            font-weight: 500;
+            font-weight: 400;
             font-family: 'Raleway' sans-serif;
             margin-bottom: 0px;
             margin-top: 0px;
@@ -3700,9 +3698,10 @@ textarea{
 .text_cent{
     text-align: center
 }
+/*
 .account-settings:hover .member{
     display: block!important;
-}
+}*/
 .account-settings .member{
     top: 50px;
     right: -38px;

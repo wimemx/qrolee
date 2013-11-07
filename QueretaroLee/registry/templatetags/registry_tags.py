@@ -90,7 +90,7 @@ def feed_type(feed_id):
         elif profile.picture.strip() == '':
             img_url = '/static/img/no_profile.png'
         else:
-            img_url += 'list/'
+            img_url += 'profile/'+profile.picture
 
         if user.first_name != '':
             name = user.first_name + ' '+user.last_name
