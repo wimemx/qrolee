@@ -1606,14 +1606,17 @@ def book_crossing(request, **kwargs):
     template = kwargs['template_name']
     books_1 = models.Travel.objects.filter(status=1)
     dict_1 = {}
+
     for obj in books_1:
         user_book = account_models.User.objects.get(id=obj.user)
         dict_1[obj.id] = {
             'user': user_book,
             'travel': obj
         }
+
     books_2 = models.Travel.objects.filter(status=0)
     dict_2 = {}
+
     for obj in books_2:
         user_book = account_models.User.objects.get(id=obj.user)
         dict_2[obj.id] = {
@@ -1652,6 +1655,9 @@ def book(request, **kwargs):
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
+    print state_1
+    print state_2
+
     dict = {}
     count = 1
     for obj in list_users:
@@ -1669,10 +1675,13 @@ def book(request, **kwargs):
     else:
         state_1 = False
 
-    if state_2:
+    if len(state_2) > 1:
         state_2 = True
     else:
         state_2 = False
+
+    if len(count_user) == 1:
+        count_user = ''
 
     context = {
         'book': book,

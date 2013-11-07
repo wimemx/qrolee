@@ -1,3 +1,4 @@
+
 function truncText (text, maxLength, ellipseText){
         ellipseText = ellipseText || '&hellip;';
 
@@ -94,7 +95,7 @@ function populateCal(curr_month,$item){
                         if($('.type').val() == 'Event')
                             grid = 'grid-7';
                         span_text = $('<span class="'+grid+' fleft no-margin"></span>');
-                        a_2 = $('<a class="d-link_event" href="'+href+'" ><h3>'+e[0]+'</h3></a>');
+                        a_2 = $('<a class="d-link_event" href="'+href+'" ><h3 title="'+e[0]+'" >'+truncText(e[0],47)+'</h3></a>');
                         p = $('<p></p>');
                         span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
                         p.append(span_info);
@@ -210,7 +211,8 @@ function populateCal(curr_month,$item){
                 }else{
                     //$('#scrollbar').tinyscrollbar();
                 }
-                //$('.scroll_events').tinyscrollbar();
+
+                $('#scrollbar1').tinyscrollbar_update();
             });
     }
 }
@@ -563,6 +565,21 @@ $(document).ready(function(){
         var content = truncText($('.d-description p').html(), 100);
         post_to_fb(caption, description, content, false);
     });
+    $('#form_external').submit(function(e){
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(data){
+                if(data['success'] == 'True')
+                    console.log('success');
+            });
+
+       return false;
+    });
 
     $('#form_search').submit(function(e){
         return search_book_code($(this));
@@ -573,6 +590,7 @@ $(document).ready(function(){
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
         var data_ = api_isbn_search(isbn);
+
         if(data_ == -1){
             e.preventDefault();
             $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
@@ -1677,114 +1695,120 @@ function search_list_authors_titles($this){
 
                         var array_id_api = append_titles(overview, data, false);
                         var csrf = $('.csrf_header').find('input').val();
-                        var value = $('.field_list').val();
-                       if(value.length != 0){
+                        clearTimeout(timer);
+                        var str = $('.field_list').val();
+                        if (input_val != str) {
+                            timer = setTimeout(function() {
+                                input_val = str;
+                                var value = str;
+                                console.log(str);
+                                if(value.length != 0){
+                                    var data_api = search_titles_and_author_in_api_bd('T', csrf, value);
+                                    data_api = data_api[1];
+                                    if (data_api != null){
+                                        data_api = data_api['result_api']['items'];
+                                        data_title = data_api;
 
-                        if(value.length != 0){
-                            var data_api = search_titles_and_author_in_api_bd('T', csrf, value);
-                            data_api = data_api[1];
-                           if (data_api != null){
-                                data_api = data_api['result_api']['items'];
-                                data_title = data_api;
+                                        var data_items = {};
+                                        $.each(data_api, function(i){
+                                            var id_exist = false;
+                                            $.each(array_id_api, function(in2){
+                                                if(array_id_api[in2] == data_api[i].id){
+                                                    id_exist = true;
+                                                }
+                                            });
+                                            if(!id_exist){
+                                                var picture = '';
+                                                var author = 'autor anonimo';
+                                                var publisher = '';
+                                                var pageCount = 100;
+                                                var language = '';
+                                                var volumeInfo = data_api[i]['volumeInfo'];
+                                                var subtitle = '';
+                                                var country = '';
+                                                var isbn1 = '';
+                                                var isbn2 = '';
+                                                var published_date = '2000-01-01';
 
-                                var data_items = {};
-                                $.each(data_api, function(i){
-                                    var id_exist = false;
-                                    $.each(array_id_api, function(in2){
-                                        if(array_id_api[in2] == data_api[i].id){
-                                            id_exist = true;
-                                        }
-                                    });
-                                    if(!id_exist){
-                                        var picture = '';
-                                        var author = 'autor anonimo';
-                                        var publisher = '';
-                                        var pageCount = 100;
-                                        var language = '';
-                                        var volumeInfo = data_api[i]['volumeInfo'];
-                                        var subtitle = '';
-                                        var country = '';
-                                        var isbn1 = '';
-                                        var isbn2 = '';
-                                        var published_date = '2000-01-01';
+                                                if('imageLinks' in volumeInfo)
+                                                    if('thumbnail' in volumeInfo['imageLinks'])
+                                                        picture = volumeInfo['imageLinks']['thumbnail']
+                                                if('authors' in volumeInfo)
 
-                                        if('imageLinks' in volumeInfo)
-                                            if('thumbnail' in volumeInfo['imageLinks'])
-                                                picture = volumeInfo['imageLinks']['thumbnail']
-                                        if('authors' in volumeInfo)
+                                                    if(volumeInfo['authors'].length > 0)
+                                                        author = volumeInfo['authors'][0];
 
-                                            if(volumeInfo['authors'].length > 0)
-                                                author = volumeInfo['authors'][0];
+                                                if('publisher' in volumeInfo)
+                                                    publisher = volumeInfo['publisher'];
 
-                                        if('publisher' in volumeInfo)
-                                            publisher = volumeInfo['publisher'];
+                                                if('pageCount' in volumeInfo)
+                                                    pageCount = volumeInfo['pageCount'];
 
-                                        if('pageCount' in volumeInfo)
-                                            pageCount = volumeInfo['pageCount'];
+                                                if('language' in volumeInfo)
+                                                    language = volumeInfo['language'];
 
-                                        if('language' in volumeInfo)
-                                            language = volumeInfo['language'];
+                                                if('subtitle' in volumeInfo)
+                                                    subtitle = volumeInfo['subtitle'];
 
-                                        if('subtitle' in volumeInfo)
-                                            subtitle = volumeInfo['subtitle'];
+                                                if('publishedDate' in volumeInfo){
+                                                    var date = volumeInfo['publishedDate'];
+                                                    date = date.split('-');
+                                                    var text = '';
+                                                    if(date.length == 1)
+                                                        text = '-01-01';
 
-                                        if('publishedDate' in volumeInfo){
-                                            var date = volumeInfo['publishedDate'];
-                                            date = date.split('-');
-                                            var text = '';
-                                            if(date.length == 1)
-                                                text = '-01-01';
+                                                    if(date.length == 2)
+                                                        text = '-01';
 
-                                            if(date.length == 2)
-                                                text = '-01';
+                                                    published_date = volumeInfo['publishedDate' + text];
 
-                                            published_date = volumeInfo['publishedDate' + text];
+                                                }
 
-                                        }
+                                                if('country' in data_api[i]['accessInfo'])
+                                                    country = data_api[i]['accessInfo']['country'];
 
-                                        if('country' in data_api[i]['accessInfo'])
-                                            country = data_api[i]['accessInfo']['country'];
+                                                var isbn = '';
+                                                if('industryIdentifiers' in volumeInfo){
+                                                    isbn = volumeInfo['industryIdentifiers'];
 
-                                        var isbn = '';
-                                        if('industryIdentifiers' in volumeInfo){
-                                            isbn = volumeInfo['industryIdentifiers'];
+                                                    if(isbn.length > 0)
+                                                        if('identifier' in isbn[0])
+                                                            isbn1 = isbn[0]['identifier'];
 
-                                            if(isbn.length > 0)
-                                                if('identifier' in isbn[0])
-                                                    isbn1 = isbn[0]['identifier'];
+                                                    if(isbn.length > 1)
+                                                        if('identifier' in isbn[1])
+                                                            isbn2 = isbn[1]['identifier'];
+                                                }
 
-                                            if(isbn.length > 1)
-                                                if('identifier' in isbn[1])
-                                                    isbn2 = isbn[1]['identifier'];
-                                        }
+                                                var items = {
+                                                    'id': data_api[i].id,
+                                                    'picture': picture,
+                                                    'title': volumeInfo['title'],
+                                                    'id_author': '0',
+                                                    'author': author,
+                                                    'genre': '',
+                                                    'grade': 0,
+                                                    'publisher': publisher,
+                                                    'isbn': isbn1,
+                                                    'isbn13': isbn2,
+                                                    'language': language,
+                                                    'type': 'T',
+                                                    'cover': picture,
+                                                    'country': country,
+                                                    'id_google': data_api[i].id,
+                                                    'subtitle': subtitle,
+                                                    'published_date': published_date
+                                                }
+                                                data_items[data_api[i].id] = items;
+                                            }
+                                        });
 
-                                        var items = {
-                                            'id': data_api[i].id,
-                                            'picture': picture,
-                                            'title': volumeInfo['title'],
-                                            'id_author': '0',
-                                            'author': author,
-                                            'genre': '',
-                                            'grade': 0,
-                                            'publisher': publisher,
-                                            'isbn': isbn1,
-                                            'isbn13': isbn2,
-                                            'language': language,
-                                            'type': 'T',
-                                            'cover': picture,
-                                            'country': country,
-                                            'id_google': data_api[i].id,
-                                            'subtitle': subtitle,
-                                            'published_date': published_date
-                                        }
-                                        data_items[data_api[i].id] = items;
+                                        append_titles(overview, data_items, true);
                                     }
-                                });
-
-                                append_titles(overview, data_items, true);
-                           }
-                        }else{
-                            empty_char = true;
+                                }else{
+                                    empty_char = true;
+                                }
+                            }, 500);
                         }
 
                     }
@@ -1826,7 +1850,7 @@ function search_list_authors_titles($this){
                         if(Object.keys(data).length==0){
                             var empty = true;
                             if($('.type').val() == 'Title'){
-                                if(Object.keys(data_title).length >= 1)
+                                if(data_title == null)
                                     empty = false;
                             }
                             if(empty){
@@ -1843,7 +1867,6 @@ function search_list_authors_titles($this){
                     });
                     overview.parent().find('.loading_image').remove();
                     show_dialog();
-                }
                 });
 
             }else{
@@ -2019,7 +2042,6 @@ function search_entities($this){
                         });
                         $('.overview').fadeIn(250,function(){
 
-                            $('#scrollbar1').tinyscrollbar();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);

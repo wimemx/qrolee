@@ -55,14 +55,13 @@
             <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
 scope=publish_stream,email,publish_actions,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
-
         </p>
             <span class="banner error"></span>
         </form>
         <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
             <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>
         <p>
-            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span> ¿Cuál es tu nombre?
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span> nombre de usuario
             <input name="username" class="required" type="text"/>
         </p>
 

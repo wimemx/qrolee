@@ -512,6 +512,7 @@ def register_event(request, **kwargs):
 
 def ajax_register_event(request):
     event = dict(request.POST)
+    print event
     event['owner_id'] = int(request.user.id)
     profile = models.Profile.objects.filter(
         user__id=request.user.id)[0]
@@ -520,10 +521,14 @@ def ajax_register_event(request):
     else:
         event['privacy_type'] = 1
 
-    if event['share_fb'][0] == '0':
-        event['share_fb'] = 0
-    else:
-        event['share_fb'] = 1
+    if 'share_fb' in event:
+
+        if event['share_fb'][0] == '0':
+            event['share_fb'] = 0
+        else:
+            event['share_fb'] = 1
+
+
     del event['csrfmiddlewaretoken']
     copy = event
     for e, val in event.iteritems():
@@ -1746,13 +1751,13 @@ def update_activity(data):
 
 def cheking_book(request):
     list =  ast.literal_eval(request.POST.get('query'))
-    list['user'] = request.user
+    list['user'] = request.user.id
     code_book = list['code_book']
     del list['code_book']
     book = models.Book.objects.get(code=code_book)
     list['book'] = book
     list['type_user'] = 1
-
+    print list
     travel = models.Travel.objects.create(**list)
     travel.save()
 
@@ -2046,6 +2051,33 @@ def register_title_click(request):
         context = {
             'succes': 'False'
         }
+
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def register_external_user(request):
+    list = request.POST
+
+    list = {
+        'name': list['name'],
+        'email': list['email']
+    }
+
+    external_user = models.ExternalUser.objects.create(**list)
+    external_user.save()
+
+    success = 'False'
+    id = 0
+
+    if external_user:
+        success = 'True',
+        id = external_user.id
+
+    context = {
+        'success': success,
+        'id': id
+    }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

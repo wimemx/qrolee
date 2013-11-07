@@ -187,8 +187,8 @@
                             {% endif %}
                         {% else %}
                             <div class="grid-15 no-margin no-pandding ">
-                                <span >
-                                    <span class="grid-7 container_pop no-margin center">
+                                <span class="container_tab" >
+                                    <span class="grid-7 tab_1 container_pop no-margin center">
                                         <span class="title grid-7 no-margin">
                                             Ingresa tu encuentro con este Libro Vagabungo
                                         </span>
@@ -201,7 +201,7 @@
                                             </p>
                                             <p>
                                                 <span class="text_field">Contraseña</span>
-                                                <input name="codec" class="required" type="text">
+                                                <input name="codec" class="required" type="password">
                                             </p>
                                             <p>
                                                 <input value="Ingresar" class="int_btn" type="submit">
@@ -218,13 +218,40 @@
                                         </a>
                                         <span class="grid-3 text_log no-margin">
                                             ¿no tienes cuenta?
-                                            <span class="title_author">
+                                            <span class="title_author btn_fr t_1 cursor_p">
                                                 ingresa aquí
                                            Ingresar como usuario anonimo
                                             </span>
                                         </span>
                                         <img class="shadow" src="/static/img/form_shadow.png" alt="">
                                     </span>
+                                    <span class="grid-5 tab_2 container_pop no-margin center" style="display: none;height: 250px;">
+                                        <span class="title grid-5 no-margin">
+                                            Registrar como usuario anónimo
+                                        </span>
+                                        <form id="form_external" method="post" class="login grid-4 no-margin"
+                                              action="/registry/register_external_user/" style="display: block;">
+                                            {% csrf_token %}
+                                            <p>
+                                                <span class="text_field">Nombre completo</span>
+                                                <input name="name" class="required" type="text">
+                                            </p>
+                                            <p>
+                                                <span class="text_field">Email</span>
+                                                <input name="email" class="required" type="text">
+                                            </p>
+                                            <p>
+                                                <input value="Registrar" class="int_btn" type="submit">
+                                            </p>
+                                            <p>
+                                                <span class="title_author cursor_p grid-4 no-margin btn_fr t_2" style="text-align: center;">
+                                                   ¿ ya tienes cuenta ?<br> inicia sessión aquí
+                                                </span>
+                                            </p>
+                                        </form>
+                                        <img class="shadow" src="/static/img/form_shadow.png" alt="">
+                                    </span>
+
                                 </span>
                             </div>
                         {% endif %}

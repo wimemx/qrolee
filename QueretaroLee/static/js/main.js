@@ -5,6 +5,7 @@ var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var men_1 = false;
+var input_val, timer;
 var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
@@ -751,7 +752,8 @@ function map_cheking(country, state, city){
 }
 
 function update_latlog(lat_long){
-    $('.lat_long').val(lat_long['latLng']['lb']+','+lat_long['latLng']['mb']);
+
+    $('.lat_long').val(lat_long['latLng']['nb']+','+lat_long['latLng']['ob']);
 }
 
 function map_select(){
@@ -768,7 +770,6 @@ function map_select(){
             city =$(this).find('option:selected').val();
         index++;
     });
-
     map_cheking(country, state, city);
 }
 
@@ -781,6 +782,18 @@ function show_text($elem, message){
 
 $(document).ready(function(){
 
+    $('.btn_fr').click(function(){
+        var opc_1 = '.tab_2';
+        var opc_2 = '.tab_1';
+        if($(this).hasClass('t_1')){
+            opc_1 = '.tab_1';
+            opc_2 = '.tab_2';
+        }
+        $(opc_1).fadeOut(250,function(){
+                $(opc_2).fadeIn(250);
+        });
+    });
+
     link_active();
 
     $('.create-discussion .remove').click(function(){
@@ -788,8 +801,15 @@ $(document).ready(function(){
     });
 
     $('.address').keyup(function(){
-        search_map_address($(this).val());
-     });
+        clearTimeout(timer);
+        var str = $(this).val();
+        if (input_val != str) {
+            timer = setTimeout(function() {
+                input_val = str;
+                search_map_address(input_val);
+            }, 500);
+        }
+    });
 
     $('.book_register .btn_ra').click(function(){
         if($(this).hasClass('find')){
