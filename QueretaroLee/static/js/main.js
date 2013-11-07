@@ -879,6 +879,22 @@ $(document).ready(function(){
         });
 
     });
+    var flag_members = false;
+    $('.account-settings').mouseenter(function(){
+        $('.account-settings .member').css({
+            'display': 'block'
+        });
+        $('.account-settings .user').css({
+           'color': '#edde83'
+        });
+    }).mouseleave(function(){
+            $('.account-settings .member').css({
+                'display': 'none'
+            });
+            $('.account-settings .user').css({
+               'color': '#fff'
+            });
+        });
     $( ".change" ).change(function() {
         $(this).parent().find('.text').html($(this).val());
     });

@@ -313,9 +313,7 @@ p{
         width: 90px;
 
     }
-    .account-settings .user:hover{
-     color: #edde83!important;
-    }
+
 
 .news-feed{
     background: #fffcf5;
@@ -354,7 +352,6 @@ p{
     float: left;
     font-family: 'Raleway' sans-serif;
     font-weight: 500;
-    font-size: 18px;
     margin-top: 0px;
 }
 .news-feed .main.title{
@@ -494,7 +491,7 @@ p{
                     right: 0px;
                 }
             .title{
-                font-size: 17px;
+                font-size: 20px;
                 color: #000;
                 text-align: left;
                 margin-left: 0px;
@@ -515,7 +512,10 @@ p{
 
             }
             .members .title{
-                margin-left: 30px;
+                margin: 30px 0px 0px 30px;
+            }
+            .discussion .title.main{
+                margin-top: 30px;
             }
 
 .heading{
@@ -588,11 +588,11 @@ p{
                 font-size: 12px;
             }
         .entity .general-info .title{
-            color: #C3C361;
+            color: #b8b84d;
             font-size: 25px;
             text-align: left;
             width: 100%;
-            font-weight: 500;
+            font-weight: 400;
             font-family: 'Raleway' sans-serif;
             margin-bottom: 0px;
             margin-top: 0px;
@@ -839,7 +839,7 @@ p{
     padding-bottom: 50px;
 }
 .content.single.events{
-    margin-top: 20px !important;
+    margin: 20px 10px 30px 10px !important;
     min-height: 400px!important;
 }
     .content.single.events .load{
@@ -928,10 +928,7 @@ p{
             .discussion .item .title{
                 font-size: 16px;
             }
-        .discussion .main{
-            margin-top: 25px;
-            font-size: 20px;
-        }
+
         .discussion .item:nth-child(1){
             border-top: none;
         }
@@ -1042,10 +1039,10 @@ p{
         margin-top: 30px;
     }
          .content.single .members.load #scrollbar1 .scrollbar{
-             right: 8px;
+             right: 30px;
          }
     .content .sidebar-a{
-        margin-top: 25px;
+        margin-top: 30px;
         margin-left: 30px;
     }
         .content .sidebar-a .month{
@@ -1109,14 +1106,14 @@ p{
                     width: 460px;
 
                 }
-        .content .sidebar-a .title{
-
+        .content .sidebar-a .contact .title{
+            margin-bottom: 0px !important;
         }
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
             font-weight: 500;
             margin-bottom: 10px;
-            font-size: 18px;
+            margin-top: 0px;
         }
         .content .sidebar-a .cover-picture{
             width: 100%;
@@ -3360,8 +3357,8 @@ textarea{
 }
 
 .wrapper_member{
-    width: 120px!important;
-    height: 120px!important;
+    width: 100px!important;
+    height: 100px!important;
 }
 
 .container_txt{
@@ -3376,8 +3373,9 @@ textarea{
     margin-top: 5px;
 }
 .item_member{
-    margin-left: 33px!important;
-    margin-top: 10px!important;;
+    margin-left: 30px!important;
+    margin-top: 10px!important;
+    width: 260px !important;
 }
 .affiliate .title{
     margin-left: 0px;
@@ -3705,9 +3703,10 @@ textarea{
 .text_cent{
     text-align: center
 }
+/*
 .account-settings:hover .member{
     display: block!important;
-}
+}*/
 .account-settings .member{
     top: 50px;
     right: -38px;
