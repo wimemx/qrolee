@@ -186,8 +186,8 @@ input:not([type='submit']){
 }
 
 .fb_btn,.twitter_btn{
-    width: 70px;
-    height: 18px;
+    width: 65px;
+    height: 15px;
     display: block;
     margin: 0px 5px 0px 10px;
 }
@@ -370,6 +370,8 @@ p{
         width: 100%;
         display: block;
         height: 80px;
+        margin-top: 10px;
+        float: left;
         overflow:hidden;
         position: relative;
     }
@@ -1473,10 +1475,12 @@ p{
            margin-left: 0px;
         }
         .footer a.social{
-            margin:0px;
+            padding-top: 4px;
+            margin: 0px 0px;
         }
         .footer a.social span{
             position: relative;
+            margin: 0px 6px 0px 0px;
         }
         .footer p{
             font-size: 11px;
@@ -1933,7 +1937,7 @@ p{
 
 .place_pink{
     font-family: 'Raleway' sans-serif;
-    color: #f89883;
+    color: #f89883!important;
     text-decoration: underline;
     font-size: 13px !important;
     font-weight: 400;
@@ -2277,6 +2281,7 @@ p{
 
 .titles_author{
     margin-top: 58px !important;
+    margin-left: 60px;
 }
 
 
@@ -2309,7 +2314,7 @@ p{
 
 .container_titles{
     overflow: hidden;
-    height: 336px;
+    min-height: 185px;
 }
 
 .my_titles{
@@ -2371,10 +2376,13 @@ p{
 .info_profile.title{
     margin-bottom: 0px;
 }
+
+
+
 .title_my_list.title{
     font-size: 14px;
     float: left;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .text_list_by{
     float: left!important;
@@ -2601,6 +2609,7 @@ p{
 .my_items.place_pink.first{
     padding-left: 0px;
 }
+
 .container_items{
     min-height: 20px;
 }
@@ -3800,5 +3809,11 @@ textarea{
 
 :-ms-input-placeholder {
    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px;
+}
+
+.gray_7{
+    color: #777;
+    cursor: auto;
     font-size: 12px;
 }

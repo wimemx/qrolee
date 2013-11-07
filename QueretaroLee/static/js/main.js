@@ -5,6 +5,7 @@ var entity_search_atc = false;
 var clickable = true;
 var set_act = false;
 var men_1 = false;
+var value,tim;
 var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
@@ -760,7 +761,6 @@ function map_select(){
             city =$(this).find('option:selected').val();
         index++;
     });
-
     map_cheking(country, state, city);
 }
 
@@ -769,6 +769,17 @@ function show_text($elem, message){
         $(this).html(message);
         $(this).fadeIn(300);
     });
+}
+
+function set_timer(value_, functtion){
+    clearTimeout(tim);
+    var str = value_;
+    if (value != str) {
+        tim = setTimeout(function() {
+            value = str;
+            setTimeout(functtion,function(){});
+        }, 1000);
+    }
 }
 
 $(document).ready(function(){
@@ -791,9 +802,12 @@ $(document).ready(function(){
         $('.container_message').fadeOut(200);
     });
 
-    $('.address').keyup(function(){
+    /*$('.address').keyup(function(){
         search_map_address($(this).val());
-     });
+     });*/
+    $('.address').keyup(function(){
+        set_timer($(this).val());
+    });
 
     $('.book_register .btn_ra').click(function(){
         if($(this).hasClass('find')){

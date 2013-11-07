@@ -98,7 +98,7 @@ function populateCal(curr_month,$item){
                         p = $('<p></p>');
                         span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
                         p.append(span_info);
-                        span_time = $('<span class="time fleft">'+e[5]+'</span>');
+                        span_time = $('<span class="time fleft">'+e[5]+' hrs.</span>');
                         span_text.append(a_2);
                         span_text.append(p);
                         span_text.append(span_time);
@@ -2034,11 +2034,11 @@ function search_entities($this){
                         });
                         $('.overview').fadeIn(250,function(){
 
-                            $('#scrollbar1').tinyscrollbar_update();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);
                         }
+                        $('#scrollbar1').tinyscrollbar_update();
                     });
                 }
             });
