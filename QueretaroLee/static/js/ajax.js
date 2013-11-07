@@ -611,16 +611,18 @@ $(document).ready(function(){
     });
     $('.search_ent_field').keyup(function(){
 
-        if($(this).val().search(/^\s*$/) != 0 | $(this).val().length == 0){
+        if($(this).val().search(/^\s*$/) != 0)
            search_entities($('.heading .search span.search_btn'));
-        }
+
     });
     $('.search_list').click(function(){
         search_list_authors_titles($(this));
     });
     $('.field_list').keyup(function(){
-        if($(this).val().search(/^\s*$/))
+
+        if($(this).val().search(/^\s*$/) != 0){
             search_list_authors_titles($('.search_list'));
+        }
 
     });
 
@@ -1701,15 +1703,14 @@ function search_list_authors_titles($this){
                     }
                     if($('.type').val()=='Title'){
 
-                        var array_id_api = append_titles(overview, data, false);
-                        var csrf = $('.csrf_header').find('input').val();
                         clearTimeout(timer);
                         var str = $('.field_list').val();
                         if (input_val != str) {
                             timer = setTimeout(function() {
                                 input_val = str;
+                                var array_id_api = append_titles(overview, data, false);
+                                var csrf = $('.csrf_header').find('input').val();
                                 var value = str;
-                                console.log(str);
                                 if(value.length != 0){
                                     var data_api = search_titles_and_author_in_api_bd('T', csrf, value);
                                     data_api = data_api[1];
@@ -1816,6 +1817,7 @@ function search_list_authors_titles($this){
                                 }else{
                                     empty_char = true;
                                 }
+                            $('#scrollbar1').tinyscrollbar_update();
                             }, 500);
                         }
 
@@ -1870,8 +1872,8 @@ function search_list_authors_titles($this){
                     }
 
                     overview.fadeIn(250,function(){
-                        if($('#scrollbar1').length>0)
-                            $('#scrollbar1').tinyscrollbar();
+                        if($('#scrollbar1').length > 0)
+                            $('#scrollbar1').tinyscrollbar_update();
                     });
                     overview.parent().find('.loading_image').remove();
                     show_dialog();

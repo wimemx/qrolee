@@ -33,9 +33,11 @@
                 </a>
             </div>
             <p class="content content grid-9 no-margin">{{ content }}</p>
-            <a class="grid-3 no-margin fright" href="/registry/register_list/">
-                <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear listas</span>
-            </a>
+            {% if type.1 == 'list' %}
+                <a class="grid-3 no-margin fright" href="/registry/register_list/">
+                    <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear listas</span>
+                </a>
+            {% endif %}
             <div id="scrollbar1">
             <div class="scrollbar"><div class="track"><div class="thumb">
                 <div class="end"></div></div></div></div>

@@ -1824,19 +1824,24 @@ function dialog_titles(csrf, data, id){
     input = $('<input class="input_add_book" value="" type="text"/>');
     span = $('<span class="dark_yello_btn btn_search_book"></span>');
     input.keyup(function(){
+        clearTimeout(timer);
+        var str = $(this).val();
+        if (input_val != str) {
+            timer = setTimeout(function() {
+                input_val = str;
+                var words = str;
+                if(words.length != 0 && words.search(/^\s*$/) != 0){
+                    $('.dialog_text').find('#scrollbar1').fadeOut(100,function(){
+                        $(this).remove();
+                        type = 5;
 
-        var words = $(this).val();
-        if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %2 == 0){
-            $('.dialog_text').find('#scrollbar1').fadeOut(100,function(){
-                $(this).remove();
-                type = 5;
+                        if(id!=4)
+                            type = 2;
+                        type_add_list($('.csrf_header').find('input').val(), type, words);
 
-                if(id!=4)
-                    type = 2;
-                console.log(type+'-'+words);
-                type_add_list($('.csrf_header').find('input').val(), type, words);
-
-            });
+                    });
+                }
+            }, 500);
         }
 
     });
@@ -1922,7 +1927,10 @@ function list_title(csrf, data, div_text, type){
                 item_title.append(div_item);
                 a = $('<a title="' + titles_l[i].title + '" class="title title_book_mini alpha ' +
                     type_add + '"></a>');
-                a.append(truncText(titles_l[i].title,11));
+                var max_lenght = 23;
+                if(type == 4)
+                    max_lenght = 15;
+                a.append(truncText(titles_l[i].title,max_lenght));
                 div_container_text.append(a);
                 p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                     ' no-margin" ></p>');
@@ -1932,14 +1940,15 @@ function list_title(csrf, data, div_text, type){
                     author_att = 'De ' + truncText(titles_l[i]['extras'][1][0],13);
                 a_author.append(author_att);
                 p_text_author.append(a_author);
+                console.log(titles_l[i]);
                 div_container_text.append(p_text_author);
                 container_stars = $('<span class="grid-3 no-margin"></span>');
                 var grade = 5;
                 for(var index = 0;index<5;index++){
-                    if(index<grade){
-                        container_stars.append('<img class="fleft" src="/static/img/comunityStar.png" />');
+                    if(index<0){
+                        container_stars.append('<img class="fleft" src="/static/img/comunityStarmini.png" />');
                     }else{
-                        container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                        container_stars.append('<img class="fleft" src="/static/img/backgroundStarmini.png" />');
                     }
                 }
 
@@ -2074,7 +2083,10 @@ function list_title(csrf, data, div_text, type){
                         div_item.append(div_container_text);
                         item_title.append(div_item);
                         a = $('<a title="' + attribute['title'] + '" class="title title_book_mini alpha ' + type_add + '"></a>');
-                        a.append(truncText(attribute['title'],11));
+                        var max_lenght = 23;
+                        if(type == 4)
+                            max_lenght = 15;
+                        a.append(truncText(attribute['title'],max_lenght));
                         div_container_text.append(a);
                         p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                             ' no-margin" ></p>');
@@ -2090,7 +2102,7 @@ function list_title(csrf, data, div_text, type){
                         container_stars = $('<span class="grid-3 no-margin"></span>');
 
                         for(var index = 0;index<5;index++){
-                            container_stars.append('<img class="fleft" src="/static/img/backgroundStar.png" />');
+                            container_stars.append('<img class="fleft" src="/static/img/backgroundStarmini.png" />');
                         }
                         div_container_text.append(container_stars);
                         div_add = $('<div class="container_add_my grid-3 no-margin"></div>');
@@ -3209,15 +3221,20 @@ function d_show_dialog(type_message){
     btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
 
     input.keyup(function(){
+        clearTimeout(timer);
+        var str = $(this).val();
+        if (input_val != str) {
+            timer = setTimeout(function() {
+                input_val = str;
+                csrf = $('.csrf_header').find('input').val();
+                words = str;
 
-        csrf = $('.csrf_header').find('input').val();
-        words = $(this).val();
-
-        if(words.length != 0 && words.search(/^\s*$/) != 0 && words.length %2 == 0){
-            data = search_titles_and_author_in_api_bd('T', csrf, words);
-            list_titles_and_author(data, 'T', div_text, type_message);
+                if(words.length != 0 && words.search(/^\s*$/) != 0){
+                    data = search_titles_and_author_in_api_bd('T', csrf, words);
+                    list_titles_and_author(data, 'T', div_text, type_message);
+                }
+            }, 500);
         }
-
     });
 
     div_text.append(input);
