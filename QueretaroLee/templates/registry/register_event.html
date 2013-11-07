@@ -110,10 +110,10 @@
             <p>
                 <span id="map" class="grid-5 omega fright"></span>
             </p>
-            <span class="grid-5 no-margin fb-session-required fright">
+            <span class="grid-5 no-margin fright">
                 <input type="hidden" name="share_fb" value="0"/>
                 <input type="hidden" name="fb_id"/>
-                <p class="checkbox"><span></span>Vincular evento con Facebook</p>
+                <p class="checkbox fb-session-required"><span></span>Vincular evento con Facebook</p>
             </span>
             <p>
                 <span class="message fleft"></span>
@@ -128,10 +128,16 @@
             <form style="margin-top: 0px;" id="picture" class="fright dropzone no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <div class="del-wrapper">
+                    <span class="spot del center picture">Eliminar foto</span>
+                </div>
             </form>
             <form id="cover" class="dropzone fright no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_cover_picture" value="1"/>
                 <div class="preview grid-5 fright no-margin dropzone-previews"></div>
+                <div class="del-wrapper">
+                    <span class="spot del center cover">Eliminar foto</span>
+                </div>
             </form>
     <span class="fb-connect fb-session-required no-margin fright grid-5">
         <p>¿Cuentas ya con una pagina en Facebook?</p>
@@ -144,6 +150,8 @@
 
         Dropzone.options.picture = {
             maxFiles: 1,
+            thumbnailWidth: 130,
+            thumbnailHeight: 130,
             dictDefaultMessage: 'Arrastre aquí el logotipo',
             init: function() {
                 this.on("addedfile", function(file) {
@@ -152,10 +160,22 @@
             },
             success: function(file) {
                 $('.profile-pic').val(file.name);
+                $('.del.picture').css({
+                    'display': 'block'
+                });
+                var this_ = this;
+                $('.del.picture').click(function(){
+                    this_.removeAllFiles();
+                    $('.del.picture').fadeOut(300);
+                    $('.dz-default.dz-message').fadeIn(300);
+                    $('.profile-pic').val('');
+                });
             }
         }
         Dropzone.options.cover = {
             maxFiles:1,
+            thumbnailWidth: 130,
+            thumbnailHeight: 130,
             dictDefaultMessage: 'Arrastre aquí el cover photo',
             init: function() {
                 this.on("addedfile", function(file) {
@@ -164,6 +184,16 @@
             },
             success: function(file) {
                 $('.cover-pic').val(file.name);
+                $('.del.cover').css({
+                    'display': 'block'
+                });
+                var this_ = this;
+                $('.del.cover').click(function(){
+                    this_.removeAllFiles();
+                    $('.del.cover').fadeOut(300);
+                    $('.dz-default.dz-message').fadeIn(300);
+                    $('.cover-pic').val('');
+                });
             }
         }
 
@@ -214,6 +244,7 @@
                         dataType: 'json'
                     }).done(function(data) {
                                 if(data.success != 'False'){
+                                    if($('.checkbox').length > 0){
                                     if($('.checkbox span').html() != ''){
                                         var ename = $('input[name=name]').val();
                                         var estart_time = $('.date-init').val().replace(' ','T')+':00'+date;
@@ -249,6 +280,7 @@
                                                     }).done(function(data){});
                                             });
 
+                                    }
                                     }
                                     var name = $('input[name=name]').val().charCodeAt(0)+''+
                                             $('input[name=name]').val().charCodeAt(1)+''+

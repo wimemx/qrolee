@@ -216,6 +216,15 @@ $(document).ready(function(){
         item_select(true, '');
         combo_act = true;
     });
+    $('.loaded.del-wrapper .del').click(function(){
+        $(this).fadeOut(250, function(){
+
+            $(this).closest('.wrapper_picture_user').fadeOut(250,function(){
+                $('.dropzone_user').fadeIn(250);
+            });
+        });
+        show_upload($(this), true);
+    });
     $('.sel_spots input').keyup(function(){
         var value = $(this).val();
         $('.place_spot').val(0);
@@ -390,7 +399,7 @@ $(document).ready(function(){
         $('#scrollbar1').tinyscrollbar();
 
     $('.show_upload').click(function(){
-       show_upload($(this));
+       show_upload($(this).parent());
     });
 
 
@@ -1347,7 +1356,43 @@ $(document).ready(function(){
             $(this).find('textarea').val('');
         });
     });
+
+
 });
+
+
+function edit_form($this, timeout){
+    $this.parent().find('span.value').fadeOut(timeout, function(){
+        if($this.parent().find('input.value').length > 0){
+            $this.parent().find('input.value').fadeIn(timeout,function(){
+                $this.parent().find('input.value').css({
+                    'color': '#454545'
+                });
+                $this.parent().find('span.green_btn').fadeOut(timeout);
+                $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                //$this.parent().find('.close').fadeIn(timeout);
+
+            });
+        }else if($this.parent().find('textarea.value').length > 0){
+            $this.parent().find('textarea.value').css({
+                    'color': '#454545'
+                });
+            $this.parent().find('textarea.value').fadeIn(timeout,function(){
+                $this.parent().find('span.green_btn').fadeOut(timeout);
+                $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                //$this.parent().find('.close').fadeIn(timeout);
+            });
+        }else{
+            $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
+
+                $this.parent().find('span.green_btn').fadeOut(timeout);
+                $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                //$this.parent().find('.close').fadeIn(timeout);
+            });
+        }
+    });
+}
+
 
 function create_template(type, result,i, create_user){
     var span;
@@ -3460,7 +3505,7 @@ function list_titles_and_author(data, type, $container, type_message){
     $container.append();
 }
 
-function show_upload($this){
+function show_upload($this, ajax){
     var cover = 0;
     if($this.hasClass('cover'))
         cover = 1;
@@ -3478,13 +3523,14 @@ function show_upload($this){
             if(data.succes == 'True')
                 load_img_profile();
         });
-
+    if(!ajax){
     $this.fadeOut(250, function(){
 
         $this.parent().find('.wrapper_picture_user').fadeOut(250,function(){
             $this.parent().find('.dropzone_user').fadeIn(250);
         });
     });
+    }
 }
 
 function disable_link_all(user_active){

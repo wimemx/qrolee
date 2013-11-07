@@ -149,7 +149,7 @@ form p .invalid{
         color: #000;
         float: right;
         width: 280px;
-        border: 3px dashed #acacac;
+        border: 2px dashed #777;
         border-radius: 10px;
         margin-bottom: 50px;
         position: absolute;
@@ -168,11 +168,7 @@ form p .invalid{
         font-family: 'Raleway' sans-serif;
         font-size: 10px;
     }
-    .dz-preview{
-        width: 130px;
-        display: block;
-        margin: 20px auto;
-    }
+
 
 .message{
     display: none;
@@ -198,18 +194,7 @@ form p .invalid{
     position: relative;
     margin-top: 40px;
 }
-.del-wrapper{
-    position: absolute;
-    bottom: 5px;
-    width: 100%;
-}
-.del-wrapper span.del{
-    text-align: center;
-    display: none;
-    cursor: pointer;
-    font-family: 'Raleway' sans-serif;
-    text-decoration: underline;
-}
+
 
 textarea{
     resize: none;

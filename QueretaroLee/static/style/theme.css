@@ -233,6 +233,7 @@ p{
         font-family: 'Raleway' sans-serif;
         font-weight: 400;
         padding-bottom: 2px;
+        transition: all ease-in 0.3s;
     }
     .nav a:hover{
         transition: all ease-in 0.3s;
@@ -1105,10 +1106,7 @@ p{
 
                 }
         .content .sidebar-a .title{
-            font-size: 16px;
-            text-align: left;
-            font-family: 'Conv_DINPro-Bold';
-            margin-top: 0px;
+
         }
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
@@ -1677,10 +1675,11 @@ p{
 .d-picture_user{
     float: right;
     margin-bottom: 20px;
+    margin-top: 40px !important;
 }
 
 .d-picture_profile{
-    margin: 30px auto !important;
+    margin: 0px auto !important;
 }
 .d-picture_profile .dz-message{
     width: 232px !important;
@@ -1848,10 +1847,11 @@ p{
     text-align: center;
     color: #000;
     width: 198px;
-    border: 3px dashed #acacac;
+    border: 2px dashed #777;
     border-radius: 10px;
     right: 0px;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .line_divide{
@@ -1919,7 +1919,7 @@ p{
     font-family: 'Raleway' sans-serif !important;
     color: #000000;
     font-weight: normal !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .place_pink{
@@ -2984,7 +2984,6 @@ form p .invalid_messa{
 
 .wrapper_picture_user{
     height: 200px;
-    width: 200px;
     overflow: hidden;
 }
 .del_pict{
@@ -3107,13 +3106,7 @@ textarea{
     left: 132px!important;
 }
 
-.List .viewport{
-    height: 430px !important;
-}
 
-.Title .viewport{
-    height: 468px !important;
-}
 
 .out_group{
     margin-left: 60px;
@@ -3753,6 +3746,7 @@ textarea{
 
 .list .d-title_profile{
     color: #000!important;
+    font-weight: 400 !important;
 }
 .mini_rate img{
     width: 16px;
@@ -3789,4 +3783,37 @@ textarea{
 :-ms-input-placeholder {
    font-family: 'Conv_fontscore.com_d-dinproregular';
     font-size: 12px;
+}
+
+.Author #scrollbar1 .overview .title{
+    margin-top: 16px;
+}
+.loaded.del-wrapper{
+    bottom: 0px;
+}
+    .loaded.del-wrapper .del{
+        display: block;
+    }
+.del-wrapper{
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+}
+.del-wrapper span.del{
+    text-align: center;
+    display: none;
+    cursor: pointer;
+    font-family: 'Raleway' sans-serif;
+    text-decoration: underline;
+}
+.dz-preview{
+        width: 130px;
+        display: block;
+        margin: 20px auto;
+    }
+
+.green_btn.main, .yellow_btn.main{
+    position: relative;
+    display: block;
+    margin-right: 10px;
 }

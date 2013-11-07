@@ -405,10 +405,10 @@
     {% if entity.privacy == 0 or member or owner.id == user.id %}
         <div class="sidebar-a grid-11 {{ entity_type.1 }}">
             <h3 class="title main">Información General</h3>
-            <span class="cover-picture wrapper">{{ entity_type.1 }}
+            <span class="cover-picture wrapper">
                 {% if entity_type.1 == 'group' %}
                     {% if not entity.cover_picture %}
-                        <img src="/static/img/create.png" alt="{{ entity.name }}"/>
+                        <img src="/static/img/default_c.png" alt="{{ entity.name }}"/>
                     {% else %}
                         <img src="/static/media/users/{{ owner.id }}/entity/{{ entity.cover_picture }}" alt="{{ entity.name }}"/>
                     {% endif %}
