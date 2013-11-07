@@ -1911,7 +1911,6 @@ p{
 }
 .p-d-text{
     font-size: 12px !important;
-    margin-bottom: 5px !important;
     margin-top: 0px !important;
     text-align: left;
 }
@@ -1978,7 +1977,7 @@ p{
     padding: 0px 20px 20px 20px;
     box-shadow: 0px 6px 15px rgb(182, 176, 176);
     background: url('../img/register_form_bg.png');
-    background-color: wheat;
+    background-color: #f4e5c8;
 }
 
 .dialog_btn_cancel{
@@ -1998,7 +1997,6 @@ p{
     font-size: 18px;
     font-family: 'Raleway';
     font-weight: 500;
-    margin-bottom: 7px !important;
     color: #222222 !important;
 }
 
@@ -2457,9 +2455,9 @@ p{
 
 .title_book_mini{
     font-size: 14px;
-    margin-top: 7px;
-    margin-bottom: 5px !important;
+    margin-top: 12px;
     text-transform: none;
+    margin-bottom: 0px;
 
 }
 
@@ -2745,9 +2743,9 @@ p{
     height: 85px !important;
     width: 211px!important;
     margin-left: 10px !important;
-    margin-bottom: 6px !important;
-    border-radius: 6px;
-    padding-top: 8px;
+    margin-bottom: 10px !important;
+    border-radius: 3px;
+    padding-top: 5px;
     cursor: pointer;
 }
 
@@ -3036,6 +3034,11 @@ textarea{
     position: fixed;
     z-index: 10;
     display: none;
+}
+
+.d-item_book_mini .d-container_text_book img{
+    //height: 15px!important;
+    //width: 15px!important;
 }
 
 .no_title{

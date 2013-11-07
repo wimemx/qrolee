@@ -1879,7 +1879,8 @@ function list_title(csrf, data, div_text, type){
                 var max_lenght = 23;
                 if(type == 4)
                     max_lenght = 15;
-                a.append(truncText(titles_l[i].title,max_lenght));
+                var title_lower = (titles_l[i].title).toLowerCase();
+                a.append(truncText(title_lower,max_lenght));
                 div_container_text.append(a);
                 p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                     ' no-margin" ></p>');
@@ -2035,7 +2036,8 @@ function list_title(csrf, data, div_text, type){
                         var max_lenght = 23;
                         if(type == 4)
                             max_lenght = 15;
-                        a.append(truncText(attribute['title'],max_lenght));
+                        var title_lower = (attribute['title']).toLowerCase();
+                        a.append(truncText(title_lower,max_lenght));
                         div_container_text.append(a);
                         p_text_author = $('<p class="p-d-text p-d-text-author ' + type_add +
                             ' no-margin" ></p>');
