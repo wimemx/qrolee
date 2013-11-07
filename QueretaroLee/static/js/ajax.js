@@ -2335,7 +2335,7 @@ function add_rate($this){
                 count++;
 
             for(var x = 0;x<5;x++){
-                span_str = $('<span class="rate"></span>');
+                span_str = $('<span class="container_text_rate"></span>');
                 div.append(span_str);
                 if(x<data.my_count_grade){
                     span_str.append('<img src="/static/img/starUser.png" />');
