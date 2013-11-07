@@ -22,7 +22,6 @@
     height: 125pt;
     background: url('../img/book3') no-repeat 50% 50%;
     background-size: 100% 100%;
-    margin-bottom: 20px;
 }
 
 .d-container-1{
@@ -39,7 +38,7 @@
 }
 
 .d-name-event .title{
-
+    font-size: 18px
 }
 
 .d-by{
@@ -49,14 +48,12 @@
 .d-by .title{
     font-weight: 400!important;
     font-size: 14px!important;
-    padding-right: 2px;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    padding-right: 2px;;
 }
 
 .d-by .place_pink{
     font-weight: 400!important;
     font-size: 14px!important;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 
 .d-btn_event{
@@ -98,9 +95,20 @@ p,b{
 .d-description{
     padding:4pt 0pt 4pt 0pt;
     border-bottom: 1px solid #999999;
-    font-size: 13px;
+    width: 95%;
+    font-size: 10pt;
+    text-align: justify;
 }
-
+.sub_title p{
+    margin-top: 3px!important;
+}
+.sub_title{
+    width: 130px!important;
+    margin-top: 10px;
+}
+.sub_title .title{
+    font-size: 16px!important;
+}
 .d-map{
 
     margin-top: 18pt;
@@ -110,13 +118,11 @@ p,b{
 }
 
 .d-date{
+
+    padding:4pt 0pt 4pt 0pt;
+    font-size: 10pt;
     color: #222222;
 }
-    .event_view .d-date .title, .event_view .d-address .title{
-        font-size: 16px;
-        font-weight: 500;
-        font-family: 'Raleway', sans-serif;
-    }
 
 .d-address{
 
@@ -132,12 +138,11 @@ p,b{
 }
 
 .d-title_events{
-    font-family: 'Raleway', sans-serif;
+
     width: 100%;
-    font-weight: 500;
-    font-size: 14px;
+    font-size: 12pt;
+    padding: 0pt 0pt 8pt 0pt;
     border-bottom: 1pt solid #999999;
-    color: #000;
 }
 
 .d-list_events{
@@ -148,9 +153,6 @@ p,b{
 .d-line{
     border-bottom: 1px solid #999999;
     padding: 5pt 0pt 5pt 0pt;
-    float: left;
-    width: 100%;
-    display: block;
 }
 
 .d-container-data{
@@ -188,26 +190,25 @@ p,b{
 }
 
 .d-text_event{
-    width: 40%;
+    width: 50%;
     height: 100%;
     float: left;
-    padding: 0pt 0pt 0pt 15pt;
+    margin-left: 10px;
 
 }
 
-p.d-data-event{
-    font-size: 11px !important;
+.d-data-event{
+
+    font-size: 7pt;
     font-weight: normal;
-    color: #777 !important;
-    line-height: 11px;
 }
-p.d-name-event-mini{
-    font-size: 14px;
-    margin: 10px 0px 3px 0px !important;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 500;
-}
+.d-name-event-mini{
 
+    font-size: 8pt;
+}
+.d-name-event{
+    margin-top: 10px!important;
+}
 .d-buttoms{
 
     width: 90%;
@@ -220,8 +221,4 @@ p.d-name-event-mini{
     height: 56pt;
     padding: 10pt 0pt 0pt 0pt;
 
-}
-
-.event_view.entity p{
-    font-size: 13px;
 }

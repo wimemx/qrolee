@@ -44,7 +44,7 @@
                     {% endif %}
                 </div>
 
-                <div class="d-name-event">
+                <div class="d-name-event grid-6 no-margin">
                     <span class="title" >
                         {{ event.name }}
                     </span>
@@ -71,7 +71,7 @@
                     {% endif %}
                     </div>
                 </div>
-                <div class="d-line"></div>
+                <div class="d-line grid-6 no-margin"></div>
 
                 <div class="grid-7 no-margin fleft">
                     <div class="d-description" >
@@ -83,16 +83,18 @@
                     </div>
                 </div>
 
-                <div class="grid-3 no-margin fright">
+                <div class="grid-3 no-margin fright sub_title">
                     <input type="hidden" class="fb_event_id" {% if event.fb_id %} value="{{ event.fb_id }}" {% else %} value="-1" {% endif %}/>
                     <input type="hidden" class="event_id" value="{{ event.id }}"/>
                     <div class="d-date">
-                        <p class="title">Fecha</p>
-                        <p>{{ date.weekday }} {{ date.day }}
-                            <br/>{{ date.month }} {{ date.year }}</p>
+                        <span class="title">Fecha</span>
+                        <p >
+                            {{ date.weekday }} {{ date.day }}
+                            {{ date.month }} {{ date.year }}
+                        </p>
                     </div>
                     <div class="d-address">
-                        <p class="title">Lugar</p>
+                        <span class="title">Lugar</span>
                         {% if event.place_spot %}
                             <a class="place_pink" href="/qro_lee/entity/spot/{{ spot.0.id }}">
                                 {{ event.location_name|replace:'#' }}
@@ -128,12 +130,13 @@
                             </a>
                         </div>
                         <div class="d-text_event">
-                            <a href="/qro_lee/events/{{ event.id }}/" >
-                                <p class="d-name-event-mini no-margin">{{ event.name }}</p>
+                            <a href="/qro_lee/events/{{ event.id }}/"
+                               title="{{ event.name }}" class="d-name-event-mini title fleft">
+                                {{ event.name|truncatechars:13 }}
                             </a>
-                            <p class="d-data-event din-r no-margin">
-                            {{ event.start_time|time_format}} hrs
-                            </p>
+                            <span class="d-data-event fleft">
+                            {{ event.start_time|date:" d M Y H:i"  }} hrs
+                            </span>
                         </div>
 
                     </div>

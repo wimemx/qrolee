@@ -117,7 +117,7 @@ input:not([type='submit']){
     width: 25px;
     border: 1px solid #faf3e1;
     border-right: 0px;
-    height: 25px!important;
+    height: 27px!important;
 }
 .green_btn{
     background: #cccc66;
@@ -1195,7 +1195,7 @@ p{
             }
             .content .sidebar-a p{
                 width: 100%;
-                margin-bottom:8px;
+                margin-bottom: 4px;
                 float: left;
                 font-size: 13px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -1642,13 +1642,16 @@ p{
     margin-top: 25px !important;
 
 }
-
+.d-margin_calendar .title{
+    padding-left: 5px;
+}
 .d-not_found{
-    margin: 50px auto !important;
+    margin: 23% auto !important;
     color: #f89883;
-    font-size: 14px;
-    font-family: 'Raleway' sans-serif;
+    font-size: 14px!important;
+    font-family: 'Raleway' sans-serif!important;
     text-align: center;
+    width: 100%!important;
 }
 
 .d-info_event{
@@ -1892,6 +1895,10 @@ p{
 
 .d-container_text_book{
     float: left;
+}
+
+.my_books .title_book{
+    margin-top: 0px!important;
 }
 
 .title_book{
@@ -2285,6 +2292,10 @@ p{
     margin-left: 60px;
 }
 
+.user_pro .d-title_profile{
+    color: #000!important;
+    font-weight: 400!important;
+}
 
 .titles_author{
     margin-top: 58px !important;
@@ -2420,6 +2431,8 @@ p{
     padding: 0px 2px 0px 5px;
     font-size: 13px;
     font-weight: lighter;
+    color: #454545;
+    font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif;
 }
 
 .border_right{
@@ -2427,7 +2440,9 @@ p{
 }
 
 .descrip_list{
-    padding-top: 29px;
+    margin-top: 6px!important;
+    float: left;
+    font-size: 13px!important;
 }
 .icon_social{
     cursor: pointer;
@@ -3779,6 +3794,9 @@ textarea{
     color: #000!important;
     font-weight: 400 !important;
 }
+.author .d-title_profile{
+    margin-bottom: 6px!important;
+}
 .mini_rate img{
     width: 16px;
     height: 15px;
@@ -3812,7 +3830,7 @@ textarea{
 }
 
 :-ms-input-placeholder {
-   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Conv_fontscore.com_d-dinproregular';
     font-size: 12px;
 }
 
@@ -3821,6 +3839,27 @@ textarea{
     margin-bottom: 20px;
 }
 
+.author .container_titles .title_mini, .title .container_titles .title_mini,
+.list .container_titles .title_mini{
+    margin-top: 20px!important;
+}
+.author .item_title, .list .item_title, .title .item_title{
+    margin-top: 10px!important;
+}
+.title .text_profile, .list .text_profile,.author .text_profile{
+    margin-top: 0px!important;
+}
+.title .d-title_profile ,.author .d-title_profile,.list .d-title_profile{
+    margin-top: 10px!important;
+}
+.list .text_by{
+    margin-bottom: 6px!important;
+    font-size: 13px;
+}
+.author .text_by{
+    margin-bottom: 0px!important;
+    margin-top: 6px;
+}
 .Author #scrollbar1 .overview .title{
     margin-top: 16px;
 }

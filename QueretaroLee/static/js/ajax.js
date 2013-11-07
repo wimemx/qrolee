@@ -97,9 +97,9 @@ function populateCal(curr_month,$item){
                         span_text = $('<span class="'+grid+' fleft no-margin"></span>');
                         a_2 = $('<a class="d-link_event" href="'+href+'" ><h3 title="'+e[0]+'" >'+truncText(e[0],47)+'</h3></a>');
                         p = $('<p></p>');
-                        span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],160)+'</span>');
+                        span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],180)+'</span>');
                         p.append(span_info);
-                        span_time = $('<span class="time fleft">'+e[5]+'</span>');
+                        span_time = $('<span class="time fleft">'+e[5]+' hrs.</span>');
                         span_text.append(a_2);
                         span_text.append(p);
                         span_text.append(span_time);
@@ -2348,12 +2348,14 @@ function add_rate($this){
 
             }
             span_count = $('<span class="text_rate border_right"> Total: ' + parseFloat(data.count_grade).toFixed(1) + ' </span>');
-            span_vote = $('<span class="text_rate border_right"> ' + data.count + ' votaciones</span>');
+            span_vote = $('<span class="text_rate border_right"> ' + data.count + ' votaciones </span>');
             span_my_vote = $('<span class="text_rate "> mi voto: ' +
                 data.my_count_grade +'</span>');
-            div.append(span_count);
-            div.append(span_vote);
-            div.append(span_my_vote);
+            div_cont = $('<span class="container_text_rate"></span>');
+            div.append(div_cont);
+            div_cont.append(span_count);
+            div_cont.append(span_vote);
+            div_cont.append(span_my_vote);
             div.fadeIn(0);
             $('.rate').click(function(){
                 add_rate($(this));

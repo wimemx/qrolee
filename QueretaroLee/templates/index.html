@@ -61,7 +61,15 @@ scope=publish_stream,email,publish_actions,manage_pages,status_update,create_eve
         <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
             <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>
         <p>
-            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span> nombre de usuario
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Nombre
+            <input name="first_name" class="required" type="text"/>
+        </p>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Apellidos
+            <input name="last_name" class="required" type="text"/>
+        </p>
+        <p>
+            <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Usuario
             <input name="username" class="required" type="text"/>
         </p>
 
