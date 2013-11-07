@@ -2420,6 +2420,8 @@ p{
     padding: 0px 2px 0px 5px;
     font-size: 13px;
     font-weight: lighter;
+    color: #454545;
+    font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif;
 }
 
 .border_right{
@@ -3812,7 +3814,7 @@ textarea{
 }
 
 :-ms-input-placeholder {
-   font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-family: 'Conv_fontscore.com_d-dinproregular';
     font-size: 12px;
 }
 
@@ -3821,6 +3823,19 @@ textarea{
     margin-bottom: 20px;
 }
 
+.author .container_titles .title_mini, .title .container_titles .title_mini,
+.list .container_titles .title_mini{
+    margin-top: 20px!important;
+}
+.author .item_title, .list .item_title, .title .item_title{
+    margin-top: 10px!important;
+}
+.title .text_profile, .list .text_profile,.author .text_profile{
+    margin-top: 0px!important;
+}
+.title .d-title_profile{
+    margin-top: 10px!important;
+}
 .Author #scrollbar1 .overview .title{
     margin-top: 16px;
 }
