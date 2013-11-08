@@ -635,6 +635,7 @@ p{
         .color_btn.organization{
             background: #8ab493;
             color: #222 !important;
+            margin-left: 5px !important;
         }
         .color_btn.spot{
             background: #f89883;
@@ -1040,7 +1041,7 @@ p{
         padding-top: 0px;
     }
     .tags_events .sidebar-b .title{
-        margin-top: 30px;
+        margin-top: 40px;
     }
          .content.single .members.load #scrollbar1 .scrollbar{
              right: 30px;
@@ -1053,7 +1054,7 @@ p{
             color: #fff;
             padding: 4px 9px;
             background: #7a7a7a;
-            float: right !important;
+            float: left !important;
             margin-bottom: 15px;
             font-family: 'Raleway' sans-serif;
             font-size: 12px;
@@ -1063,7 +1064,7 @@ p{
             height: 300px;
         }
         .content .sidebar-a #scrollbar1 .scrollbar{
-            right: -35px;
+            right: 0px;
         }
 
             .content .sidebar-a #scrollbar1 .item{
@@ -1075,6 +1076,10 @@ p{
                 padding-top: 35px;
 
             }
+.d-edit-event{
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
 .item{
     height: 128px;
 }
@@ -1177,7 +1182,7 @@ p{
         .group .contact p{
             margin-bottom: 20px!important;
         }
-        .group .viewport .title{
+        .group .viewport .title, .organization .viewport .title{
             margin-top: 18px!important;
         }
         .content .content.overview p{
@@ -1263,9 +1268,8 @@ p{
                 border-bottom: 1px solid #acacac;
             }
             .sidebar-b .fix.title{
-                width: 100%;
-                padding-left: 0px;
-                margin-left: 25px;
+                padding-left: 5px;
+                clear: left;
             }
             .sidebar-b .wrapper{
                 width: 100%;
@@ -1337,7 +1341,7 @@ p{
                      }
                      
             .events .sidebar-b .overview{
-                margin-left: 7px;
+
             }
 
             .sidebar-b .overview{
@@ -1614,8 +1618,8 @@ p{
 }
 
 .no-margin_events{
-
     margin-left: 0px  !important;
+    margin-right: 0px !important;
 
 }
 
@@ -1641,8 +1645,7 @@ p{
 }
 
 .d-margin_calendar{
-    margin-left: 60px !important;
-    margin-top: 25px !important;
+    margin: 25px 0px 0px 0px !important;
 
 }
 .d-margin_calendar .title{
@@ -2510,6 +2513,9 @@ p{
 .events .item{
     height: 128px!important;
     margin-bottom: 0px!important;
+}
+.events #scrollbar1{
+    padding-right: 40px;
 }
 .container_title{
     margin-top: 25px;
@@ -3936,4 +3942,14 @@ textarea{
     .padding-fix .grid-2 input{
         position: relative;
         left: -16px;
+    }
+
+.event_view.entity{
+    background: #fffcf5;
+    margin: 20px 10px 30px 10px !important;
+    border-bottom: none;
+}
+    .event_view .event-content{
+        margin-top: 30px;
+        margin-left: 30px;
     }

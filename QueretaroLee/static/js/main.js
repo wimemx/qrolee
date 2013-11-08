@@ -397,6 +397,7 @@ $(document).ready(function(){
      $('form').attr('autocomplete', 'off');
     if($('.d-paddin_top').length>0)
         $('.d-paddin_top').tinyscrollbar();
+
     if($('#scrollbar1').length>0)
         $('#scrollbar1').tinyscrollbar();
 
@@ -1377,8 +1378,7 @@ $(document).ready(function(){
         }
     });
 
-    if($('#scrollbar1').length>0)
-        $('#scrollbar1').tinyscrollbar();
+
 
 
     //$('.nav .btn:eq(0)').trigger('click');

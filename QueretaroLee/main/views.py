@@ -394,7 +394,6 @@ def get_entity(request, **kwargs):
     return render(request, template, context)
 
 
-@login_required(login_url='/')
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
@@ -456,8 +455,11 @@ def get_events(request, **kwargs):
             event_data.append(event.start_time.month)
             event_data.append(event.fb_id)
             is_attending = False
-            assist_event = models.AssistEvent.objects.filter(
-                user=request.user)
+            if request.user.is_authenticated():
+                assist_event = models.AssistEvent.objects.filter(
+                    user=request.user)
+            else:
+                assist_event = False
             if assist_event:
                 if assist_event[0].is_attending:
                     is_attending = True
@@ -473,7 +475,7 @@ def get_events(request, **kwargs):
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
-@login_required(login_url='/')
+
 def event_view(request, **kwargs):
 
     template = kwargs['template_name']
@@ -536,9 +538,10 @@ def event_view(request, **kwargs):
 
 
 def event(request, **kwargs):
-
     template = kwargs['template_name']
-    context = {'entity_type':'Event'}
+    context = {
+        'entity_type': 'Event'
+    }
     events = models.Event.objects.all()
     unescaped = load_calendar(events)
 
@@ -547,7 +550,6 @@ def event(request, **kwargs):
         'entity': 'wime',
         'calendar': unescaped
     }
-
     return render(request, template, context)
 
 

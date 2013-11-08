@@ -3,6 +3,7 @@ from django import template
 
 from account import models
 from registry import models as rmodels
+from registry import views
 from django.contrib.auth import models as auth_models
 from django.db import models as db_model
 
@@ -408,4 +409,13 @@ def split(text, char):
     return s_split
 
 
+@register.filter
+def time_format(time):
+    if '+' in str(time):
+        time = str(time).split('+')
+    else:
+        time = str(time).split('-')
+    time = time[0]
+    time = views.datetime_from_str(str(time))
+    print time[1]
 
