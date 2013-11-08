@@ -828,9 +828,11 @@ p{
             background: #ed8571;
             border-color: #e35e47;
         }
+        .btn{
+            transition:all 0.3s;
+        }
         .entity .nav.organization .btn:hover,.entity .nav.organization .btn.active{
             background: #8ab493;
-            transition:all ease-in 0.3s;
             border-color: #5a885e;
         }
 
@@ -1257,7 +1259,9 @@ p{
         .sidebar-b{
             margin-top: 52px;
         }
-
+        .sidebar-b .scrollbar{
+            margin-top: 15px;
+        }
             .sidebar-b .title{
                 font-weight: 500;
                 font-family: 'Raleway' sans-serif;
