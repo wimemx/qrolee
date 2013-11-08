@@ -41,7 +41,6 @@
 
 }
 
-
 .d-btn_event{
 
     width: 40%;
@@ -128,7 +127,9 @@ p,b{
 .d-title_events{
     width: 100%;
     color: #000;
-    font-size: 12pt;
+    font-family: 'Raleway';
+    font-size: 16px;
+    font-weight: 500;
     padding: 0pt 0pt 8pt 0pt;
     border-bottom: 1pt solid #999999;
 }

@@ -468,7 +468,10 @@ def get_events(request, **kwargs):
             if event.owner_id == request.user.id:
                 is_attending = True
             event_data.append(is_attending)
+            event_data.append(event.owner.id)
             events.append(event_data)
+
+
     context = {
         'events': list(events)
     }

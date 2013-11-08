@@ -93,6 +93,10 @@ function populateCal(curr_month,$item){
                         img.attr('src',picture_url);
                         a.append(img);
                         span_wrap.append(a);
+
+                        if(edit == -1 | e[12] == parseInt($('.sesion_user').val()))
+                            span_wrap.append('<a class="green_btn" href="/registry/edit/event/'+e[6]+'"></a>');
+
                         span_item.append(span_wrap);
                         var grid = 'grid-8';
                         if($('.type').val() == 'Event')
@@ -134,10 +138,7 @@ function populateCal(curr_month,$item){
                             span_apply = '';
                         span_locat.append(p_2);
                         if(edit == -1){
-                            var aedit = $('<a href="#" class="green_btn size_btn_edit">Editar</a>');
                             var aerase = $('<a href="#" class="pink_btn size_btn_edit">Borrar</a>');
-                            aedit.attr('href','/registry/edit/event/'+e[6]);
-                            span_locat.append(aedit);
                             span_locat.append(aerase);
                             aerase.click(function(evnt){
                                 evnt.preventDefault();

@@ -334,6 +334,9 @@ p{
 .news-feed .user, .news-feed #scrollbar1{
     margin-top: 30px;
 }
+.news-feed .scrollbar{
+    right: -14px!important;
+}
 .user .wrapper{
     width: 35px !important;
     height: 35px !important;
@@ -566,6 +569,12 @@ p{
 .entity{
     margin: 20px 0px 15px 0px !important;
     border-bottom: 1px solid #acacac;
+}
+.entity_scro{
+    margin-top: 62px!important;
+}
+.entity_scro .scrollbar{
+    right: 40px!important;
 }
     .entity .wrapper{
         width: 176px;
@@ -843,7 +852,7 @@ p{
     color: #89b598;
 }
 .content.single{
-    min-height: 500px;
+    min-height: 473px;
     background: #fffcf5;
     margin-bottom: 20px !important;
     padding-bottom: 50px;
@@ -1122,6 +1131,9 @@ p{
                 }
         .content .sidebar-a .contact .title{
             margin-bottom: 0px !important;
+        }
+        .contact .p_addres{
+            width: 198px;
         }
         .content .sidebar-a .title.main{
             font-family: 'Raleway' sans-serif;
@@ -2125,13 +2137,15 @@ p{
     padding-right: 20px;
 }
 
-.entities .green_btn{
+.entities .green_btn, .events .green_btn{
     border: 2px solid #a77340;
     background: #C69263 url("/static/img/btn_edit.png") no-repeat 6px 6px !important;
     height: 30px!important;
     top: -34px!important;
     width: 30px!important;
     padding: 0px 0px!important;
+    position: relative;
+    float: right;
 }
 
 .entities .grid-15 {
@@ -2244,6 +2258,9 @@ p{
     padding: 5px 0px 0px 0px;
 
 }
+.genre img{
+    float: left;
+}
 
 .genre_black{
     color: #000000 !important;
@@ -2329,6 +2346,7 @@ p{
     color: #000!important;
     font-weight: 400!important;
 }
+
 
 .titles_author{
     margin-top: 58px !important;
@@ -3785,6 +3803,7 @@ textarea{
     border-bottom: 1px solid #ceaf70;
     border-left: 1px solid #ceaf70;
     border-right: 1px solid #ceaf70;
+    transition: all 0.3s;
 }
 
 .sub a{
