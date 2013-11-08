@@ -32,7 +32,7 @@
         height:90px !important;
     }
         .textarea textarea{
-            padding: 10px 0px 0px 0px !important;
+            padding: 10px 8px 0px 8px !important;
             height: 50px;
             text-transform: none !important;
 
@@ -76,6 +76,7 @@
             margin:0px !important;
             background: #fff;
             font-family: Arial, sans-serif;
+            padding: 0px 8px 0px 8px;
         }
         #registry p textarea{
             text-indent: 0px!important;
@@ -201,4 +202,9 @@ form p .invalid{
 
 textarea{
     resize: none;
+}
+
+.fix-right{
+    position: relative;
+    left: -16px;
 }

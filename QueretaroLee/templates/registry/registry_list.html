@@ -70,13 +70,13 @@
                     </p>
                     <p>
                         <span class="fleft">Typo de lista</span>
-                        <span class="grid-5 fright no-margin" style="margin-top: 10px!important;" >
+                        <span class="grid-5 fix-right fright no-margin" style="margin-top: 10px!important;" >
                             <img src="/static/img/radioOn.png" class="radio_btn rad_ti fleft radio_buttom"/>
                             <span class="radio_btn text_rad" >Lista de libros</span>
                             <input type="hidden" class="active_title" value="1"/>
                             <input type="hidden" class="radio_value" value="title"/>
                         </span>
-                        <span class="grid-5 fright no-margin">
+                        <span class="grid-5 fix-right fright no-margin">
                             <img src="/static/img/radioOff.png" class="radio_btn rad_aut fleft radio_buttom"/>
                             <span class="radio_btn text_rad">Lista de autores</span>
                             <input type="hidden" class="active_author" value="0"/>
@@ -90,7 +90,9 @@
             </form>
             <form id="picture" class="picture_list dropzone grid-4" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="list_picture" value="1"/>
-                <div class="preview grid-4 fright no-margin dropzone-previews"></div>
+                <div class="del-wrapper">
+                    <span class="spot del center picture">Eliminar foto</span>
+                </div>
             </form>
             <hr class="d-line_bottom">
             <div class="heading">
@@ -125,6 +127,8 @@
         }
         Dropzone.options.picture = {
             maxFiles: 1,
+            thumbnailWidth: 130,
+            thumbnailHeight: 130,
             dictDefaultMessage: 'Inserte aquí la foto de <br> perfil de la lista',
             init: function() {
                 this.on("addedfile", function(file) {
@@ -133,6 +137,16 @@
             },
             success: function(file) {
                 $('.profile-pic').val(file.name);
+                $('.del.picture').css({
+                    'display': 'block'
+                });
+                var this_ = this;
+                $('.del.picture').click(function(){
+                    this_.removeAllFiles();
+                    $('.del.picture').fadeOut(300);
+                    $('.dz-default.dz-message').fadeIn(300);
+                    $('.profile-pic').val('');
+                });
             }
         }
 
@@ -151,7 +165,7 @@
                 }
                 else
                     upload_valid = true;
-                $form = $(this);
+                var $form = $(this);
 
 
                 if($(this).find('input[type=submit]').hasClass('msg-ok'))

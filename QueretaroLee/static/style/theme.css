@@ -510,6 +510,7 @@ p{
                 text-decoration: none;
                 position: relative;
             }
+
             .entities .content{
                 margin: 5px 0px 60px 0px;
                 font-size: 14px;
@@ -891,6 +892,9 @@ p{
 
     .load.add.members{
         margin-top: 50px;
+    }
+    .load .title{
+        margin-top: 0px;
     }
     .discussion{
 
@@ -2244,6 +2248,12 @@ p{
 
 .picture_list .dz-message span{
     line-height: 20px !important;
+}
+.picture_list .dz-image-preview{
+    margin-right: 0px;
+}
+.picture_list .del{
+    text-align: right !important;
 }
 
 .all_book{
