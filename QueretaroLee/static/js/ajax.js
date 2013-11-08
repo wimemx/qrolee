@@ -1962,7 +1962,7 @@ function search_entities($this){
 
                                     href2 = '/registry/edit/' + entity_obj[i].id+'/';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
-                                    btn = $('<a class="brown_btn" href="' + href2 + '">Editar</a>');
+                                    btn = $('<a class="brown_btn" href="' + href2 + '"></a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
@@ -2014,7 +2014,7 @@ function search_entities($this){
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
                                     href_edit = '/registry/edit/'+entity_obj[i].id+'/';
                                     btn = $('<a class="green_btn" href="' +
-                                        href_edit + '">Editar</a>');
+                                        href_edit + '"></a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
