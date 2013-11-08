@@ -396,7 +396,7 @@ def user_account(request, **kwargs):
 @login_required(login_url='/')
 def update_account(request,**kwargs):
 
-    id_user =  request.user.id
+    id_user = request.user.id
     field = request.POST.get('field')
     value = request.POST.get('value')
 
@@ -425,64 +425,12 @@ def update_profile(request, **kwargs):
 
     fields_related_objects = registry.Profile._meta.get_all_related_objects(
         local_only=True)
-    fields = registry.Profile._meta.get_all_field_names()
+    profile_fields = registry.Profile._meta.get_all_field_names()
 
-    fields_foreign = []
-
-    for related_object in fields_related_objects:
-        fields_foreign.append(
-            related_object.get_accessor_name().replace('_set', ''))
-
-        fields = registry.Profile._meta.get_all_field_names()
-        fields_foreign = []
-
-    fields = [item for item in fields if item not in fields_foreign]
-    dictionary_profile = {}
-
-    obj = registry.Profile.objects.get(user=id_user)
-
-    for field_type in fields:
-        if isinstance(obj.__getattribute__(field_type), unicode):
-            if dictionary.has_key(str(field_type)):
-                dictionary_profile[str(field_type)] = (dictionary[str(field_type)])\
-                    .encode('utf-8', 'ignore')
-        else:
-            if dictionary.has_key(str(field_type)):
-
-                if field_type == 'city':
-                    dictionary_profile[str(field_type)] = (dictionary[str(field_type)])[0].encode('utf-8', 'ignore')
-                else:
-                    dictionary_profile[str(field_type)] = str(dictionary[str(field_type)])
-
-    if len(dictionary_profile)>0:
-        profile = registry.Profile.objects.filter(user=id_user).update(**dictionary_profile)
-
-    fields_related_objects = registry.User._meta.get_all_related_objects(
-        local_only=True)
-    fields = registry.User._meta.get_all_field_names()
-    fields_foreign = []
-
-    for related_object in fields_related_objects:
-        fields_foreign.append(
-            related_object.get_accessor_name().replace('_set', ''))
-
-        fields = registry.User._meta.get_all_field_names()
-        fields_foreign = []
-
-    obj = registry.User.objects.get(id=id_user)
-    dictionary_user = {}
-
-    for field_type in fields:
-        if field_type == 'first_name' or field_type == 'last_name' or field_type == 'email':
-            if isinstance(obj.__getattribute__(field_type), unicode):
-                if dictionary.has_key(str(field_type)):
-                    dictionary_user[str(field_type)] = (dictionary[str(field_type)]).encode('utf-8', 'ignore')
-            else:
-                if dictionary.has_key(str(field_type)):
-                    dictionary_user[str(field_type)] = str(dictionary[str(field_type)])
-
-    if len(dictionary_user) > 0:
-        user = registry.User.objects.filter(id=id_user).update(**dictionary_user)
+    if field in profile_fields:
+        profile = registry.Profile.objects.filter(user=id_user).update(**dictionary)
+    else:
+        user = registry.User.objects.filter(id=id_user).update(**dictionary)
 
     context = {}
     context = simplejson.dumps(context)

@@ -958,7 +958,7 @@ $(document).ready(function(){
             $(this).parent().animate({
                 'height': height+(elements * 45)
             }, function(){
-                var h = $(this).find('.viewport').outerHeight(true);
+                var h = $(this).find('.viewport').outerHeight(false);
                 $(this).find('.viewport').animate({
                     'height': h+(elements*45)
                 }, function(){
@@ -967,7 +967,7 @@ $(document).ready(function(){
                 });
             });
         }else{
-            var h = $(this).parent().find('.viewport').outerHeight(true);
+            var h = $(this).parent().find('.viewport').outerHeight(false);
             $(this).parent().find('.viewport').animate({
                 'height': h-(elements*45)
             }, function(){
@@ -1400,36 +1400,109 @@ $(document).ready(function(){
 });
 
 
-function edit_form($this, timeout){
-    $this.parent().find('span.value').fadeOut(timeout, function(){
-        if($this.parent().find('input.value').length > 0){
-            $this.parent().find('input.value').fadeIn(timeout,function(){
-                $this.parent().find('input.value').css({
-                    'color': '#454545'
-                });
-                $this.parent().find('span.green_btn').fadeOut(timeout);
-                $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                //$this.parent().find('.close').fadeIn(timeout);
+function edit_form($this, timeout, type, id){
+    if(type == 0){
+        if($this.parent().find('span.value.no-edit').length == 0){
+            $this.parent().find('span.value').fadeOut(timeout, function(){
+                if($this.parent().find('input.value').length > 0){
+                    $this.parent().find('input.value').fadeIn(timeout,function(){
+                        $this.parent().find('input.value').css({
+                            'color': '#454545'
+                        });
+                        $this.parent().find('span.green_btn').fadeOut(timeout);
+                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
 
-            });
-        }else if($this.parent().find('textarea.value').length > 0){
-            $this.parent().find('textarea.value').css({
-                    'color': '#454545'
-                });
-            $this.parent().find('textarea.value').fadeIn(timeout,function(){
-                $this.parent().find('span.green_btn').fadeOut(timeout);
-                $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                //$this.parent().find('.close').fadeIn(timeout);
-            });
-        }else{
-            $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
+                    });
+                }else if($this.parent().find('textarea.value').length > 0){
+                    $this.parent().find('textarea.value').css({
+                        'color': '#454545'
+                    });
+                    $this.parent().find('textarea.value').fadeIn(timeout,function(){
+                        $this.parent().find('span.green_btn').fadeOut(timeout);
+                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                    });
+                }else{
+                    $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
 
-                $this.parent().find('span.green_btn').fadeOut(timeout);
-                $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                //$this.parent().find('.close').fadeIn(timeout);
+                        $this.parent().find('span.green_btn').fadeOut(timeout);
+                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
+                    });
+                }
             });
         }
-    });
+    }else{
+        var $this_ = $this.parent();
+        var field = $this_.find('input.value').attr('name');
+        var value = $this_.find('input.value').val();
+        if($this_.find('textarea.value').length > 0){
+            value = $this_.find('textarea.value').val();
+            field = $this_.find('textarea.value').attr('name');
+        }else if($(this).parent().find('.select_wrapper').length > 0){
+            value = $this_.find('select.value').val();
+            field = $this_.find('select.value').attr('name');
+        }
+        if(value != ''){
+            var url = '';
+            if($('.type').val()=='profile'){
+                url = '/accounts/users/update_profile/';
+            }else if($('.type').val()=='account'){
+                url = '/accounts/users/update_account/';
+            }else{
+                url = '/registry/update/'+id+'/'
+            }
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'field': field,
+                    'value': value
+                },
+                dataType: 'json'
+            }).done(function(data){
+
+
+
+
+                });
+        }else{
+            var span = $('<span class="d-invalid"></span>');
+            span.html("campo vacio");
+            $this.append(span);
+        }
+        if($this.parent().find('input.value').length > 0){
+
+            if(field!='password'){
+
+                if(field=='birthday'){
+                    date = ($this.parent().find('input').val()).split('-');
+                    $this.parent().find('span.value').html(date[2] +
+                        '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
+                }else{
+                    $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                }
+            }
+        }else if($this.parent().find('textarea.value').length > 0){
+            $this.parent().find('span.value').html(truncText($this.parent().find('textarea.value').val(),280));
+        }else{
+            $this.parent().find('span.value').html($this.parent().find('select.value').val());
+        }
+
+        if($this.parent().find('input.value').length > 0){
+            $this.parent().find('input.value').fadeOut(300,function(){
+                $this.parent().find('span.value').fadeIn(300);
+            });
+        }else if($this.parent().find('textarea.value').length > 0){
+            $this.parent().find('textarea.value').fadeOut(300,function(){
+                $this.parent().find('span.value').fadeIn(300);
+            });
+        }else{
+            $this.parent().find('.select_wrapper').fadeOut(300,function(){
+                $this.parent().find('span.value').fadeIn(300);
+            });
+        }
+    }
 }
 
 

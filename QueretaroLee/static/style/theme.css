@@ -510,6 +510,7 @@ p{
                 text-decoration: none;
                 position: relative;
             }
+
             .entities .content{
                 margin: 5px 0px 60px 0px;
                 font-size: 14px;
@@ -892,6 +893,9 @@ p{
     .load.add.members{
         margin-top: 50px;
     }
+    .load .title{
+        margin-top: 0px;
+    }
     .discussion{
 
     }
@@ -1073,6 +1077,7 @@ p{
             font-family: 'Raleway' sans-serif;
             font-size: 12px;
             line-height: normal;
+            cursor: pointer;
         }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
@@ -1173,7 +1178,7 @@ p{
             margin-left: 20px;
         }
         .organization .contact .link_{
-            color: #8ab493;
+            color: #f89883;
             text-decoration: underline
         }
         .content .contact .title.main{
@@ -1189,8 +1194,9 @@ p{
             .content .sidebar-a .contact .contact{
                 position: relative;
                 left: 0px;
-                width: 100%;
-                float: right;
+                width: 90%;
+                float: left;
+
             }
         .content .sidebar-a .contact p{
             margin-bottom: 3px;
@@ -1272,7 +1278,7 @@ p{
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
         .sidebar-b{
-            margin-top: 52px;
+            margin-top: 68px;
         }
         .sidebar-b .scrollbar{
             margin-top: 15px;
@@ -1643,10 +1649,11 @@ p{
 }
 
 .d-width-container-event{
-
     width: 100%;
 
 }
+
+
 .d-width-container-event h3{
     margin-top: 0px;
     font-family: Raleway;
@@ -2242,6 +2249,12 @@ p{
 .picture_list .dz-message span{
     line-height: 20px !important;
 }
+.picture_list .dz-image-preview{
+    margin-right: 0px;
+}
+.picture_list .del{
+    text-align: right !important;
+}
 
 .all_book{
     font-weight: bold !important;
@@ -2545,7 +2558,7 @@ p{
 
     height: 100px !important;
 }
-.events .item{
+.events .item, .d-width-container-event .item{
     height: 128px!important;
     margin-bottom: 0px!important;
 }
@@ -2920,10 +2933,12 @@ form p .invalid_messa{
         font-family: 'Raleway' sans-serif;
         text-align: center;
         font-weight: 500;
-        margin-bottom: 7px;
+        margin-bottom: 14px;
     }
     .alert-message .accept{
         margin-left: 40px;
+        margin-left: 40px;
+        width: 43px;
     }
     .alert-message form .accept{
         margin:0px 15px 0px 35px;
@@ -3820,6 +3835,7 @@ textarea{
     background-color: #edd9af;
     transition: all ease-in 0.3s;
     color: #000;
+    padding-right: 8px !important;
 }
 
 .line_footer{
@@ -3989,3 +4005,7 @@ textarea{
         margin-top: 30px;
         margin-left: 30px;
     }
+
+.edit-form{
+    margin-left: 0px !important;
+}

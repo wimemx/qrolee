@@ -80,7 +80,7 @@ span.green_btn,span.yellow_btn{
     margin-top: 0px;
     margin-bottom: 12px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
 }
     .data p .value{
         font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -222,6 +222,7 @@ select{
     }
     .data p span.area.value{
         padding-left: 0px;
+        overflow: hidden;
     }
         .edit.register .data input:not([type=submit]), .edit.register .data textarea{
             display: block;
@@ -433,7 +434,7 @@ p.advanced_search_btn{
     color: #ef946b;
     text-decoration: underline;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 13px;
 }
 .advanced_search{
     width: 100%;

@@ -69,12 +69,14 @@ def feed_type(feed_id):
     if feed.added_to_type == 'U':
         profile = rmodels.Profile.objects.get(
             user_id=feed.user_id)
+
         if not profile.picture:
             img_url = '/static/img/no_profile.png'
         elif profile.picture.strip() == '':
             img_url = '/static/img/no_profile.png'
         else:
             img_url += 'profile/'+profile.picture
+
         if obj_list[0].first_name != '':
             name = obj_list[0].first_name + ' '+obj_list[0].last_name
         else:
@@ -113,16 +115,14 @@ def feed_type(feed_id):
         name = obj_list[0].name
 
     if feed.type == 'U':
-        user = auth_models.User.objects.get(
-            id=obj_list[1].id)
         profile = rmodels.Profile.objects.get(
             user_id=obj_list[1].id)
         if not profile.picture:
-            img_url = '/static/img/no_profile.png'
+            added_to_img_url = '/static/img/no_profile.png'
         elif profile.picture.strip() == '':
-            img_url = '/static/img/no_profile.png'
+            added_to_img_url = '/static/img/no_profile.png'
         else:
-            img_url += 'profile/'+profile.picture
+            added_to_img_url += 'profile/'+profile.picture
         if obj_list[1].first_name != '':
             obj_name = obj_list[1].first_name + ' '+obj_list[1].last_name
         else:
@@ -174,7 +174,7 @@ def feed_type(feed_id):
         if not obj_list[1].picture:
             obj_list[1].picture = ''
         if obj_list[1].picture != '':
-            added_to_img_url = obj_list[1].picture
+            added_to_img_url += 'list/'+obj_list[1].picture
         else:
             added_to_img_url = '/static/img/create.png'
         obj_name = obj_list[1].name
@@ -182,6 +182,7 @@ def feed_type(feed_id):
         extra_content = ''
         whom_url = '/qro_lee/profile/list/'+str(obj_list[1].id)
     date = member_since(feed.date)
+
     if feed.activity_id == 1:
         if feed.type == 'D':
             action = u'creó un evento'
@@ -268,6 +269,7 @@ def feed_type(feed_id):
                 action = u'empezó a seguir a'
         else:
             action = u'empezó a seguir a'
+        print img_url
         ret_value = u"""<span class="follow feed">
               <a href="{5}" class="wrapper fleft">
                 <img src="{2}" alt=""/>

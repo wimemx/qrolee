@@ -307,6 +307,8 @@ def edit_entity(request, **kwargs):
     id_entity = int(kwargs['entity'])
     user = request.user
     entity = models.Entity.objects.filter(id=id_entity)
+    if entity.user.id != request.user.id:
+        return HttpResponseRedirect('/qro_lee')
     if len(entity) != 0:
 
         entity = models.Entity.objects.get(
@@ -352,6 +354,7 @@ def delete_entity(request, **kwargs):
         else:
             obj = model.objects.get_or_create(
                 id=int(request.POST.get('id')))
+            obj = obj[0]
             obj.status = False
         obj.save()
         context = {
@@ -696,6 +699,8 @@ def edit_event(request, **kwargs):
     obj = kwargs['entity']
     obj = models.Event.objects.get(
         pk=int(obj))
+    if obj.owner_id != request.user.id:
+        return HttpResponseRedirect('/qro_lee')
     entity_type = models.Type.objects.get(
         entity__id=obj.location_id)
     if entity_type.name == 'group':
@@ -1465,6 +1470,8 @@ def edit_list(request, **kwargs):
 
     id_list = kwargs['id_list']
     list = account.List.objects.get(id=id_list)
+    if list.user_id != request.user.id:
+        return HttpResponseRedirect('/qro_lee')
     type = list.type
     dict_items = {}
 

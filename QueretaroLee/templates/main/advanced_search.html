@@ -19,12 +19,12 @@
 {% block main_site %}
     <div class="grid-16 edit">
     <div class="grid-15 center">
-        <div class="grid-5 fleft alpha">
-            <h3 class="title main">Resultados de la búsqueda</h3>
+        <div style="padding-left: 30px;margin-right: 0px;" class="grid-5 fleft alpha">
+            <h3 style="margin-bottom: 15px;" class="title main">Resultados de la búsqueda</h3>
             <div class="heading">
                 <span class="search advanced_filter fleft alpha grid-4">{% csrf_token %}
                     <input type="hidden" class="model" value="auth.user"/>
-                    <input class="search" type="text"/>
+                    <input style="height: 29px;" class="search" type="text"/>
                     <span class="top right search_btn dark_yello_btn"></span>
                 </span>
                 <p class="fleft advanced_search_btn">Búsqueda avanzada</p>
@@ -56,7 +56,7 @@
             <input type="hidden" class="lat" value="20.600811424184588"/>
             <input type="hidden" class="long" value="-100.38887798413089"/>
         </div>
-        <div class="grid-6 fleft results">
+        <div style="margin-top: 43px;" class="grid-6 fleft results">
             <!--<div class="item">
                 <span class="wrapper fleft">
                     <img src="" alt=""/>
@@ -65,7 +65,7 @@
                 <p class="fright no-margin grid-3">Está leyendo <span>La Biblia</span></p>
             </div>-->
         </div>
-        <div class="grid-3 fright filter">
+        <div style="margin: 43px 30px 0px 0px;" class="grid-3 fright filter">
             <p class="title">Filtrar por</p>
             <p class="checkbox auth.user account.genre 1"><span style="background-position:0px 3px;"></span>Personas</p>
             <p class="checkbox registry.entity.1 registry.category 2"><span style="background-position:0px -32px;"></span>Organizaciones</p>

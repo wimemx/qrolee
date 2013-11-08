@@ -905,7 +905,6 @@ def get_list(request,**kwargs):
                 user[str(field)] = value
 
         dictionary[int(obj.id)] = user
-        print dictionary
 
     context = {
         'list':dictionary,

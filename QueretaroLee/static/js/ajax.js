@@ -122,12 +122,11 @@ function populateCal(curr_month,$item){
                             p_2.append(span_place_2);
                         }
                         if($.trim($('input.fb-session-required-val').val()) != 0){
-
                             if(e[10]){
                                 if(!e[11]){
-                                    span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
+                                    var span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
                                     span_apply.click(function(){
-                                        assist_fb_event(e[10], span_apply);
+                                        assist_fb_event(e[10], $(this), e[6]);
                                     });
                                 }else
                                 span_apply = '';
@@ -243,8 +242,7 @@ function removeUser($ele,user_id, remove, entity){
 }
 
 function assist_fb_event(event_fb_id, $ele, id){
-    if(!id)
-        id = -1;
+
     $('.container_message .alert-message').fadeOut(300,function(){
         $('.container_message').fadeIn(300,function(){
             $('.container_message .fb-accept').fadeIn(300);
@@ -255,6 +253,9 @@ function assist_fb_event(event_fb_id, $ele, id){
             event_fb_id+'/attending',
             'post',
             function(response) {
+                $('.container_message').fadeOut(300, function(){
+                    $(this).find('.alert-message').fadeOut();
+                });
                 $ele.remove();
                 if(id != -1){
                     $.ajax({
@@ -309,7 +310,6 @@ function findUser($ele, userEmail, entity, $parent, member){
                                 'margin-top': 10
                             });
                         }
-                        console.log(user[i]);
                         span.appendTo($parent);
                         span.fadeIn(300);
                         if(user[i][4])
@@ -500,7 +500,26 @@ function search_book_code(form){
 }
 
 $(document).ready(function(){
+    $('.content .sidebar-a .month').click(function(){
+        var m = $.trim($(this).html()).toLowerCase();
+        var ele_num = (curr_month%3);
+        if(curr_month < 3){
 
+        }else if (curr_month < 6){
+
+        }else if (curr_month < 9){
+
+        }else{
+            $('table.year .month').each(function(){
+                if($(this).find('.month').length > 0){
+                    var month = $.trim($(this).find('.month').html()).split(' ');
+                    month = month[0];
+                    if ($.trim(month).toLowerCase() == m)
+                        $(this).find('.month').trigger('click');
+                }
+            });
+        }
+    });
     $('.part_bottom .green_btn').click(function(){
 
         var lat_long = $('.lat_long').val().split(',');
@@ -866,6 +885,7 @@ $(document).ready(function(){
 
 
     $('.alert-message .accept').click(function(){
+        if (!$(this).hasClass('fb_btn')){
         var user = $(this).parent().find('input.user').val();
 
         $('.affiliate').each(function(index){
@@ -884,7 +904,8 @@ $(document).ready(function(){
 
         });
 
-        $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
+            $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
+        }
     });
     $('.alert-message .reject').click(function(){
         $('.container_message').fadeOut(300);

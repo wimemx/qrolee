@@ -140,34 +140,6 @@
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
         </span>
-        <span style="border:none;" class="data grid-9 fleft fb-session-required no-margin">
-        {% if entity.fb_id != None and entity.fb_id != '' %}
-            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
-            <p class="checkbox"><span class="fb">
-                {% if entity.share_fb == 1 %}
-                ×
-                {% endif %}</span>Compartir publicaciones de Facebook en Querétaro Lee</p>
-            {% if profile.fb_username != '' %}
-            <p class="checkbox"><span class="twitter">
-                {% if entity.share_fb == 1 %}
-                ×
-                {% endif %}
-            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>
-        {% endif %}
-        {% else %}
-            <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-14" style="">
-            <input type="hidden" name="fb_id" class="fb_id"/>
-                {% if entity_type.1 == 'group' %}
-                <p>¿Cuentas ya con un grupo en Facebook?</p>
-                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver grupos de</span>
-                {% else %}
-                 <p>¿Cuentas ya con una pagina en Facebook?</p>
-                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver pages de</span>
-                {% endif %}
-                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
-            </span>
-        {% endif %}
-        </span>
 
         <span class="d-picture_user grid-4 no-margin fright"  >
             {% if entity.picture %}
@@ -230,7 +202,35 @@
                 {% endif %}
             </span>
         {% endif %}
-        <div class="grid-8 fleft margin-50">
+    <span style="border:none;" class="data grid-9 fleft fb-session-required no-margin">
+        {% if entity.fb_id != None and entity.fb_id != '' %}
+            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
+            <p class="checkbox"><span class="fb">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}</span>Compartir publicaciones de Facebook en Querétaro Lee</p>
+            {% if profile.fb_username != '' %}
+            <p class="checkbox"><span class="twitter">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}
+            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>
+        {% endif %}
+        {% else %}
+            <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-14" style="">
+            <input type="hidden" name="fb_id" class="fb_id"/>
+                {% if entity_type.1 == 'group' %}
+                <p>¿Cuentas ya con un grupo en Facebook?</p>
+                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver grupos de</span>
+                {% else %}
+                 <p>¿Cuentas ya con una pagina en Facebook?</p>
+                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver pages de</span>
+                {% endif %}
+                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+            </span>
+        {% endif %}
+        </span>
+         <div class="grid-8 edit-form fleft margin-50">
             <span class="green_btn main fleft">Editar</span> <span class="yellow_btn main fleft">Guardar</span>
         </div>
     </div>
@@ -288,94 +288,8 @@
         $(document).ready(function(){
             initialize();
             var timeout = 200;
-            $('.green_btn').click(function(){
-                /*$this = $(this).parent();
-                $this.parent().find('span.value').fadeOut(timeout, function(){
-                    if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                            $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                            $this.parent().find('.close').fadeIn(timeout);
 
-                        });
-                    }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                                     $this.parent().find('.close').fadeIn(timeout);
-                        });
-                    }else{
-                        $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                                     $this.parent().find('.close').fadeIn(timeout);
-                        });
-                    }
-                });*/
 
-            });
-            $('.close').click(function(){
-                $this = $(this);
-                $(this).fadeOut(timeout);
-                $this.parent().find('span.yellow_btn').fadeOut(timeout,function(){
-                    $this.parent().find('span.green_btn').fadeIn(timeout,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                    $this.parent().find('input.value').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }
-                            });
-
-                });
-            });
-            $('.yellow_btn').click(function(){
-                $this_ = $(this).parent().parent();
-                var field = $this_.find('input.value').attr('name');
-                var value = $this_.find('input.value').val();
-                if($this_.find('textarea.value').length > 0){
-                    value = $this_.find('textarea.value').val();
-                    field = $this_.find('textarea.value').attr('name');
-                }else if($this_.find('.select_wrapper').length > 0){
-                    value = $this_.find('select.value').val();
-                    field = $this_.find('select.value').attr('name');
-                }
-                $this = $(this);
-                if($this_.find('.lat').length > 0){
-                    update_obj('lat',parseFloat($('input.lat').val()), $this);
-                    update_obj('long',parseFloat($('input.long').val()), $this);
-                }
-
-                update_obj(field,value, $this);
-                $this = $(this).parent();
-                $(this).fadeOut(timeout);
-                $this.parent().find('.close').fadeOut(timeout);
-                $this.parent().find('span.green_btn').fadeIn(timeout);
-
-                if($this.parent().find('input.value').length > 0){
-                    $this.parent().find('input.value').fadeOut(timeout,function(){
-                        console.log($this.parent().find('input.value').val());
-                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }else if($this.parent().find('textarea.value').length > 0){
-                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }else{
-                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }
-            });
             $('.checkbox span').click(function(){
                 var field;
                 var value;
@@ -404,7 +318,12 @@
             });
             $('.green_btn.main').click(function(){
                 $('.controllers_wrapper').each(function(){
-                    edit_form($(this), timeout);
+                    edit_form($(this), timeout, 0);
+                });
+            });
+            $('.yellow_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 1, $('input.entity').val());
                 });
             });
         });
