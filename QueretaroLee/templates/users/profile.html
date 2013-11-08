@@ -127,9 +127,9 @@
         {% endif %}
 
         <span class="nav profile grid-8 no-margin">
-            <span class="btn">Actividad</span>
-            <span class="btn">Libros</span>
-            <span class="btn">Listas</span>
+            <span class="btn {{ btn_active.0 }}">Actividad</span>
+            <span class="btn {{ btn_active.1 }}">Libros</span>
+            <span class="btn {{ btn_active.2 }}">Listas</span>
             <span class="btn">Grupos</span>
             <span class="btn">Páginas</span>
         </span>
@@ -267,7 +267,7 @@
             </div>
         </div>
     </div>
-    <div class="grid-16 load prevent_scroll no-margin my_books">
+    <div class="grid-16 prevent_scroll no-margin my_books">
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">

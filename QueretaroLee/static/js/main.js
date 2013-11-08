@@ -437,7 +437,7 @@ function fb_obj_search(search, type){
             var title = $('<h3 class="title grid-3 fright"></h3>');
             var privacy = $('<p style="margin-bottom:0px;" class="grid-3 fright"></p>');
             var link = $('<p class="grid-3 fright"></p>');
-            var span_accept = $('<span class="green_btn fright">Acceptar</span>');
+            var span_accept = $('<span class="green_btn fright">Aceptar</span>');
 
                 if(obj.cover)
                     span_wrapper.find('img').attr('src',obj.cover.source);
