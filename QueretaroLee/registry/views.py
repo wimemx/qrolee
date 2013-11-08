@@ -200,26 +200,22 @@ def register_entity(request, **kwargs):
         type__name=entity_type)
     user_profile = models.Profile.objects.get(
         user_id=request.user.id)
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. ' \
-                  'Aenean ultricies mi vitae est. Mauris placerat eleifend leo.' \
-                  ' Quisque sit amet est et sapien ullamcorper pharetra. ' \
-                  'Vestibulum erat wisi, condimentum sed, commodo vitae, ' \
-                  'ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt ' \
-                  'condimentum, eros ipsum rutrum orci, sagittis tempus lacus ' \
-                  'enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. ' \
-                  'Praesent dapibus, neque id cursus faucibus, tortor neque ' \
-                  'egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. ' \
-                  'Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus'
 
     if entity_type == 'group':
-        entity_type = ['Crear un nuevo grupo', 'group', 'grupo']
+        entity_type = ['Crear un nuevo grupo de lectura', 'group', 'grupo']
+        content = ' Los lugares son espacios en Querétaro donde puedes se pueden llevar' \
+              ' acabo actividades en torno a la lectura. Llena los campos que se ' \
+              'presentan a continuación para registrar un lugar en Querétaro Lee.'
+
     elif entity_type == 'organization':
         entity_type = ['Crear una nueva organización', 'organization', 'organización']
+        content = 'Llena los campos que se presentan a continuación para registrar ' \
+              'una organización en Querétaro Lee.'
+
     elif entity_type == 'spot':
-        entity_type = ['Crear un nuevo spot', 'spot', 'spot']
+        entity_type = ['Crear un nuevo lugar', 'spot', 'spot']
+        content = 'Llena los campos que se presentan a continuación para registrar un' \
+              ' lugar en Querétaro Lee.'
 
     context = {
         'social_session': user_profile.social_session,

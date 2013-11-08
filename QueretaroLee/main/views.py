@@ -211,15 +211,16 @@ def get_entities(request, **kwargs):
     else:
         if entity_type == 'group':
             entity_type = ['grupos de lectura', 'group','grupo de lectura']
+            content = 'A continuación se despliegan los grupos que forman parte de Querétaro Lee.'
         elif entity_type == 'spot':
+            content = 'A continuación se despliegan los lugares en Querétaro ' \
+                      'donde se pueden llevar a cabo actividades relacionadas con la lectura.'
             entity_type = ['lugares', 'spot','lugar']
         else:
             entity_type == 'organization'
             entity_type = ['organizaciones', 'organization','organización']
-        content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor qprofileuam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+            content = 'A continuación se despliegan las organizaciones que forman' \
+                  ' parte de Querétaro Lee. '
 
         for e in entity:
             e.address = e.address.split('#')
@@ -467,7 +468,10 @@ def get_events(request, **kwargs):
             if event.owner_id == request.user.id:
                 is_attending = True
             event_data.append(is_attending)
+            event_data.append(event.owner.id)
             events.append(event_data)
+
+
     context = {
         'events': list(events)
     }

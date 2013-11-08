@@ -125,6 +125,11 @@ def user_profile(request, **kwargs):
     template = kwargs['template_name']
     id_user = kwargs['id_user']
 
+    if len(str(id_user).split('b')) > 1:
+        id_ = str(id_user).split('b')
+        id_user = int(id_[0])
+
+
     if request.POST:
         membership = registry.MemberToObject.objects.get_or_create(
             user_id=request.user.id, object_type='U', object=id_user)[0]

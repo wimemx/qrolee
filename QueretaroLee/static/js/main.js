@@ -96,6 +96,8 @@ var marker;
             lat = 20.589081;
             long = -100.38826;
         }
+        $('.long').val(long);
+        $('.lat').val(lat);
 
         var latlng = new google.maps.LatLng(lat, long);
 			var settings = {
@@ -581,7 +583,7 @@ function update_dir_info(loc_address, lat_long, type){
                     results[0].address_components[2].long_name +'#'+
                     results[0].address_components[3].long_name;
 
-                $('.address').val(address);
+                //$('.address').val(address);
             });
         }
     }else{
@@ -593,8 +595,8 @@ function update_dir_info(loc_address, lat_long, type){
                     results[0].address_components[0].long_name +' '+
                     results[0].address_components[2].long_name +'#'+
                     results[0].address_components[3].long_name;
-                $('.address').val(address);
-                $('.address_user').val(address.replace('#',' '));
+                //$('.address').val(address);
+                //$('.address_user').val(address.replace('#',' '));
 
             });
         }

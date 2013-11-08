@@ -30,9 +30,9 @@
     </div>
 
 
-<div class="grid-16 entity event_view no-margin">
-        <div class="grid-15 fleft event-content no-margin">
-        <div class="grid-10 no-margin fleft border_bottom">
+<div class="grid-16 entities">
+    <div class="grid-14 container_event">
+        <div class="d-container-1 border_bottom">
 
             <div class="d-container-name"  >
 
@@ -70,9 +70,9 @@
                     <span id="d-btn-facebook" class="btn_social">facebook</span>
                     </div>
                 </div>
-                <div class="d-line grid-7 no-margin"></div>
+                <div class="d-line grid-6 no-margin"></div>
 
-                <div class="grid-7 no-margin fleft">
+                <div class="d-data1">
                     <div class="d-description" >
                         <p>
                             {{ event.description }}
@@ -82,7 +82,7 @@
                     </div>
                 </div>
 
-                <div class="grid-3 no-margin fright sub_title">
+                <div class="grid-2 sub_title">
                     <input type="hidden" class="fb_event_id" {% if event.fb_id %} value="{{ event.fb_id }}" {% else %} value="-1" {% endif %}/>
                     <input type="hidden" class="event_id" value="{{ event.id }}"/>
                     <div class="d-date">
