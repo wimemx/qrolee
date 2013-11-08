@@ -210,12 +210,12 @@ def get_entities(request, **kwargs):
         return HttpResponse(context, mimetype='application/json')
     else:
         if entity_type == 'group':
-            entity_type = ['grupos de lectura', 'group']
+            entity_type = ['grupos de lectura', 'group','grupo de lectura']
         elif entity_type == 'spot':
-            entity_type = ['lugares', 'spot']
+            entity_type = ['lugares', 'spot','lugar']
         else:
             entity_type == 'organization'
-            entity_type = ['organizaciones', 'organization']
+            entity_type = ['organizaciones', 'organization','organización']
         content = 'Pellentesque habitant morbi tristique senectus et ' \
                   'netus et malesuada fames ac turpis egestas. Vestibulum ' \
                   'tortor qprofileuam, feugiat vitae, ultricies eget, tempor sit ' \

@@ -137,6 +137,10 @@ input:not([type='submit']){
     cursor: pointer;
     border:1px solid #a77340;
     text-align: center;
+    transition:all 0.3s;
+}
+.brown_btn:hover{
+    background: #d8a271;
 }
 .left{
     left: 0px;
@@ -1484,7 +1488,7 @@ p{
 #scrollbar1 .viewport { width: 100%; height: 510px; overflow: hidden; position: relative; }
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
-#scrollbar1 .thumb { background-color: #b69035; }
+#scrollbar1 .thumb { background-color: #a77340; }
 #scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5 }
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
@@ -1502,17 +1506,16 @@ p{
     }
 
 .d-container_map{
-
     width: 50%;
-    height: 488px;
+    height: 510px;
     float: right;
 }
 
 .d-map_spot{
 
-    width: 100%;
+    width: 90%;
     height: 100%;
-    margin: auto;
+    margin-left: auto;
     background-color: transparent!important;
     background: url("/static/img/loading.gif")no-repeat 30px 100px;
 
@@ -2101,6 +2104,16 @@ p{
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.entities .green_btn{
+    border: 2px solid #a77340;
+    background: #C69263 url("http://localhost:8000/static/img/btn_edit.png") no-repeat 6px 6px !important;
+    height: 30px!important;
+    top: -34px!important;
+    width: 30px!important;
+    padding: 0px 0px!important;
+}
+
 .entities .grid-15 {
     min-height: 640px;
     padding: 40px 40px 40px 40px;
@@ -3123,7 +3136,14 @@ textarea{
     }
 
 .list__ .scrollbar{
-    right: -40px !important;
+    right: 0px !important;
+}
+.list__ .avanced_search{
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+}
+
+.list__ .title{
+    font-size: 18px!important;
 }
 
 .all_list{
@@ -3351,6 +3371,9 @@ textarea{
     right: 0px!important;
 }
 
+.list__ .d-not_found, .entities .d-not_found{
+    margin-top: 70px!important;
+}
 
 .text_no_book{
     text-decoration: none!important;
@@ -3792,9 +3815,13 @@ textarea{
 .author .d-title_profile{
     margin-bottom: 6px!important;
 }
+.mini_rate{
+    margin-right: 30px;
+    margin-top: 4px;
+}
+
 .mini_rate img{
-    width: 16px;
-    height: 15px;
+    float: left;
 }
 
 .list_reg{

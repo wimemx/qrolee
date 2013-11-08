@@ -1518,7 +1518,7 @@ function append_titles(overview, data, in_api){
                     genre[index] + '</span>');
             }
         });
-        p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2"></p>');
+        p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2 mini_rate"></p>');
         for(ind = 0;ind<5;ind++){
             if(ind<data[i].grade)
                 p_stars.append('<img class="starts_mini" src="/static/img/comunityStarmini.png">');
@@ -1657,7 +1657,7 @@ function search_list_authors_titles($this){
 
                                 span_data = $('<span class="container_data ' + grid + ' no-margin">'+
                                     '</span>');
-                                span_title = $('<span class="grid-12 no-margin"></span>');
+                                span_title = $('<span class="grid-9 no-margin"></span>');
                                 span_data.append(span_title);
                                 div.append(span_data);
                             }
@@ -1694,8 +1694,8 @@ function search_list_authors_titles($this){
                             p_text.append(truncText(data[i].description,245));
                             span_title.append(a_title);
                             p_stars.append(span_stars);
-                            span_data.append(p_by);
                             span_data.append(p_stars);
+                            span_data.append(p_by);
                             span_data.append(p_text);
 
                             overview.append(div);
@@ -1855,7 +1855,7 @@ function search_list_authors_titles($this){
 
                         });
                     }
-                    $('.no_resuls').remove();
+                    $('.d-not_found').remove();
                     if(!empty_char){
                         if(Object.keys(data).length==0){
                             var empty = true;
@@ -1864,9 +1864,7 @@ function search_list_authors_titles($this){
                                     empty = false;
                             }
                             if(empty){
-                                div = $('<div class="grid-14 no_resuls">No se pudieron encontrar  ' +
-                                    text + ' </div>');
-                                overview.append(div);
+                                text_no_found(text);
                             }
                         }
                     }
@@ -1956,11 +1954,11 @@ function search_entities($this){
                                             entity_obj[i].user + '/entity/'
                                             + entity_obj[i].picture;
                                     else
-                                        img_src ='';
+                                        img_src ='/static/img/create.png';
 
                                     href2 = '/registry/edit/' + entity_obj[i].id+'/';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
-                                    btn = $('<a class="brown_btn" href="' + href2 + '">Editar</a>');
+                                    btn = $('<a class="green_btn" href="' + href2 + '"></a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
@@ -2012,7 +2010,7 @@ function search_entities($this){
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
                                     href_edit = '/registry/edit/'+entity_obj[i].id+'/';
                                     btn = $('<a class="green_btn" href="' +
-                                        href_edit + '">Editar</a>');
+                                        href_edit + '"></a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
