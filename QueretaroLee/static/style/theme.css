@@ -1647,6 +1647,16 @@ p{
     top:30px !important;
 
 }
+.load-margin{
+    margin: 30px 0px 0px 30px;
+}
+.load #scrollbar1{
+    padding-right: 40px;
+
+}
+.load .d-margin_calendar{
+    margin-left: 60px !important;
+}
 
 .d-margin_calendar{
     margin: 25px 0px 0px 0px !important;

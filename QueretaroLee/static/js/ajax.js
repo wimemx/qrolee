@@ -1521,7 +1521,7 @@ function append_titles(overview, data, in_api){
                     genre[index] + '</span>');
             }
         });
-        p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2 mini_rate"></p>');
+        p_stars = $('<p class="fleft stars_title margin_left no-margin grid-2"></p>');
         for(ind = 0;ind<5;ind++){
             if(ind<data[i].grade)
                 p_stars.append('<img class="starts_mini" src="/static/img/comunityStarmini.png">');
@@ -1660,7 +1660,7 @@ function search_list_authors_titles($this){
 
                                 span_data = $('<span class="container_data ' + grid + ' no-margin">'+
                                     '</span>');
-                                span_title = $('<span class="grid-9 no-margin"></span>');
+                                span_title = $('<span class="grid-12 no-margin"></span>');
                                 span_data.append(span_title);
                                 div.append(span_data);
                             }
@@ -1697,8 +1697,8 @@ function search_list_authors_titles($this){
                             p_text.append(truncText(data[i].description,245));
                             span_title.append(a_title);
                             p_stars.append(span_stars);
-                            span_data.append(p_stars);
                             span_data.append(p_by);
+                            span_data.append(p_stars);
                             span_data.append(p_text);
 
                             overview.append(div);
@@ -1858,7 +1858,7 @@ function search_list_authors_titles($this){
 
                         });
                     }
-                    $('.d-not_found').remove();
+                    $('.no_resuls').remove();
                     if(!empty_char){
                         if(Object.keys(data).length==0){
                             var empty = true;
@@ -1867,7 +1867,9 @@ function search_list_authors_titles($this){
                                     empty = false;
                             }
                             if(empty){
-                                text_no_found(text);
+                                div = $('<div class="grid-14 no_resuls">No se pudieron encontrar  ' +
+                                    text + ' </div>');
+                                overview.append(div);
                             }
                         }
                     }
@@ -1888,8 +1890,7 @@ function search_list_authors_titles($this){
 
 
 function search_entities($this){
-    var scroll = jQuery('#scrollbar1');
-    scroll.tinyscrollbar();
+    $('#scrollbar1').tinyscrollbar();
     var $item = $('.sidebar-a .item').clone();
     var all_ = ''
     //if(content_search_entity){
@@ -1931,8 +1932,7 @@ function search_entities($this){
 
                 if(data){
                     $('.overview').fadeOut(250,function(){
-                        $('#scrollbar1').remove();
-
+                        $('.overview').empty();
                         var div;
                         var len = 0;
                         var empty = false;
@@ -1958,11 +1958,11 @@ function search_entities($this){
                                             entity_obj[i].user + '/entity/'
                                             + entity_obj[i].picture;
                                     else
-                                        img_src ='/static/img/create.png';
+                                        img_src ='';
 
                                     href2 = '/registry/edit/' + entity_obj[i].id+'/';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
-                                    btn = $('<a class="green_btn" href="' + href2 + '"></a>');
+                                    btn = $('<a class="brown_btn" href="' + href2 + '">Editar</a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
@@ -2014,7 +2014,7 @@ function search_entities($this){
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
                                     href_edit = '/registry/edit/'+entity_obj[i].id+'/';
                                     btn = $('<a class="green_btn" href="' +
-                                        href_edit + '"></a>');
+                                        href_edit + '">Editar</a>');
                                     div.append(a.append(img));
 
                                     if(entity_obj[i].user==$('.id_user').val()){
@@ -2053,7 +2053,7 @@ function search_entities($this){
                             }
                         });
                         $('.overview').fadeIn(250,function(){
-
+                            $('#scrollbar1').tinyscrollbar_update();
                         });
                         if($('.type').val() == 'spot'){
                             dmap(data,1);

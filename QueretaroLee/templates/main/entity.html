@@ -286,11 +286,11 @@
     <div class="grid-16 news-feed load no-margin" style="display: block">
         {% if entity.privacy == 0 or member or owner.id == user.id %}
 
-        <div style="margin: 30px; 0px 0px 30px;" class="grid-9 left">
-            <h3 class="title">Actividad</h3>
+        <div class="grid-9 load-margin left">
+            <h3 class="title">Actividad reciente</h3>
             {% if activity  %}
-            <div style="margin:0px;" id="scrollbar1">
-                <div class="scrollbar" style="right: -35px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+            <div style="margin:0px;" id="scrollbar1" class="fleft">
+                <div class="scrollbar" ><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">
                     <div class="overview">
                         {% for news_feed in activity %}
@@ -585,7 +585,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-4 sidebar-b d-margin_calendar fright">
+            <div class="grid-4 sidebar-b d-margin_calendar fleft">
                 <h3 class="title">Calendario</h3>
                 <input class="entity" type="hidden" value="{{ entity.id }}"/>{% csrf_token %}
                 <div class="overview">
@@ -593,13 +593,13 @@
                         {{ calendar }}
                     {% endautoescape %}
                 </div>
+                <div class="border_bottom grid-4 no-margin fleft"></div>
                 <div class="controller center">
                     <span class="prev fleft"></span>
                     <span class="next fright"></span>
                 </div>
             </div>
-            <div class="border_bottom grid-4 no-margin fright"
-                 style="margin-right: 40px;margin-top: 20px;"></div>
+
         {% else %}
             <p class="private-message margin-50 center">Este grupo es privado,
                 <br> para ver la información solicitada
