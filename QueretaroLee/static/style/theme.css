@@ -469,8 +469,11 @@ p{
     margin: 20px 10px 30px 10px;
     display: block;
 }
+    .spot .viewport{
+        height: 488px!important;
+    }
     .entities .grid-14{
-        height: 670px;
+        height: 640px;
         padding: 40px 60px 40px 60px;
         background: #fffcf5;
         display: block;
@@ -505,7 +508,7 @@ p{
                 position: relative;
             }
             .entities .content{
-                margin: 5px 0px 45px 0px;
+                margin: 5px 0px 60px 0px;
                 font-size: 14px;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
@@ -1515,7 +1518,7 @@ p{
 
 .d-container_map{
     width: 50%;
-    height: 510px;
+    height: 488px;
     float: right;
 }
 

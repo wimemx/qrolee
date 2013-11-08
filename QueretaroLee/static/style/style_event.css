@@ -1,5 +1,3 @@
-
-
 .d-container .center{
     margin:0 auto;
     float: none;
@@ -31,30 +29,18 @@
 }
 
 .d-container-2{
-
     width: 25%;
-    float: left;
-
+    float: right;
 }
 
-.d-name-event .title{
-    font-size: 18px
-}
-
-.d-by{
-    padding: 0pt 0pt 0pt 0pt;
-}
-
-.d-by .title{
+.d-by .title,.d-by .place_pink{
     font-weight: 400!important;
     font-size: 14px!important;
-    padding-right: 2px;;
+    padding-right: 2px;
+    font-family: 'Conv_fontscore.com_d-dinproregular'!important;
+
 }
 
-.d-by .place_pink{
-    font-weight: 400!important;
-    font-size: 14px!important;
-}
 
 .d-btn_event{
 
@@ -78,7 +64,6 @@
 
 #d-btn-facebook {
     background: #003cb3;
-    color: #fff;
 }
 
 #d-btn-attend{
@@ -101,7 +86,6 @@ p,b{
     border-bottom: 1px solid #999999;
     width: 95%;
     font-size: 10pt;
-    text-align: justify;
 }
 .sub_title p{
     margin-top: 3px!important;
@@ -142,8 +126,8 @@ p,b{
 }
 
 .d-title_events{
-
     width: 100%;
+    color: #000;
     font-size: 12pt;
     padding: 0pt 0pt 8pt 0pt;
     border-bottom: 1pt solid #999999;
@@ -157,6 +141,7 @@ p,b{
 .d-line{
     border-bottom: 1px solid #999999;
     padding: 5pt 0pt 5pt 0pt;
+    width: 100%!important;
 }
 
 .d-container-data{
@@ -216,13 +201,13 @@ p,b{
     float: left;
 }
 .d-data-event{
-
-    font-size: 7pt;
-    font-weight: normal;
+    font-size: 11px;
+    color: #777;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 .d-name-event-mini{
-
-    font-size: 8pt;
+    margin-top: 13px!important;
+    font-size: 14px!important;
 }
 .d-name-event{
     margin-top: 10px!important;

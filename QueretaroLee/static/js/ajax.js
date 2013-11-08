@@ -1958,7 +1958,7 @@ function search_entities($this){
                                             entity_obj[i].user + '/entity/'
                                             + entity_obj[i].picture;
                                     else
-                                        img_src ='';
+                                        img_src ='/static/img/create.png';
 
                                     href2 = '/registry/edit/' + entity_obj[i].id+'/';
                                     img = $('<img class="img_size_all" src="'+img_src+'" atr="" >');
@@ -2362,3 +2362,13 @@ function add_rate($this){
             });
         });
 }
+$(document).click(function(){
+    $('.search_result').fadeOut(250);
+    if(!men_1)
+        $('.sub-menu').fadeOut(250);
+    men_1 = false;
+    if(!combo_act)
+        $('.value_sel').fadeOut(200);
+    combo_act = false;
+
+});
