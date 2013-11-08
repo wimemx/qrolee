@@ -356,6 +356,7 @@ def delete_entity(request, **kwargs):
         else:
             obj = model.objects.get_or_create(
                 id=int(request.POST.get('id')))
+            obj = obj[0]
             obj.status = False
         obj.save()
         context = {

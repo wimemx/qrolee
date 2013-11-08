@@ -34,7 +34,7 @@ hyu
         <span class="title grid-9 fleft no-margin main">Editar información de tu perfil</span>
 
         {% if type == 'profile' %}
-            <span style="border: none" class="data grid-8 fleft no-margin">
+            <span style="border: none" class="data grid-9 fleft no-margin">
             <p>Nombre
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
@@ -70,14 +70,14 @@ hyu
                     </span>
                 <span class="close right"></span>
                 {% if user_profile.user.email  %}
-                    <input name="email" type="text" value="{{ user_profile.user.email }}" class="grid-5 alpha fright value "/>
-                    <span class="value grid-5 alpha fright">{{ user_profile.user.email }}</span>
+                    <span class="value no-edit grid-5 alpha fright">{{ user_profile.user.email }}</span>
+
                 {% else %}
                     <input name="email" type="text" value="" class="grid-5 alpha fright value "/>
                     <span class="value grid-5 alpha fright"></span>
                 {% endif %}
             </p>
-            <p>telefono
+            <p>Telefono
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
@@ -121,7 +121,7 @@ hyu
                     <span class="value grid-5 alpha fright"></span>
                 {% endif %}
             </p>
-            <p>Ciudad
+            <!--<p>Ciudad
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
@@ -151,7 +151,7 @@ hyu
                     <input name="postal_code" type="text" value="" class="grid-5 alpha fright value "/>
                     <span class="value grid-5 alpha fright"></span>
                 {% endif %}
-            </p>
+            </p>-->
             <p>Facebook
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
@@ -227,17 +227,8 @@ hyu
             {% endif %}
         </span>
     {% endif %}
-    <span style="border: none;" class="data grid-8 fleft no-margin">
+    <span style="border: none;" class="data grid-9 fleft no-margin">
         <span style="margin-bottom: 30px;" class="title main">Editar información de tu cuenta</span>
-            <p>Nombre
-                <span class="controllers_wrapper">
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
-                    </span>
-                <span class="close right"></span>
-                <input name="username" type="text" value="{{ user_account.username }}" class="grid-5 alpha fright value "/>
-                <span class="value grid-5 alpha fright">{{ user_account.username }}</span>
-            </p>
              <p>Contraseña
                  <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
@@ -249,10 +240,12 @@ hyu
             </p>
             <p>Miembro desde
                 <span class="close right"></span>
-                <span class="value grid-5 alpha fright">{{ user_account.date_joined }}3</span>
+                <span class="value grid-5 alpha fright">{{ user_account.date_joined }}</span>
             </p>
         </span>
-
+        <div class="grid-8 edit-form fleft margin-50">
+            <span class="green_btn main fleft">Editar</span> <span class="yellow_btn main fleft">Guardar</span>
+        </div>
 
     </div>
     </div>
@@ -277,7 +270,7 @@ hyu
         },
         success: function(file) {
             $('.profile-pic').val(file.name);
-            //load_img_profile();
+            load_img_profile();
             $('.del.picture').css({
                 'display': 'block'
             });
@@ -291,151 +284,21 @@ hyu
         }
     }
         $(document).ready(function(){
+            var timeout = 200;
 
-            if($('.type').val()=='profile'){
-                initialize();
-            }
-            $('.green_btn').click(function(){
-                $this = $(this).parent();
-                $this.parent().find('span.value').fadeOut(300,
-                function(){
-                    if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
-
-                        });
-                    }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
-
-                        });
-                    }else{
-                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-
-                                 });
-                            });
-
-                        });
-                    }
-                });
-
-            });
-            $('.close').click(function(){
-                $this = $(this).parent();
-                $(this).parent().parent().find('.d-invalid').remove();
-                $(this).fadeOut(300,
-                    function(){
-                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
-                                    });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
-                                    });
-                                }
-                            });
-
-                        });
-                });
-            });
             $('.yellow_btn').click(function(){
                 var $this_ = $(this).parent().parent();
-                var field = $this_.find('input.value').attr('name');
-                var value = $this_.find('input.value').val();
-                if($this_.find('textarea.value').length > 0){
-                    value = $this_.find('textarea.value').val();
-                    field = $this_.find('textarea.value').attr('name');
-                }else if($(this).parent().find('.select_wrapper').length > 0){
-                    value = $this_.find('select.value').val();
-                    field = $this_.find('select.value').attr('name');
-                }
-                if(value.length>0){
-                url = '';
-                if($('.type').val()=='profile'){
-                    url = '/accounts/users/update_profile/';
-                }
-                if($('.type').val()=='account'){
-                    url = '/accounts/users/update_account/';
-                }
 
-                $this = $(this).parent();
-                $.ajax({
-                type: "POST",
-                url: url,
-                data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                    'field': field,
-                    'value': value
-                },
-                dataType: 'json'
-                }).done(function(data){
-
-                    if($this.parent().find('input.value').length > 0){
-
-                        if(field!='password'){
-
-                            if(field=='birthday'){
-                                date = ($this.parent().find('input').val()).split('-');
-                                $this.parent().find('span.value').html(date[2] +
-                                        '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
-                            }else{
-                                $this.parent().find('span.value').html($this.parent().find('input.value').val());
-                            }
-                        }
-                    }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('span.value').html($this.parent().find('.address_user').val());
-                    }else{
-                        $this.parent().find('span.value').html($this.parent().find('select.value').val());
-                    }
-                    $this.parent().find('.close').fadeOut(300,function(){
-                    $this.find('.yellow_btn').fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }
-                            });
-
-                        });
-                    });
+            });
+            $('.green_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 0);
                 });
-                }else{
-                    var span = $('<span class="d-invalid"></span>');
-                    span.html("campo vacio");
-                    $(this).parent().parent().append(span);
-                }
+            });
+            $('.yellow_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 1);
+                });
             });
         });
     </script>
