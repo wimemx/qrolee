@@ -76,6 +76,7 @@ function populateCal(curr_month,$item){
                         var href = '/qro_lee/events/' + e[6];
 
                         span_item = $('<span class="item item_'+i+'"></span>');
+                        span_f = $('<span class="grid-1 fleft no-margin"></span>');
                         span_lin = $('<span class="grid-6 no-margin"></span>');
                         span_date = $('<span class="date fright din-m day_15"></span>');
                         span_date.html(days[e[2]-1]+' '+e[1]);
@@ -83,7 +84,9 @@ function populateCal(curr_month,$item){
                         span_ = $('<span class="ruler grid-5 fright"></span>');
                         span_lin.append(span_date);
                         span_lin.append(span_);
+                        //span_item.append(span_f);
                         span_item.append(span_lin);
+
                         span_wrap = $('<span class="wrapper fleft"></span>');
                         a = $('<a class="d-link_event" href="'+href+'" ></a>');
                         img = $('<img class="profile-picture" />');
@@ -94,7 +97,7 @@ function populateCal(curr_month,$item){
                         var grid = 'grid-8';
                         if($('.type').val() == 'Event')
                             grid = 'grid-7';
-                        span_text = $('<span class="'+grid+' fleft no-margin"></span>');
+                        span_text = $('<span class="grid-7 fleft no-margin"></span>');
                         a_2 = $('<a class="d-link_event" href="'+href+'" ><h3 title="'+e[0]+'" >'+truncText(e[0],47)+'</h3></a>');
                         p = $('<p></p>');
                         span_info = $('<span class="info grid-6 alpha text_event">'+truncText(e[4],180)+'</span>');
@@ -1930,7 +1933,8 @@ function search_entities($this){
 
                 if(data){
                     $('.overview').fadeOut(250,function(){
-                        $('.overview').empty();
+                        $('#scrollbar1').remove();
+
                         var div;
                         var len = 0;
                         var empty = false;
@@ -2307,8 +2311,6 @@ function search_pages(){
 
     });
     overview.fadeIn(200);
-    if($('#scrollbar1').length>0)
-        $('#scrollbar1').tinyscrollbar();
 
     show_dialog();
 }

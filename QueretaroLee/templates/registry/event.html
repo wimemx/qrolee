@@ -26,7 +26,8 @@
                 {% include 'blocks/entity_menu.html' %}
             {% endblock %}
         <div class="grid-16 load no-margin">
-            <div class="sidebar-a grid-10 d-edit-event">
+        <div class="grid-14 offset-1 fleft no-margin">
+            <div class="sidebar-a grid-9 d-edit-event">
                 <!--<span class="month">Septiembre</span>-->
                 <div id="scrollbar1">
                     <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
@@ -66,13 +67,13 @@
                     </div>
                 </div>
             </div>
-            <div style="margin:20px 0px 0px 20px;" class="grid-4 sidebar-b fleft">
+            <div class="grid-4 sidebar-b fright no-margin">
             <a class="color_btn {{ entity_type.1 }}" href="/registry/register_event/{{ entity_type.1 }}/{{ id_entity }}">
                 Crear nuevo evento
             </a>
-            <h3 class="title fleft grid-4 fix">Calendario</h3>
+            <h3 class="title fix">Calendario</h3>
             <input class="entity" type="hidden" value="-1"/>{% csrf_token %}
-                <div style="margin:0px 0px 0px 20px;" class="grid-4">
+                <div class="grid-4 no-margin">
                 <div class="overview">
                     {% autoescape off %}
                         {{ calendar }}
@@ -86,7 +87,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
         </div>
 
 
