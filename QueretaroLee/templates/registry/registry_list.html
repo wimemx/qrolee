@@ -183,7 +183,7 @@
                                 if(data.success == 'True'){
                                     $form.find('input[type=submit]').fadeOut(200);
                                     add_titles_list($('.csrf_token').find('div input').val(),data.id_list);
-                                    setTimeout ("redireccionar("+data.id_list+")", 1300);
+                                    //setTimeout ("redireccionar("+data.id_list+")", 1300);
 
                                 }else{
                                     $('.message').addClass('fail');

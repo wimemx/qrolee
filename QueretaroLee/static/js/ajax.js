@@ -977,12 +977,19 @@ $(document).ready(function(){
     $('.text_act').click(function(){
         show_title_act($(this));
     });
-
     $('.search_result').fadeOut(250);
+
     if(!set_act)
         $('.sub-menu-h').fadeOut(250);
     set_act = false;
-    $('.nav .btn:eq(0)').trigger('click');
+
+    if($('.nav .btn:eq(0)').hasClass('acti'))
+        $('.nav .btn:eq(0)').trigger('click');
+    else if($('.nav .btn:eq(1)').hasClass('acti'))
+        $('.nav .btn:eq(1)').trigger('click');
+    else
+        $('.nav .btn:eq(2)').trigger('click');
+
 
     if($('.discussion.load').length > 0){
         $('.discussion.load a.title').click(function(e){

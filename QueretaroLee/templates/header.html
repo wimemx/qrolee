@@ -43,7 +43,7 @@
             {% else %}
                 <img class="img_profile_mini" src="/static/media/users/{{ user.id }}/profile/{{ user_profile.picture }}" />
             {% endif %}
-            <span class="user">{{ user|truncatechars:17 }}</span>
+            <span class="user">{{ user.first_name|truncatechars:17 }}</span>
         </a>
         <span class="member grid-3 no-margin" style="min-height: 57px;display: none;position: absolute">
             <input type="hidden" class="sesion_user" value="{{ user.id }}">
@@ -51,9 +51,9 @@
             <span class="sub-menu-h sub" >
                 <a href="/accounts/users/profile/{{ user.id }}">Ver mi perfil</a>
                 <span class="lin"></span>
-                <a href="#">Mis libros</a>
+                <a href="/accounts/users/profile/{{ user.id }}l1">Mis libros</a>
                 <span class="lin"></span>
-                <a href="#">Mis listas</a>
+                <a href="/accounts/users/profile/{{ user.id }}l2">Mis listas</a>
                 <span class="lin"></span>
                 <a href="/accounts/users/edit_profile/{{ user.id }}">Mi información</a>
                 <span class="lin"></span>

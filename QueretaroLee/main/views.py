@@ -264,6 +264,7 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
+    print request.user
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -591,6 +592,7 @@ def event(request, **kwargs):
         'entity_type': 'Event'
     }
     events = models.Event.objects.all()
+
     unescaped = load_calendar(events)
 
     context = {
@@ -1795,6 +1797,15 @@ def load_calendar(events):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
+
+    hc = hc.replace('dom', 'D')
+    hc = hc.replace('lun', 'L')
+    hc = hc.replace('mar', 'M')
+    hc = hc.replace('mié', 'M')
+    hc = hc.replace('jue', 'J')
+    hc = hc.replace('vie', 'V')
+    hc = hc.replace('sáb', 'S')
+
     hc = hc.replace('January', 'Enero' + year)
     hc = hc.replace('February', 'Febrero' + year)
     hc = hc.replace('March', 'Marzo' + year)
@@ -1808,6 +1819,20 @@ def load_calendar(events):
     hc = hc.replace('November', 'Noviembre' + year)
     hc = hc.replace('December', 'Diciembre' + year)
 
+    hc = hc.replace('enero', 'Enero' + year)
+    hc = hc.replace('febrero', 'Febrero' + year)
+    hc = hc.replace('marzo', 'Marzo' + year)
+    hc = hc.replace('Mzo', 'Marzo' + year)
+    hc = hc.replace('abril', 'Abril' + year)
+    hc = hc.replace('mayo', 'Mayo' + year)
+    hc = hc.replace('junio', 'Junio' + year)
+    hc = hc.replace('julio', 'Julio' + year)
+    hc = hc.replace('agosto', 'Agosto' + year)
+    hc = hc.replace('septiembre', 'Septiembre'+ year)
+    hc = hc.replace('octubre', 'Octubre' + year)
+    hc = hc.replace('noviembre', 'Noviembre' + year)
+    hc = hc.replace('noVmbre', 'Noviembre' + year)
+    hc = hc.replace('diciembre', 'Diciembre' + year)
 
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)

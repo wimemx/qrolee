@@ -1,6 +1,7 @@
 import urlparse
 import urllib
 import ast
+from gst._gst import buffer_try_new_and_alloc
 import oauth2
 import hashlib
 import simplejson
@@ -123,11 +124,19 @@ def logout(request):
 def user_profile(request, **kwargs):
     template = kwargs['template_name']
     id_user = kwargs['id_user']
+    btn_active = ['','','']
 
-    if len(str(id_user).split('b')) > 1:
-        id_ = str(id_user).split('b')
+    if len(str(id_user).split('l')) > 1:
+
+        id_ = str(id_user).split('l')
         id_user = int(id_[0])
 
+        if id_[1] == '1':
+            btn_active[1] = 'acti'
+        else:
+            btn_active[2] = 'acti'
+    else:
+        btn_active[0] = 'acti'
     if request.POST:
         membership = registry.MemberToObject.objects.get_or_create(
             user_id=request.user.id, object_type='U', object=id_user)[0]
@@ -618,7 +627,8 @@ def user_profile_edit(request, **kwargs):
         'followers': followers,
         'activity': activity,
         'city': city,
-        'birthday': birthday
+        'birthday': birthday,
+        'btn_active': btn_active
     }
     #print dict_entities_user
     return render(request, template, context)

@@ -8,8 +8,6 @@ from registry import views
 
 from QueretaroLee import views as qro
 
-
-
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'QueretaroLee.views.home', name='home'),

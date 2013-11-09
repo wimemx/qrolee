@@ -1287,7 +1287,6 @@ def add_my_title(request):
                                 if len(response['result'][0]['output']['description']) != 0:
                                     biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
-
                             if len(biography) > 1000:
                                 biography = biography[0:900]
 
