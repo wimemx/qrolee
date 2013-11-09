@@ -46,6 +46,7 @@
                 <input class="profile-pic" type="hidden" value="" name="picture"/>
                 <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
                 <input type="hidden" name="fb_id" class="fb_id"/>
+                <input type="hidden" name="redirect" value="0" class="redirect"/>
                 <div class="grid-8 no-margin fleft">
                 <input type="hidden" value="{{ entity_type.1 }}" name="entity_type"/>
                 <p>Nombre
@@ -54,9 +55,9 @@
                 <p class="textarea">Descripción
                     <textarea class="grid-5 fix fright no-margin" name="description"></textarea>
                 </p>
-                <p style="height: 100px;">{% if entity_type.1 == 'spot' %}Tags{% else %}Categoría{% endif %}
+                <p style="height: 100px;">Categoría
                 <input type="hidden" name="category_ids" value=""/>
-                    <span style="height: 100%;" class="grid-5 fright no-margin">
+                    <span style="height: 100px;width: 296px;" class="grid-5 fright no-margin">
                         <span class="multi_select">
                             {% for category in categories %}
                                 <span class="select_value {{ category.id }}" >{{ category.name }}</span>
@@ -68,7 +69,7 @@
                 </p>
                 {% if entity_type.1 == 'group' %}
                 <p>Privacidad
-                    <span class="grid-5 fright no-margin">
+                    <span class="grid-5 fix-right fright no-margin">
                         <span class="grid-2 select no-margin">
                             <span class="text"></span>
                             <span class="dropdown"></span>
@@ -88,18 +89,21 @@
                     <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
                 </p>
                 <p style="margin:0px 0px 30px 0px;" class="textarea entity_map">
-                    <span class="grid-5 map fright no-margin">
+                    <span style="width: 296px;" class="grid-5 map fright no-margin">
                         <span id="map"></span>
                     </span>
                 </p>
                 <p>Sitio web
-                    <input placeholder="www.ejemplo.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
+                    <input placeholder="http://qrolee.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>
                 <p>Página de Facebook
-                    <input placeholder="pagina de facebook" class="grid-5 social regex_social fright no-margin" type="text" value="" name="fb"/>
+                    <input style="width: 140px;" placeholder="facebook" class="grid-2 social regex_social fright no-margin" type="text" value="" name="fb"/>
+                    <span class="grid-3 text-right fright no-margin">https://facebook.com/</span>
                 </p>
                 <p>Página de twitter
-                    <input placeholder="nombre de twitter" class="grid-5 social regex_social fright no-margin" type="text" value="" name="twitter"/>
+                    <span class="twitter">@</span>
+                    <input style="text-indent: 18px;" placeholder="twitter" class="grid-5 social regex_social fright no-margin" type="text" value="" name="twitter"/>
+                    <!--<span style="width: 140px;" class="grid-3 fright no-margin">https://twitter.com/</span>-->
                 </p>
                 <p>
                     <span class="message fright"></span>
@@ -205,6 +209,10 @@
 
     $(document).ready(function(){
 
+        var curr_url = window.location.href.split('#');
+        if (curr_url.length > 1){
+            $('input.redirect').val(1);
+        }
 
 
         if($('#map').length > 0)
@@ -247,8 +255,12 @@
                         var name = $('input[name=name]').val().charCodeAt(0)+''+
                                 $('input[name=name]').val().charCodeAt(1)+''+
                                 $('input[name=name]').val().charCodeAt(2);
-                        window.location.href = site_url+'/qro_lee/entity/'+
+                        if($('input.redirect').val() == 0){
+                            window.location.href = site_url+'/qro_lee/entity/'+
                                 $('input[name=entity_type]').val()+'/'+data.success;
+                        }else{
+                            window.location.href = site_url+'/accounts/users/edit_profile/'+data.success;
+                        }
                         /*
                         $('.message').addClass('success');
                         $('.message').html('Se ha creado exitosamente!');

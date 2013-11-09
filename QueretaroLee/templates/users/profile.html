@@ -112,7 +112,7 @@
                             <input type="hidden" name="membership" value="-1"/>
                             <input type="submit" class="btn " value="Dejar de seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
 
                     {% else %}
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
@@ -120,7 +120,7 @@
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn " value="Seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} miembros</p>
+                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
                     {% endif %}
                 </span>
             </span>
@@ -141,7 +141,7 @@
     </div>
     <input type="hidden" class="type_list" value="T" />
     <div class="grid-16 news-feed load no-margin" style="display: block;" >
-        <div style="margin: 30px; 0px 0px 30px;" class="grid-10 left">
+        <div style="margin: 30px 0px 0px 30px;" class="grid-10 left">
             {% if activity  %}
             <h3 class="title">Actividad</h3>
             <div style="margin:0px;" id="scrollbar1">

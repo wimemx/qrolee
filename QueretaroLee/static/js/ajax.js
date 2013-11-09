@@ -93,8 +93,8 @@ function populateCal(curr_month,$item){
                         img.attr('src',picture_url);
                         a.append(img);
                         span_wrap.append(a);
-
-                        if(edit == -1 | e[12] == parseInt($('.sesion_user').val()))
+                        console.log(e);
+                        if(edit == -1 | e[12] )
                             span_wrap.append('<a class="green_btn" href="/registry/edit/event/'+e[6]+'"></a>');
 
                         span_item.append(span_wrap);
@@ -305,7 +305,7 @@ function findUser($ele, userEmail, entity, $parent, member){
                         span.find('img').attr('src',img_url);
                         span.find('.since').html('Se únio hace '+user[i][3]+' meses');
                         if(user[i][5]){
-                            span.append($('<p>'+truncText(user[i][5],100)+'</p>'));
+                            span.append($('<p>'+truncText(user[i][5],50)+'</p>'));
                             span.find('.name').parent().css({
                                 'margin-top': 10
                             });
@@ -597,8 +597,8 @@ $(document).ready(function(){
             data: $(this).serialize(),
             dataType: 'json'
         }).done(function(data){
-                if(data['success'] == 'True')
-                    console.log('success');
+                /*if(data['success'] == 'True')
+                    console.log('success');*/
             });
 
        return false;
@@ -2038,8 +2038,8 @@ function search_entities($this){
                                     btn = $('<a class="green_btn" href="' +
                                         href_edit + '"></a>');
                                     div.append(a.append(img));
-
-                                    if(entity_obj[i].user==$('.id_user').val()){
+                                    console.log(entity_obj[i]);
+                                    if(entity_obj[i].is_admin == 1){
                                         div.append(a.append(btn));
                                     }
 

@@ -29,6 +29,7 @@ import hashlib
 import HTMLParser
 import datetime
 from xml.dom import minidom
+from time import gmtime, strftime
 
 
 def index(request, **kwargs):
@@ -142,6 +143,9 @@ def login(request):
 def account_register(request):
     user = dict(request.POST)
     url = ''
+    user['first_name'][0] = user['first_name'][0].encode('utf-8')
+    user['last_name'][0] = user['last_name'][0].encode('utf-8')
+    user['username'][0] = user['username'][0].encode('utf-8')
     user_exits = auth_models.User.objects.filter(
         Q(email=user['email'][0]) | Q(username=user['username'][0]))
 
@@ -155,9 +159,13 @@ def account_register(request):
             url = 'Usuario ya existente'
         else:
             password_md5 = hashlib.md5(request.POST.get('password')).hexdigest()
+            redirect_create = int(request.POST.get('redirect-create'))
+            redirect = request.POST.get('redirect')
             del user['password']
             del user['password_match']
             del user['csrfmiddlewaretoken']
+            del user['redirect-create']
+            del user['redirect']
             user['password'] = password_md5
 
             for key, value in user.iteritems():
@@ -165,6 +173,7 @@ def account_register(request):
                 if len(value) <= 1:
                     copy[key] = str(value[0])
                 user = copy
+
 
             user = auth_models.User.objects.create(**user)
             user.save()
@@ -183,6 +192,11 @@ def account_register(request):
             auth.login(request, user)
             success = 'True'
             url = main_settings.SITE_URL+'accounts/users/edit_profile/' + str(user.id)
+            if redirect_create != 0:
+                if redirect == 'organization':
+                    url = main_settings.SITE_URL+'registry/register_entity/organization/#redirect'
+                else:
+                    url = main_settings.SITE_URL+'registry/register_entity/group/#redirect'
 
     context = {
         'success': success,
@@ -236,6 +250,11 @@ def register(request):
     entity['type_id'] = int(type.id)
     category_ids = entity['category_ids'][0].split(' ')
     cat_ids = list()
+    redirect = False
+    print entity['redirect'][0]
+    if int(entity['redirect'][0]) == 1:
+        redirect = True
+    print redirect
     for ele in category_ids:
         cat_ids.append(int(ele))
 
@@ -247,6 +266,7 @@ def register(request):
     del entity['entity_type']
     del entity['fb_id']
     del entity['category_ids']
+    del entity['redirect']
     succuess = ''
 
     if request.FILES:
@@ -273,7 +293,11 @@ def register(request):
             entity_cat = models.EntityCategory.objects.create(
                 entity_id=entity.id, category_id=ele)
     if entity is not None:
-        succuess = entity.id
+        print redirect
+        if redirect:
+            succuess = request.user.id
+        else:
+            succuess = entity.id
         dict_ = {
             'super_user': 1,
             'is_admin': 1,
@@ -307,31 +331,37 @@ def edit_entity(request, **kwargs):
     id_entity = int(kwargs['entity'])
     user = request.user
     entity = models.Entity.objects.filter(id=id_entity)
-    if entity.user.id != request.user.id:
-        return HttpResponseRedirect('/qro_lee')
-    if len(entity) != 0:
+    admins_list = list()
+    admins = models.MemberToObject.objects.filter(
+        object=id_entity, object_type='E', is_admin=True)
+    for a in admins:
+        admins_list.append(a.user_id)
+
+    if entity:
+        match = 0
+        for ele in admins_list:
+            if request.user.id == ele:
+                match += 1
+        if match == 0:
+            return not_found(request)
 
         entity = models.Entity.objects.get(
             pk=id_entity)
 
-        if entity.user == user:
+        entity_type = models.Type.objects.get(
+            entity__id=entity.id)
+        if entity_type.name == 'group':
+            entity_type = ['del grupo', 'group']
+        elif entity_type.name == 'organization':
+            entity_type = ['de la organizacion', 'organization']
+        elif entity_type.name == 'spot':
+            entity_type = ['del spot', 'spot']
 
-            entity_type = models.Type.objects.get(
-                entity__id=entity.id)
-            if entity_type.name == 'group':
-                entity_type = ['del grupo', 'group']
-            elif entity_type.name == 'organization':
-                entity_type = ['de la organizacion', 'organization']
-            elif entity_type.name == 'spot':
-                entity_type = ['del spot', 'spot']
-
-            context = {
-                'entity': entity,
-                'entity_type': entity_type
-            }
-            return render(request, template, context)
-        else:
-            return not_found(request)
+        context = {
+            'entity': entity,
+            'entity_type': entity_type
+        }
+        return render(request, template, context)
     else:
         return not_found(request)
 
@@ -351,6 +381,10 @@ def delete_entity(request, **kwargs):
             obj = obj[0]
             obj.is_attending = True
             obj.save()
+        elif 'is_new' in request.POST:
+            obj = models.Profile.objects.get(
+                user_id=request.user.id)
+            obj.is_new = False
         else:
             obj = model.objects.get_or_create(
                 id=int(request.POST.get('id')))
@@ -389,10 +423,10 @@ def update_entity(request, **kwargs):
     }
     if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
-            id=kwargs['entity_id']).update(**dictionary)
+            id=int(kwargs['entity_id'])).update(**dictionary)
     else:
         entity = models.Entity.objects.filter(
-            id=kwargs['entity_id']).update(**dictionary)
+            id=int(kwargs['entity_id'])).update(**dictionary)
 
     context = {}
     context = simplejson.dumps(context)
@@ -595,6 +629,17 @@ def post_event_fb(event, user, profile):
 def event(request, **kwargs):
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
+    admins = models.MemberToObject.objects.filter(
+        object=id_entity, object_type='E', is_admin=1)
+    admins_list = list()
+    for a in admins:
+        admins_list.append(a.user_id)
+    match = 0
+    for ele in admins_list:
+        if request.user.id == ele:
+            match += 1
+    if match == 0:
+        return not_found(request)
     events = models.Event.objects.filter(location_id=id_entity)
     name = models.Entity.objects.get(id=id_entity)
     entity_type = models.Type.objects.get(
@@ -699,8 +744,17 @@ def edit_event(request, **kwargs):
     obj = kwargs['entity']
     obj = models.Event.objects.get(
         pk=int(obj))
-    if obj.owner_id != request.user.id:
-        return HttpResponseRedirect('/qro_lee')
+    admins_list = list()
+    admins = models.MemberToObject.objects.filter(
+        object=obj.location_id, object_type='E', is_admin=True)
+    for a in admins:
+        admins_list.append(a.user_id)
+    match = 0
+    for ele in admins_list:
+        if request.user.id == ele:
+            match += 1
+    if match == 0:
+        return not_found(request)
     entity_type = models.Type.objects.get(
         entity__id=obj.location_id)
     if entity_type.name == 'group':
@@ -755,12 +809,11 @@ def remove_add_user(request, **kwargs):
         members = models.MemberToObject.objects.filter(
             object=int(request.POST.get('entity')),
             object_type='E', is_admin=1)
-        users = list()
-        users.append(request.user.id)
+        admins = list()
+        admins.append(request.user.id)
         for member in members:
             if request.user.id != member.user_id:
-                users.append(member.user_id)
-
+                admins.append(member.user_id)
         if request.POST.get('user_email') == '-1':
             members = models.MemberToObject.objects.filter(
                 object=int(request.POST.get('entity')), object_type='E').filter(is_admin=True)
@@ -787,8 +840,10 @@ def remove_add_user(request, **kwargs):
                 id__in=users)
         # Get members of group
         elif request.POST.get('user_email') == '-4':
+
             members = models.MemberToObject.objects.filter(
-                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True)
+                object=int(request.POST.get('entity')), object_type='E').filter(is_member=True).exclude(
+                user_id__in=admins)
             users = list()
             for member in members:
                 if request.user.id != member.user_id:
@@ -803,7 +858,7 @@ def remove_add_user(request, **kwargs):
                 if request.user.id != member.user_id:
                     members_list.append(member.user_id)
             objs = models.User.objects.filter(
-                email__icontains=request.POST.get('user_email'), id__in=members_list).exclude(id__in=users)
+                email__icontains=request.POST.get('user_email'), id__in=members_list).exclude(id__in=admins)
 
         users = list()
         for obj in objs:
@@ -811,7 +866,7 @@ def remove_add_user(request, **kwargs):
             profile = models.Profile.objects.filter(
                 user_id=obj.id)
             member = models.MemberToObject.objects.filter(
-                user_id=obj.id)
+                user_id=obj.id, object=int(request.POST.get('entity')))
             bio = ''
             for data in profile:
                 obj_data.append(data.picture)
@@ -824,6 +879,7 @@ def remove_add_user(request, **kwargs):
                 super_user = member[0].super_user
             obj_data.append(super_user)
             obj_data.append(bio)
+            print obj_data
             users.append(obj_data)
 
         context = {

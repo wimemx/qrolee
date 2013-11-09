@@ -61,7 +61,7 @@
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
-                <input placeholder="Usuario de facebook" name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha fright value"/>
+                <input placeholder="Usuario de facebook" name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha regex_social fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.fb }}</span>
             </p>
             <p>Twitter
@@ -70,7 +70,7 @@
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
-                <input name="twitter" type="text" value="{{ entity.twitter }}" class="grid-5 alpha fright value"/>
+                <input name="twitter" type="text" value="{{ entity.twitter }}" class="grid-5 alpha regex_social fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.twitter }}</span>
             </p>
             <p>Sitio Web
@@ -79,7 +79,7 @@
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
-                <input name="website" type="text" value="{{ entity.website }}" class="grid-5 alpha fright value"/>
+                <input name="website" type="text" value="{{ entity.website }}" class="grid-5 alpha regex_url fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.website }}</span>
             </p>
             <p>Descripción
@@ -89,7 +89,7 @@
                     </span>
                 <span class="close right"></span>
                 <textarea name="description" class="grid-5 alpha fright value">{{ entity.description }}</textarea>
-                <span style="height: 100px;" class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
+                <span class="value area grid-5 alpha fright">{{ entity.description|truncatewords:30 }}</span>
             </p>
 
         {% if entity_type.1 == 'group' %}
@@ -124,7 +124,7 @@
                 <span class="controllers_wrapper">
                 <span style="visibility: hidden;" class="green_btn fright">Editar</span>
                     </span>
-                <span class="value grid-5 alpha fright">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
+                <span class="value no-edit grid-5 alpha fright">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
             </p>
             <p>Dirección
                 <span class="controllers_wrapper">
@@ -208,13 +208,13 @@
             <p class="checkbox"><span class="fb">
                 {% if entity.share_fb == 1 %}
                 ×
-                {% endif %}</span>Compartir publicaciones de Facebook en Querétaro Lee</p>
+                {% endif %}</span>Compartir publicaciones de Querétaro Lee en Facebook</p>
             {% if profile.fb_username != '' %}
-            <p class="checkbox"><span class="twitter">
+            <!--<p class="checkbox"><span class="twitter">
                 {% if entity.share_fb == 1 %}
                 ×
                 {% endif %}
-            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>
+            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>-->
         {% endif %}
         {% else %}
             <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-14" style="">
@@ -298,9 +298,9 @@
                 else
                     field = 'share_twitter';
                 if($.trim($(this).html()) != ''){
-                    value = 0;
-                }else{
                     value = 1;
+                }else{
+                    value = 0;
                 }
                 $.ajax({
                 type: "POST",

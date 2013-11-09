@@ -109,6 +109,28 @@ $(document).ready(function(){
         }
         return false;
     });
+    $('.select').find('select').change(function() {
+        $(this).parent().find('.text').html($(this).find(':selected').html());
+    });
+    var val = $(this).find('select option:eq(0)').val();
+    $('select').val(val).trigger('change');
+
+    $('.checkbox span').click(function(){
+        if($.trim($(this).html()) == ''){
+            $(this).html('×');
+            $('.create').animate({
+                'height': 30
+            });
+            $('.redirect-create').val(1);
+        }else{
+            $(this).html('');
+            $('.create').animate({
+                'height': 0
+            });
+            $('.redirect-create').val(0);
+        }
+
+    });
 });
 
 

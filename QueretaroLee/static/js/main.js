@@ -223,7 +223,6 @@ $(document).ready(function(){
         $(this).fadeOut(250, function(){
 
             $(this).closest('.wrapper_picture_user').fadeOut(250,function(){
-                console.log($(this).parent().attr('class'));
                 $(this).parent().find('.dropzone_user').fadeIn(250);
             });
         });
@@ -407,7 +406,26 @@ $(document).ready(function(){
        show_upload($(this).parent());
     });
 
-
+    if($('.create-entity').length > 0){
+        $('.del-message').click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: '/registry/delete/event/1/',
+                data: {
+                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                    'type': 'account.profile',
+                    'is_new': true
+                },
+                dataType: 'json'
+            }).done(function(){
+                $('.create-entity').fadeOut(function(){
+                    $(this).remove();
+                });
+            });
+            return false;
+        });
+    }
 
 });
 
@@ -417,7 +435,6 @@ function fb_obj_search(search, type){
     });
     $('.lightbox-wrapper').fadeIn(300);
     FB.api(search, function(response) {
-        console.log(response);
         if(response.error){
             $('.fb-objs .scrollbar').fadeOut(300, function(){
                 $('.fb-objs .overview').append(
@@ -430,6 +447,7 @@ function fb_obj_search(search, type){
         }
         var len = response.data.length;
         $.each(response.data,function(index){
+
             var obj = response.data[index];
             var id = obj.id;
             var span = $('<span class="fleft grid-5"></span>');
@@ -437,7 +455,7 @@ function fb_obj_search(search, type){
             var title = $('<h3 class="title grid-3 fright"></h3>');
             var privacy = $('<p style="margin-bottom:0px;" class="grid-3 fright"></p>');
             var link = $('<p class="grid-3 fright"></p>');
-            var span_accept = $('<span class="green_btn fright">Acceptar</span>');
+            var span_accept = $('<span class="green_btn fright">Aceptar</span>');
 
                 if(obj.cover)
                     span_wrapper.find('img').attr('src',obj.cover.source);
@@ -479,6 +497,8 @@ function fb_obj_search(search, type){
 
 
                 span.find('.green_btn').click(function(){
+                    if($('.fb-img-preview').length > 0)
+                        $('.fb-img-preview').remove();
                     if(type){
                         $('.lightbox-wrapper').fadeOut(300);
                         $('input.fb_i').val(obj.id);
@@ -557,6 +577,8 @@ function fb_obj_search(search, type){
                             $('#picture').fadeIn(300);
                         });
 
+                    }else{
+                        $('#picture').fadeIn(300);
                     }
 
                 });
@@ -933,6 +955,7 @@ $(document).ready(function(){
             $(this).html('');
         else
             $(this).html('×');
+
     });
     $('.advanced_search_btn').click(function(){
 
@@ -1031,7 +1054,7 @@ $(document).ready(function(){
             $(this).remove();
         });
         if (type != 'privacy' && type != 'event')
-            result = advanced_search(search, $('.advanced_filter').find('div input[type=hidden]').val());
+            result = advanced_search(search, $('.csrf_header').find('div input').val());
 
         if(type == 'registry.category'
             || type == 'account.genre'){
@@ -1400,7 +1423,7 @@ $(document).ready(function(){
 });
 
 
-function edit_form($this, timeout, type, id){
+function edit_form($this, timeout, type, id, event){
     if(type == 0){
         if($this.parent().find('span.value.no-edit').length == 0){
             $this.parent().find('span.value').fadeOut(timeout, function(){
@@ -1451,21 +1474,39 @@ function edit_form($this, timeout, type, id){
                 url = '/registry/update/'+id+'/'
             }
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                    'field': field,
-                    'value': value
-                },
-                dataType: 'json'
-            }).done(function(data){
-
-
-
-
+            var valid = true;
+            $this_.find('[class*="regex_"]').each(function(){
+                var regex_classes = $(this).attr('class').split(' ');
+                var regex_type = '';
+                $.each(regex_classes, function(i){
+                    if(regex_classes[i].search('regex_') != -1)
+                        regex_type = regex_classes[i];
                 });
+                regex_type = regex_type.split('regex_');
+                regex_type = regex_type[1];
+                if($.trim($(this).val()) != ''){
+                    var regex_validation = validate_regex($.trim($(this).val()), regex_type);
+                    if(!regex_validation[0]){
+                        valid = false;
+                    }
+                }
+            });
+            if(valid){
+                if(!event)
+                    event = '-1'
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'field': field,
+                        'value': value,
+                        'event': event
+                    },
+                    dataType: 'json'
+                }).done(function(data){});
+
+            }
         }else{
             var span = $('<span class="d-invalid"></span>');
             span.html("campo vacio");
@@ -1480,11 +1521,12 @@ function edit_form($this, timeout, type, id){
                     $this.parent().find('span.value').html(date[2] +
                         '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
                 }else{
-                    $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                    if(valid)
+                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
                 }
             }
         }else if($this.parent().find('textarea.value').length > 0){
-            $this.parent().find('span.value').html(truncText($this.parent().find('textarea.value').val(),280));
+            $this.parent().find('span.value').html(truncText($this.parent().find('textarea.value').val(),270));
         }else{
             $this.parent().find('span.value').html($this.parent().find('select.value').val());
         }
@@ -1505,6 +1547,49 @@ function edit_form($this, timeout, type, id){
     }
 }
 
+
+var url_regex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+var alpha_numeric_regex = /[^a-zA-Z0-9\.\-áéíóúñÁÉÍÓÚÑ()\s]+/;
+var numeric_regex = /[\d]+/;
+var alpha_regex = /[0-9]+/;
+var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
+var social_regex = /^[a-zA-Z0-9\-_\.]+$/;
+var email_regex = /(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/;
+
+
+function validate_regex(input, type){
+    var ret = new Array();
+    ret.push(false);
+    ret.push('');
+    if (type == 'numeric'){
+        if(input.search(numeric_regex) == -1)
+            ret[0] = true;
+        ret[1] = 'Debe ser un valor numerico';
+    }else if(type == 'alpha'){
+        if(input.search(alpha_regex) == -1)
+            ret[0] = true;
+        ret[1] = 'Debe ser un valor de caracteres';
+    }else if (type == 'alpha_numeric'){
+        if(input.search(alpha_numeric_regex) == -1)
+            ret[0] = true;
+        ret[1] = 'Debe ser un valor alpha numerico';
+    }else if(type == 'hh:mm:ss'){
+
+    }else if(type == 'url'){
+        if(input.search(url_regex) != -1)
+            ret[0] = true;
+        ret[1] = 'Debe ser una url valida';
+    }else if(type == 'social'){
+        if(input.search(social_regex) == 0)
+                ret[0] = true;
+        ret[1] = 'Solo el usuario, no incluya "@ o /"';
+    }else if(type == 'email'){
+        if(input.search(email_regex) == 0)
+            ret[0] = true;
+        ret[1] = 'Debe ser un correo valido';
+    }
+    return ret;
+}
 
 function create_template(type, result,i, create_user){
     var span;
@@ -1740,7 +1825,7 @@ function create_template(type, result,i, create_user){
         }else if(type == 'account.list'){
             var text= 'Lista creada por ';
             //var p = $('<p class="fright no-margin grid-4"></p>');
-            console.log(result[i]);
+
             if(result[i].extras[0][1] != '')
                 p.html(text+result[i].extras[0][1]+ ' '+ result[i].extras[0][2] );
             else
@@ -3346,7 +3431,7 @@ function d_show_dialog(type_message){
 }
 
 function list_titles_and_author(data, type, $container, type_message){
-    console.log(type);
+
     $container.find('#scrollbar1').remove();
     div_scroll = $('<div id="scrollbar1"></div>');
     div_scroll.append('<div class="scrollbar"><div class="track">'+

@@ -82,6 +82,7 @@ def index(request, **kwargs):
     }
     return render(request, template, context)
 
+
 @login_required(login_url='/')
 def get_entities(request, **kwargs):
     is_ajax_call = False
@@ -114,11 +115,21 @@ def get_entities(request, **kwargs):
         else:
             search = request.POST['field_search_entity']
             entity = models.Entity.objects.filter(
-                type_id__in=entity_ids, name__icontains=search, status=status).\
-                exclude(user_id=request.user)
-            user_entities = models.Entity.objects.filter(
-                type_id__in=entity_ids, user_id=request.user,
-                name__icontains=search, status=status)
+                type_id__in=entity_ids, name__icontains=search, status=status)
+            admins_list = list()
+            entites_list = list()
+            request_user_is_admin = list()
+            for e in entity:
+                admins = models.MemberToObject.objects.filter(
+                    object_type='E', object=e.id, is_admin=True)
+                for a in admins:
+                    #print a.user_id
+                    if request.user.id == a.user_id:
+                        request_user_is_admin.append(e.id)
+            user_entities = entity.filter(id__in=request_user_is_admin)
+            entity = entity.exclude(id__in=request_user_is_admin)
+
+
 
     value = {}
     user_entities_value = {}
@@ -148,7 +159,9 @@ def get_entities(request, **kwargs):
         field_types.append(field_type)
 
     for obj in entity:
-        context_fields = {}
+        context_fields = {
+            'is_admin': 0
+        }
         for data in fields:
             if isinstance(obj.__getattribute__(data), unicode):
                 context_fields[str(data)] = obj.__getattribute__(data).encode('utf-8', 'ignore')
@@ -160,7 +173,7 @@ def get_entities(request, **kwargs):
 
         if obj.type.name == 'group':
             count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
-                annotate(count = db_model.Count('user'))
+                annotate(count=db_model.Count('user'))
             context_fields['members'] = count[0]['count']
 
         if obj.type.name == 'spot':
@@ -175,7 +188,9 @@ def get_entities(request, **kwargs):
         value[obj.id] = context_fields
 
     for obj in user_entities:
-        context_fields = {}
+        context_fields = {
+            'is_admin': 1
+        }
         for data in fields:
             if isinstance(obj.__getattribute__(data), unicode):
                 context_fields[str(data)] = obj.__getattribute__(data).encode('utf-8', 'ignore')
@@ -187,7 +202,7 @@ def get_entities(request, **kwargs):
 
         if obj.type.name == 'group':
             count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
-                annotate(count = db_model.Count('user'))
+                annotate(count=db_model.Count('user'))
             context_fields['members'] = count[0]['count']
 
         if obj.type.name == 'spot':
@@ -254,9 +269,9 @@ def get_entity(request, **kwargs):
     entity = models.Entity.objects.get(id=id_entity)
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
-    rate = account_models.Rate.objects.filter(element_id=id_entity, type='E').\
-                values('element_id').annotate(count = db_model.Count('element_id'),
-                                              score = db_model.Avg('grade'))
+    rate = account_models.Rate.objects.filter(
+        element_id=id_entity, type='E').values('element_id').annotate(
+        count=db_model.Count('element_id'), score=db_model.Avg('grade'))
     my_rate = account_models.Rate.objects.filter(
         user=request.user, element_id=id_entity, type='E')
 
@@ -404,11 +419,10 @@ def get_events(request, **kwargs):
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
-
             if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
-                    events_ = models.Event.objects.filter(location_id=request.
-                    POST['id_entity'], status=status)
+                    events_ = models.Event.objects.filter(
+                        location_id=request.POST['id_entity'], status=status)
 
         events = []
         for event in events_:
@@ -425,9 +439,21 @@ def get_events(request, **kwargs):
                 start_time__month=int(request.POST.get('curr_month'))+1,
                 location_id=int(entity), status=status).order_by('start_time')
         else:
-            events_ = models.Event.objects.filter(
-                status=status, start_time__month=int(request.POST.get(
-                    'curr_month'))+1).order_by('start_time')
+            if int(request.POST.get('id_entity')) != -1:
+                admins = models.MemberToObject.objects.filter(
+                    object=int(request.POST.get('id_entity')), object_type='E', is_admin=1)
+                admins_list = list()
+                for a in admins:
+                    admins_list.append(a.user_id)
+
+                events_ = models.Event.objects.filter(
+                    status=status, start_time__month=int(request.POST.get(
+                        'curr_month'))+1, location_id=int(request.POST.get('id_entity')),
+                    owner_id__in=admins_list).order_by('start_time')
+            else:
+                events_ = models.Event.objects.filter(
+                    status=status, start_time__month=int(request.POST.get(
+                        'curr_month'))+1).order_by('start_time')
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
@@ -468,7 +494,25 @@ def get_events(request, **kwargs):
             if event.owner_id == request.user.id:
                 is_attending = True
             event_data.append(is_attending)
-            event_data.append(event.owner.id)
+            if int(request.POST.get('id_entity')) == -1:
+                admins = models.MemberToObject.objects.filter(
+                    object=event.location_id, object_type='E', is_admin=1)
+                admins_list = list()
+                for a in admins:
+                    admins_list.append(a.user_id)
+                match = 0
+                for ele in admins_list:
+                    if request.user.id == ele:
+                        match += 1
+                if match == 0:
+                    event_data.append(False)
+                else:
+                     event_data.append(True)
+            else:
+                if request.user.id == event.owner_id:
+                    event_data.append(True)
+                else:
+                    event_data.append(False)
             events.append(event_data)
 
 
@@ -917,6 +961,7 @@ def get_list(request,**kwargs):
         return HttpResponse(context, mimetype='application/json')
 
     return render(request, template, context)
+
 
 @login_required(login_url='/')
 def get_titles(request,**kwargs):

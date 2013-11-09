@@ -85,7 +85,7 @@
                 </span>
                 <span class="close right"></span>
                 <span class="grid-5 padding-fix alpha fright">
-                    <span class="grid-2 fleft no-margin">
+                    <span class="grid-2 fix-left fleft no-margin">
                         <span class="value">{{ entity.start_time|date:'d/m/Y' }}</span>
                         <input name="start_time" type="text" class="value date-init"/>
                     </span>
@@ -102,13 +102,13 @@
                 </span>
                 <span class="close right"></span>
                 <span class="grid-5 padding-fix alpha fright">
-                    <span class="grid-2 fleft no-margin">
+                    <span class="grid-2 fix-left fleft no-margin">
                         <span class="value">{{ entity.end_time|date:'d/m/Y' }}</span>
                         <input name="start_time" type="text" class="value date-init"/>
                     </span>
                     <span class="grid-3 no-margin fright">
                         Hora <input type="text" class="fright grid-2 alpha value hour-init"/>
-                        <span style="margin-left: 10px;" class="value">{{ entity.end_time|date:'h:m:s' }}</span>
+                        <span style="margin-left: 10px;" class="value">{{ entity.end_time }}</span>
                     </span>
                 </span>
             </p>
@@ -120,8 +120,8 @@
                 <span class="close right"></span>
                 <input type="hidden" class="lat" name="lat"/>
                 <input type="hidden" class="long" name="long"/>
-                <textarea name="location_name" class="map address value">{{ entity.address }}</textarea>
-                <span class="value map">{{ entity.address }}</span>
+                <textarea name="location_name" class="map address value">{{ entity.location_name }}</textarea>
+                <span class="value area map">{{ entity.location_name }}</span>
                 <span id="map" class="grid-5 alpha fright"></span>
             </p>
         </span>
@@ -275,97 +275,16 @@
                 onSelect: function(dateText) {
                 }
             });
-            $('.green_btn').click(function(){
-                /*$this = $(this).parent();
-                $this.parent().find('span.value').fadeOut(timeout, function(){
-                    if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                            $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                            $this.parent().find('.close').fadeIn(timeout);
 
-                        });
-                    }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                                     $this.parent().find('.close').fadeIn(timeout);
-                        });
-                    }else{
-                        $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
-                            $this.parent().find('span.green_btn').fadeOut(timeout);
-                                 $this.parent().find('span.yellow_btn').fadeIn(timeout);
-                                     $this.parent().find('.close').fadeIn(timeout);
-                        });
-                    }
-                });*/
 
-            });
-            $('.close').click(function(){
-                $this = $(this);
-                $(this).fadeOut(timeout);
-                $this.parent().find('span.yellow_btn').fadeOut(timeout,function(){
-                    $this.parent().find('span.green_btn').fadeIn(timeout,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                    $this.parent().find('input.value').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
-                                        $this.parent().find('span.value').fadeIn(timeout);
-                                    });
-                                }
-                            });
-
-                });
-            });
-            $('.yellow_btn').click(function(){
-                $this_ = $(this).parent().parent();
-                var field = $this_.find('input.value').attr('name');
-                var value = $this_.find('input.value').val();
-                if($this_.find('textarea.value').length > 0){
-                    value = $this_.find('textarea.value').val();
-                    field = $this_.find('textarea.value').attr('name');
-                }else if($this_.find('.select_wrapper').length > 0){
-                    value = $this_.find('select.value').val();
-                    field = $this_.find('select.value').attr('name');
-                }
-                $this = $(this);
-                update_obj(field,value, $this,1);
-                $this = $(this).parent();
-                $(this).fadeOut(timeout);
-                $this.parent().find('.close').fadeOut(timeout);
-                $this.parent().find('span.green_btn').fadeIn(timeout);
-
-                if($this.parent().find('input.value').length > 0){
-                    $this.parent().find('input.value').fadeOut(timeout,function(){
-                        if($this.parent().find('input.value').length < 1){
-                            $this.parent().find('span.value').html($this.parent().find('input.value').val());
-                        }else{
-                            $this.parent().find('span.value:eq(0)').html($this.parent().find('input.value:eq(0)').val());
-                            $this.parent().find('span.value:eq(1)').html($this.parent().find('input.value:eq(1)').val());
-                        }
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }else if($this.parent().find('textarea.value').length > 0){
-                    $this.parent().find('textarea.value').fadeOut(timeout,function(){
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }else{
-                    $this.parent().find('.select_wrapper').fadeOut(timeout,function(){
-                        $this.parent().find('span.value').html($.trim($this.parent().find('select.value').val()));
-                        $this.parent().find('span.value').fadeIn(timeout);
-                    });
-                }
-            });
             $('.green_btn.main').click(function(){
                 $('.controllers_wrapper').each(function(){
-                    edit_form($(this), timeout);
+                    edit_form($(this), timeout, 0);
+                });
+            });
+            $('.yellow_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 1, $('input.entity').val(), '1');
                 });
             });
         });

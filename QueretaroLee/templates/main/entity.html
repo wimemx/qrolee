@@ -305,7 +305,7 @@
                 <p>No hay actividad reciente</p>
             {% endif %}
         </div>
-            <div class="coments grid-10 no-margin">
+            <div class="coments load-margin grid-10 no-margin">
                 {% load disqus_tags %}
                 {% set_disqus_identifier entity_type entity.id %}
                 {% disqus_show_comments %}
@@ -552,7 +552,7 @@
             <div class="sidebar-a grid-10">
                 <h3 class="title main">Próximos eventos</h3>
                 <span class="month">Septiembre</span>
-                <div id="scrollbar1" class="scroll_events">
+                <div id="scrollbar1" class="scroll_events entities">
                     <div  class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                     <div class="viewport error">
                         <div class="overview d-width-container-event">
@@ -609,6 +609,7 @@
 
     {% if entity_type.1 == 'group' %}
         <div class="grid-16 members load no-margin">
+        <div class="grid-15 sidebar-a fleft">
         <h3 class="title main">Miembros del grupo</h3>
         {% if entity.privacy == 0 or member or owner.id == user.id %}
             <div id="scrollbar1">
@@ -630,7 +631,7 @@
                                         {% else %}
                                             {{ follower.username }}
                                         {% endif %}
-                                        <span class="fleft">Se unió hace
+                                        <span class="fleft">Se unió
                                             {{ follower.date_joined|member_since }}
                                         </span>
                                         <a class="fleft place_pink" href="/accounts/users/profile/{{ follower.id }}">Ver perfil</a>
@@ -646,6 +647,7 @@
                 <br> para ver la información solicitada
                 <br>necesitas ser miembro</p>
         {% endif %}
+        </div>
         </div>
     {% endif %}
     <!-- Disucssion -->
@@ -686,7 +688,7 @@
                                 <span class="item">
                                     <a href="#" id="{{ discussion.id }}" style="margin-top: 5px;" class="title no-margin">{{  discussion.name }}</a>
                                     <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.username }}</a></p>
-                                    <p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p>
+                                    <p style="margin-top:5px;" class="no-margin gray_text">{{ discussion.id|get_num_comments }} comentarios</p>
                                 </span>
                             {% endfor %}
                         {% else %}
