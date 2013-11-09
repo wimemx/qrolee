@@ -267,7 +267,7 @@
             </div>
         </div>
     </div>
-    <div class="grid-16 prevent_scroll no-margin my_books">
+    <div class="grid-16 load prevent_scroll no-margin my_books">
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
@@ -284,10 +284,10 @@
             {% endif %}
         </h3>
         {% if user_profile.user.id == user.id %}
-            <!--<span class="search fleft grid-4">
+            <span class="search fleft grid-4">
                 <input type="text" class="search_entities" />
                 <span class="top search_btn dark_yello_btn"></span>
-            </span>-->
+            </span>
         {% endif %}
     </div>
     <div class="viewport margin_top">
@@ -686,14 +686,14 @@
                         Listas de {{ user_profile.user.username }}
                     {% endif %}
                 </h3>
-                <!--<span class="search fleft grid-4">
+                <span class="search fleft grid-4">
                     <input class="type" type="hidden" value="List"/>
                     <input class="my_list_typ" type="hidden" value="0"/>
                     <input class="id_profile" type="hidden"
                            value="{{ user_profile.user.id }}"/>
                     <input type="text" class="field_list search_entities"/>
                     <span class="top search_list dark_yello_btn"></span>
-                </span>-->
+                </span>
                 <a href="/registry/register_list/">
                     {% if user_profile.user.id == user.id %}
                         <span class="d-pink_buttom d-brown-btn fright" >

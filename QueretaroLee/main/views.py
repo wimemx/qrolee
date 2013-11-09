@@ -249,6 +249,7 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
+    print request.user
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)

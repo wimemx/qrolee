@@ -2,6 +2,8 @@ var content_search_entity = false;
 var header_search_entity = false;
 var entity_search_events = false;
 var entity_search_atc = false;
+var arr_titles = new Array();
+var dict_titles = {};
 var clickable = true;
 var set_act = false;
 var men_1 = false;
@@ -1943,6 +1945,45 @@ function dialog_titles(csrf, data, id){
 
 }
 
+function add_titles_dictionary($item, list){
+
+    var it = $item.find('.id_t').val();
+    var default_type = [];
+
+    if(parseInt($item.find('.list_f').val())==1){
+        default_type.push(0);
+    }
+    if(parseInt($item.find('.list_l').val())==1){
+        default_type.push(1);
+    }
+    if(parseInt($item.find('.list_p').val())==1){
+        default_type.push(2);
+    }
+
+    if(parseInt($item.find('.selec_item').find('input').val())==1){
+        default_type.push(4);
+    }
+
+    title_json = {};
+    if(parseInt($item.find('.title_inte').val())==1){
+        title_json = {
+            it:{
+                'attribute': list[it],
+                'default_type': default_type,
+                'id': parseInt($item.find('.id_tit').val())
+            }};
+    }else{
+
+        title_json = {
+            it:{
+                'attribute': list[it],
+                'default_type': default_type,
+                'id':-1
+            }};
+    }
+    dict_titles[it] = title_json;
+}
+
 function list_title(csrf, data, div_text, type){
         var min_height_ = 'style="height:0px;"';
         div_scroll = $('<div id="scrollbar1"></div>');
@@ -1975,9 +2016,10 @@ function list_title(csrf, data, div_text, type){
         div_text.append(div_scroll);
         if($('.input_add_book').val().length > 0){
 
-        array = [];
-        count_id = 0;
-        bar = false;
+        var array = [];
+        var list_titles = {};
+        var count_id = 0;
+        var bar = false;
         if(type_list=='T'){
 
             titles_l = data[0];
@@ -1987,7 +2029,8 @@ function list_title(csrf, data, div_text, type){
 
                 $.each(titles_l,function(i){
                     array_ids_google.push(titles_l[i].id_google);
-                    item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
+                    item_title = $('<span class="item_ti item_title_' + count_id +
+                        '"></span>')
                     type_add = 'grid-5 ';
                     if(type==4)
                         type_add = 'grid-4 selec_item d-item_mini_list ';
@@ -1997,16 +2040,18 @@ function list_title(csrf, data, div_text, type){
                     item_title.append('<input type="hidden" class="title_inte" value="1"/>');
                     item_title.append('<input type="hidden" class="id_tit" value="' +
                         titles_l[i].id + '"/>');
+                    item_title.append('<input type="hidden" class="id_t" value="'+titles_l[i].id_google+'"/>');
                     span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
                     div_item.append(span_wrapper);
                     url_mini = '' + titles_l[i].cover;
                     url = '' + titles_l[i].cover;
 
                     var obj = {
-                        'title':titles_l[i].title
+                        'title': titles_l[i].title
                     }
 
                     array.push(obj);
+                    list_titles[titles_l[i].id_google] = obj;
 
                     img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
                     span_wrapper.append(img_wrapper);
@@ -2075,6 +2120,7 @@ function list_title(csrf, data, div_text, type){
 
                 });
             }
+
             if(data.length > 1 & data[1] != null){
 
                 data = data[1];
@@ -2091,7 +2137,8 @@ function list_title(csrf, data, div_text, type){
                     if(!id_google_exist){
                         attribute = titles[i]['volumeInfo'];
                         attribute_access = titles[i]['accessInfo'];
-                        item_title = $('<span class="item_ti item_title_' + count_id + '"></span>')
+                        item_title = $('<span class="item_ti item_title_' + count_id +
+                            ' "></span>')
 
                         type_add = 'grid-5';
                         if(type==4)
@@ -2100,6 +2147,7 @@ function list_title(csrf, data, div_text, type){
                         div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
                         item_title.append(div_item);
                         item_title.append('<input type="hidden" class="title_inte" value="0"/>');
+                        item_title.append('<input type="hidden" class="id_t" value="'+titles[i].id+'"/>');
                         span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
                         div_item.append(span_wrapper);
                         url = '/static/img/create.png';
@@ -2164,6 +2212,7 @@ function list_title(csrf, data, div_text, type){
                             'id_google':titles[i].id
                         }
                         array.push(obj);
+                        list_titles[titles[i].id] = obj;
 
                         img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
                         span_wrapper.append(img_wrapper);
@@ -2441,10 +2490,23 @@ function list_title(csrf, data, div_text, type){
             if(parseInt($(this).find('input').val())==0){
                 $(this).find('input').val(1);
                 $(this).addClass('active_add_title');
+                var $item = $(this).parent().parent();
+                add_titles_dictionary($item, list_titles);
+
             }else{
+
                 $(this).find('input').val(0);
                 $(this).removeClass('active_add_title');
                 $(this).removeClass('active_add_title');
+
+                var $item = $(this).parent().parent();
+                var it = $item.find('.id_t').val();
+                add_titles_dictionary($item, list_titles);
+
+                if(dict_titles[it]['it']['default_type'].length > 1){
+                    delete dict_titles[it];
+                }
+
             }
         });
 
@@ -2458,53 +2520,57 @@ function list_title(csrf, data, div_text, type){
 
 
         $('.btn_save').click(function(){
-
             array_title = [];
-
             var active_sel = false;
+            if(type == 4){
+                for(var it = 0;it< ($('.overview .item_ti').length);it++){
 
-            for(var it = 0;it< ($('.overview .item_ti').length);it++){
+                    var default_type = [];
+                    var active_title = false;
 
-                var default_type = [];
-                var active_title = false;
-
-                if(parseInt($('.item_title_'+it).find('.list_f').val())==1){
-                    default_type.push(0);
-                    active_title = true;
-                }
-                if(parseInt($('.item_title_'+it).find('.list_l').val())==1){
-                    default_type.push(1);
-                    active_title = true;
-                }
-                if(parseInt($('.item_title_'+it).find('.list_p').val())==1){
-                    default_type.push(2);
-                    active_title = true;
-                }
-
-                if(parseInt($('.item_title_'+it).find('.selec_item').find('input').val())==1){
-                    default_type.push(4);
-                    active_title = true;
-                }
-
-                if(active_title){
-                    active_sel = true;
-                    title_json = {};
-                    if(parseInt($('.item_title_'+it).find('.title_inte').val())==1){
-                        title_json = {it:{
-                            'attribute':array[it],
-                            'default_type':default_type,
-                            'id':parseInt($('.item_title_'+it).find('.id_tit').val())
-                        }};
-                    }else{
-                        title_json = {it:{
-                            'attribute':array[it],
-                            'default_type':default_type,
-                            'id':-1
-                        }};
+                    if(parseInt($('.item_title_'+it).find('.list_f').val())==1){
+                        default_type.push(0);
+                        active_title = true;
+                    }
+                    if(parseInt($('.item_title_'+it).find('.list_l').val())==1){
+                        default_type.push(1);
+                        active_title = true;
+                    }
+                    if(parseInt($('.item_title_'+it).find('.list_p').val())==1){
+                        default_type.push(2);
+                        active_title = true;
                     }
 
-                    array_title.push(title_json);
+                    if(parseInt($('.item_title_'+it).find('.selec_item').find('input').val())==1){
+                        default_type.push(4);
+                        active_title = true;
+                    }
+
+                    if(active_title){
+                        active_sel = true;
+                        title_json = {};
+                        if(parseInt($('.item_title_'+it).find('.title_inte').val())==1){
+                            title_json = {it:{
+                                'attribute':array[it],
+                                'default_type':default_type,
+                                'id':parseInt($('.item_title_'+it).find('.id_tit').val())
+                            }};
+                        }else{
+                            title_json = {it:{
+                                'attribute':array[it],
+                                'default_type':default_type,
+                                'id':-1
+                            }};
+                        }
+
+                        array_title.push(title_json);
+                    }
                 }
+            }else{
+                $.each(dict_titles,function(key){
+                        array_title.push(dict_titles[key]);
+                        active_sel = true;
+                });
             }
 
             if(active_sel){

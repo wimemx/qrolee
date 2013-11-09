@@ -307,7 +307,8 @@ def edit_entity(request, **kwargs):
     id_entity = int(kwargs['entity'])
     user = request.user
     entity = models.Entity.objects.filter(id=id_entity)
-    if entity.user.id != request.user.id:
+
+    if entity[0].user.id != request.user.id:
         return HttpResponseRedirect('/qro_lee')
     if len(entity) != 0:
 
