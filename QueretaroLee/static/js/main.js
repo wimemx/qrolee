@@ -2105,6 +2105,9 @@ function list_title(csrf, data, div_text, type){
                     div_add.append(span_add_f);
                     div_add.append(span_add_l);
                     div_add.append(span_add_p);
+                    if(titles_l[i].id_google in dict_titles)
+                        console.log(dict_titles[i]);
+                        span_add_f.addClass('active_add_title');
 
                     if(type == 1 | type == 3)
                         item_title.append(div_add);
