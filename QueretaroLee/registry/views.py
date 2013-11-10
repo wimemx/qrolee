@@ -1288,7 +1288,7 @@ def add_my_title(request):
                                     biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
                             if len(biography) > 1000:
-                                biography = biography[0:900]
+                                biography = biography[0:500]
 
                             if len(response['result'][0]['mid']) != 0:
                                 picture = 'https://www.googleapis.com/freebase/v1/image' +\
@@ -1358,16 +1358,21 @@ def add_my_title(request):
 
                 if obj['it']['id'] == -1:
                     desc = str(obj['it']['attribute']['biography'])
+
                     li ={
                         'name': str(obj['it']['attribute']['name']),
                         'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
-                        'biography': desc[0:800],
+                        'biography': desc[0:500],
                         'birthday': datetime.datetime.today(),
                         'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
-                    author = account.Author.objects.create(**li)
-                    author.save()
+                    author_exist = account.Author.objects.filter(id_api=li['id_api'])
+                    if not author_exist:
+                        author = account.Author.objects.create(**li)
+                        author.save()
+                    else:
+                        author = author_exist[0]
 
                 else:
                     author = account.Author.objects.get(id=obj['it']['id'])
