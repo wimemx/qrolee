@@ -4041,3 +4041,8 @@ textarea{
 .d-results.search_result{
     top: 25px;
 }
+
+.wrapper_title_mini .img_size_all, .list_reg .img_size_all{
+    width: 100%;
+    height: 100%;
+}

@@ -1269,6 +1269,7 @@ def add_my_title(request):
                         'description':desc[0:800],
                         'id_google':obj['it']['attribute']['id_google']
                     }
+                    name_aut = str(obj['it']['attribute']['author'][0])
                     name = str(obj['it']['attribute']['author'][0]).replace(' ','+')
                     query = ''
                     key = '&key='+settings.GOOGLE_BOOKS_KEY
@@ -1281,14 +1282,17 @@ def add_my_title(request):
 
                     biography = ' '
                     picture = ' '
+
                     if str(obj['it']['attribute']['author']) != 'autor anonimo':
+
                         if len(response['result']) != 0:
+                            print response['result']
                             if len(response['result'][0]['output']) != 0:
                                 if len(response['result'][0]['output']['description']) != 0:
                                     biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
-                            if len(biography) > 1000:
-                                biography = biography[0:900]
+                            if len(biography) > 500:
+                                biography = biography[0:500]
 
                             if len(response['result'][0]['mid']) != 0:
                                 picture = 'https://www.googleapis.com/freebase/v1/image' +\
@@ -1298,19 +1302,38 @@ def add_my_title(request):
                                 'name': response['result'][0]['name'],
                                 'picture': picture,
                                 'biography': biography,
-                                'birthday': datetime.datetime.today()
+                                'birthday': datetime.datetime.today(),
+                                'id_api' : response['result'][0]['id']
                             }
 
+                        else:
+                            dict_author = {
+                                'name': name_aut,
+                                'picture': '',
+                                'birthday': datetime.datetime.today(),
+                                'id_api': name_aut
+                            }
+
+                        author_exist = account.Author.objects.filter(db_model.Q(id_api=dict_author['id_api']) |
+                                                         db_model.Q(name=dict_author['name']))
+
+                        if not author_exist:
                             author = account.Author.objects.create(**dict_author)
                             author.save()
+                        else:
+                            author = author_exist[0]
 
-                    title = account.Title.objects.create(**li)
-                    title.save()
+                    title_exist = account.Title.objects.filter(db_model.Q(id_google= li['id_google']) |
+                                                    db_model.Q(title = li['title']))
+                    if not title_exist:
+                        title = account.Title.objects.create(**li)
+                        title.save()
+                    else:
+                        title = title_exist[0]
 
                     if str(obj['it']['attribute']['author']) != 'autor anonimo':
-                        if len(response['result']) != 0:
-                            list_author_title = account.AuthorTitle.objects.create(title=title,                                                                           author=author)
-                            list_author_title.save()
+                        list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
+                        list_author_title.save()
 
                 else:
                     title = account.Title.objects.get(id=obj['it']['id'])
@@ -1358,16 +1381,22 @@ def add_my_title(request):
 
                 if obj['it']['id'] == -1:
                     desc = str(obj['it']['attribute']['biography'])
+
                     li ={
                         'name': str(obj['it']['attribute']['name']),
                         'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
-                        'biography': desc[0:800],
+                        'biography': desc[0:500],
                         'birthday': datetime.datetime.today(),
                         'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
-                    author = account.Author.objects.create(**li)
-                    author.save()
+                    author_exist = account.Author.objects.filter(db_model.Q(id_api=li['id_api']) |
+                                                                 db_model.Q(name=li['name']))
+                    if not author_exist:
+                        author = account.Author.objects.create(**li)
+                        author.save()
+                    else:
+                        author = author_exist[0]
 
                 else:
                     author = account.Author.objects.get(id=obj['it']['id'])
@@ -1515,9 +1544,8 @@ def add_titles_author_list(request):
         'activity_id': 1
     }
     update_activity(activity_data)
-    #context = {}
-    #context = simplejson.dumps(context)
-    return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')
+
+    return HttpResponseRedirect('/qro_lee/profile/list/'+ id_list + '/')
 
 
 @login_required(login_url='/')
@@ -2081,7 +2109,8 @@ def register_title_click(request):
                 'id_api' : response['result'][0]['id']
             }
 
-            author_exist = account.Author.objects.filter(id_api=response['result'][0]['id'])
+            author_exist = account.Author.objects.filter(db_model.Q(id_api=response['result'][0]['id']) |
+                                                         db_model.Q(name=response['result'][0]['name']))
 
             if not author_exist:
                 author = account.Author.objects.create(**dict_author)
