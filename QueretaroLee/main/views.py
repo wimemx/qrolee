@@ -711,6 +711,7 @@ def advanced_search(request, **kwargs):
                     q_list = [(model_name+'__list_id', ele.id)]
                     if 'filters' in join:
                         filters = ast.literal_eval(join['filters']['0'])
+                        print filters
                         for filter in filters:
                             q_list.append((filter[0], filter[1]))
                     query = [Q(x) for x in q_list]

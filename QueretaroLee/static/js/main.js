@@ -1055,8 +1055,17 @@ $(document).ready(function(){
         $('.results .item').each(function(){
             $(this).remove();
         });
-        if (type != 'privacy' && type != 'event')
-            result = advanced_search(search, $('.csrf_header').find('div input').val());
+
+        if (type != 'privacy' && type != 'event'){
+            if (type != 'none'){
+                if(!$('p.advanced_search_btn').is(':visible'))
+                    $('p.advanced_search_btn').fadeIn(300);
+                result = advanced_search(search, $('.csrf_header').find('div input').val());
+            }else{
+                $('p.advanced_search_btn').fadeOut(300);
+            }
+        }
+
 
         if(type == 'registry.category'
             || type == 'account.genre'){
@@ -1070,9 +1079,10 @@ $(document).ready(function(){
         }else if(type == 'privacy')
             create_template('privacy');
 
+
     });
 
-    $('.advanced_filter .search_btn').click(function(){
+    $('.advanced_filter input.search').keyup(function(){
         var create_user = false;
         var search = new Array();
         var query;
@@ -1105,7 +1115,7 @@ $(document).ready(function(){
                 $('.advanced_search .search_filters').each(function(){
                     var filter = new Array();
                     if($(this).find('.change').val() == 'author_name'){
-                        filter.push('first_name__icontains');
+                        filter.push('name__icontains');
                         filter.push($(this).find('input').val());
                     }else if($(this).find('.change').val() == 'book_title'){
                         filter.push('title__icontains');
@@ -1113,6 +1123,7 @@ $(document).ready(function(){
                     }
                     filters.push(filter);
                 });
+
                 var activity = new Array();
                 $('.select_wrapper').each(function(){
                     activity.push($(this).find('input').val().toLowerCase());
@@ -1634,7 +1645,7 @@ function create_template(type, result,i, create_user){
             var dropdown =  $('<span class="dropdown">');
             inner_span.append(dropdown);
             var select = $('<select class="change value"><select>');
-            var option = $('<option value="author_name">Actualmente leyendo</option>');
+            var option = $('<option value="book_title">Titulo contiene</option>');
             select.append(option);
             inner_span.append(select);
             filter.append(_span);

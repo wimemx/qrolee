@@ -446,6 +446,7 @@ p.advanced_search_btn{
     .advanced_search .title{
         font-size: 11px;
         margin-top: 15px;
+        margin-bottom: 0px;
     }
     .advanced_search .checkbox{
         width: 100%;
@@ -515,6 +516,7 @@ p.advanced_search_btn{
         background: #dfb38c;
         height: 25px;
         line-height: 25px;
+        margin-bottom: 0px;
     }
     .filter .checkbox{
         background: #FEF1D5 ;
