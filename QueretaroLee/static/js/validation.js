@@ -198,6 +198,7 @@ var numeric_regex = /[\d]+/;
 var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
 var social_regex = /^[a-zA-Z0-9\-_\.]+$/;
+var email_regex = /(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/;
 
 
 function validate_regex(input, type){
@@ -223,10 +224,13 @@ function validate_regex(input, type){
             ret[0] = true;
         ret[1] = 'Debe ser una url valida';
     }else if(type == 'social'){
-        console.log(input.search(social_regex));
         if(input.search(social_regex) == 0)
                 ret[0] = true;
         ret[1] = 'Solo el usuario, no incluya "@ o /"';
+    }else if(type == 'email'){
+        if(input.search(email_regex) == 0)
+            ret[0] = true;
+        ret[1] = 'Debe ser un correo valido';
     }
     return ret;
 }

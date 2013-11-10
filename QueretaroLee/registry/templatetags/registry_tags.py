@@ -18,21 +18,23 @@ def member_since(date):
         ext = ' años'
         if (date_now.year - date.year) == 1:
             ext = ' año'
-        return str(date_now.year - date.year) + ext
+        return 'hace '+str(date_now.year - date.year) + ext
     elif (date_now.month - date.month) > 0:
         ext = ' meses'
         if (date_now.month - date.month) == 1:
             ext = ' mes'
         if (date_now.month - date.month) == 12:
             return '1 año'
-        return str(date_now.month - date.month) + ext
+        return 'hace '+str(date_now.month - date.month) + ext
     else:
         ext = ' dias'
         if (date_now.day - date.day) == 1:
             ext = ' dia'
+        if (date_now.day - date.day) <= 0:
+            return ' hoy'
         if (date_now.day - date.day) == 30:
-            return '1 mes'
-        return str(date_now.day - date.day) + ext
+            return 'hace 1 mes'
+        return 'hace '+str(date_now.day - date.day) + ext
 
 
 @register.filter
@@ -44,7 +46,16 @@ def total_members(followers):
 def get_num_followers(entity):
     followers = rmodels.MemberToObject.objects.filter(
         object_type='E', is_member=True, object=entity.id)
-    return len(followers)
+    len_ = len(followers)
+    return len_
+
+
+@register.filter
+def get_num_comments(id):
+    comments = models.Discussion.objects.filter(
+        parent_discussion_id=id, status=True)
+    len_ = len(comments)
+    return len_
 
 
 @register.filter
@@ -219,7 +230,7 @@ def feed_type(feed_id):
                                         <span class="entry">{4}</span>
                                         <span class="time">{5}</span></p>
                                     </span>
-                                    <p style="margin-top:10px;" class="gray_text no-margin fleft">hace {6}</p>
+                                    <p style="margin-top:10px;" class="gray_text no-margin fleft"> {6}</p>
                                 </span>
                             </span>
 
@@ -269,7 +280,6 @@ def feed_type(feed_id):
                 action = u'empezó a seguir a'
         else:
             action = u'empezó a seguir a'
-        print img_url
         ret_value = u"""<span class="follow feed">
               <a href="{5}" class="wrapper fleft">
                 <img src="{2}" alt=""/>
@@ -412,12 +422,7 @@ def split(text, char):
 
 
 @register.filter
-def time_format(time):
-    if '+' in str(time):
-        time = str(time).split('+')
-    else:
-        time = str(time).split('-')
-    time = time[0]
-    time = views.datetime_from_str(str(time))
-    print time[1]
-
+def new_user(user):
+    profile = rmodels.Profile.objects.get(
+        user_id=user.id)
+    return profile.is_new

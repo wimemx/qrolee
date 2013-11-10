@@ -39,16 +39,17 @@
     <div class="grid-16 edit register">
 
     <div style="margin-left:60px;" class="grid-14">
+    <span class="title main">Crear un nuevo evento en
+            <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
+
+        </span>
     <form action="/registry/register/event/" class="grid-8 fleft no-margin">
         <input type="hidden" class="type_ent" value="event" />
         <input type="hidden" name="location_id" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <input class="profile-pic" type="hidden" value="" name="picture"/>
         <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
         <input class="fb-url" type="hidden" value="" name="fb_url"/>
-        <span class="title main">Crear un nuevo evento en
-            <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
 
-        </span>
 
         <span class="data grid-8 fleft no-margin">
             <p>Nombre
@@ -60,7 +61,7 @@
             </p>
             <p>Tipo de evento
                 <span class="select_wrapper grid-5 no-margin fright">
-                <span class="grid-2 select no-margin">
+                <span class="grid-2 fix-left select no-margin">
                             <span class="text">Publica</span>
                             <span class="dropdown"></span>
                             <select class="change" name="privacy_type">
@@ -75,7 +76,7 @@
                 <span class="grid-3 no-margin fright">
                     Hora <input type="text" class="fright hour-init"/>
                 </span>
-                <span class="grid-2 fright no-margin">
+                <span class="grid-2 fix-left fright no-margin">
                     <input name="start_time" type="text" class="date-init"/>
                 </span>
             </p>
@@ -83,14 +84,14 @@
                 <span class="grid-3 no-margin fright">
                     Hora <input type="text" class="fright hour-end"/>
                 </span>
-                <span class="grid-2 fright no-margin">
+                <span class="grid-2 fix-left fright no-margin">
                     <input name="end_time" type="text" class="date-end"/>
                 </span>
             </p>
             <p class="sel_spots " >Lugar del evento
                 <span class="fright dropdown">
                 </span>
-                <input name="location_name" type="text" value="" class="grid-4 alpha address fright value"/>
+                <input style="width:256px;" name="location_name" type="text" value="" class="grid-4 alpha address fright value"/>
                 <input name="lat" type="hidden" class="lat" value="" />
                 <input name="long" type="hidden" class="long" value="" />
                 <input type="hidden" class="place_spot" name="place_spot" value="0"/>
@@ -110,7 +111,7 @@
             <p>
                 <span id="map" class="grid-5 omega fright"></span>
             </p>
-            <span class="grid-5 no-margin fright">
+            <span class="grid-5 fix-left no-margin fright">
                 <input type="hidden" name="share_fb" value="0"/>
                 <input type="hidden" name="fb_id" value="-1" class="fb-session-required"/>
                 <p class="checkbox fb-session-required"><span></span>Vincular evento con Facebook</p>
@@ -124,17 +125,14 @@
         </span>
 
     </form>
-    <span style="margin-top: 77px;display:block;"></span>
-            <form style="margin-top: 0px;" id="picture" class="fright dropzone no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
+            <form id="picture" class="fright dropzone no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_picture" value="1"/>
-                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
             </form>
             <form id="cover" class="dropzone fright no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_cover_picture" value="1"/>
-                <div class="preview grid-5 fright no-margin dropzone-previews"></div>
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>
@@ -302,12 +300,11 @@
 
             });
             $('.checkbox span').click(function(){
+
                 if($.trim($(this).html()) == ''){
-                    $(this).html('');
-                    $(this).parent().parent().find('input.share_fb').val(0);
-                }else{
-                    $(this).html('×');
                     $(this).parent().parent().find('input.share_fb').val(1);
+                }else{
+                    $(this).parent().parent().find('input.share_fb').val(0);
                 }
 
             });

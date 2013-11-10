@@ -38,6 +38,7 @@ class Profile(models.Model):
     postal_code = models.IntegerField(max_length=5, null=True)
     biography = models.CharField(max_length=255, null=True)
     website = models.CharField(max_length=255, null=True)
+    is_new = models.BooleanField(default=True)
     social_session = models.BooleanField()
     social_session_twitter = models.BooleanField()
     user = models.ForeignKey(User)

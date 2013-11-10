@@ -1,7 +1,6 @@
 import urlparse
 import urllib
 import ast
-from gst._gst import buffer_try_new_and_alloc
 import oauth2
 import hashlib
 import simplejson
@@ -17,7 +16,6 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.models import User
-
 
 
 # Create your views here.
@@ -125,7 +123,7 @@ def logout(request):
 def user_profile(request, **kwargs):
     template = kwargs['template_name']
     id_user = kwargs['id_user']
-    btn_active = ['','','']
+    btn_active = ['', '', '']
 
     if len(str(id_user).split('l')) > 1:
 
@@ -138,6 +136,259 @@ def user_profile(request, **kwargs):
             btn_active[2] = 'acti'
     else:
         btn_active[0] = 'acti'
+    if request.POST:
+        membership = registry.MemberToObject.objects.get_or_create(
+            user_id=request.user.id, object_type='U', object=id_user)[0]
+
+        activity_id = 5
+        if int(request.POST.get('membership')) == -1:
+            membership.is_member = False
+            activity_id = 10
+        else:
+            membership.is_member = True
+        activity_data = {
+            'user_id': request.user.id,
+            'object': id_user,
+            'added_to_object': request.user.id,
+            'type': 'U',
+            'added_to_type': 'U',
+            'activity_id': activity_id
+        }
+        registry_view.update_activity(activity_data)
+
+        membership.save()
+
+    member = registry.MemberToObject.objects.filter(
+        user=request.user.id, is_member=True, object_type='U', object=id_user)
+    followers = registry.MemberToObject.objects.filter(
+        is_member=True, object_type='U', object=id_user)
+
+    dict_list = {}
+    profile = registry.Profile.objects.get(user=id_user)
+    entity_user = registry.MemberToObject.objects.filter(
+        user=id_user, is_member=True, object_type='E')
+
+    dict_entities_user = {}
+
+    for obj in entity_user:
+        entity = registry.Entity.objects.get(id=obj.object)
+        count_members = registry.MemberToObject.objects.filter(object=obj.object)
+        is_admin = registry.MemberToObject.objects.get(object_type='E', object=obj.object, user__id=id_user)
+        att = {
+            'entity': entity,
+            'followers': count_members,
+            'is_admin': is_admin
+        }
+        if entity.type.name == 'group':
+            dict_entities_user[int(obj.object)] = att
+
+    list = models.List.objects.filter(user=id_user, default_type=-1, status=True)
+
+    fields_related_objects = models.List._meta.get_all_related_objects(
+        local_only=True)
+    fields = models.List._meta.get_all_field_names()
+
+    fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+        fields = models.List._meta.get_all_field_names()
+        fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+    fields = [item for item in fields if item not in fields_foreign]
+
+    dictionary = dict()
+
+    for obj in list:
+
+        user = {}
+        count = 0
+
+        if obj.type == 'T':
+            titles = models.ListTitle.objects.filter(list=obj)
+            count = len(titles)
+
+        if obj.type == 'A':
+            authors = models.ListAuthor.objects.filter(list=obj)
+            count = len(authors)
+
+        grade_title = 0
+        rate_title = models.Rate.objects.filter(element_id=obj.id).values('element_id').\
+            annotate(count=db_model.Count('element_id'), score = db_model.Avg('grade'))
+
+        if len(rate_title) != 0:
+            grade_title = rate_title[0]['score']
+
+        user['count'] = count
+        user['type'] = obj.type
+        user['grade'] = grade_title
+
+        for field in fields:
+            if isinstance(obj.__getattribute__(str(field)), unicode):
+                user[str(field)] = obj.__getattribute__(str(field)).\
+                    encode('utf-8', 'ignore')
+            else:
+                if field =='user':
+                    value = str(obj.__getattribute__(str(field)))
+                    user['id_user'] = int(obj.__getattribute__(str(field)).id)
+                else:
+                    value = str(obj.__getattribute__(str(field)))
+                user[str(field)] = value
+
+        dictionary[int(obj.id)] = user
+
+    user = registry.User.objects.get(id=id_user)
+    list_genre = models.ListGenre.objects.filter(list__user=user, status=True)
+    titles_read = models.ListTitle.objects.filter(
+        list__default_type=1, list__user=user, list__status=True)
+
+    fields_related_objects = models.Title._meta.get_all_related_objects(
+        local_only=True)
+    fields = models.Title._meta.get_all_field_names()
+
+    fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+    fields = [item for item in fields if item not in fields_foreign]
+
+    array_date = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
+    for i in range(3):
+        list_titles = models.ListTitle.objects.filter(list__default_type=i,
+                                        list__user=user, list__status=True)
+
+        dict_items = {}
+        for obj in list_titles:
+            items = {}
+            for field in fields:
+                if isinstance(obj.title.__getattribute__(str(field)), unicode):
+                    items[field] = obj.title.__getattribute__(str(field)).encode('utf-8', 'ignore')
+                else:
+                    items[field] = obj.title.__getattribute__(str(field))
+
+                grade_title = 0
+                rate_title = models.Rate.objects.filter(element_id=obj.title.id).\
+                    values('element_id').\
+                annotate(
+                    count=db_model.Count('element_id'), score=db_model.Avg('grade'))
+
+                if len(rate_title) != 0:
+                    grade_title = rate_title[0]['score']
+
+                author_name = 'autor anonimo'
+
+                author =  models.AuthorTitle.objects.filter(title=obj.title)
+                activity = models.Activity.objects.filter(object=obj.title.id,
+                                                       added_to_object=obj.list.id)
+                id_author = 0
+                if len(author) != 0:
+                    author_name = author[0].author.name
+                    id_author = author[0].author.id
+
+                #--------------date------------------------#
+                items['default_type'] = obj.list.default_type
+                items['id_list'] = obj.id
+                items['id_author'] = id_author
+                if len(activity) != 0:
+                    items['date'] = str(activity[0].date.day) + ' de ' \
+                                + str(array_date[(activity[0].date.month-1)]) + ' ' \
+                                + str(activity[0].date.year)
+                items['author'] = author_name
+                items['grade'] = grade_title
+                items['id_user'] = obj.list.user.id
+                dict_items[int(obj.title.id)] = items
+
+            dict_list[int(obj.list.default_type)] = dict_items
+
+    act_title = models.ListTitle.objects.filter(
+        list__user=user, list__default_type=5)
+
+    if len(act_title) != 0:
+        act_title = models.ListTitle.objects.get(
+            list__user=user, list__default_type=5)
+    else:
+        act_title = 0
+
+    fields_related_objects = models.Page._meta.get_all_related_objects(
+        local_only=True)
+    fields = models.Page._meta.get_all_field_names()
+
+    fields_foreign = []
+
+    for related_object in fields_related_objects:
+        fields_foreign.append(
+            related_object.get_accessor_name().replace('_set', ''))
+
+    fields = [item for item in fields if item not in fields_foreign]
+
+    pages = models.Page.objects.filter(user_id=user, status=True)
+
+    dict_pages = {}
+    for obj in pages:
+        items = {}
+        for field in fields:
+            if isinstance(obj.__getattribute__(str(field)), unicode):
+                items[field] = obj.__getattribute__(str(field)).encode('utf-8', 'ignore')
+            else:
+                items[field] = obj.__getattribute__(str(field))
+        items['id_user'] = obj.user.id
+        items['name_user'] = obj.user.username
+        dict_pages[int(obj.id)] = items
+
+    city = profile.city
+    if city:
+        city = city.split('#')
+        if len(city) > 1:
+            city = city[1]
+
+    activity = models.Activity.objects.filter(
+        user_id=profile.user_id).order_by('-date')
+
+    birthday = profile.birthday
+    if birthday:
+        birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\
+              '-' + str(birthday.year)
+
+    context = {
+        'user_profile': profile,
+        'entities': dict_entities_user,
+        'type': 'profile',
+        'list': dictionary,
+        'list_genre': list_genre,
+        'list_titles': dict_list,
+        'count_titles': len(titles_read),
+        'act_title': act_title,
+        'pages': dict_pages,
+        'member': member,
+        'followers': followers,
+        'activity': activity,
+        'city': city,
+        'birthday': birthday
+    }
+    #print dict_entities_user
+    return render(request, template, context)
+
+
+@login_required(login_url='/')
+def user_profile_edit(request, **kwargs):
+    template = kwargs['template_name']
+    id_user = kwargs['id_user']
+    if str(request.user.id) != id_user:
+        return HttpResponseRedirect('/qro_lee')
+    if len(str(id_user).split('b')) > 1:
+        id_ = str(id_user).split('b')
+        id_user = int(id_[0])
+
 
     if request.POST:
         membership = registry.MemberToObject.objects.get_or_create(
@@ -376,8 +627,7 @@ def user_profile(request, **kwargs):
         'followers': followers,
         'activity': activity,
         'city': city,
-        'birthday': birthday,
-        'btn_active': btn_active
+        'birthday': birthday
     }
     #print dict_entities_user
     return render(request, template, context)
@@ -386,7 +636,7 @@ def user_profile(request, **kwargs):
 @login_required(login_url='/')
 def user_account(request, **kwargs):
     template = kwargs['template_name']
-    id_user =  request.user.id
+    id_user = request.user.id
     user = registry.User.objects.get(id=id_user)
     context = {'user_account':user,'type':'account'}
 
@@ -394,7 +644,7 @@ def user_account(request, **kwargs):
 
 
 @login_required(login_url='/')
-def update_account(request,**kwargs):
+def update_account(request, **kwargs):
 
     id_user = request.user.id
     field = request.POST.get('field')

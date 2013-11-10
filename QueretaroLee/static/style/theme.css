@@ -140,7 +140,7 @@ input:not([type='submit']){
     transition:all 0.3s;
 }
 .brown_btn:hover{
-    background: #d8a271;
+    background-color: #d8a271;
 }
 .left{
     left: 0px;
@@ -188,7 +188,11 @@ input:not([type='submit']){
     font-family: Raleway;
     display: block;
 }
-
+.create-entity{
+    width: 100%;
+    display: block;
+    height: 75px;
+}
 .fb_btn,.twitter_btn{
     width: 65px;
     height: 15px;
@@ -445,6 +449,9 @@ p{
     .feed .content span{
         font-size: 14px;
     }
+    .feed .content span .action{
+        width: 100%;
+    }
         .feed .content span a{
             color: inherit;
         }
@@ -509,6 +516,7 @@ p{
                 font-weight: 500;
                 text-decoration: none;
                 position: relative;
+                width: 100%;
             }
 
             .entities .content{
@@ -523,7 +531,6 @@ p{
 
             }
             .members .title{
-                margin: 30px 0px 0px 30px;
             }
             .discussion .title.main{
                 margin-top: 30px;
@@ -643,7 +650,6 @@ p{
             margin-bottom: 10px;
             display: block;
             float: left;
-            margin-left: 25px;
         }
         .color_btn.organization{
             background: #8ab493;
@@ -679,7 +685,7 @@ p{
             color: #334845;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
-            width: 40px;
+            width: 30px;
             height: 15px;
             position: relative;
             background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
@@ -1079,6 +1085,9 @@ p{
             line-height: normal;
             cursor: pointer;
         }
+        .group .content .sidebar-a #scrollbar1 .viewport{
+            height: 440px;
+        }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
         }
@@ -1113,6 +1122,8 @@ p{
                 }
                     .wrapper img{
                         max-height: 100%;
+                        display: block;
+                        margin: 0 auto;
                     }
                 .item .no-margin.grid-6{
                     position: absolute;
@@ -1670,11 +1681,12 @@ p{
 
 }
 .load-margin{
-    margin: 30px 0px 0px 30px;
+    margin: 30px 0px 0px 30px !important;
 }
 .load #scrollbar1{
     padding-right: 40px;
-
+    float:left;
+    margin: 0px;
 }
 .load .d-margin_calendar{
     margin-left: 60px !important;
@@ -1727,8 +1739,8 @@ p{
 
 .d-picture_user{
     float: right;
-    margin-bottom: 20px;
-    margin-top: 40px !important;
+    margin-bottom: 20px ! important;
+    margin-top: 0px !important;
 }
 
 .d-picture_profile{
@@ -2385,7 +2397,6 @@ p{
 
 .coments{
     margin-top: 40px !important;
-    margin-left: 30px !important;
 }
 
 .item_title{
@@ -2584,8 +2595,6 @@ p{
 }
 
 .img_size_all{
-    width: 100%;
-    height: 100%;
 }
 
 .active_add_title{
@@ -2627,6 +2636,7 @@ p{
     border: 1px dashed #acacac;
     border-radius: 10px;
     margin-bottom: 50px;
+    margin-top: 70px;
 }
     .fb-img-preview .wrap{
         display: block;
@@ -3090,7 +3100,13 @@ form p .invalid_messa{
     overflow: hidden;
     width: 100%;
     display: block;
+    margin-top: 0px !important;
 }
+    .wrapper_picture_user img{
+        margin: 0 auto;
+        display: block;
+        max-height: 100%;
+    }
 .del_pict{
     color: red;
     float: right;
@@ -3462,12 +3478,12 @@ textarea{
     margin-top: 5px;
 }
 .item_member{
-    margin-left: 30px!important;
     margin-top: 10px!important;
     width: 260px !important;
 }
 .affiliate .title{
     margin-left: 0px;
+    margin-bottom: 5px !important;
 }
 
 .book_cro .grid-15{
@@ -3767,22 +3783,31 @@ textarea{
 .sel_spots .value_sel{
     position: absolute;
     z-index: 9;
-    right: 23px;
-    background-color: #CCC;
-    top: 29px;
+    right: 22px;
+    background: #fff;
+    top: 25px;
+    width: 256px;
+    border: 1px solid #c4c4c4;
+    border-top: none;
+    padding: 0px 8px 0px 8px;
 }
 .value_sel .sel_{
     cursor: pointer;
+    margin: 0px !important;
+    width: 100%;
 }
 .value_sel .sel_:hover{
     background-color: #C2BAAB;
 }
+.value_sel .sel_ span{
+    margin-left: 15px;
+}
 .sel_spots .dropdown{
     cursor: pointer;
-    height: 27px!important;
+    height: 23px!important;
     width: 20px;
-    border: 1px solid #e4e4e4;
-    background: url('../img/dropdown.png') no-repeat 4px 7px;
+    border: 1px solid #acacac;
+    background: #fff url('../img/dropdown.png') no-repeat 50%;
 }
 
 .cursor_p{
@@ -3964,7 +3989,7 @@ textarea{
 .dz-preview{
         width: 130px;
         display: block;
-        margin: 20px auto;
+        margin: 0px auto;
     }
 
 .green_btn.main, .yellow_btn.main{
@@ -3981,6 +4006,7 @@ textarea{
 .no-padding{
     padding: 0px !important;
 }
+
 .padding-fix{
 
 }
@@ -3993,7 +4019,7 @@ textarea{
         }
     .padding-fix .grid-2 input{
         position: relative;
-        left: -16px;
+
     }
 
 .event_view.entity{
@@ -4008,4 +4034,10 @@ textarea{
 
 .edit-form{
     margin-left: 0px !important;
+}
+.text-right{
+    text-align: right;
+}
+.d-results.search_result{
+    top: 25px;
 }

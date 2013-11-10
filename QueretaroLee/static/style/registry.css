@@ -32,6 +32,7 @@
     font-size: 20px;
     display: block;
     margin-top: 0px;
+    margin-bottom: 40px;
 }
 .title .heading{
     color: #cccc66;
@@ -68,7 +69,6 @@ span.green_btn,span.yellow_btn{
     display: none;
 }
 .data{
-    margin-top: 40px !important;
     padding-bottom: 20px;
 }
 
@@ -86,6 +86,7 @@ span.green_btn,span.yellow_btn{
         font-family: 'Conv_fontscore.com_d-dinproregular';
         color: #777;
         font-size: 13px;
+        padding: 0px 8px 0px 8px;
 
     }
     .data p .controllers_wrapper{
@@ -102,7 +103,7 @@ span.green_btn,span.yellow_btn{
         line-height: 23px;
         display: none;
         border: 1px solid #c2baab;
-        padding: 0px 8px 0px 8px;
+        padding: 0px 8px 0px 8px !important;
         text-indent: 0px;
         font-family: 'Conv_fontscore.com_d-dinproregular';
     }
@@ -114,7 +115,7 @@ span.green_btn,span.yellow_btn{
         margin-top: 0px;
         margin-bottom: 0px;
         border: 1px solid #c2baab;
-        padding: 10px 8px 0px 8px;
+        padding: 10px 8px 0px 8px !important;
     }
     .data .value.map{
         width: 167px;
@@ -223,6 +224,7 @@ select{
     .data p span.area.value{
         padding-left: 0px;
         overflow: hidden;
+        height: 112px;
     }
         .edit.register .data input:not([type=submit]), .edit.register .data textarea{
             display: block;
@@ -295,7 +297,7 @@ select{
 #picture{
     height: 180px;
     margin-bottom: 50px;
-    margin-top: 30px;
+
 }
 #cover{
     height: 180px;
@@ -371,6 +373,7 @@ select{
 .members.center{
     display: none;
 }
+
 .affiliate{
     display: none;
     margin-top: 40px !important;
@@ -403,8 +406,8 @@ select{
         margin-top: 8px;
     }
     .affiliate .remove{
-        width: 20px;
-        height: 18px;
+        width: auto;
+        height: auto;
         display: block;
         line-height: 18px;
         text-align: center;
@@ -443,6 +446,7 @@ p.advanced_search_btn{
     .advanced_search .title{
         font-size: 11px;
         margin-top: 15px;
+        margin-bottom: 0px;
     }
     .advanced_search .checkbox{
         width: 100%;
@@ -451,10 +455,14 @@ p.advanced_search_btn{
         font-size: 11px;
         margin-bottom: 5px;
         cursor: pointer;
+        margin-top: 5px;
     }
         .advanced_search .checkbox span{
             line-height: 6px;
         }
+            .advanced_search .checkbox span{
+                top: 2px;
+            }
     .search_filters{
         width: 100%;
         display: block;
@@ -508,6 +516,7 @@ p.advanced_search_btn{
         background: #dfb38c;
         height: 25px;
         line-height: 25px;
+        margin-bottom: 0px;
     }
     .filter .checkbox{
         background: #FEF1D5 ;
@@ -529,3 +538,8 @@ p.advanced_search_btn{
     .filter .checkbox.active, .filter .checkbox:hover{
         background: #E7CB92 ;
     }
+
+.fix-left{
+    position: relative;
+    left: -16px;
+}
