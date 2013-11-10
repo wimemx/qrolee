@@ -1396,7 +1396,8 @@ $.ajax({
             $('.title_act_read').fadeOut(250,function(){
                 $('.title_act_read').empty();
                 text = $('<span class="text_act">¿Qué estás leyendo?</span>');
-                text.append('<input type="hidden" class="type_message" value="show_titles" />');
+                text.append('<input type="hidden" class="type_message" value="show_titles" /> ');
+                text.append('<span class="green_btn">Editar</span>');
                 $('.title_act_read').append(text);
                 text.click(function(){
                     show_title_act($(this));
