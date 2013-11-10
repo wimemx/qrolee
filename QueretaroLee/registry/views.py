@@ -1287,7 +1287,7 @@ def add_my_title(request):
                                 if len(response['result'][0]['output']['description']) != 0:
                                     biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
 
-                            if len(biography) > 1000:
+                            if len(biography) > 500:
                                 biography = biography[0:500]
 
                             if len(response['result'][0]['mid']) != 0:
@@ -1303,7 +1303,6 @@ def add_my_title(request):
 
                             author = account.Author.objects.create(**dict_author)
                             author.save()
-
                     title = account.Title.objects.create(**li)
                     title.save()
 
@@ -1520,9 +1519,8 @@ def add_titles_author_list(request):
         'activity_id': 1
     }
     update_activity(activity_data)
-    #context = {}
-    #context = simplejson.dumps(context)
-    return HttpResponseRedirect('/qro_lee/profile/list/' + name + '_' + id_list + '/')
+
+    return HttpResponseRedirect('/qro_lee/profile/list/'+ id_list + '/')
 
 
 @login_required(login_url='/')
