@@ -183,9 +183,9 @@
                                  {% endif %}
                              {% empty %}
                                  {% if user_profile.user.id == user.id %}
-                                    <span class="place_pink my_items">Agrega un nuevo género</span>
+                                    <span class="place_pink my_items" style="cursor: none!important;" >Agrega un nuevo género</span>
                                  {% else %}
-                                     <span class="gray_7 my_items">Ningun género favorito</span>
+                                     <span class="gray_7 my_items" style="cursor: none!important;">Ningun género favorito</span>
                                  {% endif %}
                              {% endfor %}
                          </span>
@@ -213,9 +213,9 @@
                                  {% endif %}
                              {% empty %}
                                  {% if user_profile.user.id == user.id %}
-                                    <span class="place_pink my_items">Agrega un nuevo libro favorito </span>
+                                    <span class="place_pink my_items add_tit">Agrega un nuevo libro favorito </span>
                                  {% else %}
-                                    <span class="gray_7 my_items">Ningun libro favorito</span>
+                                    <span class="gray_7 my_items" style="cursor: none!important;">Ningun libro favorito</span>
                                  {% endif %}
                              {% endfor %}
                              {% if list_titles.0 and list_titles.0|length > 3 %}
@@ -252,9 +252,9 @@
                                  {% endif %}
                              {% empty %}
                                     {% if user_profile.user.id == user.id %}
-                                        <span class="place_pink my_items">Agrega un nuevo libro leído </span>
+                                        <span class="place_pink my_items add_tit">Agrega un nuevo libro leído </span>
                                     {% else %}
-                                        <span class="gray_7 my_items">Ningun libro leído</span>
+                                        <span class="gray_7 my_items" style="cursor: none!important;">Ningun libro leído</span>
                                     {% endif %}
                              {% endfor %}
                              {% if list_titles.1 and list_titles.1|length > 3 %}
@@ -374,11 +374,11 @@
     </div>
     {% empty %}
         {% if user_profile.user.id == user.id  %}
-            <span class="grid-9 place_pink no_title">
+            <span class="grid-9 no_resuls">
                 Añade tus libros favoritos
             </span>
         {% else %}
-            <span class="grid-14 place_pink no_title">
+            <span class="grid-14 no_resuls">
                 {{ user_profile.user.username }} aún no añade libros favoritos
             </span>
         {% endif %}
@@ -497,11 +497,11 @@
         </div>
         {% empty %}
             {% if user_profile.user.id == user.id  %}
-                <span class="grid-9 place_pink no_title">
+                <span class="grid-9 no_resuls">
                     Añade tus libros leídos
                 </span>
             {% else %}
-                <span class="grid-14 place_pink no_title">
+                <span class="grid-14 no_resuls">
                     {{ user_profile.user.username }} aún no añade libros leídos
                 </span>
             {% endif %}
@@ -615,11 +615,11 @@
             </div>
             {% empty %}
                 {% if user_profile.user.id == user.id  %}
-                    <span class="grid-9 place_pink no_title">
+                    <span class="grid-9 no_resuls">
                         Añade tus libros por leer
                     </span>
                 {% else %}
-                    <span class="grid-14 place_pink no_title">
+                    <span class="grid-14 no_resuls">
                         {{ user_profile.user.username }} aún no añade libros que desea leer
                     </span>
                 {% endif %}
@@ -763,11 +763,11 @@
                             </div>
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     Aún no has creado ninguna lista
                                 </span>
                             {% else %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     {{ user_profile.user.username }}
                                     aún no ha creado ninguna lista
                                 </span>
@@ -826,11 +826,11 @@
                         </div>
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     Aún no te has unido a ningun grupo
                                 </span>
                             {% else %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     {{ user_profile.user.username }}
                                     aún no se ha unido a ningun grupo
                                 </span>
@@ -911,11 +911,11 @@
                             </div>
                         {% empty %}
                             {% if user_profile.user.id == user.id  %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     Aún no has creado páginas
                                 </span>
                             {% else %}
-                                <span class="grid-15 place_pink no_title">
+                                <span class="grid-15 no_resuls">
                                     {{ user_profile.user.username }}
                                     aún no ha creado ninguna página
                                 </span>

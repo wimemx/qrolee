@@ -983,6 +983,10 @@ $(document).ready(function(){
         $('.sub-menu-h').fadeOut(250);
     set_act = false;
 
+    $('.add_tit').click(function(){
+        $('.nav .btn:eq(1)').trigger('click');
+    });
+
     if($('.nav').hasClass('profile')){
 
         if($('.nav .btn:eq(0)').hasClass('acti'))
@@ -993,7 +997,6 @@ $(document).ready(function(){
             $('.nav .btn:eq(2)').trigger('click');
     }else
         $('.nav .btn:eq(0)').trigger('click');
-
 
 
     if($('.discussion.load').length > 0){
@@ -2274,7 +2277,7 @@ function search_pages(){
         'join': join
     }
     search = JSON.stringify(search);
-    var csrf = $('.csrf_header').find('div input').val();
+    var csrf = $('.csrf_header').find('input').val();
     var data = advanced_search(search, csrf);
 
     var overview = $('.overview_page');

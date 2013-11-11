@@ -1060,7 +1060,7 @@ $(document).ready(function(){
             if (type != 'none'){
                 if(!$('p.advanced_search_btn').is(':visible'))
                     $('p.advanced_search_btn').fadeIn(300);
-                result = advanced_search(search, $('.csrf_header').find('div input').val());
+                result = advanced_search(search, $('.csrf_header').find('input').val());
             }else{
                 $('p.advanced_search_btn').fadeOut(300);
             }
