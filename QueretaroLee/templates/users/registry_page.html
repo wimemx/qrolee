@@ -74,7 +74,9 @@
                     <textarea name="tags" class="input_val textarea_tags"></textarea>
                 </p>
                 <p>
-                    Compartir en redes sociales
+                    {% if profile.social_session or profile.social_session_twitter %}
+                        Compartir en redes sociales
+                    {% endif %}
                 </p>
                 <p>
                     <span class="grid-12 content_check">

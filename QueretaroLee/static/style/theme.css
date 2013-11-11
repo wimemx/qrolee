@@ -474,7 +474,7 @@ p{
             width: 215px;
             margin-left: -5px;
         }
-.entities{
+.entities , .edit_list{
     /*height: 720px;*/
     margin: 20px 10px 30px 10px;
     display: block;
@@ -2095,6 +2095,11 @@ p{
     font-size: 12px!important;
     font-family: 'Conv_fontscore.com_d-dinproregular' sans-serif;
 }
+
+.my_list .scrollbar{
+ right: 41px!important;
+}
+
 .user_profile{
     width: 100%;
     z-index: 9;
@@ -2167,7 +2172,7 @@ p{
     float: right;
 }
 
-.entities .grid-15 {
+.entities .grid-15 , .edit_list .grid-15{
     min-height: 640px;
     padding: 40px 40px 40px 40px;
     background: #fffcf5;
@@ -2250,22 +2255,8 @@ p{
     padding-top: 20px;
 }
 
-.picture_list{
-    margin-left: 80px;
-}
-
 .picture_list .dz-message{
     width: 220px;
-}
-
-.picture_list .dz-message span{
-    line-height: 20px !important;
-}
-.picture_list .dz-image-preview{
-    margin-right: 0px;
-}
-.picture_list .del{
-    text-align: right !important;
 }
 
 .all_book{
@@ -2481,7 +2472,7 @@ p{
 }
 .container_btn{
     float: left;
-    margin-top: 20px !important;
+    margin-top: 5px !important;
 }
 
 .item_my_list{
@@ -2615,16 +2606,6 @@ p{
 .border_none{
     border: none !important;
 }
-.dropzone_list{
-    margin-right: 0px !important;
-    width: 206px !important;
-    margin-left: 90px !important;
-}
-
-.dropzone_list .dz-message{
-    width: 200px !important;
-    height: 170px !important;
-}
 
 .fb-img-preview{
     width: 280px;
@@ -2669,11 +2650,14 @@ p{
 }
 
 .submit_list{
-    margin-left: 756px !important;
-    width: 72px !important;
+    height: 45px!important;
+    margin-top: 10px!important;
 }
 .submit_list .btn{
-    margin-top: 20px;
+    float: right;
+    margin-right: -410px;
+    margin-top: 40px;
+
 }
 
 .radio_btn{
@@ -2736,12 +2720,6 @@ p{
     height: 200px !important;
 }
 
-.picture_list .dz-message span{
-    padding-top: 64px;
-    float: left;
-    width: 100%;
-    text-align: center;
-}
 
 .menu a:hover{
     color: #edde83;
@@ -3024,7 +3002,12 @@ form p .invalid_messa{
 .coments_pag{
     margin-top: 25px !important;
 }
-
+.profile_tal .coments{
+    margin-left: 30px!important;
+}
+.profile_tal .titles_author{
+    margin-top: 30px!important;
+}
 .img_mini_pag{
     width: 25px;
     height: 25px;

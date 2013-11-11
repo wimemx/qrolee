@@ -677,7 +677,7 @@
     </div>
     </div>
     </div>
-    <div class="grid-16 load no-margin">
+    <div class="grid-16 load no-margin my_list">
         <div class="sidebar-a grid-15">
             <div class="heading">
                 <h3 class="title grid-3 fleft">
@@ -709,7 +709,7 @@
                 <div class="viewport overview_list">
                     <div class="overview my_items_list">
                         {% for key, value in list.items %}
-                            <div class="item_list d-list_{{ key }}" >
+                            <div class="item_list grid-14 no-margin d-list_{{ key }}" >
                                 <input class="name_list" type="hidden" value="{{ value.name }}">
                                 <input class="id_list" type="hidden" value="{{ key }}">
                                 <a href="/qro_lee/profile/list/{{ key }}/">
@@ -722,8 +722,11 @@
                                         {% endif %}
                                     </span>
                                 </a>
-                                <a href="/qro_lee/profile/list/{{ key }}/"
-                                   class="title alpha title_book grid-4">{{ value.name|truncatechars:30 }}</a>
+                                <span class="container_data grid-12 no-margin">
+                                <span class="grid-5 no-margin">
+                                    <a href="/qro_lee/profile/list/{{ key }}/"
+                                   class="title alpha title_book">{{ value.name|truncatechars:30 }}</a>
+                                </span>
 
                                 <span class="container_btn grid-4 no-margin">
                                     {% if value.id_user == user.id %}
@@ -736,7 +739,7 @@
                                         </span>
                                 {% endif %}
                                 </span>
-                                <span class="fright margin_top">
+                                <span class="fright mini_rate">
                                             {% for x in 'xxxxx' %}
                                                 {% if forloop.counter < value.grade %}
                                                     <img src="/static/img/comunityStarmini.png" />
@@ -745,7 +748,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                  </span>
-                                <span class="d-text_list grid-13 d-text_opacity no-margin bottom_text" >
+                                <span class="d-text_list grid-12 d-text_opacity no-margin " >
                                     Lista con {{ value.count }}
                                         {% if value.type == 'T' %}
                                             libros
@@ -757,8 +760,9 @@
                                             <span class="d-pink text_pink_mini">{{ value.user }}</span>
                                         </a>
                                 </span>
-                                <span class="d-text_list grid-13 no-margin bottom_text"  >
-                                    {{ value.description|truncatechars:350 }}
+                                <span class="d-text_list grid-8 no-margin "  >
+                                    {{ value.description|truncatechars:245 }}
+                                </span>
                                 </span>
                             </div>
                         {% empty %}

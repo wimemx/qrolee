@@ -222,6 +222,9 @@ hyu
                         <div class="del-wrapper">
                             <span class="spot del center picture">Eliminar foto</span>
                         </div>
+                        <span class="grid-4 fright no-margin pixeles" style="bottom: -190px;">
+                            Te recomendamos una imagen de 179 x 179 pixeles
+                        </span>
                     </form>
                 </span>
             {% endif %}
@@ -262,7 +265,9 @@ hyu
         maxFiles: 1,
         thumbnailWidth: 130,
         thumbnailHeight: 130,
-        dictDefaultMessage: 'Nueva foto de perfil <span class="legend din-r">(176px - 176px)</span>',
+        dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#picture .dz-message ').fadeOut(300);

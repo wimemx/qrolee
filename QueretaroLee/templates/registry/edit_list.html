@@ -25,7 +25,7 @@
             <div class="dialog-confirm" ></div>
         </div>
     </div>
-    <div class="grid-16 entities registry edit_list">
+    <div class="grid-16 registry edit_list">
         <div class="grid-15 registry">
         <input type="hidden" class="my_list_id" value="{{ list.id }}"/>
         <input type="hidden" class="type_my_list" value="{{ list.type }}" />
@@ -72,8 +72,11 @@
                 </span>
             </p>
         </span>
-            <form id="picture" class="dropzone fleft drop_zone_list grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
+            <form id="picture" class="dropzone fright grid-3  no-margin" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="list_picture" value="1"/>
+                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 615 x 1607 pixeles
+                </span>
             </form>
             <hr class="d-line_bottom">
             <div class="heading">
@@ -213,7 +216,9 @@
     <script type="text/javascript">
         Dropzone.options.picture = {
             maxFiles: 1,
-            dictDefaultMessage: 'Inserte aquí la nueva',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);
