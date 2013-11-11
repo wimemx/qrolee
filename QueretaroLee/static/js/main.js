@@ -1262,7 +1262,7 @@ $(document).ready(function(){
                 'join': join
             }
             s = JSON.stringify(s);
-            var _ids = advanced_search(s, $('.advanced_filter').find('div input[type=hidden]').val());
+            var _ids = advanced_search(s, $('.csrf_header').find('input').val());
             var ids = new Array();
             var distance = '';
             $.each(_ids,function(i){
@@ -1340,7 +1340,7 @@ $(document).ready(function(){
             }
             s = JSON.stringify(s);
             if(_in.length > 0){
-                var _ids = advanced_search(s, $('.advanced_filter').find('div input[type=hidden]').val());
+                var _ids = advanced_search(s, $('.csrf_header').find('input').val());
                 var ids = new Array();
                 $.each(_ids,function(i){
                     ids.push(parseInt(_ids[i].title_id));
