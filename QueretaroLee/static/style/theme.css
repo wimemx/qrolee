@@ -1989,7 +1989,7 @@ p{
 }
 
 .my_books .title_book{
-    margin-top: 0px!important;
+    margin-top: 20px!important;
 }
 
 .title_book{
@@ -2609,9 +2609,12 @@ p{
 }
 
 .d-item_book_mini{
-    height: 100px !important;    ;
-
     height: 100px !important;
+
+}
+.d-item_book .title{
+    font-size: 18px!important;
+    margin-top: 8px!important;
 }
 .events .item, .d-width-container-event .item{
     height: 128px!important;
@@ -3662,8 +3665,8 @@ textarea{
 }
 .btn_reg{
     background-color: #7ca680!important;
-    left: 50%!important;
-    top: 20px!important;
+    margin-left: 40px!important;
+    margin-top: 20px!important;
     padding: 5px 20px 5px 20px!important;
 }
 

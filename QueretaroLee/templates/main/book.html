@@ -17,9 +17,7 @@
 {% endblock %}
 
 {% block head %}
-    {% if user.is_active %}
-        {% include 'header.html' %}
-    {% endif %}
+   {% include 'header.html' %}
 {% endblock %}
 
 {% block main_site %}
@@ -51,19 +49,19 @@
                 </p>
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                        Autor: Edgar Allan Poe
+                        Autor: {{ book.author }}
                     </p>
                 </span>
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                       Género: suspenso
+                       Género: {{ book.genre }}
                     </p>
                 </span>
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
                         Creado por:
                         <span class="title_author">
-                            {{ user_.username }}
+                            {{ book.user.username }}
                         </span>
                             en Querétaro, México
                     </p>
@@ -71,13 +69,13 @@
 
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                        {% if count_user|length == 0  and count_user %}
+                        {% if not status_book.status %}
                             nadie se ha encontrado este libro
                         {% endif %}
-                        {% if count_user|length == 1  and count_user%}
+                        {% if status_book.status and count_user|length == 1 %}
                             una persona se ha encontrado este libro
                         {% endif %}
-                        {% if count_user|length > 1 and count_user  %}
+                        {% if status_book.status and count_user|length > 1  %}
                             {{ count_user|length }}
                             personas han encontrado este libro
                         {% endif %}
@@ -85,29 +83,30 @@
                 </span>
             </span>
             <span class="grid-6 no-margin fright">
-                    {% if not state_1 and not state_2 %}
+                    {% if status_book.status %}
                         <span style="background: url(/static/img/book_free.png) no-repeat 0px 0px;
                          height: 100px;width: 100px;float: left;"></span>
                         <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro está vagando</span>
-                    {% elif state_2 %}
+                    {% elif not status_book.status %}
                         <span style="background: url(/static/img/book_user.png) no-repeat 0px 0px;
                         height: 100px;width: 100px;float: left;"></span>
-                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ user_find }}</span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ find_user.0.user.username }}</span>
+                        <span class="text_by grid-4">{{ find_user.0.city }}</span>
 
                     {% endif %}
                 </span>
             <div class="grid-16 content book_cro single no-margin">
                 <div class="grid-15 no-margin">
                     <input type="hidden" value="{{ book.code }}" class="code_book"/>
+                    <input type="hidden" value="2" class="type_"/>
                     <div class="grid-15 no-margin no-pandding book_register">
                         {% if cheking %}
                             {% if user.is_active%}
-                            {% if not state_1 or  not state_2 %}
                                 <div class="grid-5 no-margin">
                                     <span class="title grid-5 no-margin title_uno">Selecciona una opcion</span>
                                     <span class="value_option" >
-                                        {% if not state_1 %}
-                                            <input type="hidden" value="1" />
+                                        {% if status_book.status %}
+                                            <input type="hidden" value="0" />
                                             <span class="grid-5 no-margin btn_ra find">
                                                 <img src="/static/img/radioOn.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>
@@ -116,8 +115,8 @@
                                                 <img src="/static/img/radioOff.png" class="radio_btn fleft radio_buttom">
                                                 <span class="fleft">Deseo liberar este libro</span>
                                             </span>
-                                        {% elif not state_2 %}
-                                            <input type="hidden" value="0" />
+                                        {% else %}
+                                            <input type="hidden" value="1" />
                                             <span class="grid-5 no-margin find">
                                                 <img src="/static/img/radioOff.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>
@@ -180,11 +179,10 @@
                                 <div class="grid-10 no-margin map_book_reg">
                                     <input type="hidden" value="20.0000,-100.090909" class="lat_long" />
                                     <div id="reg_map" class="grid-10 no-margin map_crossing"></div>
-                                    <span class="grid-10 no-margin">
-                                        <span class="green_btn fleft btn_reg">Registrar</span>
+                                    <span class="grid-6 fright no-margin">
+                                        <span class="btn_reg fleft">Registrar</span>
                                     </span>
                                 </div>
-                            {% endif %}
                         {% else %}
                             <div class="grid-15 no-margin no-pandding ">
                                 <span class="container_tab" >

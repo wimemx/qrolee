@@ -17,13 +17,12 @@
 {% endblock %}
 
 {% block head %}
-    {% if user.is_active %}
-        {% include 'header.html' %}
-    {% endif %}
+    {% include 'header.html' %}
 {% endblock %}
 
 {% block main_site %}
     <div class="grid-16 book_crossing">
+        <input type="hidden" value="1" class="type_"/>
         <div class="tag t_1 act_tag">
             <div class="grid-14 wallpaper ">
                 <span class="title title_cross grid-5">Libros vagabundos</span>
@@ -77,7 +76,7 @@
                                             {{ value.travel.book.title }}
                                         </span>
                                     </a>
-                                    <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
+                                    <span class="grid-4 no-margin text_top title_author">{{ value.travel.book.author }}</span>
                                     <span class="grid-3 no-margin text_top">Liberado por
                                         <span class="place_pink">{{ value.user.username }}</span>
                                     </span>

@@ -627,7 +627,6 @@ def event(request, **kwargs):
     return render(request, template, context)
 
 
-@login_required(login_url='/')
 def advanced_search(request, **kwargs):
     template = kwargs['template_name']
     context = {}
@@ -1715,6 +1714,9 @@ def book(request, **kwargs):
 
     #state_1 = encontrado, state_2 = liberado
     code = kwargs['code']
+    user = request.user
+    user_active = False
+    find_user = ''
 
     active = str(code).split('_')
     cheking = False
@@ -1724,17 +1726,19 @@ def book(request, **kwargs):
 
     code = active[0]
     book = models.Book.objects.get(code=code)
-    user = account_models.User.objects.get(id=book.user.id)
     list_users = models.Travel.objects.filter(book__code=code)
 
     count_user =models.Travel.objects.filter(book__code=code).\
                 values('user').annotate(count = db_model.Count('user'))
 
+    status_book = models.Travel.objects.filter(book__code=code).latest('id')
+
+    if status_book:
+        find_user = models.Profile.objects.filter(user__id=status_book.user)
+
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
-    print state_1
-    print state_2
 
     dict = {}
     count = 1
@@ -1758,8 +1762,7 @@ def book(request, **kwargs):
     else:
         state_2 = False
 
-    if len(count_user) == 1:
-        count_user = ''
+    print cheking
 
     context = {
         'book': book,
@@ -1769,7 +1772,9 @@ def book(request, **kwargs):
         'state_2': state_2,
         'count_user': count_user,
         'cheking': cheking,
-        'settings': settings
+        'settings': settings,
+        'status_book': status_book,
+        'find_user': find_user
     }
 
     return render(request, template, context)
