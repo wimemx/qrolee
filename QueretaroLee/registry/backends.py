@@ -58,32 +58,8 @@ class FacebookBackend:
             user_profile.phone = ''
             user_profile.social_session = 1
             user_profile.save()
-            dict_list = {
-                'name':'Mis libros leidos',
-                'type':'T',
-                'default_type':1,
-                'status':True,
-                'description':'texto',
-                'privacy':False,
-                'user':user,
-                'picture':''
-            }
+            registry_view.create_default_list(user)
 
-            list1 = account.List.objects.create(**dict_list)
-            list1.save()
-            dict_list['name'] = 'Mis libros por leer'
-            dict_list['default_type'] = 2
-            list2 = account.List.objects.create(**dict_list)
-            list2.save()
-            dict_list['name'] = 'Mis libros favoritos'
-            dict_list['default_type'] = 0
-            list3 = account.List.objects.create(**dict_list)
-            list3.save()
-            dict_list['type'] = 'G'
-            dict_list['name'] = 'Mis generos'
-            dict_list['default_type'] = 3
-            list4 = account.List.objects.create(**dict_list)
-            list4.save()
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
             os.mkdir(path+'/'+str(user.id), 0777)
             os.mkdir(path+'/'+str(user.id)+'/profile', 0777)
@@ -134,7 +110,7 @@ class TwitterBackend:
             user_profile.phone = ''
             user_profile.social_session = 0
             user_profile.save()
-            registry_view.create_default_list(user);
+            registry_view.create_default_list(user)
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
             os.mkdir(path+'/'+str(user.id), 0777)
             os.mkdir(path+'/'+str(user.id)+'/profile', 0777)

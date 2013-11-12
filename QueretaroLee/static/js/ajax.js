@@ -994,12 +994,20 @@ $(document).ready(function(){
         $('.sub-menu-h').fadeOut(250);
     set_act = false;
 
-    if($('.nav .btn:eq(0)').hasClass('acti'))
-        $('.nav .btn:eq(0)').trigger('click');
-    else if($('.nav .btn:eq(1)').hasClass('acti'))
+    $('.add_tit').click(function(){
         $('.nav .btn:eq(1)').trigger('click');
-    else
-        $('.nav .btn:eq(2)').trigger('click');
+    });
+
+    if($('.nav').hasClass('profile')){
+
+        if($('.nav .btn:eq(0)').hasClass('acti'))
+            $('.nav .btn:eq(0)').trigger('click');
+        else if($('.nav .btn:eq(1)').hasClass('acti'))
+            $('.nav .btn:eq(1)').trigger('click');
+        else
+            $('.nav .btn:eq(2)').trigger('click');
+    }else
+        $('.nav .btn:eq(0)').trigger('click');
 
 
     if($('.discussion.load').length > 0){
@@ -1667,23 +1675,29 @@ function search_list_authors_titles($this){
                             div.append(input_name);
                             div.append(input_id_rel);
                             div.append(a_wrapper);
-                            var grid = 'grid-13';
-                            var grid_li = 'grid-13';
-                            if(my_list_type==1){
-                                grid = 'grid-12';
-                                grid_li = 'grid-8';
-                            }
+                            var grid = 'grid-12';
+                            var grid_li = 'grid-8';
+
                             var src = '/static/img/create.png';
                             if(data[i].picture != '')
                                 src = '/static/media/users/' + data[i].id_user + '/list/' +
                                     data[i].picture ;
-                            else
-                                src = '/static/img/no_profile.png';
+
                             img = $('<img class="img_size_all" src="' + src + '"/>');
                             span.append(img);
+
+                            var width_title = 'grid-12';
+                            if(my_list_type == 0)
+                                width_title = 'grid-5';
+
+                            span_data = $('<span class="container_data ' + grid + ' no-margin">'+
+                                '</span>');
+                            span_title = $('<span class="'+width_title+' no-margin"></span>');
+                            span_data.append(span_title);
+                            div.append(span_data);
+
                             if(my_list_type==0){
 
-                                span_title = $('<span class="title alpha title_book grid-4"></span>');
                                 span_btn = $('<span class="container_btn grid-4 no-margin"></span>');
                                 edit_list = $('<a href="/registry/edit_list/' + data[i].type +
                                     '/' + data[i].id + '"></a>');
@@ -1693,19 +1707,10 @@ function search_list_authors_titles($this){
                                 edit_list.append(span_save);
                                 span_btn.append(edit_list);
                                 span_btn.append(del_list);
-                                div.append(span_title);
                                 if(session_user==id_profile)
-                                    div.append(span_btn);
+                                    span_data.append(span_btn);
 
-                            }else{
-
-                                span_data = $('<span class="container_data ' + grid + ' no-margin">'+
-                                    '</span>');
-                                span_title = $('<span class="grid-12 no-margin"></span>');
-                                span_data.append(span_title);
-                                div.append(span_data);
                             }
-
                             a_title =  $('<a title="' + data[i].name + '" href="' +
                                 href + '" class="title alpha title_book"></a>');
                             a_title.append(data[i].name);
@@ -2280,7 +2285,7 @@ function search_pages(){
         'join': join
     }
     search = JSON.stringify(search);
-    var csrf = $('.csrf_header').find('div input').val();
+    var csrf = $('.csrf_header').find('input').val();
     var data = advanced_search(search, csrf);
 
     var overview = $('.overview_page');

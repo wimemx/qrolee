@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block style %}
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
     <link rel="stylesheet" href="{% static "style/forms.css" %}"/>
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
 {% endblock %}
@@ -34,14 +35,12 @@
         </div>
     </div>
 
-    <div class="grid-16 entities registry">
+    <div class="grid-16 entities registry reg_ent">
         <div class="grid-14 registry">
             <div class="heading">
                 <h3 class="title title_create_entity grid-13 no-margin fleft">{{ entity_type.0|capfirst }}</h3>
-
             </div>
             <p class="content">{{ content }}</p>
-
             <form enctype="multipart/form-data" method="post" id="registry" class="register_entity grid-8 no-margin" action="/registry/register/">{% csrf_token %}
                 <input class="profile-pic" type="hidden" value="" name="picture"/>
                 <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
@@ -121,7 +120,11 @@
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
+                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 200 x 200 pixeles
+                </span>
             </form>
+
 
 
             {% if entity_type.1 == 'group' %}
@@ -131,6 +134,9 @@
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>
+                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 615 x 1607 pixeles
+                </span>
             </form>
                 <div class="fb-img-preview grid-6 fright no-margin">
 
@@ -157,7 +163,9 @@
         maxFiles: 1,
         thumbnailWidth: 130,
         thumbnailHeight: 130,
-        dictDefaultMessage: 'Arrastre aquí el logotipo',
+        dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#picture .dz-message').fadeOut(300);
@@ -183,7 +191,9 @@
         maxFiles:1,
         thumbnailWidth: 130,
         thumbnailHeight: 130,
-        dictDefaultMessage: 'Arrastre aquí el cover photo',
+        dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
         init: function() {
             this.on("addedfile", function(file) {
                 $('#cover .dz-message').fadeOut(300);

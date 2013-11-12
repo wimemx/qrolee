@@ -1061,7 +1061,7 @@ $(document).ready(function(){
             if (type != 'none'){
                 if(!$('p.advanced_search_btn').is(':visible'))
                     $('p.advanced_search_btn').fadeIn(300);
-                result = advanced_search(search, $('.csrf_header').find('div input').val());
+                result = advanced_search(search, $('.csrf_header').find('input').val());
             }else{
                 $('p.advanced_search_btn').fadeOut(300);
             }
@@ -1263,7 +1263,7 @@ $(document).ready(function(){
                 'join': join
             }
             s = JSON.stringify(s);
-            var _ids = advanced_search(s, $('.advanced_filter').find('div input[type=hidden]').val());
+            var _ids = advanced_search(s, $('.csrf_header').find('input').val());
             var ids = new Array();
             var distance = '';
             $.each(_ids,function(i){
@@ -1341,7 +1341,7 @@ $(document).ready(function(){
             }
             s = JSON.stringify(s);
             if(_in.length > 0){
-                var _ids = advanced_search(s, $('.advanced_filter').find('div input[type=hidden]').val());
+                var _ids = advanced_search(s, $('.csrf_header').find('input').val());
                 var ids = new Array();
                 $.each(_ids,function(i){
                     ids.push(parseInt(_ids[i].title_id));
@@ -2224,9 +2224,6 @@ function list_title(csrf, data, div_text, type){
                     div_add.append(span_add_f);
                     div_add.append(span_add_l);
                     div_add.append(span_add_p);
-                    if(titles_l[i].id_google in dict_titles)
-                        console.log(dict_titles[i]);
-                        span_add_f.addClass('active_add_title');
 
                     if(type == 1 | type == 3)
                         item_title.append(div_add);
@@ -3870,10 +3867,10 @@ function disable_link_all(user_active){
         }
         if($(this).hasClass('book_for_reading'))
             text = 'libros por leer';
-        $(this).find('.no_title').remove();
+        $(this).find('.no_resuls').remove();
 
         if($(this).find('.d-item_book').length == 0)
-            $(this).append('<span class="grid-9 place_pink no_title">' +
+            $(this).append('<span class="grid-9 no_resuls">' +
               'Añade tus ' + text + '</span>');
 
         if($(this).find('.d-item_book').length > count){

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block style %}
+    <link rel="stylesheet" href="{% static "style/registry.css" %}"/>
     <link rel="stylesheet" href="{% static "style/forms.css" %}"/>
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
 {% endblock %}
@@ -88,11 +89,14 @@
                     </p>
                 </div>
             </form>
-            <form id="picture" class="picture_list dropzone grid-4" action="/registry/media/upload/">{% csrf_token %}
+            <form id="picture" class="picture_list fright dropzone grid-4" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="list_picture" value="1"/>
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
+                <span class="grid-4 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 140 x 176 pixeles
+                </span>
             </form>
             <hr class="d-line_bottom">
             <div class="heading">
@@ -129,7 +133,9 @@
             maxFiles: 1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Inserte aquí la foto de <br> perfil de la lista',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);

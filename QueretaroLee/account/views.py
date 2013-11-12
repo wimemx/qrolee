@@ -373,7 +373,8 @@ def user_profile(request, **kwargs):
         'followers': followers,
         'activity': activity,
         'city': city,
-        'birthday': birthday
+        'birthday': birthday,
+        'btn_active': btn_active
     }
     #print dict_entities_user
     return render(request, template, context)

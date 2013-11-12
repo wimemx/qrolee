@@ -130,12 +130,18 @@
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
+                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 176 x 176 pixeles
+                </span>
             </form>
             <form id="cover" class="dropzone fright no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_cover_picture" value="1"/>
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>
+                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                    Te recomendamos una imagen de 615 x 1067 pixeles
+                </span>
             </form>
     <span class="fb-connect fb-session-required no-margin fright grid-5">
         <p>¿Cuentas ya con una pagina en Facebook?</p>
@@ -150,7 +156,9 @@
             maxFiles: 1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Arrastre aquí el logotipo',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);
@@ -174,7 +182,9 @@
             maxFiles:1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Arrastre aquí el cover photo',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                ' </span>',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#cover .dz-message').fadeOut(300);

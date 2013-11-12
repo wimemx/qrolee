@@ -1293,70 +1293,18 @@ def add_my_title(request):
                         'description':desc[0:800],
                         'id_google':obj['it']['attribute']['id_google']
                     }
-                    name_aut = str(obj['it']['attribute']['author'][0])
-                    name = str(obj['it']['attribute']['author'][0]).replace(' ','+')
-                    query = ''
-                    key = '&key='+settings.GOOGLE_BOOKS_KEY
-                    search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
-                    url = 'https://www.googleapis.com/freebase/v1/search?query='+name
-                    query += search_author + key
-                    url += query
-                    response = urllib2.urlopen(url)
-                    response = simplejson.load(response)
-
-                    biography = ' '
-                    picture = ' '
-
-                    if str(obj['it']['attribute']['author']) != 'autor anonimo':
-
-                        if len(response['result']) != 0:
-                            if len(response['result'][0]['output']) != 0:
-                                if len(response['result'][0]['output']['description']) != 0:
-                                    biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
-
-                            if len(biography) > 500:
-                                biography = biography[0:500]
-
-                            if len(response['result'][0]['mid']) != 0:
-                                picture = 'https://www.googleapis.com/freebase/v1/image' +\
-                                          response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
-
-                            dict_author = {
-                                'name': response['result'][0]['name'],
-                                'picture': picture,
-                                'biography': biography,
-                                'birthday': datetime.datetime.today(),
-                                'id_api' : response['result'][0]['id']
-                            }
-
-                        else:
-                            dict_author = {
-                                'name': name_aut,
-                                'picture': '',
-                                'birthday': datetime.datetime.today(),
-                                'id_api': name_aut
-                            }
-
-                        author_exist = account.Author.objects.filter(db_model.Q(id_api=dict_author['id_api']) |
-                                                         db_model.Q(name=dict_author['name']))
-
-                        if not author_exist:
-                            author = account.Author.objects.create(**dict_author)
-                            author.save()
-                        else:
-                            author = author_exist[0]
 
                     title_exist = account.Title.objects.filter(db_model.Q(id_google= li['id_google']) |
                                                     db_model.Q(title = li['title']))
+
                     if not title_exist:
                         title = account.Title.objects.create(**li)
                         title.save()
                     else:
                         title = title_exist[0]
 
-                    if str(obj['it']['attribute']['author']) != 'autor anonimo':
-                        list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
-                        list_author_title.save()
+                    name = obj['it']['attribute']['author'][0]
+                    author = create_author(name, title)
 
                 else:
                     title = account.Title.objects.get(id=obj['it']['id'])
@@ -2100,56 +2048,7 @@ def register_title_click(request):
         title = account.Title.objects.create(**list)
         title.save()
         name = str(author_name).replace(' ','+')
-        query = ''
-        key = '&key='+settings.GOOGLE_BOOKS_KEY
-        search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
-        url = 'https://www.googleapis.com/freebase/v1/search?query='+name
-        query += search_author + key
-        url += query
-        response = urllib2.urlopen(url)
-        response = simplejson.load(response)
-
-        biography = ' '
-        picture = ' '
-        author_e = False
-        id_author = 0
-        if len(response['result']) != 0:
-            if len(response['result'][0]['output']) != 0:
-                if len(response['result'][0]['output']['description']) != 0:
-                    biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
-
-            if len(biography) > 1000:
-                biography = biography[0:900]
-
-            if len(response['result'][0]['mid']) != 0:
-                picture = 'https://www.googleapis.com/freebase/v1/image' + \
-                          response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
-
-            dict_author = {
-                'name': response['result'][0]['name'],
-                'picture': picture,
-                'biography': biography,
-                'birthday': datetime.datetime.today(),
-                'id_api' : response['result'][0]['id']
-            }
-
-            author_exist = account.Author.objects.filter(db_model.Q(id_api=response['result'][0]['id']) |
-                                                         db_model.Q(name=response['result'][0]['name']))
-
-            if not author_exist:
-                author = account.Author.objects.create(**dict_author)
-                author.save()
-            else:
-                author_e = True
-                id_author = author_exist[0]
-
-        if len(response['result']) != 0:
-            if not author_exist:
-                list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
-                list_author_title.save()
-            else:
-                list_author_title = account.AuthorTitle.objects.create(title=title, author=id_author)
-                list_author_title.save()
+        author = create_author(name, title)
 
         if title:
             context = {
@@ -2194,3 +2093,67 @@ def register_external_user(request):
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
+
+
+def create_author(name_author, title):
+
+    name_aut = str(name_author)
+    name = str(name_author).replace(' ','+')
+    query = ''
+    key = '&key='+settings.GOOGLE_BOOKS_KEY
+    search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
+    url = 'https://www.googleapis.com/freebase/v1/search?query='+name
+    query += search_author + key
+    url += query
+    response = urllib2.urlopen(url)
+    response = simplejson.load(response)
+
+    biography = ' '
+    picture = ' '
+    author = ''
+
+    if str(name_author) != 'autor anonimo':
+
+        if len(response['result']) != 0:
+            if len(response['result'][0]['output']) != 0:
+                if len(response['result'][0]['output']['description']) != 0:
+                    biography = (response['result'][0]['output']['description']['/common/topic/description'][0]).encode('utf-8', 'ignore')
+
+            if len(biography) > 500:
+                biography = biography[0:500]
+
+            if len(response['result'][0]['mid']) != 0:
+                picture = 'https://www.googleapis.com/freebase/v1/image' + \
+                          response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
+
+            dict_author = {
+                'name': response['result'][0]['name'],
+                'picture': picture,
+                'biography': biography,
+                'birthday': datetime.datetime.today(),
+                'id_api' : response['result'][0]['id']
+            }
+
+        else:
+            dict_author = {
+                'name': name_aut,
+                'picture': '',
+                'birthday': datetime.datetime.today(),
+                'id_api': name_aut
+            }
+
+        author_exist = account.Author.objects.filter(db_model.Q(id_api=dict_author['id_api']) |
+                                                     db_model.Q(name=dict_author['name']))
+
+        if not author_exist:
+            author = account.Author.objects.create(**dict_author)
+            author.save()
+        else:
+            author = author_exist[0]
+
+    if title and author:
+        list_author_title = account.AuthorTitle.objects.create(title=title, author=author)
+        list_author_title.save()
+
+    return author
+
