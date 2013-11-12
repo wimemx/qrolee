@@ -854,11 +854,20 @@ $(document).ready(function(){
         }
 
         if($('#map').hasClass('map_crossing')){
-            query = {
-                'book__status':1
+            var query;
+            if($('.type_').val() == 1){
+                query = {
+                    'status': 1
+                }
+            }else{
+                var code = $('.code_book').val();
+                query = {
+                    'status': 1,
+                    'book__code': code
+                }
             }
             fields = ['user','book','lat','long'];
-            and = 0;
+            and = 1;
             join = {
                 'tables':{
                     0: JSON.stringify(['registry.book'])
@@ -880,8 +889,9 @@ $(document).ready(function(){
                 'join': join
             }
             search = JSON.stringify(search);
-            var csrf = $('.csrf_header').find('div input').val();
+            var csrf = $('.csrf_header').find('input').val();
             var data = advanced_search(search, csrf);
+            console.log(data);
             dmap(data,2);
         }
     }
@@ -1416,7 +1426,7 @@ $.ajax({
                 $('.title_act_read').empty();
                 text = $('<span class="text_act">¿Qué estás leyendo?</span>');
                 text.append('<input type="hidden" class="type_message" value="show_titles" /> ');
-                text.append('<span class="green_btn">Editar</span>');
+                text.append('<span class="green_btn"></span>');
                 $('.title_act_read').append(text);
                 text.click(function(){
                     show_title_act($(this));
@@ -1459,8 +1469,8 @@ $.ajax({
                 span_rate = $('<span></span>');
                 p_date = $('<p class="p-d-text d-text_opacity"> leído'+
                     title[i2].date + '</p>');
-                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
-                btn_edit = $('<span class="green_btn message_alert size_btn_edit">Editar</span>');
+                btn_del = $('<span class="pink_btn size_btn_edit message_alert btn_delete"></span>');
+                btn_edit = $('<span class="green_btn message_alert size_btn_edit"></span>');
                         btn_edit.append('<input class="type_message" type="hidden" value="edit_read">');
                         btn_edit.append('<input class="name_title" type="hidden" value="'+title[i2].title+'">');
                 input_type = $('<input class="type_message" type="hidden" ' +
@@ -1701,8 +1711,8 @@ function search_list_authors_titles($this){
                                 span_btn = $('<span class="container_btn grid-4 no-margin"></span>');
                                 edit_list = $('<a href="/registry/edit_list/' + data[i].type +
                                     '/' + data[i].id + '"></a>');
-                                span_save = $('<span class="green_btn size_btn_edit marg_edit" >Editar</span>')
-                                del_list = $('<span class="pink_btn size_btn_edit message_alert" >-'+
+                                span_save = $('<span class="green_btn size_btn_edit marg_edit" ></span>')
+                                del_list = $('<span class="pink_btn size_btn_edit message_alert btn_delete" >'+
                                     '<input class="type_message" type="hidden" value="delete_list"></span>');
                                 edit_list.append(span_save);
                                 span_btn.append(edit_list);
@@ -2314,8 +2324,8 @@ function search_pages(){
         a_title.append(truncText(data[i].name,26));
         span_btn = $('<span class="grid-4 no-margin"></span>');
         a_edit = $('<a href="/accounts/users/update_page/'+data[i].id+'">' +
-            '<span class="green_btn size_btn_edit">Editar</span></a>')
-        span_del = $('<span class="pink_btn size_btn_edit message_alert">-'+
+            '<span class="green_btn size_btn_edit"></span></a>')
+        span_del = $('<span class="pink_btn size_btn_edit message_alert btn_delete">'+
             '<input class="type_message" type="hidden" value="delete_page"></span>'+
             '</span>');
 

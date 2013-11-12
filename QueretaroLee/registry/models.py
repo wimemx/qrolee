@@ -162,6 +162,8 @@ class Book(models.Model):
     picture = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
+    author = models.CharField(max_length=255)
+    genre = models.CharField(max_length=255)
     user = models.ForeignKey(User)
 
     def __unicode__(self):
@@ -177,6 +179,7 @@ class Travel(models.Model):
     description = models.TextField(max_length=255)
     meta = models.TextField(max_length=255)
     user = models.IntegerField(max_length=10)
+    is_new = models.BooleanField()
     book = models.ForeignKey(Book)
 
     def __unicode__(self):

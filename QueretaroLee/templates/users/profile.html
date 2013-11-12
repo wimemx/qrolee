@@ -340,7 +340,7 @@
             {% if value.author != 'autor anonimo' %}
                 De
                 <a href="/qro_lee/profile/author/{{ value.id_author }}"
-                        class="place_pink" >
+                        class="title_author" >
                     {{ value.author|truncatechars:19 }}
                 </a>
             {% else %}
@@ -350,7 +350,7 @@
             {% endif %}
         </p>
         <p class="p-d-text" >
-             <span >
+             <span class="mini_rate" >
                 {% for x in 'xxxxx' %}
                     {% if forloop.counter < value.grade %}
                         <img src="/static/img/comunityStarmini.png" />
@@ -457,17 +457,17 @@
                 {% if value.author != 'autor anonimo' %}
                     De
                     <a href="/qro_lee/profile/author/{{ value.id_author }}"
-                       class="place_pink" >
+                       class="title_author" >
                         {{ value.author|truncatechars:19 }}
                     </a>
                 {% else %}
-                    <a class="place_pink" >
+                    <a class="title_author" >
                         {{ value.author|truncatechars:19 }}
                     </a>
                 {% endif %}
             </p>
             <p class="p-d-text" >
-             <span >
+             <span class="mini_rate" >
                 {% for x in 'xxxxx' %}
                     {% if forloop.counter < value.grade %}
                         <img src="/static/img/comunityStarmini.png" />
@@ -578,17 +578,17 @@
                     {% if value.author != 'autor anonimo' %}
                         De
                         <a href="/qro_lee/profile/author/{{ value.id_author }}"
-                           class="place_pink" >
+                           class="title_author" >
                             {{ value.author|truncatechars:19 }}
                         </a>
                     {% else %}
-                        <a class="place_pink" >
+                        <a class="title_author" >
                             {{ value.author|truncatechars:19 }}
                         </a>
                     {% endif %}
                 </p>
                 <p class="p-d-text" >
-             <span >
+             <span class="mini_rate" >
                 {% for x in 'xxxxx' %}
                     {% if forloop.counter < value.grade %}
                         <img src="/static/img/comunityStarmini.png" />
@@ -636,7 +636,7 @@
             </span>
         </div>
             <div >
-                <h3 class="title title_book d-paddin_top_item grid-14 fleft">
+                <h3 class="title d-paddin_top_item grid-14 fleft">
                     {% if user_profile.user.id == user.id %}
                         Mis géneros favoritos
                     {% else %}

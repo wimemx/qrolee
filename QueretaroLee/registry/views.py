@@ -1823,7 +1823,6 @@ def cheking_book(request):
     book = models.Book.objects.get(code=code_book)
     list['book'] = book
     list['type_user'] = 1
-    print list
     travel = models.Travel.objects.create(**list)
     travel.save()
 
@@ -1899,10 +1898,12 @@ def registry_book(request, **kwargs):
 
 
 def register_ajax_book(request):
-
+    #9786071111104
     list = ast.literal_eval(request.POST.get('query'))
     list['user'] = request.user
     isbn = list['isbn']
+    author = 'anonimo'
+
     if request.POST.get('api_type') == 'google_api':
         url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn
         response = urllib2.urlopen(url)
@@ -1912,7 +1913,6 @@ def register_ajax_book(request):
             'name': list['genre'],
         }
 
-        author = 'anonimo'
         picture = ''
         publishedDate = datetime.datetime.today()
         pages = 100
@@ -1941,6 +1941,8 @@ def register_ajax_book(request):
         dom = minidom.parseString(response)
         title = dom.getElementsByTagName('title')[0].toxml()
         title = title.replace('<title>', '').replace('</title>', '')
+        author = dom.getElementsByTagName('name')[0].toxml()
+        author = author.replace('<name>', '').replace('</name>', '')
         publisher = dom.getElementsByTagName('publisher')[0].toxml()
         publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
         picture = dom.getElementsByTagName('image_url')[0].toxml()
@@ -1976,7 +1978,7 @@ def register_ajax_book(request):
             day = '01'
         publishedDate = year+'-'+month+'-'+day+' 00:00:00'
 
-    del list['genre']
+    list['genre']
     list['picture'] = picture
     list['cover'] = picture
     list['publisher'] = publisher
@@ -1987,6 +1989,7 @@ def register_ajax_book(request):
     list['country'] = country
     list['title'] = title
     list['language'] = language
+    list['author'] = author
 
     succes = 'False'
 
@@ -1996,7 +1999,9 @@ def register_ajax_book(request):
         'user': request.user.id,
         'meta': list['meta'],
         'status': 1,
-        'type_user': 1
+        'type_user': 1,
+        'is_new': 1
+
     }
     key = list['key']
     del list['lat']

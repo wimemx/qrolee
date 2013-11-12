@@ -117,7 +117,7 @@ input:not([type='submit']){
     width: 25px;
     border: 1px solid #faf3e1;
     border-right: 0px;
-    height: 27px!important;
+    height: 25px!important;
 }
 .green_btn, .edit_green{
     background: #cccc66;
@@ -379,7 +379,7 @@ p{
 .news-feed .title{
     width: 100%;
     float: left;
-    font-family: 'Raleway' sans-serif;
+    font-family: 'Raleway' sans-serif !important;
     font-weight: 500;
     margin-top: 0px;
 }
@@ -484,6 +484,7 @@ p{
     }
         .feed .action .din-m, .feed .action p, .feed .action p span{
             font-size: 12px;
+            font-weight: 500;
         }
         .feed .action .din-m{
             margin-top: 10px;
@@ -612,7 +613,6 @@ p{
         display: block;
         overflow: hidden;
         margin-bottom: 20px;
-        background: #fff;
         position: relative;
     }
         .entity .wrapper .edit ,.list__ .edit{
@@ -1098,15 +1098,16 @@ p{
         margin-left: 30px;
     }
         .content .sidebar-a .month{
-            color: #fff;
+            color: #000;
             padding: 4px 9px;
-            background: #7a7a7a;
+            background: #E2C388;
             float: left !important;
             margin-bottom: 15px;
             font-family: 'Raleway' sans-serif;
             font-size: 12px;
             line-height: normal;
             cursor: pointer;
+            border-color: #D5B16E;
         }
         .group .content .sidebar-a #scrollbar1 .viewport{
             height: 440px;
@@ -1356,7 +1357,7 @@ p{
                 .wrapper.grid-5 .title{
                     width: 150px;
                     text-align: left;
-                    font-size: 14px;
+                    font-size: 16px;
                 }
                      .wrapper.grid-5 .title span,.sidebar-b .wrapper .title span{
                         float: left;
@@ -1838,8 +1839,9 @@ p{
         }
 
     .lightbox{
-        background: url('../img/lightbox_pattern.png');
+        background: url('../img/register_form_bg.png');
         position: relative;
+        background-color: #f4e5c8;
     }
     .lightbox .close{
             width: 9px;
@@ -1990,7 +1992,7 @@ p{
 }
 
 .my_books .title_book{
-    margin-top: 0px!important;
+    margin-top: 20px!important;
 }
 
 .title_book{
@@ -2183,7 +2185,7 @@ p{
     padding: 1px 0px 1px 5px;
     background: #E6C990 !important;
     border-bottom: #ceaf70 1px solid;
-    font-weight: 500; color: #86641E
+    font-weight: 500; color: #86641E !important;
 }
 
 .avanced_search{
@@ -2986,13 +2988,17 @@ form p .invalid_messa{
 
     .remove{
         text-align: center;
-        background: #ef846b;
+        background: #f79882;
         font-family: 'Raleway' sans-serif;
         cursor: pointer;
         padding: 2px 8px 2px 8px;
-        font-size: 10px;
+        font-size: 12px;
         line-height: 17px;
         height: 17px;
+        font-weight: 500;
+        margin-right: 10px;
+        border: 1px solid #F57B5F;
+        color:#fff
     }
 
 .title_page{
@@ -3207,7 +3213,12 @@ textarea{
 }
 .container_message .remove{
     position: relative !important;
-    padding: 2px 8px 2px 8px!important;
+    padding: 4px 9px 4px 9px!important;
+    margin-top: -10px;
+}
+.labelText{
+    font-family: 'Raleway';
+    font-weight: 500;
 }
 .container_message .create-discussion-wrapper{
     padding: 30px 0px 40px 0px;
@@ -3228,9 +3239,11 @@ textarea{
         .create-discussion-wrapper p input{
             background: #F0DEBA;
             margin-top: 10px;
+            background: #f4e5c8; border: 1px solid #c2baab
         }
     .create-discussion-wrapper .title{
-        font-size: 12px;
+        font-size: 18px;
+        margin-bottom: 20px;
     }
     .create-discussion-wrapper textarea{
         width: 100%;
@@ -3239,9 +3252,12 @@ textarea{
         border: none;
         margin-top: 10px;
         margin-bottom: 30px;
+        background: #f4e5c8; border: 1px solid #c2baab
     }
     .create-discussion .accept{
         margin-right: 10px;
+        margin-top: -10px;
+
     }
 
 .list__ .scrollbar{
@@ -3512,7 +3528,7 @@ textarea{
     margin-top: 28px;
 }
 .members .place_pink{
-    margin-top: 5px;
+
 }
 .item_member{
     margin-top: 10px!important;
@@ -4120,3 +4136,23 @@ textarea{
     height: 510px!important;
     top: 20px;
 }
+
+span.green_btn, span.yellow_btn {
+    padding: 4px 9px 4px 9px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    height: 17px !important;
+    line-height: 17px !important;
+    left: 0px !important;
+    top: 0px !important;
+    font-weight: 400 !important;
+    background: #60967E !important;
+    border: 1px solid #326F53 !important;
+    color: #fff !important;
+}
+
+
+
+
+
+

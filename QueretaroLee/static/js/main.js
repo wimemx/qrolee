@@ -747,10 +747,10 @@ function map_cheking(country, state, city){
 
     var styledMap = new google.maps.StyledMapType(styles,
         {name: "Styled Map"});
-
+    var latlng = new google.maps.LatLng( lat, lon);
     var mapOptions = {
         zoom: 12,
-        center: new google.maps.LatLng(lat,lon),
+        center: latlng,
         mapTypeControl: true,
         mapTypeControlOptions: {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
@@ -764,7 +764,6 @@ function map_cheking(country, state, city){
     var map = new google.maps.Map(document.getElementById(div_map),
         mapOptions);
 
-    var latlng = new google.maps.LatLng( lat, lon)
     $('.lat_long').val(lat+','+lon);
     geocoder = new google.maps.Geocoder();
 		marker = new google.maps.Marker({
@@ -783,8 +782,7 @@ function map_cheking(country, state, city){
 }
 
 function update_latlog(lat_long){
-
-    $('.lat_long').val(lat_long['latLng']['nb']+','+lat_long['latLng']['ob']);
+    $('.lat_long').val(marker.getPosition().lat()+','+marker.getPosition().lng());
 }
 
 function map_select(){
@@ -2798,8 +2796,8 @@ function add_my_title(csrf, array_title, type){
                             text_com = 'leído ';
                         p_date = $('<p class="p-d-text d-text_opacity">' + text_com +
                             title[i2].date + '</p>');
-                        btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
-                        btn_edit = $('<span class="green_btn message_alert size_btn_edit">Editar</span>');
+                        btn_del = $('<span class="pink_btn size_btn_edit message_alert btn_delete"></span>');
+                        btn_edit = $('<span class="green_btn message_alert size_btn_edit"></span>');
                         btn_edit.append('<input class="type_message" type="hidden" value="edit_read">');
                         btn_edit.append('<input class="name_title" type="hidden" value="'+title[i2].title+'">');
                         input_type = $('<input class="type_message" type="hidden" ' +

@@ -28,7 +28,7 @@
                 <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="follow_private" value="1"/>
-                    <input type="submit" class="accept green_btn" value="Acceptar">
+                    <input type="submit" class="accept green_btn" value="Aceptar">
                 </form>
                 <span class="reject fleft">Rechazar</span>
                 <input class="user" type="hidden"/>
@@ -39,12 +39,12 @@
                     <span class="close"></span>
                 <span class="create-discussion grid-7 center">
                     <p class="title center">Crea una nueva discusión</p>
-                    <p class="fleft">Titulo de la discusión
-                        <input type="text" name="name" class="fleft"/></p>
-                    <p class="fleft">Contenido de la discusión
+                    <p class="fleft labelText">Título de la discusión
+                        <input type="text" name="name" class="fleft" autocomplete="off"/></p>
+                    <p class="fleft labelText">Contenido de la discusión
                         <textarea name="content" class="fleft" ></textarea></p>
-                    <span class="remove fright">Rechazar</span>
                     <span class="accept green_btn fright">Guardar</span>
+                    <span class="remove fright">Cancelar</span>
                 </span>
                 </div>
             {% endif %}
@@ -302,7 +302,7 @@
                 </div>
             </div>
             {% else %}
-                <p>No hay actividad reciente</p>
+                <p class="d-not_found">No hay actividad reciente</p>
             {% endif %}
         </div>
             <div class="coments load-margin grid-10 no-margin">
@@ -698,7 +698,7 @@
                                 </span>
                             {% endfor %}
                         {% else %}
-                            <p class="center">Este grupos no cuenta con discusiones.</p>
+                            <p class="d-not_found">Este grupo no cuenta con discusiones.</p>
                         {% endif %}
                         </div>
                     </div>
