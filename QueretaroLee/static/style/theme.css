@@ -188,6 +188,7 @@ input:not([type='submit']){
     font-family: Raleway;
     display: block;
 }
+
 .create-entity{
     width: 100%;
     display: block;
@@ -214,6 +215,7 @@ p{
 .header{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
 }
+
     .logo{
         height: 75px;
         left: -30px;
@@ -225,6 +227,19 @@ p{
             height: 100%;
             display: block;
             background: url('../img/logo_.png') no-repeat 50% 50%;
+        }
+    .header .no-auth.logo{
+        width: 74px;
+        height: 79px;
+        float: none;
+        margin: 0px auto;
+        display: block;
+        position: relative;
+        top: 10px;
+    }
+        .header .no-auth.logo span{
+
+            background: url('../img/logo_new.png') no-repeat 50% 50%;
         }
 .header .nav{
     position: relative;
@@ -953,7 +968,7 @@ p{
                     font-size: 10px;
                 }
         .discussion .item{
-            height: 60px;
+            height: auto;
             border-top: 1px solid #f9f2e1;
             border-bottom: 1px solid #f9f2e1;
             width: 100%;
@@ -1127,7 +1142,6 @@ p{
                     overflow: hidden;
                 }
                     .wrapper img{
-                        max-height: 100%;
                         display: block;
                         margin: 0 auto;
                     }
@@ -1968,6 +1982,7 @@ p{
 .title_book{
     margin-bottom: 0px !important;
     margin-top: 20px !important;
+    width: auto !important;
 }
 
 .Title .title_book{
@@ -2117,9 +2132,9 @@ p{
     float: left;
     border-left: 1px solid #ceaf70;
     border-right: 1px solid #ceaf70;
-    background-color: #e7cb92;
     text-decoration: none;
     color: #000000 !important;
+    background-color: #edd9af !important;
 }
 .viewport_group{
     height: 426px!important;
@@ -2150,9 +2165,11 @@ p{
 }
 
 .person{
-    background-color: #fff5de !important;
     width: 155px !important;
     padding: 1px 0px 1px 5px;
+    background: #E6C990 !important;
+    border-bottom: #ceaf70 1px solid;
+    font-weight: 500; color: #86641E
 }
 
 .avanced_search{
@@ -2553,7 +2570,7 @@ p{
     margin-left: 8px;
 }
 
-.title_book_mini{
+.title_book_mini.title{
     font-size: 14px;
     margin-top: 12px;
     text-transform: none;
@@ -2717,10 +2734,11 @@ p{
 .link_search_all{
     text-align: right !important;
     color: #ffffff !important;
-    border-bottom: 1px solid #ceaf70;
-    background-color: #5a885e !important;
+    border-bottom: 1px solid #a77340;
+    background-color: #a77340 !important;
     width: 145px !important;
     padding-right: 10px;
+    font-weight: 400;
 }
 
 .title_create_entity{
@@ -3856,6 +3874,10 @@ textarea{
     padding-right: 8px !important;
 }
 
+.member .sub a:hover{
+    padding-right: 10px !important;
+}
+
 .line_footer{
     border-right: 1px solid #000;
     float: left;
@@ -3869,6 +3891,10 @@ textarea{
 
 .link:hover{
     background-color: #edd9af;
+    transition: all ease-in 0.3s;
+}
+.user_profile.link:hover{
+    background-color: #ceaf70 !important;
     transition: all ease-in 0.3s;
 }
 .text_{

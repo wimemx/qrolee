@@ -252,7 +252,7 @@
                     </span>
                 </span>
                 <p class="descrip_list grid-6 no-margin">
-                    {{ profile.description|truncatechars:280 }}
+                    {{ profile.description|truncatechars:180 }}
                 </p>
             </span>
         {% endif %}
@@ -274,11 +274,11 @@
                             <span class="item_title item_height grid-9 no-margin">
                                 <a href="/qro_lee/profile/title/{{ key }}">
                                     <span class="wrapper_title wrapper_title_list borde_author ">
-                                        <img class="img_size_all" src="{{ value.picture }}" />
+                                        <img class="img_size_all" src="{% if value.cover %}{{ value.cover }}{% else %}{{ value.picture }}{% endif %}" />
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/title/{{ key }}">
-                                    <h3 class="title grid-6 text_tit margin_left">
+                                    <h3 class="title title_book margin_left fleft">
                                         {{ value.title|truncatechars:25 }}
                                     </h3>
                                 </a>

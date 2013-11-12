@@ -1065,7 +1065,7 @@ def delete_title(request):
     id_title = request.POST.get('id_title')
     id_list = request.POST.get('id_list')
     type_list = request.POST.get('type_list')
-
+    print id_title
     if type_list == 'T':
         title_favorite = account.ListTitle.objects.get(id=id_list)
         title_favorite.delete()

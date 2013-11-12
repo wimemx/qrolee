@@ -1405,7 +1405,12 @@ $(document).ready(function(){
 
             if(result.response != 0){
                 $.each(result,function(i){
-                    create_template(type, result, i, create_user);
+                    if(type == 'auth.user'){
+                        if(result[i].id != '1')
+                            create_template(type, result, i, create_user);
+                    }
+                    else
+                        create_template(type, result, i, create_user);
                 });
             }else{
                var p = $('<span class="item"><p class="center"> No se pudieron ' +
@@ -3154,7 +3159,7 @@ function show_dialog(){
             href = 'href="/registry/join_entity/'+$('.d-entity_id').val()+'"';
         }
 
-        if($('.type').val()=="List"){
+        if($('.type').val()=="list"){
             var type = $(this).find('.type_message').val();
 
             if(type=="out_group"){

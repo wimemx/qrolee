@@ -445,3 +445,11 @@ def time_tag(time):
 @register.filter
 def date_tag(date):
     return str(date.month)+'/'+str(date.day)+'/'+str(date.year)
+
+
+@register.filter
+def is_auth(user):
+    if user.is_authenticated():
+        return True
+    else:
+        return False
