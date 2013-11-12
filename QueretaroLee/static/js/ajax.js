@@ -1678,7 +1678,7 @@ function search_list_authors_titles($this){
                             var grid = 'grid-12';
                             var grid_li = 'grid-8';
 
-                            var src = '/static/img/create.png';
+                            var src = '/static/img/default_vert.png';
                             if(data[i].picture != '')
                                 src = '/static/media/users/' + data[i].id_user + '/list/' +
                                     data[i].picture ;
@@ -1776,7 +1776,7 @@ function search_list_authors_titles($this){
                                                 }
                                             });
                                             if(!id_exist){
-                                                var picture = '';
+                                                var picture = '/static/img/default_vert.png';
                                                 var author = 'autor anonimo';
                                                 var publisher = '';
                                                 var pageCount = 100;
