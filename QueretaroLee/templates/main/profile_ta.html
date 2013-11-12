@@ -189,6 +189,12 @@
         {% endif %}
         {% if type == 'list' %}
             <span class="wrapper fleft borde_author borde_title">
+                {% if user.id == profile.user.id %}
+                    <a href="/registry/edit_list/{{ profile.type }}/{{ profile.id }}">
+                        <span class="brown_btn edit edit_entity" style="background: url('/static/img/btn_edit.png')no-repeat 8px 8px;">
+                        </span>
+                    </a>
+                {% endif %}
                 {% if not profile.picture %}
                     <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.name }}"/>
                 {% else %}
@@ -256,10 +262,15 @@
                 </p>
             </span>
         {% endif %}
-        <span class="grid-3 no-margin social_profile">
-            <span class="icon_social btn_fb_profile" style='background: url("/static/img/social_like.png") no-repeat 0px 0px;' >
+        <span class="grid-3 no-margin social_profile" style="cursor: auto;">
+            <span class="icon_social btn_fb_profile" >
+                <div class="fb-like" data-href="{{ SITE_URL }}qro_lee/profile/list/{{ profile.id }}"
+                     data-layout="button_count" data-action="like" data-show-faces="true" data-share="false">
+                </div>
             </span>
-            <span class="icon_social btn_fb_profile" style='background: url("/static/img/social_like.png") no-repeat 0px -18px;'>
+            <span class="icon_social btn_fb_profile" >
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                   data-via="twitterapi" data-lang="en">Tweet</a>
             </span>
             </span>
     </div>
@@ -269,7 +280,7 @@
 
             {% if type == 'list' %}
                 <div class="coments grid-10 no-margin">
-                    <div class="container_titles grid-9 no-margin border_bottom over_items">
+                    <div class="container_titles grid-9 no-margin border_bottom ">
                         {% for key, value in titles.items %}
                             <span class="item_title item_height grid-9 no-margin">
                                 <a href="/qro_lee/profile/title/{{ key }}">
@@ -330,14 +341,6 @@
                             </span>
                         {% endfor %}
                     </div>
-                    <span class="container_titles grid-9 no-margin">
-                        {% if titles|length > 3 or authors|length > 3 %}
-                            <span class="place_pink link_all fright all_items">
-                                <span class="span_text">ver todos</span>
-                                <input type="hidden" value="0">
-                            </span>
-                        {% endif %}
-                    </span>
             </div>
             {% endif %}
             {% if type != 'list' %}
@@ -560,3 +563,17 @@
 </div>
 
 {% endblock %}
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){js=d.createElement(s);js.id=id;
+        js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);
+    }}(document,"script","twitter-wjs");</script>

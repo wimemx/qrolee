@@ -119,12 +119,13 @@ input:not([type='submit']){
     border-right: 0px;
     height: 27px!important;
 }
-.green_btn{
+.green_btn, .edit_green{
     background: #cccc66;
     font-family: 'Raleway' sans-serif;
     cursor: pointer;
     padding: 2px 8px 2px 8px;
     font-size: 10px;
+    color: #000;
 }
 
 .brown_btn{
@@ -502,7 +503,7 @@ p{
                 overflow:hidden;
                 position: relative;
             }
-                .wrapper .brown_btn{
+                .wrapper .brown_btn, .wrapper_list .brown_btn{
                     position: absolute;
                     bottom: 0px;
                     right: 0px;
@@ -593,7 +594,7 @@ p{
         background: #fff;
         position: relative;
     }
-        .entity .wrapper .edit{
+        .entity .wrapper .edit ,.list__ .edit{
             width: 35px;
             height: 35px;
             padding: 0px;
@@ -1626,6 +1627,11 @@ p{
     background: #f79882;
 }
 
+.container_event .btn_edit{
+    font-size: 12px!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+}
+
 .size_btn_edit{
     color:#222;
     font-size: 11px !important;
@@ -2417,10 +2423,11 @@ p{
 }
 
 .btn_fb_profile{
-    margin-right: 10px;
+    margin-top: 10px;
     height: 18px;
     float: left;
-    width: 55px;
+    width: 76px;
+    margin-right: 4px;
 }
 
 .text_list{
@@ -3925,7 +3932,6 @@ textarea{
 
 .author .container_titles, .list .container_titles ,.title .container_titles{
     margin-left: 20px!important;
-    margin-bottom: 20px;
 }
 
 .author .container_titles .title_mini, .title .container_titles .title_mini,

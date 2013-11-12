@@ -45,8 +45,14 @@
                 <div class="overview ">
                      {% for key, value in list.items %}
                             <div class="item_list grid-14 no-margin" >
-                                <a href="/qro_lee/profile/list/{{ value.id }}">
-                                    <span class="wrapper_list" >
+                                <span class="wrapper_list" >
+                                    {% if user.id == value.id_user %}
+                                        <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
+                                            <span class="brown_btn edit edit_entity" style="background: url('/static/img/btn_edit.png')no-repeat 8px 8px;">
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                    <a href="/qro_lee/profile/list/{{ value.id }}">
                                         {% if not value.picture %}
                                             <img class="img_size_all"
                                                  src="/static/img/create.png" alt="" />
@@ -54,8 +60,8 @@
                                             <img class="img_size_all"
                                                  src="/static/media/users/{{ value.id_user }}/list/{{ value.picture }}" alt="" />
                                         {% endif %}
-                                    </span>
-                                </a>
+                                    </a>
+                                </span>
                                 <span class="container_data grid-12 no-margin">
                                     <span class=" grid-9 no-margin">
                                         <a title="{{ value.name }}" href="/qro_lee/profile/list/{{ value.id }}"

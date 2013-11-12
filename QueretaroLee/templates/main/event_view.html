@@ -51,8 +51,8 @@
                 </div>
                 <div class="d-by grid-5 no-margin">
                     <span class="title">Organizado por</span>
-                    <a class="place_pink" href="/accounts/users/profile/{{ event.owner.id }}/">
-                        {{ event.owner }}
+                    <a class="place_pink" href="/qro_lee/entity/organization/{{ event.location.id }}/">
+                        {{ event.location.name }}
                     </a>
                     <input type="hidden" class="d-latlon" value="{{ event.lat }},{{ event.long }}" />
                 </div>
@@ -63,12 +63,10 @@
                     </span>
                 {% endif %}
                 <div class="grid-3 no-margin fright">
-                    <div class="d-buttoms fb-session-required">
-                    {% if event.fb_id and not is_attending %}
-                        <span  id="d-btn-attend" class="btn_social" >Asistir</span>
+                    {% if user.id == event.owner.id %}
+                        <a class="edit_green fright btn_edit"
+                           href="/registry/edit/event/{{ event.id }}" >Editar</a>
                     {% endif %}
-                    <span id="d-btn-facebook" class="btn_social">facebook</span>
-                    </div>
                 </div>
                 <div class="d-line grid-6 no-margin"></div>
 
@@ -102,6 +100,12 @@
                         {% else %}
                             <p>{{ event.location_name|replace:'#' }}</p>
                         {% endif %}
+                        <div class="d-buttoms fb-session-required">
+                            {% if event.fb_id and not is_attending %}
+                                <span  id="d-btn-attend" class="btn_social" >Asistir</span>
+                            {% endif %}
+                            <span id="d-btn-facebook" class="btn_social">facebook</span>
+                        </div>
                     </div>
                 </div>
 
@@ -115,7 +119,7 @@
 
                 <div class="d-list_events" >
 
-                    {%  for event in list_event %}
+                    {%  for key, event in list_event.items %}
 
                     <div class="d-event">
                         <div class="d-image-mini">
