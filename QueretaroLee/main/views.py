@@ -1931,3 +1931,10 @@ def qr_to_pdf(request, **kwargs):
     return write_pdf(template, context)
 
 
+def policy_use(request, **kwargs):
+    template = kwargs['template_name']
+    context = {
+        'type': int(kwargs['type'])
+    }
+
+    return render(request, template, context)

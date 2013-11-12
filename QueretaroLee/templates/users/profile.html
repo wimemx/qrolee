@@ -80,7 +80,7 @@
                             ¿Qué estás leyendo?
                             <input type="hidden" class="type_message"
                                    value="show_titles" />
-                        <span class="green_btn">Editar</span>
+                        <span class="green_btn ">Editar</span>
                         </span>
                     {% else %}
                         No está leyendo nada en este momento
@@ -91,8 +91,7 @@
                             {{ act_title.title.title|truncatechars:20 }}
                         </a>
                     {% if user_profile.user.id == user.id %}
-                        <span class="green_btn message_alert">
-                            Editar
+                        <span class="green_btn message_alert ">
                             <input class="type_message"
                             type="hidden" value="edit_title_read"/>
                             <input class="id_list"
@@ -365,9 +364,8 @@
             añadido {{ value.date }}
         </p>
         {% if value.id_user == user.id %}
-            <span class="pink_btn size_btn_edit message_alert">
+            <span class="pink_btn size_btn_edit message_alert btn_delete">
                <input class="type_message" type="hidden" value="delete_title"/>
-                -
             </span>
         {% endif %}
     </div>
@@ -483,14 +481,12 @@
                 leido {{ value.date }}
             </p>
             {% if value.id_user == user.id %}
-                <span class="pink_btn size_btn_edit message_alert">
+                <span class="pink_btn size_btn_edit message_alert btn_delete">
                    <input class="type_message" type="hidden" value="delete_title"/>
-                    -
                 </span>
-                    <span class="green_btn message_alert size_btn_edit">
+                    <span class="green_btn message_alert size_btn_edit ">
                     <input class="type_message" type="hidden" value="edit_read"/>
                     <input class="name_title" type="hidden" value="{{ value.title }}">
-                    Editar
                 </span>
             {% endif %}
         </div>
@@ -606,9 +602,8 @@
                     añadido {{ value.date }}
                 </p>
                 {% if value.id_user == user.id %}
-                    <span class="pink_btn size_btn_edit message_alert">
+                    <span class="pink_btn size_btn_edit message_alert btn_delete">
                <input class="type_message" type="hidden" value="delete_title"/>
-                                                    -
             </span>
                 {% endif %}
             </div>
@@ -664,10 +659,10 @@
                     </div>
                     <div class="grid-5 no-margin btn_genre">
                         {% if user_profile.user.id == user.id %}
-                            <span class="green_btn message_alert">
+                            <span class="green_btn message_alert ">
                                                 <input class="type_message"
                                                        type="hidden" value="add_genre"/>
-                                                    Editar
+
                                                 </span>
                         {% endif %}
                     </div>
@@ -728,13 +723,12 @@
                                    class="title alpha title_book">{{ value.name|truncatechars:30 }}</a>
                                 </span>
 
-                                <span class="container_btn grid-4 no-margin">
+                                <span class="container_btn grid-2 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
-                                            <span class="green_btn size_btn_edit" >Editar</span>
+                                            <span class="green_btn size_btn_edit " ></span>
                                         </a>
-                                        <span class="pink_btn size_btn_edit message_alert" >
-                                            -
+                                        <span class="pink_btn size_btn_edit message_alert btn_delete" >
                                             <input class="type_message" type="hidden" value="delete_list">
                                         </span>
                                 {% endif %}
@@ -893,10 +887,9 @@
                                 <span class="grid-4 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/accounts/users/update_page/{{ key }}">
-                                            <span class="green_btn size_btn_edit" >Editar</span>
+                                            <span class="green_btn size_btn_edit " ></span>
                                         </a>
-                                        <span class="pink_btn size_btn_edit message_alert" >
-                                           -
+                                        <span class="pink_btn size_btn_edit message_alert btn_delete" >
                                             <input class="type_message" type="hidden" value="delete_page">
                                         </span>
                                 {% endif %}

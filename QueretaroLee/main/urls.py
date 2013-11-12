@@ -41,4 +41,6 @@ urlpatterns = patterns('',
         {'template_name': 'main/qr.html'},name='Qr_code'),
     url(r'^qr_to_pdf/(?P<qr_code>[-\w]+)/$', views.qr_to_pdf,
         {'template_name': 'main/qr_pdf.html'}, name='Qr_pdf'),
+    url(r'^policy_use/(?P<type>[-\w]+)/$', views.policy_use,
+        {'template_name': 'policy_use.html'}, name='policy_use'),
 )
