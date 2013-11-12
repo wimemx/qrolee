@@ -11,6 +11,7 @@ var input_val, timer;
 var combo_act = false;
 var date = new Date();
 var curr_month = date.getMonth();
+var curr_year = date.getFullYear();
 var months = ['Enero','Febrero','Marzo','Abril',
     'Mayo','Junio','Julio','Agosto','Septiembre','Octubre',
     'Noviembre','Diciembre'];
@@ -1442,11 +1443,10 @@ function edit_form($this, timeout, type, id, event){
             $this.parent().find('span.value').fadeOut(timeout, function(){
                 if($this.parent().find('input.value').length > 0){
                     $this.parent().find('input.value').fadeIn(timeout,function(){
+                        $this.parent().find('.fadein').fadeIn(300);
                         $this.parent().find('input.value').css({
                             'color': '#454545'
                         });
-                        $this.parent().find('span.green_btn').fadeOut(timeout);
-                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
 
                     });
                 }else if($this.parent().find('textarea.value').length > 0){
@@ -1454,22 +1454,29 @@ function edit_form($this, timeout, type, id, event){
                         'color': '#454545'
                     });
                     $this.parent().find('textarea.value').fadeIn(timeout,function(){
-                        $this.parent().find('span.green_btn').fadeOut(timeout);
-                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
                     });
                 }else{
                     $this.parent().find('.select_wrapper').fadeIn(timeout,function(){
-
-                        $this.parent().find('span.green_btn').fadeOut(timeout);
-                        $this.parent().find('span.yellow_btn').fadeIn(timeout);
                     });
                 }
             });
         }
     }else{
         var $this_ = $this.parent();
-        var field = $this_.find('input.value').attr('name');
-        var value = $this_.find('input.value').val();
+        var field = '';
+        var value = '';
+        if($this_.find('.date-init').length > 0){
+            field = $this_.find('input.value').attr('name');
+            value = $this_.find('.date-init').val()+' '+$this_.find('.hour-init').val();
+
+        }else if($this_.find('.date-end').length > 0){
+            field = $this_.find('input.value').attr('name');
+            value = $this_.find('.date-end').val()+' '+$this_.find('.hour-end').val();
+        }else{
+            field = $this_.find('input.value').attr('name');
+            value = $this_.find('input.value').val();
+        }
+
         if($this_.find('textarea.value').length > 0){
             value = $this_.find('textarea.value').val();
             field = $this_.find('textarea.value').attr('name');
@@ -1505,7 +1512,7 @@ function edit_form($this, timeout, type, id, event){
                 }
             });
             if(valid){
-                if(!event)
+                if(event === undefined)
                     event = '-1'
                 $.ajax({
                     type: "POST",
@@ -1534,8 +1541,18 @@ function edit_form($this, timeout, type, id, event){
                     $this.parent().find('span.value').html(date[2] +
                         '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
                 }else{
-                    if(valid)
-                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                    if(valid){
+                        if (field == 'start_time'){
+                            $this.parent().find('span.value:eq(0)').html($this.parent().find('input.date-init').val());
+                            $this.parent().find('span.value:eq(1)').html($this.parent().find('input.hour-init').val());
+                        }else if(field == 'end_time'){
+                            $this.parent().find('span.value:eq(0)').html($this.parent().find('input.date-end').val());
+                            $this.parent().find('span.value:eq(1)').html($this.parent().find('input.hour-end').val());
+                        }else{
+                            $this.parent().find('span.value').html($this.parent().find('input.value').val());
+                        }
+
+                    }
                 }
             }
         }else if($this.parent().find('textarea.value').length > 0){
@@ -1546,7 +1563,13 @@ function edit_form($this, timeout, type, id, event){
 
         if($this.parent().find('input.value').length > 0){
             $this.parent().find('input.value').fadeOut(300,function(){
-                $this.parent().find('span.value').fadeIn(300);
+                if($this.parent().find('.fadein').length > 0){
+                $this.parent().find('.fadein').fadeOut(0, function(){
+                    $this.parent().find('span.value').fadeIn(100);
+                });
+                }else{
+                    $this.parent().find('span.value').fadeIn(300);
+                }
             });
         }else if($this.parent().find('textarea.value').length > 0){
             $this.parent().find('textarea.value').fadeOut(300,function(){

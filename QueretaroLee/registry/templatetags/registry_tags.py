@@ -185,7 +185,7 @@ def feed_type(feed_id):
         if not obj_list[1].picture:
             obj_list[1].picture = ''
         if obj_list[1].picture != '':
-            added_to_img_url += 'list/'+obj_list[1].picture
+            added_to_img_url = '/static/media/users/'+str(obj_list[1].user.id)+'/list/'+obj_list[1].picture
         else:
             added_to_img_url = '/static/img/create.png'
         obj_name = obj_list[1].name
@@ -262,7 +262,7 @@ def feed_type(feed_id):
                                         <span class="entry">{4}</span>
                                         <span class="time">{5}</span></p>
                                     </span>
-                                    <p style="margin-top:10px;" class="gray_text no-margin fleft">hace {6}</p>
+                                    <p style="margin-top:10px;" class="gray_text no-margin fleft"> {6}</p>
                                 </span>
                             </span>
 
@@ -288,7 +288,7 @@ def feed_type(feed_id):
               <span class="trigger din-b"><a href="{5}">{0}</a> </span>
               <span class="verb din-r">{4} </span>
               <span class="verb din-b"><a href="{6}">{1}</a> </span></span>
-              <p class="gray_text no-margin fleft">hace  {3}</p></span>"""
+              <p class="gray_text no-margin fleft"> {3}</p></span>"""
         ret = ret_value.format(
             name, obj_name, img_url, date,
             action, trigger_url, whom_url)
@@ -309,7 +309,6 @@ def feed_type(feed_id):
                 rating += '<span class="rated"></span>'
             else:
                 rating += '<span class="unrated"></span>'
-
         ret_value = u"""<span class="create feed">
                             <a href="{7}" class="wrapper fleft">
                                 <img src="{2}" alt=""/>
@@ -328,7 +327,7 @@ def feed_type(feed_id):
                                         <span style="margin-top:5px;display:block;" class="entry">{6}</span>
                                         <span class="time"></span></p>
                                     </span>
-                                    <p style="margin-top:10px;" class="gray_text no-margin fleft">hace {3}</p>
+                                    <p style="margin-top:10px;" class="gray_text no-margin fleft"> {3}</p>
                                 </span>
                             </span>
 
@@ -426,3 +425,23 @@ def new_user(user):
     profile = rmodels.Profile.objects.get(
         user_id=user.id)
     return profile.is_new
+
+
+@register.filter
+def time_tag(time):
+    time_str = ''
+    if str(time.hour) == '0':
+        time_str += '0'+str(time.hour)
+    else:
+        time_str += str(time.hour)
+    if str(time.minute) == '0':
+        time_str += ':0'+str(time.minute)
+    else:
+        time_str += ':'+str(time.minute)
+
+    return time_str
+
+
+@register.filter
+def date_tag(date):
+    return str(date.month)+'/'+str(date.day)+'/'+str(date.year)

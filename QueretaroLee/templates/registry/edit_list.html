@@ -28,8 +28,10 @@
     <div class="grid-16 entities registry edit_list">
         <div class="grid-15 registry">
         <input type="hidden" class="my_list_id" value="{{ list.id }}"/>
+        <input type="hidden" class="id_object" value="{{ list.id }}"/>
         <input type="hidden" class="type_my_list" value="{{ list.type }}" />
         <input type="hidden" class="d_type_list" value="{{ list.type }}" />
+        <input type="hidden" class="type" value="list"/>
         <div class="csrf_token">
             {% csrf_token %}
         </div>
@@ -45,24 +47,27 @@
 
         <span class="data border_none grid-9 fleft no-margin">
             <p>Nombre {{ entity_type.0 }}
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
-                <span class="close right"></span>
+                    </span>
                 <input name="name" type="text" value="{{ list.name }}" class="grid-5 alpha fright value"/>
                 <span class="value grid-5 alpha fright">{{ list.name }}</span>
             </p>
             <p>Descripción {{ entity_type.0 }}
+                <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
-                <span class="close right"></span>
-                <textarea name="description" class="grid-5 alpha fright value" >{{ list.description }}
+                    </span>
+                <textarea name="description" class="grid-5 area alpha fright value" >{{ list.description}}
                 </textarea>
-                <span class="value grid-5 alpha fright">{{ list.description }}</span>
+                <span class="value area grid-5 alpha fright">{{ list.description|truncatewords:30 }}</span>
             </p>
             <p>
                 Valorización
-                <span class="rate_perfil_list">
-                {% for x in 'xxxxx' %}
+                <span class="grid-5 fright no-margin fix-right">
+                    <span class="rate_perfil_list">
+                        {% for x in 'xxxxx' %}
                     {% if forloop.counter < grade %}
                         <img src="/static/img/comunityStar.png" />
                     {% else %}
@@ -70,11 +75,46 @@
                     {% endif %}
                 {% endfor %}
                 </span>
+                </span>
             </p>
+
         </span>
-            <form id="picture" class="dropzone fleft drop_zone_list grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
-                <input type="hidden" name="list_picture" value="1"/>
-            </form>
+            <div class="grid-5 fright no-margin">
+            {% if list.picture %}
+
+                <span class="d-picture_user grid-4 wrapper_picture_user">
+                    <span class="img-wrapper">
+                    <img class="img_size_all"
+                         src="/static/media/users/{{ user.id }}/list/{{ list.picture }}" />
+                    </span>
+                        <span class="del-wrapper loaded">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                </span>
+                <span class="dropzone_user disable_upload">
+                    <form id="picture" class="dropzone fright drop_zone_list grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="list_picture" value="{{ list.id }}"/>
+                        <input type="hidden" name="picture" value="1"/>
+                        <span class="del-wrapper func">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                    </form>
+                </span>
+            {% else %}
+                <span class="dropzone_user ">
+                    <form id="picture" class="dropzone fright drop_zone_list grid-3 dropzone_list no-margin" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="list_picture" value="{{ list.id }}"/>
+                        <input type="hidden" name="picture" value="1"/>
+                            <span class="del-wrapper func">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                    </form>
+                </span>
+            {% endif %}
+            <div class="grid-5 edit-form fright no-margin">
+                <span class="yellow_btn main fright">Guardar</span><span class="green_btn main fright">Editar</span>
+            </div>
+            </div>
             <hr class="d-line_bottom">
             <div class="heading">
                 <h3 class="title grid-13 no-margin fleft">
@@ -213,7 +253,9 @@
     <script type="text/javascript">
         Dropzone.options.picture = {
             maxFiles: 1,
-            dictDefaultMessage: 'Inserte aquí la nueva',
+            thumbnailWidth: 130,
+            thumbnailHeight: 130,
+            dictDefaultMessage: 'Inserte aquí su foto',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#picture .dz-message').fadeOut(300);
@@ -221,126 +263,31 @@
             },
             success: function(file) {
                 $('.profile-pic').val(file.name);
+                $('.del.picture').css({
+                    'display': 'block'
+                });
+                var this_ = this;
+                $('.del.picture').click(function(){
+                    this_.removeAllFiles();
+                    $('.del.picture').fadeOut(300);
+                    $('.dz-default.dz-message').fadeIn(300);
+                    $('.profile-pic').val('');
+                });
             }
         }
         $(document).ready(function(){
-            $('.green_btn').click(function(){
-                $this = $(this);
-                $(this).parent().find('span.value').fadeOut(300,
-                function(){
-                    if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('input.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
+            var timeout = 200;
 
-                        });
-                    }else if($this.parent().find('textarea.value').length > 0){
-                        $this.parent().find('textarea.value').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-                                 });
-                            });
-
-                        });
-                    }else{
-                        $this.parent().find('.select_wrapper').fadeIn(300,function(){
-                            $this.parent().find('span.green_btn').fadeOut(300,
-                            function(){
-                                 $this.parent().find('span.yellow_btn').fadeIn(300,function(){
-                                     $this.parent().find('.close').fadeIn(300);
-
-                                 });
-                            });
-
-                        });
-                    }
-                });
-
-            });
-            $('.close').click(function(){
-                $this = $(this);
-                $(this).fadeOut(300,
-                    function(){
-                        $this.parent().find('span.yellow_btn').fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
-                                    });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                        $this.parent().find('span.value').fadeIn(300);
-                                    });
-                                }
-                            });
-
-                        });
+            $('.green_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 0);
                 });
             });
-            $('.yellow_btn').click(function(){
-                var field = $(this).parent().find('input.value').attr('name');
-                var value = $(this).parent().find('input.value').val();
-                if($(this).parent().find('textarea.value').length > 0){
-                    value = $(this).parent().find('textarea.value').val();
-                    field = $(this).parent().find('textarea.value').attr('name');
-                }else if($(this).parent().find('.select_wrapper').length > 0){
-                    value = $(this).parent().find('select.value').val();
-                    field = $(this).parent().find('select.value').attr('name');
-                }
-
-                $.ajax({
-                type: "POST",
-                url: '/registry/update_list/'+$('.my_list_id').val()+'/',
-                data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                    'field': field,
-                    'value': value
-                },
-                dataType: 'json'
-                }).done(function(data){
-                    if($this.parent().find('input.value').length > 0){
-                        $this.parent().find('span.value').html($this.parent().find('input.value').val());
-                    }else if($this.parent().find('textarea.value').length > 0)
-                        $this.parent().find('span.value').html($this.parent().find('textarea.value').val());
-                    else
-                        $this.parent().find('span.value').html($this.parent().find('select.value').val());
-                    $this.parent().find('.close').fadeOut(300,function(){
-                    $this.fadeOut(300,function(){
-                            $this.parent().find('span.green_btn').fadeIn(300,
-                            function(){
-                                if($this.parent().find('input.value').length > 0){
-                                 $this.parent().find('input.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else if($this.parent().find('textarea.value').length > 0){
-                                    $this.parent().find('textarea.value').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }else{
-                                    $this.parent().find('.select_wrapper').fadeOut(300,function(){
-                                     $this.parent().find('span.value').fadeIn(300);
-                                 });
-                                }
-                            });
-
-                        });
-                    });
-                    $this.parent().find('.yellow_btn').fadeOut(250);
-                })
+            $('.yellow_btn.main').click(function(){
+                $('.controllers_wrapper').each(function(){
+                    edit_form($(this), timeout, 1, $('input.my_list_id').val(), '2');
+                });
             });
-
-
         });
     </script>
 {% endblock %}

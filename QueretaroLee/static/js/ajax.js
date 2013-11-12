@@ -28,7 +28,7 @@ function truncText (text, maxLength, ellipseText){
         return text_;
 }
 
-function populateCal(curr_month,$item){
+function populateCal(curr_month,$item, current_year){
     $('.item').remove();
     $('.d-not_found').remove();
     var edit = 0;
@@ -44,6 +44,10 @@ function populateCal(curr_month,$item){
         }else{
             edit_events = $('.id_entity').val();
         }
+
+        if(current_year === undefined)
+            current_year = curr_year;
+
         $.ajax({
             type: "POST",
             url: url,
@@ -51,7 +55,8 @@ function populateCal(curr_month,$item){
                 'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
                 'curr_month': curr_month,
                 'field_search':$('.d_field_search').val(),
-                'id_entity':edit_events
+                'id_entity':edit_events,
+                'curr_year': current_year
 
             },
             dataType: 'json'
@@ -93,7 +98,6 @@ function populateCal(curr_month,$item){
                         img.attr('src',picture_url);
                         a.append(img);
                         span_wrap.append(a);
-                        console.log(e);
                         if(edit == -1 | e[12] )
                             span_wrap.append('<a class="green_btn" href="/registry/edit/event/'+e[6]+'"></a>');
 
@@ -728,15 +732,19 @@ $(document).ready(function(){
                         var month = event_data[0];
                         var day = event_data[1];
                         var id = event_data[2];
+                        var year = event_data[3];
                         var $table;
-                        $table = $('.sidebar-b table');
-                        $table.find('.month:odd').each(function(index){
-                            if((month-1) == index){
+                        $table = $('.overview').children('table');
+                        $.each($table, function(){
+                            var $this_ = $(this);
+                        $(this).find('.month:odd').each(function(index){
+                            //console.log($this_.find('.year').html());
+                            if((month-1) == index && year == parseInt($this_.find('.year').html())){
+
                                 $table = $(this).parent().parent().parent();
 
                                 $table.find('tr').each(function(){
                                     $(this).find('td').each(function(){
-
                                         if($(this).html() == day){
                                             $(this).addClass('active-event');
                                             $(this).click(function(){
@@ -758,8 +766,7 @@ $(document).ready(function(){
                                 });
                             }
                         });
-
-
+                        });
 
                         if(count == (len-1)){
                             populateCal(curr_month,$item);
@@ -776,7 +783,7 @@ $(document).ready(function(){
     }
 
     $('.sidebar-b .controller .next').click(function(){
-            if( curr_month < 11 && clickable){
+            if( curr_month < 23 && clickable){
                 clickable = false;
                 curr_month++;
                 var position = $('.sidebar-b .year tr').position();
@@ -787,7 +794,11 @@ $(document).ready(function(){
                     clickable = true;
                 });
                 $('.sidebar-a .month').html(months[curr_month]);
-                populateCal(curr_month,$item);
+
+                if (curr_month > 11)
+                    populateCal(curr_month,$item, curr_year+1);
+                else
+                    populateCal(curr_month,$item);
             }
         });
         $('.sidebar-b .controller .prev').click(function(){

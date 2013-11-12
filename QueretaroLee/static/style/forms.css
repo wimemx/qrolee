@@ -8,6 +8,10 @@
 #registry{
     padding: 0px;
 }
+.title{
+    margin-bottom: 40px;
+    width: 100% !important;
+}
     #registry p{
         font-size: 13px;
         font-family: 'Raleway' sans-serif;
@@ -215,4 +219,26 @@ textarea{
 .fix-right{
     position: relative;
     left: -16px;
+}
+
+.edit_list.entities .registry .green_btn{
+    padding: 2px 8px 2px 8px !important;
+    cursor: pointer;
+    font-size: 11px !important;
+    height: 17px !important;
+    line-height: 17px !important;
+    position: relative !important;
+    left: 0px;
+    top: 0px !important;
+    background: #cccc66 !important;
+    font-family: 'Raleway' sans-serif;
+    border: none !important;
+}
+
+.edit_list .yellow_btn{
+    margin-right: 0px;
+}
+
+.edit_list .d-picture_user{
+    margin-bottom: 40px !important;
 }

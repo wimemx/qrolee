@@ -55,22 +55,23 @@
                 <input name="name" type="text" value="{{ entity.name }}" class="grid-5 alpha fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.name }}</span>
             </p>
-            <p>Facebook
+            <p>Página de Facebook
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
                 <span class="close right"></span>
-                <input placeholder="Usuario de facebook" name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha regex_social fright value"/>
+                <input style="width: 140px;" placeholder="facebook" name="fb" type="text" value="{{ entity.fb }}" class="grid-5 alpha regex_social fright value"/>
+                <span class="grid-3 fadein text-right fright no-margin">https://facebook.com/</span>
                 <span class="value grid-5 alpha fright">{{ entity.fb }}</span>
             </p>
-            <p>Twitter
+            <p>Página de Twitter
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
                     </span>
-                <span class="close right"></span>
-                <input name="twitter" type="text" value="{{ entity.twitter }}" class="grid-5 alpha regex_social fright value"/>
+                <span class="twitter fadein">@</span>
+                <input style="text-indent: 15px;" placeholder="twitter" name="twitter" type="text" value="{{ entity.twitter }}" class="grid-5 alpha regex_social fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.twitter }}</span>
             </p>
             <p>Sitio Web
@@ -145,8 +146,10 @@
             {% if entity.picture %}
 
                 <span class="d-picture_user wrapper_picture_user">
+                    <span class="img-wrapper">
                     <img class="img_size_all"
                          src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" />
+                        </span>
                     <span class="del-wrapper loaded">
                             <span class="spot del center picture">Eliminar foto</span>
                         </span>
@@ -175,7 +178,9 @@
                 {% if entity.cover_picture %}
 
                     <span class="d-picture_user wrapper_picture_user">
+                    <span class="img-wrapper">
                         <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.cover_picture }}" />
+                    </span>
                         <span class="del-wrapper loaded">
                             <span class="spot del center cover">Eliminar foto</span>
                         </span>
@@ -256,7 +261,7 @@
                     this_.removeAllFiles();
                     $('.del.picture').fadeOut(300);
                     $('.dz-default.dz-message').fadeIn(300);
-                    //$('.profile-pic').val('');
+                    $('.profile-pic').val('');
                 });
             }
         }
@@ -281,7 +286,7 @@
                     this_.removeAllFiles();
                     $('.del.picture').fadeOut(300);
                     $('.dz-default.dz-message').fadeIn(300);
-                    //$('.profile-pic').val('');
+                    $('.cover-pic').val('');
                 });
             }
         }

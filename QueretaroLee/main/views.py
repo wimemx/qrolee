@@ -432,6 +432,7 @@ def get_events(request, **kwargs):
             event_date.append(event.start_time.month)
             event_date.append(event.start_time.day)
             event_date.append(int(event.id))
+            event_date.append(event.start_time.year)
             events.append(event_date)
 
     if int(request.POST.get('curr_month')) != -1:
@@ -449,12 +450,19 @@ def get_events(request, **kwargs):
 
                 events_ = models.Event.objects.filter(
                     status=status, start_time__month=int(request.POST.get(
-                        'curr_month'))+1, location_id=int(request.POST.get('id_entity')),
+                        'curr_month'))+1,
+                    start_time__year=int(request.POST.get('curr_year')), location_id=int(request.POST.get('id_entity')),
                     owner_id__in=admins_list).order_by('start_time')
             else:
+                if int(request.POST.get('curr_month')) > 11:
+                    current_month = int(request.POST.get('curr_month'))-11
+                else:
+                    current_month = int(request.POST.get('curr_month'))+1
+
+                print current_month
                 events_ = models.Event.objects.filter(
-                    status=status, start_time__month=int(request.POST.get(
-                        'curr_month'))+1).order_by('start_time')
+                    status=status, start_time__month=current_month,
+                    start_time__year=int(request.POST.get('curr_year'))).order_by('start_time')
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
@@ -515,7 +523,6 @@ def get_events(request, **kwargs):
                 else:
                     event_data.append(False)
             events.append(event_data)
-
 
     context = {
         'events': list(events)
@@ -644,7 +651,7 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
         query = [Q(x) for x in q_list]
-        print q_list
+
         activity = None
         if 'join' in data:
             if data['join'] != 'none':
@@ -815,6 +822,7 @@ def advanced_search(request, **kwargs):
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
                     model_name = parent[1]
+                    print model_name
                     parent_model = get_model(app_label, model_name)
 
                     if len(models) > 1:
@@ -832,10 +840,12 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'activity':
                         q_list.append(('type', 'T'))
+                        q_list.append(('activity_id', 9))
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
                     query = [Q(x) for x in q_list]
+                    print q_list
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
                         if related_object:
@@ -1779,18 +1789,22 @@ def generate(content, format="png"):
     con.close()
     return image
 
+
 def load_calendar(events):
     events_months = []
     for event in events:
         # Event date = Month, day, id
-        event_date = []
+        event_date = list()
         event_date.append(event.start_time.month)
         event_date.append(event.start_time.day)
         event_date.append(int(event.id))
+        event_date.append(event.start_time.year)
         events_months.append(event_date)
     hc = calendar.HTMLCalendar(calendar.SUNDAY)
-    hc = hc.formatyear(datetime.datetime.now().year)
-    year = ' '+ str(datetime.datetime.now().year)
+    nextHc = hc.formatyear((datetime.datetime.now().year+1), 12)
+    hc = hc.formatyear(datetime.datetime.now().year, 12)
+    year = ' '+str(datetime.datetime.now().year)
+    nyear = ' '+str(datetime.datetime.now().year+1)
     hc = hc.replace('Sun', 'D')
     hc = hc.replace('Mon', 'L')
     hc = hc.replace('Tue', 'M')
@@ -1806,6 +1820,22 @@ def load_calendar(events):
     hc = hc.replace('jue', 'J')
     hc = hc.replace('vie', 'V')
     hc = hc.replace('sáb', 'S')
+
+    nextHc = nextHc.replace('Sun', 'D')
+    nextHc = nextHc.replace('Mon', 'L')
+    nextHc = nextHc.replace('Tue', 'M')
+    nextHc = nextHc.replace('Wed', 'M')
+    nextHc = nextHc.replace('Thu', 'J')
+    nextHc = nextHc.replace('Fri', 'V')
+    nextHc = nextHc.replace('Sat', 'S')
+
+    nextHc = nextHc.replace('dom', 'D')
+    nextHc = nextHc.replace('lun', 'L')
+    nextHc = nextHc.replace('mar', 'M')
+    nextHc = nextHc.replace('mié', 'M')
+    nextHc = nextHc.replace('jue', 'J')
+    nextHc = nextHc.replace('vie', 'V')
+    nextHc = nextHc.replace('sáb', 'S')
 
     hc = hc.replace('January', 'Enero' + year)
     hc = hc.replace('February', 'Febrero' + year)
@@ -1835,9 +1865,37 @@ def load_calendar(events):
     hc = hc.replace('noVmbre', 'Noviembre' + year)
     hc = hc.replace('diciembre', 'Diciembre' + year)
 
+    nextHc = nextHc.replace('January', 'Enero' + nyear)
+    nextHc = nextHc.replace('February', 'Febrero' + nyear)
+    nextHc = nextHc.replace('March', 'Marzo' + nyear)
+    nextHc = nextHc.replace('April', 'Abril' + nyear)
+    nextHc = nextHc.replace('May', 'Mayo' + nyear)
+    nextHc = nextHc.replace('June', 'Junio' + nyear)
+    nextHc = nextHc.replace('July', 'Julio' + nyear)
+    nextHc = nextHc.replace('August', 'Agosto' + nyear)
+    nextHc = nextHc.replace('September', 'Septiembre'+ nyear)
+    nextHc = nextHc.replace('October', 'Octubre' + nyear)
+    nextHc = nextHc.replace('November', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('December', 'Diciembre' + nyear)
+
+    nextHc = nextHc.replace('enero', 'Enero' + nyear)
+    nextHc = nextHc.replace('febrero', 'Febrero' + nyear)
+    nextHc = nextHc.replace('marzo', 'Marzo' + nyear)
+    nextHc = nextHc.replace('Mzo', 'Marzo' + nyear)
+    nextHc = nextHc.replace('abril', 'Abril' + nyear)
+    nextHc = nextHc.replace('mayo', 'Mayo' + nyear)
+    nextHc = nextHc.replace('junio', 'Junio' + nyear)
+    nextHc = nextHc.replace('julio', 'Julio' + nyear)
+    nextHc = nextHc.replace('agosto', 'Agosto' + nyear)
+    nextHc = nextHc.replace('septiembre', 'Septiembre'+ nyear)
+    nextHc = nextHc.replace('octubre', 'Octubre' + nyear)
+    nextHc = nextHc.replace('noviembre', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('noVmbre', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('diciembre', 'Diciembre' + nyear)
+
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
-
+    unescaped += html_parser.unescape(nextHc)
     return unescaped
 
 

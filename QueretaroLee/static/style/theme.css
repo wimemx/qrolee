@@ -352,12 +352,14 @@ p{
 .gray_text{
     color: #8e8e8e;
 }
+
 .news-feed .user .title{
     width: auto;
 }
     .news-feed a{
         color: inherit;
     }
+
 .news-feed .title{
     width: 100%;
     float: left;
@@ -446,10 +448,14 @@ p{
         margin-right: 15px;
         overflow: hidden;
     }
+    .feed .gray_text{
+        min-width: 100px;
+    }
     .feed .content span{
         font-size: 14px;
     }
-    .feed .content span .action{
+
+    .feed .content .action{
         width: 100%;
     }
         .feed .content span a{
@@ -1394,6 +1400,11 @@ p{
                 display: block;
                 position: relative;
                 top: -20px;
+                float: left;
+            }
+            .sidebar-b .year:nth-child(2){
+                left: 3000px;
+                top: -290px;
             }
             .sidebar-b .year tr{
                 float: left;
@@ -1418,7 +1429,6 @@ p{
                     }
                         .sidebar-b .month .month{
                             font-size: 12px;
-                            cursor: pointer;
                             font-weight: 400;
                             float: left;
                             text-align: left;
@@ -1980,6 +1990,7 @@ p{
     width: 100%;
     float: left;
     margin-bottom: 20px;
+    margin-top: 50px;
 }
 
 .d-add_text_book{
@@ -2614,16 +2625,6 @@ p{
 .border_none{
     border: none !important;
 }
-.dropzone_list{
-    margin-right: 0px !important;
-    width: 206px !important;
-    margin-left: 90px !important;
-}
-
-.dropzone_list .dz-message{
-    width: 200px !important;
-    height: 170px !important;
-}
 
 .fb-img-preview{
     width: 280px;
@@ -2761,13 +2762,6 @@ p{
     margin-top: 0px;
 }
 
-.rate_perfil_list{
-    margin-left: 104px;
-}
-
-.drop_zone_list{
-    margin-bottom: 0px !important;
-}
 
 .container_list{
     margin-left: 28px !important;
@@ -3097,11 +3091,16 @@ form p .invalid_messa{
 
 .wrapper_picture_user{
     height: 200px;
-    overflow: hidden;
     width: 100%;
     display: block;
     margin-top: 0px !important;
 }
+    .wrapper_picture_user .img-wrapper{
+        height: 100%;
+        display: block;
+        overflow: hidden;
+        width: 100%;
+    }
     .wrapper_picture_user img{
         margin: 0 auto;
         display: block;
@@ -3969,7 +3968,7 @@ textarea{
     margin-top: 16px;
 }
 .loaded.del-wrapper{
-    bottom: 0px;
+    bottom: -25px;
 }
     .loaded.del-wrapper .del{
         display: block;
