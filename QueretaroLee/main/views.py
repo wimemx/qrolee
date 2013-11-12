@@ -180,7 +180,7 @@ def get_entities(request, **kwargs):
                 context_fields[str(data)] = field_value
 
         if obj.type.name == 'group':
-            count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
+            count = models.MemberToObject.objects.filter(object=obj.id, object_type='E', is_member=True).values('object').\
                 annotate(count=db_model.Count('user'))
             context_fields['members'] = count[0]['count']
 
@@ -209,7 +209,7 @@ def get_entities(request, **kwargs):
                 context_fields[str(data)] = field_value
 
         if obj.type.name == 'group':
-            count = models.MemberToObject.objects.filter(object=obj.id,object_type='E').values('object').\
+            count = models.MemberToObject.objects.filter(object=obj.id, object_type='E', is_member=True).values('object').\
                 annotate(count=db_model.Count('user'))
             context_fields['members'] = count[0]['count']
 
@@ -272,7 +272,6 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
-
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)

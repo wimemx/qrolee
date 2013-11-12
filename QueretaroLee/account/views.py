@@ -669,6 +669,9 @@ def update_profile(request, **kwargs):
     id_user = request.user.id
     field = request.POST.get('field')
     value = request.POST.get('value')
+    if field == 'password':
+        value = hashlib.md5(value)
+        value = value.hexdigest()
 
     dictionary = {
         field: value
@@ -822,7 +825,7 @@ def registry_page(request, **kwargs):
     user = request.user
     profile = registry.Profile.objects.get(user=user)
     context = {
-        'profile':profile
+        'profile': profile
     }
 
     return render(request, template_name, context)

@@ -1489,9 +1489,11 @@ function edit_form($this, timeout, type, id, event){
         if($this_.find('textarea.value').length > 0){
             value = $this_.find('textarea.value').val();
             field = $this_.find('textarea.value').attr('name');
-        }else if($(this).parent().find('.select_wrapper').length > 0){
+
+        }else if($this_.parent().find('.select_wrapper').length > 0){
             value = $this_.find('select.value').val();
             field = $this_.find('select.value').attr('name');
+
         }
         if(value != ''){
             var url = '';
@@ -1546,9 +1548,11 @@ function edit_form($this, timeout, type, id, event){
             if(field!='password'){
 
                 if(field=='birthday'){
+                    if($this.parent().find('input').val() != ''){
                     date = ($this.parent().find('input').val()).split('-');
                     $this.parent().find('span.value').html(date[2] +
                         '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
+                    }
                 }else{
                     if(valid){
                         if (field == 'start_time'){

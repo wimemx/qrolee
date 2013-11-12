@@ -837,6 +837,7 @@ p{
             .entity .member p{
                 font-size: 11px;
                 margin-top: 10px;
+                clear: left;
             }
     .entity .nav{
         float: left;
@@ -3568,7 +3569,8 @@ textarea{
 }
 
 .qr-div{
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
     .qr-div h3.title{
         margin-top: 50px;

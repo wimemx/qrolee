@@ -66,4 +66,6 @@ urlpatterns = patterns('',
     url(r'^register_ajax_book/', views.register_ajax_book, name='reg_book'),
     url(r'^register_title_click/', views.register_title_click, name='reg_title_click'),
     url(r'^register_external_user/', views.register_external_user, name='register_external_user'),
+    url(r'^recover_password/', views.recover_password, name='recover_password'),
+    url(r'^reset_password/(?P<code>\w+)/$', views.reset_password, name='reset_password'),
 )

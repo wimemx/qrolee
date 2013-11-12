@@ -233,7 +233,7 @@ hyu
     <span style="border: none;" class="data grid-9 fleft no-margin">
         <span style="margin-bottom: 30px;" class="title main">Editar información de tu cuenta</span>
              <p>Contraseña
-                 <span class="controllers_wrapper">
+                 <span class="controllers_wrapper password">
                 <span class="green_btn fright">Editar</span>
                 <span class="yellow_btn fright">Guardar</span>
                      </span>
@@ -291,10 +291,7 @@ hyu
         $(document).ready(function(){
             var timeout = 200;
 
-            $('.yellow_btn').click(function(){
-                var $this_ = $(this).parent().parent();
 
-            });
             $('.green_btn.main').click(function(){
                 $('.controllers_wrapper').each(function(){
                     edit_form($(this), timeout, 0);
@@ -305,6 +302,23 @@ hyu
                     edit_form($(this), timeout, 1);
                 });
             });
+            var curr_url = window.location.href.split('#');
+            if(curr_url.length > 1){
+                $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+                var $this = $('.controllers_wrapper.password');
+                $this.parent().find('span.value').fadeOut(timeout, function(){
+                if($this.parent().find('input.value').length > 0){
+
+                    $this.parent().find('input.value').fadeIn(timeout,function(){
+                        $this.parent().find('.fadein').fadeIn(300);
+                        $this.parent().find('input.value').css({
+                            'color': '#454545'
+                        });
+
+                    });
+                }
+                });
+            }
         });
     </script>
 {% endblock %}
