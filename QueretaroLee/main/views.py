@@ -272,7 +272,7 @@ def get_entities(request, **kwargs):
 
 @login_required(login_url='/')
 def get_entity(request, **kwargs):
-    print request.user
+
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -565,8 +565,17 @@ def event_view(request, **kwargs):
     month = arraymonth[event.start_time.month-1]
     day = event.start_time.day
     year = event.start_time.year
+    categories = models.EntityCategory.objects.filter(id=event.location.id)
+    events_q = {}
+    list_events = models.Event.objects.all().exclude(id=event.id)[0:6]
 
-    list_events = models.Event.objects.filter(owner=event.owner).exclude(id=event.id)
+    for obj in list_events:
+        category = models.EntityCategory.objects.filter(entity = obj.location)
+
+        for cat1 in category:
+            for cat2 in categories:
+                if cat1 == cat2:
+                    events_q[obj.id] = obj
 
     date = {
         'weekday': weekday,
@@ -589,7 +598,7 @@ def event_view(request, **kwargs):
         'event': event,
         'date': date,
         'spot': spot,
-        'list_event': list_events,
+        'list_event': events_q,
         'address': address.split('#'),
         'is_attending': is_attending
     }
@@ -1480,6 +1489,7 @@ def get_profile(request, **kwargs):
 
     context['type'] = type
     context['profile'] = profile
+    context['SITE_URL'] = settings.SITE_URL
 
     return render(request, template, context)
 

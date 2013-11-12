@@ -306,9 +306,15 @@
             {% endif %}
         </div>
             <div class="coments load-margin grid-10 no-margin">
-                {% load disqus_tags %}
-                {% set_disqus_identifier entity_type entity.id %}
-                {% disqus_show_comments %}
+                {% if entity_type.1 == 'group' and not member %}
+                    <div style="display: none;" >
+                {% else %}
+                    <div>
+                {% endif %}
+                    {% load disqus_tags %}
+                    {% set_disqus_identifier entity_type entity.id %}
+                    {% disqus_show_comments %}
+                </div>
                 <div class="titles_author grid-5 border_left">
                     {% if type == 'author' %}
                         <div class="container_titles grid-5 no-margin border_bottom">

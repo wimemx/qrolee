@@ -175,7 +175,7 @@
                              {% for obj in list_genre %}
                                  {% if obj.genre.name %}
                                      {% if forloop.counter <= 3 %}
-                                        <span title="{{ obj.genre.name }}"
+                                        <span title="{{ obj.genre.name }}" style="cursor: auto;!important"
                                               class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
                                             {{ obj.genre.name|truncatechars:11 }}
                                          </span>

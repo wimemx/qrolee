@@ -10,6 +10,7 @@ var men_1 = false;
 var input_val, timer;
 var combo_act = false;
 var date = new Date();
+var csrf_global;
 var curr_month = date.getMonth();
 var curr_year = date.getFullYear();
 var months = ['Enero','Febrero','Marzo','Abril',
@@ -194,6 +195,7 @@ function post_to_fb(caption, description, content, redirect, url){
 
 $(document).ready(function(){
 
+    csrf_global = $('.csrf_header').find('input').val();
     $('.show_text').click(function(){
         var active = parseInt($(this).find('input').val());
         var height = 172;
@@ -306,7 +308,7 @@ $(document).ready(function(){
         if($(this).find('.list_typ').val() == 'list')
             type = 4;
 
-        crsf = $('.csrf_header').find('input').val();
+        crsf = csrf_global;
 
         if($(this).find('.add_type').val() == 'add')
             type_add_list(crsf, type, query);
@@ -416,7 +418,7 @@ $(document).ready(function(){
                 type: "POST",
                 url: '/registry/delete/event/1/',
                 data: {
-                    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                    'csrfmiddlewaretoken': csrf_global,
                     'type': 'account.profile',
                     'is_new': true
                 },
@@ -561,7 +563,7 @@ function fb_obj_search(search, type){
                             type: "POST",
                             url: '/registry/media/upload/',
                             data: {
-                                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                                'csrfmiddlewaretoken': csrf_global,
                                 'fb_img': span_wrapper.find('img').attr('src'),
                                 'folder': folder
                             },
@@ -1061,7 +1063,7 @@ $(document).ready(function(){
             if (type != 'none'){
                 if(!$('p.advanced_search_btn').is(':visible'))
                     $('p.advanced_search_btn').fadeIn(300);
-                result = advanced_search(search, $('.csrf_header').find('input').val());
+                result = advanced_search(search, csrf_global);
             }else{
                 $('p.advanced_search_btn').fadeOut(300);
             }
@@ -1159,6 +1161,7 @@ $(document).ready(function(){
                         0: JSON.stringify(activity)
                     }
                 }
+                console.log(query);
 
                 join = JSON.stringify(join);
                 create_user = true;
@@ -1263,7 +1266,8 @@ $(document).ready(function(){
                 'join': join
             }
             s = JSON.stringify(s);
-            var _ids = advanced_search(s, $('.csrf_header').find('input').val());
+
+            var _ids = advanced_search(s, csrf_global);
             var ids = new Array();
             var distance = '';
             $.each(_ids,function(i){
@@ -1341,7 +1345,7 @@ $(document).ready(function(){
             }
             s = JSON.stringify(s);
             if(_in.length > 0){
-                var _ids = advanced_search(s, $('.csrf_header').find('input').val());
+                var _ids = advanced_search(s, csrf_global);
                 var ids = new Array();
                 $.each(_ids,function(i){
                     ids.push(parseInt(_ids[i].title_id));
@@ -1386,7 +1390,7 @@ $(document).ready(function(){
             $('.results .item').each(function(){
                 $(this).remove();
             });
-            var csrf = $('.csrf_header').find('input').val();
+            var csrf = csrf_global;
             var api = false;
             if(type == 'account.title' || type == 'account.author'){
                 result = advanced_search(search, csrf);
@@ -1937,7 +1941,7 @@ function get_genre($div_text){
             type: "POST",
             url: '/qro_lee/list_genre/',
             data: {
-                'csrfmiddlewaretoken': $('.csrf_header').find('input').val()
+                'csrfmiddlewaretoken': csrf_global
             },
             dataType: 'json'
         }).done(function(data){
@@ -1985,7 +1989,7 @@ function add_genre($span){
     type: "POST",
     url: '/registry/add_genre/',
     data: {
-    'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+    'csrfmiddlewaretoken': csrf_global,
     'id_genre':$span.find('input').val()
     },
     dataType: 'json'
@@ -2054,7 +2058,7 @@ function dialog_titles(csrf, data, id){
 
                         if(id!=4)
                             type = 2;
-                        type_add_list($('.csrf_header').find('input').val(), type, words);
+                        type_add_list(csrf_global, type, words);
 
                     });
                 }
@@ -3512,7 +3516,7 @@ function d_show_dialog(type_message){
         if (input_val != str) {
             timer = setTimeout(function() {
                 input_val = str;
-                csrf = $('.csrf_header').find('input').val();
+                csrf = csrf_global;
                 words = str;
 
                 if(words.length != 0 && words.search(/^\s*$/) != 0){
@@ -3820,7 +3824,7 @@ function list_titles_and_author(data, type, $container, type_message){
                 }
             }
 
-        var csrf = $('.csrf_header').find('input').val();
+        var csrf = csrf_global;
         if(active_sel){
             div_btn_save.fadeOut(200);
             add_my_title(csrf,array_title,5);
@@ -3837,7 +3841,7 @@ function show_upload($this, ajax){
         type: "POST",
         url: '/registry/delete_picture/',
         data: {
-            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'csrfmiddlewaretoken': csrf_global,
             'type': $('.type').val(),
             'id': $('.id_object').val(),
             'cover': cover
