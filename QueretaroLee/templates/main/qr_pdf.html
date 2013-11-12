@@ -1,33 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
-    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <style type="text/css">
-        #qr-code{
-            position: absolute;
-            top: 20px;
-            left: 40px;
-            width: 160px;
-            height: 160px;
-        }
-        .inner{
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-    </style>
-</head>
-<body>
-    <table>
-        <tr>
-            <th>
-                <img id="qr-code" src="{{ site_url }}static/qr/{{ qr }}.png" alt=""/>
-                <div class="inner">
-                    <img src="{{ site_url }}static/img/x.png" alt=""/>
-                </div>
+<style>
+    @page {
+        size: a4 portrait;
+        @frame header_frame {
+            -pdf-frame-content: header_content;
+            left: 270px; width: 255px; top: 50pt; height: 200pt;
 
-            </th>
-        </tr>
-    </table>
+        }
+
+        @frame content_frame {
+            left: 320px; width: 255px; top: 160pt; height: 150pt;
+        }
+        @frame left_frame {
+            -pdf-frame-content: left_content;
+            left: 267px; width: 255px; top: 150pt; height: 200pt;
+
+        }
+        @frame right_frame {
+            -pdf-frame-content: right_content;
+            left: 523px; width: 255px; top: 150pt; height: 200pt;
+
+        }
+        @frame p_frame {
+            -pdf-frame-content: p_content;
+            left: 319px; width: 255px; top: 280pt; height: 200pt;
+
+        }
+        @frame footer_frame {
+            -pdf-frame-content: footer_content;
+            left: 267px; width: 260px; top: 300pt; height: 100pt;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!--<img id="qr-code" src="{{ site_url }}static/qr/{{ qr }}.png" alt=""/>-->
+<!--<img src="{{ site_url }}static/img/x.png" alt=""/>-->
+
+
+    <div style="border:3px solid #3e4f4d; border-bottom: 0px;" id="header_content">
+        <img src="{{ site_url }}static/img/up.jpg" alt=""/>
+    </div>
+
+    <div class="content">
+        <img width="150" height="150" id="qr-code" src="{{ site_url }}static/qr/{{ qr }}.png" alt=""/>
+    </div>
+    <div id="left_content">
+        <img width="2" height="200" src="{{ site_url }}static/img/border.jpg" alt=""/>
+    </div>
+    <div id="right_content">
+        <img width="2" height="200" src="{{ site_url }}static/img/border.jpg" alt=""/>
+    </div>
+    <p id="p_content">{{ site_url }}{{ qr }}</p>
+    <div id="footer_content">
+        <img width="262" src="{{ site_url }}static/img/down.jpg" alt=""/>
+    </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load registry_tags %}
 <div class="grid-15 center">
+    {% if user|is_auth %}
     <a class="grid-2 alpha logo" href="/">
         <span></span>
     </a>
@@ -62,4 +63,11 @@
         </span>
 
     </div>
+    {% else %}
+        <a class="grid-2 no-auth alpha logo" href="/">
+            <span></span>
+        </a>
+    <span class="csrf_header">{% csrf_token %}
+        </span>
+    {% endif %}
 </div>

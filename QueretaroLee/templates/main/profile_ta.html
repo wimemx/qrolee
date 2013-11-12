@@ -258,7 +258,7 @@
                     </span>
                 </span>
                 <p class="descrip_list grid-6 no-margin">
-                    {{ profile.description|truncatechars:280 }}
+                    {{ profile.description|truncatechars:180 }}
                 </p>
             </span>
         {% endif %}
@@ -268,7 +268,7 @@
                      data-layout="button_count" data-action="like" data-show-faces="true" data-share="false">
                 </div>
             </span>
-            <span class="btn_fb_profile" >
+             <span class="btn_fb_profile" >
                 <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ profile.name }}" data-via="QroLee" data-lang="es">Tweet</a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
             </span>
@@ -285,11 +285,11 @@
                             <span class="item_title item_height grid-9 no-margin">
                                 <a href="/qro_lee/profile/title/{{ key }}">
                                     <span class="wrapper_title wrapper_title_list borde_author ">
-                                        <img class="img_size_all" src="{{ value.picture }}" />
+                                        <img class="img_size_all" src="{% if value.cover %}{{ value.cover }}{% else %}{{ value.picture }}{% endif %}" />
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/title/{{ key }}">
-                                    <h3 class="title grid-6 text_tit margin_left">
+                                    <h3 class="title title_book margin_left fleft">
                                         {{ value.title|truncatechars:25 }}
                                     </h3>
                                 </a>
@@ -572,4 +572,3 @@
   js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-

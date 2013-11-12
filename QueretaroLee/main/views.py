@@ -103,10 +103,18 @@ def get_entities(request, **kwargs):
         entity_ids.append(ele.id)
 
     entity = models.Entity.objects.filter(
-        type_id__in=entity_ids, status=status).exclude(user_id=request.user)
-    # admins = models.MemberToObject.objects.filter()
-    user_entities = models.Entity.objects.filter(
-        Q(type_id__in=entity_ids, user_id=request.user, status=status))
+        type_id__in=entity_ids, status=status)
+
+    request_user_is_admin = list()
+    for e in entity:
+        admins = models.MemberToObject.objects.filter(
+            object_type='E', object=e.id, is_admin=True)
+        for a in admins:
+            #print a.user_id
+            if request.user.id == a.user_id:
+                request_user_is_admin.append(e.id)
+    user_entities = entity.filter(id__in=request_user_is_admin)
+    entity = entity.exclude(id__in=request_user_is_admin)
 
     if request.POST.get('field_search_entity'):
         if request.POST['field_search_entity'] == '*':
@@ -727,7 +735,6 @@ def advanced_search(request, **kwargs):
                     q_list = [(model_name+'__list_id', ele.id)]
                     if 'filters' in join:
                         filters = ast.literal_eval(join['filters']['0'])
-                        print filters
                         for filter in filters:
                             q_list.append((filter[0], filter[1]))
                     query = [Q(x) for x in q_list]
@@ -831,7 +838,6 @@ def advanced_search(request, **kwargs):
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
                     model_name = parent[1]
-                    print model_name
                     parent_model = get_model(app_label, model_name)
 
                     if len(models) > 1:
@@ -854,7 +860,6 @@ def advanced_search(request, **kwargs):
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
                     query = [Q(x) for x in q_list]
-                    print q_list
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
                         if related_object:
@@ -891,7 +896,7 @@ def advanced_search(request, **kwargs):
 
 
 @login_required(login_url='/')
-def get_list(request,**kwargs):
+def get_list(request, **kwargs):
     template = kwargs['template_name']
 
     type = ['listas', 'list']
