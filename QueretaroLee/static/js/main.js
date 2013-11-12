@@ -3162,8 +3162,7 @@ function show_dialog(){
             span_text.append(p_text);
             href = 'href="/registry/join_entity/'+$('.d-entity_id').val()+'"';
         }
-
-        if($('.type').val()=="list"){
+        if($('.type').val()=="list" | $('.type').val()=="List" ){
             var type = $(this).find('.type_message').val();
 
             if(type=="out_group"){
