@@ -296,7 +296,7 @@ select{
         }
 #picture{
     height: 180px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 
 }
 #cover{
@@ -517,6 +517,7 @@ p.advanced_search_btn{
         line-height: 20px;
         text-transform: capitalize;
         margin-bottom: 5px;
+        font-size: 18px !important;
     }
     .results .item .wrapper{
         margin:0px
@@ -561,4 +562,14 @@ p.advanced_search_btn{
 .fix-left{
     position: relative;
     left: -16px;
+}
+
+.twitter{
+        position: absolute;
+        top: -2px;
+        left: 220px;
+        z-index: 1;
+    }
+.fadein{
+    display: none;
 }

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load registry_tags %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
@@ -86,12 +87,12 @@
                 <span class="close right"></span>
                 <span class="grid-5 padding-fix alpha fright">
                     <span class="grid-2 fix-left fleft no-margin">
-                        <span class="value">{{ entity.start_time|date:'d/m/Y' }}</span>
+                        <span class="value">{{ entity.start_time|date_tag }}</span>
                         <input name="start_time" type="text" class="value date-init"/>
                     </span>
                     <span class="grid-3 no-margin fright">
                         Hora <input type="text" class="fright grid-2 alpha value hour-init"/>
-                        <span style="margin-left: 10px;" class="value">{{ entity.start_time|date:'h:m:s' }}</span>
+                        <span style="margin-left: 10px;" class="value">{{ entity.start_time|time_tag }}</span>
                     </span>
                 </span>
             </p>
@@ -100,15 +101,15 @@
                     <span class="green_btn fright">Editar</span>
                     <span class="yellow_btn fright">Guardar</span>
                 </span>
-                <span class="close right"></span>
+
                 <span class="grid-5 padding-fix alpha fright">
                     <span class="grid-2 fix-left fleft no-margin">
-                        <span class="value">{{ entity.end_time|date:'d/m/Y' }}</span>
-                        <input name="start_time" type="text" class="value date-init"/>
+                        <span class="value">{{ entity.end_time|date_tag}}</span>
+                        <input name="end_time" type="text" class="value date-end"/>
                     </span>
                     <span class="grid-3 no-margin fright">
-                        Hora <input type="text" class="fright grid-2 alpha value hour-init"/>
-                        <span style="margin-left: 10px;" class="value">{{ entity.end_time }}</span>
+                        Hora <input type="text" class="fright grid-2 alpha value hour-end"/>
+                        <span style="margin-left: 10px;" class="value">{{ entity.end_time|time_tag }}</span>
                     </span>
                 </span>
             </p>
@@ -129,8 +130,10 @@
             {% if entity.picture %}
 
                 <span class="d-picture_user wrapper_picture_user">
+                <span class="img-wrapper">
                     <img class="img_size_all"
                          src="/static/media/users/{{ entity.owner_id }}/event/{{ entity.picture }}" />
+                    </span>
                     <span class="del-wrapper loaded">
                         <span class="spot del center picture">Eliminar foto</span>
                     </span>
@@ -164,7 +167,9 @@
                 {% if entity.cover_picture %}
 
                     <span class="d-picture_user wrapper_picture_user">
+                    <span class="img-wrapper">
                         <img src="/static/media/users/{{ entity.owner_id }}/event/{{ entity.cover_picture }}" />
+                    </span>
                         <span class="del-wrapper loaded">
                             <span class="spot del center cover">Eliminar foto</span>
                         </span>

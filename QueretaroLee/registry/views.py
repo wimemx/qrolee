@@ -251,10 +251,8 @@ def register(request):
     category_ids = entity['category_ids'][0].split(' ')
     cat_ids = list()
     redirect = False
-    print entity['redirect'][0]
     if int(entity['redirect'][0]) == 1:
         redirect = True
-    print redirect
     for ele in category_ids:
         cat_ids.append(int(ele))
 
@@ -417,12 +415,20 @@ def update_entity(request, **kwargs):
             value = 1
     elif field == 'share_fb' or field == 'share_twitter':
         value = int(value)
+    elif field == 'start_time' or field == 'end_time':
+        print
+        value = datetime_from_str(value)
+        value = value[1]
 
     dictionary = {
         field: value
     }
+
     if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
+            id=int(kwargs['entity_id'])).update(**dictionary)
+    elif request.POST.get('event') == '2':
+        event = account.List.objects.filter(
             id=int(kwargs['entity_id'])).update(**dictionary)
     else:
         entity = models.Entity.objects.filter(
@@ -455,12 +461,18 @@ def media_upload(request):
 
     if 'list_picture' in request.POST:
         folder = '/list/'
+        id = request.POST.get('list_picture')
+        entity = account.List.objects.get(id=id)
 
+        if request.POST.get('cover'):
+            entity.cover_picture = str(request.FILES['file'])
+        else:
+            entity.picture = str(request.FILES['file'])
+        entity.save()
     if 'entity' in request.POST:
         folder = '/entity/'
         id = request.POST.get('entity')
         entity = models.Entity.objects.get(id=id)
-
         if request.POST.get('cover'):
             entity.cover_picture = str(request.FILES['file'])
         else:
@@ -479,6 +491,7 @@ def media_upload(request):
         entity.save()
     if 'fb_img' in request.POST and folder != '':
         folder = '/event/'
+
     path_extension = str(request.user.id)+folder
     path = os.path.join(
         os.path.dirname(__file__), '..',
@@ -1093,7 +1106,6 @@ def delete_page(request):
 def delete_picture(request):
     type = request.POST.get('type')
     success = 'False'
-    print type
     if type == 'profile':
         id_user = int(request.POST.get('id'))
         profile = models.Profile.objects.get(user__id=id_user)
@@ -1118,6 +1130,18 @@ def delete_picture(request):
     elif type == 'event':
         id_entity = int(request.POST.get('id'))
         entity = models.Event.objects.get(id=id_entity)
+
+        if entity:
+            success = 'True'
+            if int(request.POST.get('cover')) == 1:
+                entity.cover_picture = ''
+            else:
+                entity.picture = ''
+
+            entity.save()
+    elif type == 'list':
+        id_entity = int(request.POST.get('id'))
+        entity = account.List.objects.get(id=id_entity)
 
         if entity:
             success = 'True'
@@ -1596,6 +1620,7 @@ def edit_list(request, **kwargs):
     template = kwargs['template_name']
 
     context = {
+        'user': request.user,
         'list':list,
         'list_t_a':dict_items,
         'grade':grade
