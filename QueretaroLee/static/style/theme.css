@@ -248,6 +248,16 @@ p{
             display: block;
             background: url('../img/logo_.png') no-repeat 50% 50%;
         }
+.logo_ind{
+    height: 79px;
+    padding: 10px 0px;
+}
+.logo_ind span{
+    width: 100%;
+    height: 79px;
+    display: block;
+    background: url('../img/logo_index.png') no-repeat 50% 50%;
+}
     .header .no-auth.logo{
         width: 74px;
         height: 79px;
@@ -360,7 +370,7 @@ p{
 
 .news-feed{
     background: #fffcf5;
-    margin: 40px 10px 30px 10px;
+    margin: 20px 10px 30px 10px;
     display: block;
 }
 .news-feed .grid-8{
@@ -1003,7 +1013,7 @@ p{
                 border: 1px solid #e4e4e4;
             }
                 .discussion .select .text{
-                    font-size: 10px;
+                    font-size: 12px;
                 }
         .discussion .item{
             height: auto;
@@ -1437,6 +1447,7 @@ p{
                          font-family: 'Conv_fontscore.com_d-dinproregular';
 
                      }
+
 
             .events .sidebar-b .overview{
 
@@ -2142,7 +2153,14 @@ p{
     margin-top: 15px;
     position: relative;
 }
+.container_b .sel_val{
+    height: 20px!important;
+}
 
+.container_b .text{
+
+    padding: 0px!important;
+}
 .p_text_dialog{
     padding-top: 10px !important;
     font-size: 18px;
@@ -2150,7 +2168,9 @@ p{
     font-weight: 500;
     color: #222222 !important;
 }
-
+.sel_val{
+    cursor: pointer;
+}
 .dialog_closet{
     cursor: pointer;
     width: 9px;
@@ -2324,7 +2344,7 @@ p{
     background: #e7cb92;
     position: absolute;
     top: 47px;
-    right: 0px;
+    right: -45px;
     width: 98px;
     display: none;
     z-index: 10;
@@ -2982,6 +3002,10 @@ p{
     padding-bottom: 1px !important;
 }
 
+form input:focus{
+    background: rgb(252, 248, 239)!important;
+}
+
 form p .invalid_messa{
     background: #fff;
     font-weight: normal;
@@ -3403,8 +3427,10 @@ textarea{
 
 .container_crossing{
     height: 328px;
-    overflow: hidden;
     float: left;
+}
+.container_crossing .text{
+    margin-top: 5px;
 }
 .book_crossing .show_t{
     margin-bottom: 50px !important;
@@ -3419,7 +3445,7 @@ textarea{
 }
 
 .titles_mini_crossing{
-    font-size: 13px;
+    font-size: 18px;
     margin-top: 10px!important;
 }
 
@@ -3430,13 +3456,15 @@ textarea{
 }
 
 .container_mini_crossing{
-    margin-top: 12px!important;
+    margin-top: 20px!important;
+    height: 100px;
+
 }
 .text_free{
     font-size: 9px;
 }
 .text_top{
-    margin-top: 4px!important;
+    margin-top: 0px!important;
 }
 
 .book_crossing .wallpaper{
@@ -3445,7 +3473,9 @@ textarea{
     padding-top: 0px!important;
     padding-bottom: 0px!important;
 }
-
+.book_crossing .b{
+    margin-left: 15px;
+}
 .wallpaper .title_cross{
     width: 100% !important;
     text-align: center;
@@ -3516,6 +3546,7 @@ textarea{
     width: 100%;
     float: left;
     text-align: center;
+    font-family: 'Conv_fontscore.com_d-dinproregular'!important;
 }
 
 .int_btn{
@@ -3527,6 +3558,7 @@ textarea{
 .text_field{
     padding-bottom: 5px;
     float: left;
+    margin-top: 10px;
 }
 
 .value_field{
@@ -3612,9 +3644,12 @@ textarea{
 .disc_book .name{
     margin: 0px!important;
 }
-
+.disc_book .answer{
+    border-radius: 5px;
+}
 .disc_book .discussion_response{
-    margin-top: 10px!important;
+    margin-top: 20px!important;
+    margin-bottom: 12px;
 }
 
 .disc_book .line_divide{
@@ -3747,7 +3782,9 @@ textarea{
 .title_part_2{
     margin-top: 12px!important;
 }
-
+.disc_book .din-r{
+    margin-left: 5px;
+}
 .book_register .radio_btn{
     margin-bottom: 10px!important;
 }
@@ -3764,8 +3801,9 @@ textarea{
 }
 .btn_reg{
     background-color: #7ca680!important;
-    left: 50%!important;
-    top: 20px!important;
+    margin-left: 46px!important;
+    cursor: pointer;
+    margin-top: 20px!important;
     padding: 5px 20px 5px 20px!important;
 }
 
@@ -3843,7 +3881,6 @@ textarea{
     width: 100%;
     float: left;
     text-align: center;
-    font-size: 26px;
 }
 
 .book_reg .wrapper{
@@ -3860,7 +3897,7 @@ textarea{
     font-size: 18px;
 }
 .book_reg .center{
-    height: 215px;
+    height: 180px;
 }
 .book_reg .part_bottom{
     width: 100%;
@@ -3872,17 +3909,22 @@ textarea{
 .title_center{
     width: 100%;
     text-align: center;
-    font-size: 12px;
+    font-size: 16px;
     float: left;
     margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .contain_reg .title{
     font-size: 12px;
 }
-
+.contain_reg .sel_val{
+    float: left;
+    left: 0px;
+    height: 27px;
+}
 .part_bottom .map_r{
-    height: 214px;
+    height: 192px;
     margin-left: 15px;
     margin-top: 5px;
 }
@@ -3899,19 +3941,26 @@ textarea{
     position: relative;
     left: 0px!important;
     background-color: #7ca680!important;
-    top: 20px!important;
-    padding: 5px 20px 5px 20px!important;
+    top: 15px!important;
 }
 
 .genre_sel .select_wrapper{
     width: 88px!important;
     left: 6px!important;
 }
-
+.book_reg{
+    margin-bottom: 30px!important;
+    margin-top: 40px!important;
+}
 .book_reg .line_divide{
     width: 100%;
     float: left;
     height: 10px;
+}
+
+.book_reg .select .text{
+    padding: 4px 0px;
+    height: auto;
 }
 
 .sel_spots select{
@@ -4237,6 +4286,13 @@ span.green_btn, span.yellow_btn, input.green_btn {
     color: #fff !important;
 }
 
+.text_cheking{
+    font-size: 18px!important;
+    color: #CCC;
+    margin-top: 20px;
+    cursor: auto;
+    text-decoration: none;
+}
 p input.green_btn{
     height: 25px !important;
 }
@@ -4244,7 +4300,37 @@ p input.green_btn{
     margin-top: 40px;
 }
 
-
+.profile_book .d-title_profile{
+    line-height: 1.2;
+    margin-top: 15px!important;
+}
+.profile_book .grid-9 p{
+    margin-top: 0px!important;
+    margin-bottom: 2px!important;
+    font-size: 13px;
+}
+.text_2{
+    font-size: 13px!important;
+}
+.cuestion{
+    cursor: pointer;
+}
+.cuestion .title{
+    float: left;
+    background: #a06b37;
+}
+.cuestion span{
+    float: left;
+}
+.cuestion .content{
+    float: left;
+    overflow: hidden;
+    height: 0px;
+    background: #edd5a5;
+}
+.container_cuestions{
+    margin-top: 20px;
+}
 .sel_spots.edit_event .dropdown{
     position: absolute;
     top: 30px;
@@ -4266,7 +4352,35 @@ p input.green_btn{
     color: #777;
     font-size: 14px;
 }
-
-
+.btn_login{
+    height: 80px;
+    top: 12px;
+}
+.btn_login .main_btn{
+    background: #f2e28e !important;
+    border: 1px solid #eacea9;
+    padding: 4px 15px;
+    font-family: 'Raleway', sans-serif;
+    transition: all .5s;
+    width: auto !important;
+}
+.btn_login .login{
+    margin-left: 10px;
+}
+.btn_login .text{
+    float: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Raleway';
+}
+.btn_login .main_btn:hover{
+    border-color: #d1a574;
+}
+.form-container .text_no_book{
+    cursor: auto;
+    color: #ee795f!important;
+    text-align: center;
+}
 
 

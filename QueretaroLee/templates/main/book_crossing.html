@@ -49,16 +49,18 @@
                 <span class="icons_center icons_arrows">
                     <span class="grid-6 pos_center">
                         <span class="btn_step tag_btn t_2">Encontré un libro</span>
-                        <span class="icon_arrow"></span>
-                        <span class="btn_step tag_btn t_3">Libera un libro</span>
+                        {% if user.is_active %}
+                            <span class="icon_arrow"></span>
+                            <span class="btn_step tag_btn t_3">Libera un libro</span>
+                        {% endif %}
                     </span>
                </span>
                <div id="map" class="grid-14 map_crossing no-margin"></div>
             </div>
             <div class="grid-15">
-                <span class="grid-7 no-margin mar_rig ">
-                    <span class="title">Últimos libros liberados</span>
-                        <div class="viewport container_crossing">
+                <span class="grid-7 no-margin " style="margin-left: 15px;">
+                    <span class="title title_top">Últimos libros liberados</span>
+                        <div class="viewport container_crossing a">
                             {% for obj, value in books_1.items %}
                                 <span class="grid-7 no-margin container_mini_crossing">
                                     <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
@@ -77,28 +79,24 @@
                                         </span>
                                     </a>
                                     <span class="grid-4 no-margin text_top title_author">{{ value.travel.book.author }}</span>
-                                    <span class="grid-3 no-margin text_top">Liberado por
-                                        <span class="place_pink">{{ value.user.username }}</span>
-                                    </span>
-                                    <span class="grid-2 text_since no-margin d-text_opacity text_top">
-                                        hace {{ value.travel.book.date|member_since }}
+                                    <span class="grid-4 no-margin text" >
+                                        <span class="grid-3 no-margin ">Liberado por
+                                            <span class="place_pink">{{ value.user }}</span>
+                                        </span>
+                                        <span class="grid-3 no-margin text_since d-text_opacity text_top">
+                                           {{ value.travel.book.date|member_since }}
+                                        </span>
                                     </span>
                                 </span>
                             {% endfor %}
                         </div>
-                    {% if books_1 and books_1|length > 3 %}
-                        <span class="grid-3 no-margin place_pink show_t">
-                            <span>Ver todos</span>
-                            <input type="hidden" value="1"/>
-                        </span>
-                    {% endif %}
                 </span>
                 <span class="grid-7 no-margin border_left">
                     <div class="right_marg">
-                        <span class="title">Últimos libros encontrados</span>
-                            <div class="viewport container_crossing">
+                        <span class="title title_top" style="margin-left: 15px;" >Últimos libros encontrados</span>
+                            <div class="viewport container_crossing b">
                                 {% for obj, value in books_2.items %}
-                                    <span class="grid-7 no-margin container_mini_crossing">
+                                    <span class="grid-6 no-margin container_mini_crossing">
                                         <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                             <span class="grid-3 wrapper_mini_crossing borde_author">
                                                 {% if not value.travel.book.picture %}
@@ -114,22 +112,18 @@
                                                 {{ value.travel.book.title }}
                                             </span>
                                         </a>
-                                        <span class="grid-4 no-margin text_top title_author">J.K Rowling</span>
-                                        <span class="grid-3 no-margin text_top">Encontrado por
-                                            <span class="place_pink">{{ value.user.username }}</span>
-                                        </span>
-                                        <span class="grid-2 no-margin text_since d-text_opacity text_top">
-                                            hace {{ value.travel.book.date|member_since }}
+                                        <span class="grid-4 no-margin text_top title_author">{{ value.travel.book.author }}</span>
+                                        <span class="grid-4 no-margin text" >
+                                            <span class="grid-3 no-margin ">Encontrado por
+                                                <span class="place_pink">{{ value.user }}</span>
+                                            </span>
+                                            <span class="grid-3 no-margin text_since d-text_opacity text_top">
+                                                {{ value.travel.book.date|member_since }}
+                                            </span>
                                         </span>
                                     </span>
                                 {% endfor %}
                             </div>
-                        {% if books_2 and books_2|length > 3 %}
-                            <span class="grid-3 no-margin place_pink show_t">
-                                <span>Ver todos</span>
-                                <input type="hidden" value="1"/>
-                            </span>
-                        {% endif %}
                     </div>
                 </span>
 

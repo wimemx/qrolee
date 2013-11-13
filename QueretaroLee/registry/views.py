@@ -1817,14 +1817,48 @@ def update_activity(data):
 
 def cheking_book(request):
     list =  ast.literal_eval(request.POST.get('query'))
-    list['user'] = request.user.id
     code_book = list['code_book']
     del list['code_book']
     book = models.Book.objects.get(code=code_book)
     list['book'] = book
-    list['type_user'] = 1
-    travel = models.Travel.objects.create(**list)
-    travel.save()
+    user = 0
+    cheking = False
+
+    if 'name_ext' in list:
+
+        exist_user = models.ExternalUser.objects.filter(email=list['email_ext'])
+
+        if exist_user:
+            user_cheking = models.Travel.objects.filter(user = exist_user[0].id).latest('status')
+            if user_cheking:
+                if user_cheking.status:
+                    cheking = True
+
+        if not exist_user:
+            user_ext = models.ExternalUser.objects.create(
+                name = list['name_ext'],
+                email = list['email_ext']
+            )
+            user_ext.save()
+        else:
+            user_ext = exist_user[0]
+
+        del list['name_ext']
+        del list['email_ext']
+        list['type_user'] = 0
+        user = user_ext.id
+
+    else:
+        list['type_user'] = 1
+        user = request.user.id
+
+    list['user'] = user
+
+    if not cheking:
+        travel = models.Travel.objects.create(**list)
+        travel.save()
+    else:
+        travel = ''
 
     succes = 'False'
     code = 0
@@ -2000,10 +2034,12 @@ def register_ajax_book(request):
         'meta': list['meta'],
         'status': 1,
         'type_user': 1,
-        'is_new': 1
+        'is_new': 1,
+        'address': list['address']
 
     }
     key = list['key']
+    del list['address']
     del list['lat']
     del list['long']
     del list['meta']
