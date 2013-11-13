@@ -229,7 +229,7 @@ def register_entity(request, **kwargs):
               'una organización en Querétaro Lee.'
 
     elif entity_type == 'spot':
-        entity_type = ['Crear un nuevo lugar', 'spot', 'spot']
+        entity_type = ['Crear un nuevo lugar', 'spot', 'lugar']
         content = 'Llena los campos que se presentan a continuación para registrar un' \
               ' lugar en Querétaro Lee.'
 

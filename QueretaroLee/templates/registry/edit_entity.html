@@ -121,11 +121,11 @@
 
         </p>
         {% endif %}
-            <p>Fecha creación
+            <p>Fecha de creación
                 <span class="controllers_wrapper">
                 <span style="visibility: hidden;" class="green_btn fright">Editar</span>
                     </span>
-                <span class="value no-edit grid-5 alpha fright">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
+                <span class="value no-edit grid-5 alpha fright" style="font-size: 12px;">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
             </p>
             <p>Dirección
                 <span class="controllers_wrapper">
@@ -143,6 +143,34 @@
         </span>
 
         <span class="d-picture_user grid-4 no-margin fright"  >
+            <span class="fb-connect fb-session-required no-margin fright grid-5">
+        {% if entity.fb_id != None and entity.fb_id != '' %}
+            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
+            <p class="checkbox"><span class="fb">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}</span>Compartir publicaciones de Querétaro Lee en Facebook</p>
+            {% if profile.fb_username != '' %}
+            <!--<p class="checkbox"><span class="twitter">
+                {% if entity.share_fb == 1 %}
+                ×
+                {% endif %}
+            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>-->
+        {% endif %}
+        {% else %}
+            <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-5" style="">
+            <input type="hidden" name="fb_id" class="fb_id"/>
+                {% if entity_type.1 == 'group' %}
+                <p style="font-family: 'Raleway' sans-serif; text-align: center;">¿Cuentas ya con un grupo en Facebook?</p>
+                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver grupos de</span>
+                    {% else %}
+                 <p style="font-family: 'Raleway' sans-serif; text-align: center;">¿Cuentas ya con una pagina en Facebook?</p>
+                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver pages de</span>
+                    {% endif %}
+                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+            </span>
+        {% endif %}
+        </span>
             {% if entity.picture %}
 
                 <span class="d-picture_user wrapper_picture_user">
@@ -155,19 +183,25 @@
                         </span>
                 </span>
                 <span class="dropzone_user disable_upload">
-                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                    <form id="picture" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                         <input type="hidden" name="entity" value="{{ entity.id }}"/>
                         <span class="del-wrapper func">
                             <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
                         </span>
                     </form>
                 </span>
             {% else %}
                 <span class="dropzone_user ">
-                    <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                    <form id="picture" class="fright dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                         <input type="hidden" name="entity" value="{{ entity.id }}"/>
                             <span class="del-wrapper func">
                             <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
                         </span>
                     </form>
                 </span>
@@ -186,66 +220,48 @@
                         </span>
                     </span>
                     <span class="dropzone_user disable_upload">
-                        <form id="cover" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <form id="cover" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                             <input type="hidden" name="entity" value="{{ entity.id }}"/>
                                 <input type="hidden" name="cover" value="1"/>
                                 <span class="del-wrapper func">
                             <span class="spot del center cover">Eliminar foto</span>
                         </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
+                        </span>
                         </form>
                     </span>
                 {% else %}
                     <span class="dropzone_user ">
-                        <form id="cover" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <form id="cover" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                             <input type="hidden" name="entity" value="{{ entity.id }}"/>
                             <input type="hidden" name="cover" value="1"/>
                                 <span class="del-wrapper func">
                             <span class="spot del center cover">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
                         </span>
                         </form>
                     </span>
                 {% endif %}
             </span>
         {% endif %}
-    <span style="border:none;" class="data grid-9 fleft fb-session-required no-margin">
-        {% if entity.fb_id != None and entity.fb_id != '' %}
-            <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
-            <p class="checkbox"><span class="fb">
-                {% if entity.share_fb == 1 %}
-                ×
-                {% endif %}</span>Compartir publicaciones de Querétaro Lee en Facebook</p>
-            {% if profile.fb_username != '' %}
-            <!--<p class="checkbox"><span class="twitter">
-                {% if entity.share_fb == 1 %}
-                ×
-                {% endif %}
-            </span>Compartir publicaciones de Twitter en Querétaro Lee</p>-->
-        {% endif %}
-        {% else %}
-            <span style="border: none;margin-top: 0px !important;" class="fb-connect no-margin fleft grid-14" style="">
-            <input type="hidden" name="fb_id" class="fb_id"/>
-                {% if entity_type.1 == 'group' %}
-                <p>¿Cuentas ya con un grupo en Facebook?</p>
-                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver grupos de</span>
-                {% else %}
-                 <p>¿Cuentas ya con una pagina en Facebook?</p>
-                <p class="fb update alpha {{ entity_type.1 }} fleft"><span>Ver pages de</span>
-                {% endif %}
-                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
-            </span>
-        {% endif %}
-        </span>
+
          <div class="grid-8 edit-form fleft margin-50">
             <span class="green_btn main fleft">Editar</span> <span class="yellow_btn main fleft">Guardar</span>
         </div>
     </div>
     </div>
+
     <script type="text/javascript">
         Dropzone.options.picture = {
             maxFiles: 1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Inserte aquí tu foto <span class="legend din-r">(176px - 176px)</span>',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                    '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                    ' </span>',
             init: function() {
                this.on("addedfile", function(file) {
                     $('#picture .dz-message ').fadeOut(300);
@@ -270,7 +286,9 @@
             maxFiles: 1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Inserte aquí tu foto <span class="legend din-r">(176px - 176px)</span>',
+            dictDefaultMessage: 'Arrastre aquí la foto de portada <span class="legend din-r leg1"> o bien </span>' +
+                    '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                    ' </span>',
             init: function() {
                this.on("addedfile", function(file) {
                     $('#cover .dz-message ').fadeOut(300);
