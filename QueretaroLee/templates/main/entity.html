@@ -623,8 +623,8 @@
     {% if entity_type.1 == 'group' %}
         <div class="grid-16 members load no-margin">
         <div class="grid-15 sidebar-a fleft">
-        <h3 class="title main">Miembros del grupo</h3>
         {% if entity.privacy == 0 or member or owner.id == user.id %}
+            <h3 class="title main">Miembros del grupo</h3>
             <div id="scrollbar1">
                 <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport">

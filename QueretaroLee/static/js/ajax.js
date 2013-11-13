@@ -336,7 +336,7 @@ function findUser($ele, userEmail, entity, $parent, member){
                        $(this).parent().parent().find('.user-id').val(), 0,
                        $('.alert-message input.entity').val());
                    if($(this).parent().parent().parent().hasClass('request')){
-                       $this = $(this).parent().parent();
+                       var $this = $(this).parent().parent();
                        var user = $this.find('input.user-id').val();
 
                         $('.affiliate').each(function(index){
@@ -925,7 +925,7 @@ $(document).ready(function(){
 
         });
 
-            $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
+        $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
         }
     });
     $('.alert-message .reject').click(function(){

@@ -184,6 +184,16 @@ form.register{
         font-weight: 400;
         font-family: sans-serif;
     }
+    .banner.fail{
+        color: #EE795F;
+        font-size: 11px;
+        font-family: 'Raleway';
+    }
+    .banner.success{
+        color: #6DA278;
+        font-size: 11px;
+        font-family: 'Raleway';
+    }
         .banner span{
             cursor: pointer;
             text-decoration: underline;

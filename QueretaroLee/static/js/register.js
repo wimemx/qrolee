@@ -88,12 +88,28 @@ $(document).ready(function(){
     $('form').submit(function(e){
         var $form = $(this);
         if(valid_form){
+            $form.find('p').each(function(){
+                $(this).find('input[type=text]').css({
+                    'border-color': '#c2baab'
+                })
+            });
             $.ajax({
             type: "POST",
             url: $(this).attr('action'),
             data: $(this).serialize(),
                 dataType: 'json'
             }).done(function(data) {
+                    if(data.success == 1){
+                        $form.find('.banner').removeClass('fail');
+                        $form.find('.banner').addClass('success').html('Revisa tu correo para cambiar tu contraseña');
+                        $form.find('input[name=email]').val('');
+                        return;
+                    }else if(data.success == 0){
+                        $form.find('.banner').removeClass('success');
+                        $form.find('.banner').addClass('fail').html('No se encontro un usario con ese correo');
+                        $form.find('input[name=email]').val('');
+                        return;
+                    }
                     if(data.success == 'True')
                         window.location.href = data.url;
                     else{
