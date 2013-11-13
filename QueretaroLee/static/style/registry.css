@@ -98,23 +98,21 @@ span.green_btn,span.yellow_btn{
         display: none;
     }
     .data p input:not([type=submit]){
-        background: #fbf6ea;
         height: 23px;
         line-height: 23px;
         display: none;
-        border: 1px solid #c2baab;
+        border: 1px solid #e4e4e4;
         padding: 0px 8px 0px 8px !important;
         text-indent: 0px;
         font-family: 'Conv_fontscore.com_d-dinproregular';
     }
     .data p textarea{
-        background: #fbf6ea;
-        display: none;
+         display: none;
         border: none;
         height: 100px;
         margin-top: 0px;
         margin-bottom: 0px;
-        border: 1px solid #c2baab;
+        border: 1px solid #e4e4e4;
         padding: 10px 8px 0px 8px !important;
     }
     .data .value.map{
@@ -169,10 +167,10 @@ span.green_btn,span.yellow_btn{
     display: none;
 }
 .select{
-    background: #fbf6ea;
+    background: #fff;
     padding: 0px 0px 0px 5px;
     height: 20px;
-    border: 1px solid #c2baab;
+    border: 1px solid #e4e4e4;
     position: relative;
     left: -16px;
 }
@@ -517,7 +515,8 @@ p.advanced_search_btn{
         line-height: 20px;
         text-transform: capitalize;
         margin-bottom: 5px;
-        font-size: 18px !important;
+        font-size: 16px !important;
+        margin-right: 17px;
     }
     .results .item .wrapper{
         margin:0px

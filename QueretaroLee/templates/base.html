@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="{% static "style/normalize.css" %}"/>
     <link rel="stylesheet" href="{% static "style/quantum/16.css" %}"/>
     <link rel="stylesheet" href="{% static "style/main.css" %}"/>
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{% static "style/ie/ie9.css" %}"/>
+    <![endif]-->
 
     <!-- Le Gingue Css -->
     {% block style %}{% endblock %}

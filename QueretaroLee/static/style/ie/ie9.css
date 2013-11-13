@@ -1,0 +1,33 @@
+.sidebar-b .overview{
+    height: 285px !important;
+}
+
+p.social-login{
+    height: 30px;
+}
+    .social-login a.twitter{
+        position: absolute;
+        top: 0px;
+        left: 60px;
+    }
+    .social-login a.fb{
+        position: absolute;
+        top: 0px;
+        left: 142px;
+    }
+
+    input{
+        width: 100%;
+    }
+
+.register .social-login a.twitter{
+        position: absolute;
+        top: 37px;
+        left: 40px;
+        margin: 0px !important;
+    }
+.register .social-login a.fb{
+        left: 120px;
+        top: 37px;
+        margin: 0px !important;
+    }

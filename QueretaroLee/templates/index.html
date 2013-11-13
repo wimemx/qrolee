@@ -23,16 +23,15 @@
         <p class="title"><span></span>
             <a class="close right" href="#"></a>
         </p>
-        <form class="reset-password grid-4 center" action="#" >{% csrf_token %}
+        <form class="reset-password grid-4 center" action="/registry/recover_password/" >{% csrf_token %}
                         <span class="banner">Te enviaremos enseguida tus datos de ingreso</span>
         <p>
             <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -75px"></span> ¿Cuál es tu e-mail?
-            <input name="email" class="required" type="text"/>
+            <input name="email" class="required regex_email" type="text"/>
         </p>
         <p>
-            <input class="center" value="Enviar" type="submit"/>
+            <input class="center recover_pass" value="Enviar" type="submit"/>
         </p>
-
         </form>
 
 
@@ -49,7 +48,7 @@
             </p>
             <p>
                 <span class="reset">¿usuario / contraseña <br> olvidada?</span>
-                <input value="Entrar" type="submit"/>
+                <input value="Entrar" class="submit" type="submit"/>
             </p>
             <p class="social-login">
                 Ingresa con
@@ -57,7 +56,7 @@
                 <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email,publish_actions,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
                    style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
             </p>
-            <span class="banner error"></span>
+
         </form>
         <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
             <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>

@@ -239,12 +239,7 @@ $(document).ready(function(){
         item_select(false, value);
 
     });
-    $('.sidebar-b .month .month').click(function(){
-        $('.d-width-container-event').find('.item').fadeIn(300);
-        $('.d-width-container-event').find('.item').css({
-            'display': 'block'
-        });
-    });
+
     $('.book_crossing .show_t').click(function(){
         var count = $(this).parent().find('.container_crossing').find('.grid-7').length;
         var item_height = count * 107;
@@ -466,6 +461,8 @@ function fb_obj_search(search, type){
                     span_wrapper.find('img').attr('src',obj.cover.source);
                 else if(obj.picture)
                     span_wrapper.find('img').attr('src',obj.picture.data.url);
+                else
+                    span_wrapper.find('img').attr('src','/static/img/create.png');
                 if(obj.link)
                     link.html(obj.link);
                 var web = ' ';
@@ -506,11 +503,12 @@ function fb_obj_search(search, type){
                         $('.fb-img-preview').remove();
                     if(type){
                         $('.lightbox-wrapper').fadeOut(300);
-                        $('input.fb_i').val(obj.id);
                         $('p.fb').find('span').html('Has vinculado con: '+obj.name);
                         update_obj('fb_id',obj.id);
                         return;
                     }
+                    $('input.fb_id').val(obj.id);
+                    console.log(obj.id);
                     clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
                     $('input.fb_id').val(obj.id);
                     $('.lightbox-wrapper').fadeOut(300);
@@ -1491,8 +1489,8 @@ $(document).ready(function(){
                         create_template(type, result, i, create_user);
                 });
             }else{
-               var p = $('<span class="item"><p class="center"> No se pudieron ' +
-                    'encontrar resultados para su búesqeda</p></span>');
+               var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
+                    'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
 
             }
@@ -1563,9 +1561,11 @@ function edit_form($this, timeout, type, id, event){
         if($this_.find('textarea.value').length > 0){
             value = $this_.find('textarea.value').val();
             field = $this_.find('textarea.value').attr('name');
-        }else if($(this).parent().find('.select_wrapper').length > 0){
+
+        }else if($this_.parent().find('.select_wrapper').length > 0){
             value = $this_.find('select.value').val();
             field = $this_.find('select.value').attr('name');
+
         }
         if(value != ''){
             var url = '';
@@ -1620,9 +1620,11 @@ function edit_form($this, timeout, type, id, event){
             if(field!='password'){
 
                 if(field=='birthday'){
+                    if($this.parent().find('input').val() != ''){
                     date = ($this.parent().find('input').val()).split('-');
                     $this.parent().find('span.value').html(date[2] +
                         '-' + months[parseInt(date[1]-1)] + '-' + date[0]);
+                    }
                 }else{
                     if(valid){
                         if (field == 'start_time'){

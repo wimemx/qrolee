@@ -125,7 +125,9 @@ function populateCal(curr_month,$item, current_year){
                             span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
                             p_2.append(span_place_2);
                         }
+                        console.log(e);
                         if($.trim($('input.fb-session-required-val').val()) != 0){
+
                             if(e[10]){
                                 if(!e[11]){
                                     var span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
@@ -336,7 +338,7 @@ function findUser($ele, userEmail, entity, $parent, member){
                        $(this).parent().parent().find('.user-id').val(), 0,
                        $('.alert-message input.entity').val());
                    if($(this).parent().parent().parent().hasClass('request')){
-                       $this = $(this).parent().parent();
+                       var $this = $(this).parent().parent();
                        var user = $this.find('input.user-id').val();
 
                         $('.affiliate').each(function(index){
@@ -514,14 +516,13 @@ $(document).ready(function(){
         }else if (curr_month < 9){
 
         }else{
-            $('table.year .month').each(function(){
-                if($(this).find('.month').length > 0){
-                    var month = $.trim($(this).find('.month').html()).split(' ');
-                    month = month[0];
-                    if ($.trim(month).toLowerCase() == m)
-                        $(this).find('.month').trigger('click');
-                }
-            });
+            if($('.d-width-container-event').find('.item').length > 1){
+                $('.d-width-container-event').find('.item').fadeIn(300);
+                $('.d-width-container-event').find('.item').css({
+                    'display': 'block'
+                });
+            }
+
         }
     });
     $('.part_bottom .green_btn').click(function(){
@@ -656,6 +657,7 @@ $(document).ready(function(){
         load_img_profile();
     }
 
+
     $('.sidebar-a .month').html(months[curr_month]);
     var $item = $('.sidebar-a .item').clone();
 
@@ -763,7 +765,6 @@ $(document).ready(function(){
                         $.each($table, function(){
                             var $this_ = $(this);
                         $(this).find('.month:odd').each(function(index){
-                            //console.log($this_.find('.year').html());
                             if((month-1) == index && year == parseInt($this_.find('.year').html())){
 
                                 $table = $(this).parent().parent().parent();
@@ -773,16 +774,17 @@ $(document).ready(function(){
                                         if($(this).html() == day){
                                             $(this).addClass('active-event');
                                             $(this).click(function(){
-                                                var day = $(this).html();
-                                                var lenth = $('.item').length;
-                                                $('.item').each(function(index){
-                                                    if(!$(this).find('.date').hasClass('day_'+day))
-                                                        $(this).fadeOut();
-                                                    else{
-                                                        $(this).fadeIn();
-                                                        $(this).css('display','block');
-                                                    }
-                                                });
+                                                    var day = $(this).html();
+                                                    var lenth = $('.item').length;
+                                                    $('.item').each(function(index){
+                                                        if(!$(this).find('.date').hasClass('day_'+day))
+                                                            $(this).fadeOut();
+                                                        else{
+                                                            $(this).fadeIn();
+                                                            $(this).css('display','block');
+                                                        }
+                                                    });
+
 
 
                                             });
@@ -818,7 +820,12 @@ $(document).ready(function(){
                 },function(){
                     clickable = true;
                 });
-                $('.sidebar-a .month').html(months[curr_month]);
+                if (curr_month > 11){
+                    $('.sidebar-a .month').html(months[curr_month-12]);
+                }else{
+                    $('.sidebar-a .month').html(months[curr_month]);
+                }
+
 
                 if (curr_month > 11)
                     populateCal(curr_month,$item, curr_year+1);
@@ -838,7 +845,11 @@ $(document).ready(function(){
                 },function(){
                     clickable = true;
                 });
-                $('.sidebar-a .month').html(months[curr_month]);
+                if (curr_month > 11){
+                    $('.sidebar-a .month').html(months[curr_month-12]);
+                }else{
+                    $('.sidebar-a .month').html(months[curr_month]);
+                }
                 populateCal(curr_month,$item);
             }
 
@@ -912,7 +923,7 @@ $(document).ready(function(){
 
         });
 
-            $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
+        $(this).parent().fadeOut(300,removeUser($(this).parent(), user, parseInt($('input.type').val()), $('.alert-message input.entity').val()));
         }
     });
     $('.alert-message .reject').click(function(){
@@ -2138,9 +2149,9 @@ function search_all_header($this){
                             if(i == "org" & Object.keys(data['org']).length>0)
                                 text = 'Organizaciones';
                             if(i == "group" & Object.keys(data['group']).length>0)
-                                text = 'Grupos';
+                                text = 'Grupos de Lectura';
                             if(i == "spot" & Object.keys(data['spot']).length>0)
-                                text = 'Spots';
+                                text = 'Lugares';
                             if(i == "list" & Object.keys(data['list']).length>0)
                                 text = 'Listas';
                             if(i == "title" & Object.keys(data['title']).length>0)

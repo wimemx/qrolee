@@ -59,7 +59,7 @@ def get_num_comments(id):
 
 
 @register.filter
-def feed_type(feed_id):
+def feed_type(feed_id, user):
     feed = models.Activity.objects.get(
         id=feed_id)
     obj_list = list()
@@ -69,6 +69,19 @@ def feed_type(feed_id):
         return ''
     if obj is None:
         return ''
+
+    if user != -1:
+        if feed.added_to_type == 'E':
+            membership = rmodels.MemberToObject.objects.filter(
+                object=added_to.id, user_id=user.id, object_type='E', is_member=True)
+            if not membership:
+                return ''
+        if feed.added_to_type == 'U':
+            membership = rmodels.MemberToObject.objects.filter(
+                object=obj.id, user_id=user.id, object_type='E', is_member=True)
+            if not membership:
+                return ''
+
     obj_list.append(added_to)
     obj_list.append(obj)
     img_url = '/static/media/users/'+str(feed.user_id)+'/'

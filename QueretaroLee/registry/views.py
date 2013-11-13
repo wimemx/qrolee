@@ -10,6 +10,10 @@ from django.db.models import Q
 from django.utils.timezone import utc
 from django.db import models as db_model
 from django.db.models.loading import get_model
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.template.loader import get_template
 
 from account import models as account
 from registry import models, settings
@@ -29,11 +33,9 @@ import hashlib
 import HTMLParser
 import datetime
 from xml.dom import minidom
-from time import gmtime, strftime
 
 
 def index(request, **kwargs):
-
     error = ''
     if request.GET:
 
@@ -227,7 +229,7 @@ def register_entity(request, **kwargs):
               'una organización en Querétaro Lee.'
 
     elif entity_type == 'spot':
-        entity_type = ['Crear un nuevo lugar', 'spot', 'spot']
+        entity_type = ['Crear un nuevo lugar', 'spot', 'lugar']
         content = 'Llena los campos que se presentan a continuación para registrar un' \
               ' lugar en Querétaro Lee.'
 
@@ -291,7 +293,6 @@ def register(request):
             entity_cat = models.EntityCategory.objects.create(
                 entity_id=entity.id, category_id=ele)
     if entity is not None:
-        print redirect
         if redirect:
             succuess = request.user.id
         else:
@@ -416,13 +417,12 @@ def update_entity(request, **kwargs):
     elif field == 'share_fb' or field == 'share_twitter':
         value = int(value)
     elif field == 'start_time' or field == 'end_time':
-        print
         value = datetime_from_str(value)
         value = value[1]
-
     dictionary = {
         field: value
     }
+
 
     if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
@@ -560,7 +560,7 @@ def register_event(request, **kwargs):
 
 def ajax_register_event(request):
     event = dict(request.POST)
-    print event
+
     event['owner_id'] = int(request.user.id)
     profile = models.Profile.objects.filter(
         user__id=request.user.id)[0]
@@ -575,7 +575,6 @@ def ajax_register_event(request):
             event['share_fb'] = 0
         else:
             event['share_fb'] = 1
-
 
     del event['csrfmiddlewaretoken']
     copy = event
@@ -596,7 +595,11 @@ def ajax_register_event(request):
             else:
                 copy[e] = val[0]
 
-    place_spot = int(event['place_spot'])
+    if event['place_spot'] != '':
+        place_spot = int(event['place_spot'])
+    else:
+        place_spot = -1
+    del event['place_spot']
     event = copy
 
     event = models.Event.objects.create(**event)
@@ -776,10 +779,11 @@ def edit_event(request, **kwargs):
         entity_type = ['de la organizacion', 'organization']
     elif entity_type.name == 'spot':
         entity_type = ['del spot', 'spot']
-
+    spots = models.Entity.objects.filter(type__name='spot')
     context = {
         'entity': obj,
-        'entity_type': entity_type
+        'entity_type': entity_type,
+        'spots': spots
     }
     return render(request, template, context)
 
@@ -892,7 +896,7 @@ def remove_add_user(request, **kwargs):
                 super_user = member[0].super_user
             obj_data.append(super_user)
             obj_data.append(bio)
-            print obj_data
+
             users.append(obj_data)
 
         context = {
@@ -911,12 +915,15 @@ def remove_add_user(request, **kwargs):
             obj.request = 0
         elif int(request.POST.get('remove')) == 2:
             obj.is_member = 0
+            obj.is_admin = 0
+            obj.request = 0
         else:
             if obj.request:
                 obj.is_member = True
                 obj.request = 0
             else:
                 obj.is_admin = True
+                obj.is_member = True
                 obj.request = 0
 
         if int(request.POST.get('remove')) == 3:
@@ -1065,7 +1072,6 @@ def delete_title(request):
     id_title = request.POST.get('id_title')
     id_list = request.POST.get('id_list')
     type_list = request.POST.get('type_list')
-    print id_title
     if type_list == 'T':
         title_favorite = account.ListTitle.objects.get(id=id_list)
         title_favorite.delete()
@@ -2196,3 +2202,58 @@ def create_author(name_author, title):
 
     return author
 
+
+def recover_password(request):
+    email = request.POST.get('email')
+    user = models.User.objects.filter(email=email)
+    subject = 'Recuperar contraseña Querétaro Lee'
+    if user:
+        success = 1
+        template = get_template('registry/email.html')
+        reset_code = hashlib.md5(user[0].username+str(user[0].last_login))
+        pass_str = reset_code.hexdigest()
+        pass_str = list(pass_str)
+
+        pass_str = pass_str[:3]+list(str(user[0].id))+pass_str[3:]
+        pass_str = "".join(pass_str)
+        context = Context({
+            'user': user[0],
+            'code': main_settings.SITE_URL+'registry/reset_password/'+pass_str+'#recover'
+        })
+        content = template.render(context)
+        msg = EmailMessage(
+            subject, content,
+            from_email=main_settings.EMAIL_HOST_USER,
+            to=[email], )
+        msg.content_subtype = 'html'
+        msg.send()
+    else:
+        success = 0
+
+    context = {
+        'success': success
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, mimetype='application/json')
+
+
+def reset_password(request, **kwargs):
+    code = kwargs['code']
+    u_id = int(code[3])
+    user = models.User.objects.filter(
+        id=u_id)
+    if user:
+        u_code = hashlib.md5(user[0].username+str(user[0].last_login))
+        u_code = u_code.hexdigest()
+        u_code = list(u_code)
+        u_code = u_code[:3]+list(str(user[0].id))+u_code[3:]
+        u_code = "".join(u_code)
+        user = user[0]
+        if u_code == code:
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            auth.login(request=request, user=user)
+            return HttpResponseRedirect('/accounts/users/edit_profile/'+str(user.id)+'/')
+        else:
+            return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect('/')

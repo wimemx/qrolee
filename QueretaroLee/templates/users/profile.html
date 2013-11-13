@@ -104,23 +104,23 @@
             </p>
         </span>
         {% if user_profile.user_id != user.id %}
-            <span class="member grid-3">
+            <span class="member no-margin grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member %}
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Dejar de seguir">
+                            <input type="submit" class="btn fright" value="Dejar de seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
+                        <p class="din-r followers fright">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
 
                     {% else %}
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
-                            <input type="submit" class="btn " value="Seguir">
+                            <input type="submit" class="btn fright" value="Seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
+                        <p class="din-r followers fright">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
                     {% endif %}
                 </span>
             </span>
@@ -143,14 +143,14 @@
     <div class="grid-16 news-feed load no-margin" style="display: block;" >
         <div style="margin: 30px 0px 0px 30px;" class="grid-10 left">
             {% if activity  %}
-            <h3 class="title">Actividad</h3>
+            <h3 class="title">Actividad reciente</h3>
             <div style="margin:0px;" id="scrollbar1">
                 <div class="scrollbar" style="right: -60px;"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
                 <div class="viewport ">
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id|feed_type:-1 }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
