@@ -110,17 +110,17 @@
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Dejar de seguir">
+                            <input type="submit" class="btn fright" value="Dejar de seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
+                        <p class="din-r followers fright">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
 
                     {% else %}
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
-                            <input type="submit" class="btn " value="Seguir">
+                            <input type="submit" class="btn fright" value="Seguir">
                         </form>
-                        <p class="din-r followers fleft">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
+                        <p class="din-r followers fright">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
                     {% endif %}
                 </span>
             </span>

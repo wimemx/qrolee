@@ -49,6 +49,9 @@ input{
 input, textarea{
     outline: none;
 }
+span, div{
+    position: relative;
+}
 .search input.search_entities{
     width: 161px;
     margin-left: 32px;
@@ -864,12 +867,11 @@ p{
             cursor:pointer;
             font-weight: 500;
             border: 1px solid #CE8D51;
-            margin-left: 94px;
         }
             .entity .member p{
                 font-size: 11px;
                 margin-top: 10px;
-                clear: left;
+                clear: both;
             }
     .entity .nav{
         float: left;
@@ -1877,7 +1879,7 @@ p{
     .lightbox{
         background: url('../img/register_form_bg.png');
         position: relative;
-        background-color: #f4e5c8;
+        background-color: #f4e5c8 !important;
     }
     .lightbox .close{
             width: 9px;
@@ -2988,9 +2990,7 @@ form p .invalid_messa{
     min-height: 90px;
     box-shadow: 0px 5px 5px #ccc
 }
-.alert-message.gray{
 
-}
 .message-header{
     width: 100%;
     height: 20px;
@@ -3949,6 +3949,9 @@ textarea{
     top: 50px;
     right: -38px;
 }
+.member form{
+    width: 100%;
+}
 .account-settings:hover{
     cursor: pointer;
 }
@@ -4211,7 +4214,7 @@ span.green_btn, span.yellow_btn, input.green_btn {
     padding: 4px 9px 4px 9px !important;
     cursor: pointer !important;
     font-size: 12px !important;
-    height: 17px !important;
+    height: auto !important;
     line-height: 17px !important;
     left: 0px !important;
     top: 0px !important;
