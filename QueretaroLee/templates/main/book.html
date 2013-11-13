@@ -63,19 +63,21 @@
                         <span class="title_author">
                             {{ book.user.username }}
                         </span>
-                            en Querétaro, México
+                        {% if create_user %}
+                            {{ create_user.0.address }}
+                        {% endif %}
                     </p>
                 </span>
 
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                        {% if not status_book.status %}
+                        {% if not count_user %}
                             nadie se ha encontrado este libro
                         {% endif %}
-                        {% if status_book.status and count_user|length == 1 %}
+                        {% if count_user and count_user|length == 1 %}
                             una persona se ha encontrado este libro
                         {% endif %}
-                        {% if status_book.status and count_user|length > 1  %}
+                        {% if count_user and count_user|length > 1  %}
                             {{ count_user|length }}
                             personas han encontrado este libro
                         {% endif %}
@@ -104,6 +106,7 @@
                             {% if user.is_active %}
                                 <div class="grid-5 no-margin">
                                     <span class="title grid-5 no-margin title_uno">Selecciona una opcion</span>
+                                    <input type="hidden" class="address" value="" />
                                     <span class="value_option" >
                                         {% if status_book.status %}
                                             <input type="hidden" value="0" />
@@ -187,6 +190,7 @@
                             <div class="grid-15 no-margin no-pandding ">
                                 <span class="container_tab" >
                                     <span class="grid-7 tab_1 container_pop no-margin center">
+                                        <input type="hidden" class="address" value="" />
                                         <span class="title grid-7 no-margin">
                                             Ingresa tu encuentro con este Libro Vagabungo
                                         </span>
@@ -363,7 +367,7 @@
                                                     liberado
                                                 {% endif %}
                                                  el {{ value.travel.date }} en
-                                                plaza de armas, San juan del rio, Qro.
+                                                {{ value.travel.meta }}, {{ value.travel.address }}
                                             </span>
                                             <p>
                                                 {{ value.travel.description}}

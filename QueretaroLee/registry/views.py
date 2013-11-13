@@ -2034,10 +2034,12 @@ def register_ajax_book(request):
         'meta': list['meta'],
         'status': 1,
         'type_user': 1,
-        'is_new': 1
+        'is_new': 1,
+        'address': list['address']
 
     }
     key = list['key']
+    del list['address']
     del list['lat']
     del list['long']
     del list['meta']

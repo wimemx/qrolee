@@ -538,7 +538,8 @@ $(document).ready(function(){
             'meta': $('.meta').val(),
             'isbn': $('.isbn_book').val(),
             'key' : contraseña,
-            'genre': $('.genre_sel').find('select').val()
+            'genre': $('.genre_sel').find('select').val(),
+            'address': $('.address').val()
         }
 
         $.ajax({
@@ -582,8 +583,10 @@ $(document).ready(function(){
             'long': lat_long[1],
             'meta': $('.meta').val(),
             'description': $('.text_descrip').val(),
-            'code_book': $('.code_book').val()
+            'code_book': $('.code_book').val(),
+            'address': $('.address').val()
         }
+
         if($('.name_ext').length > 0){
             query['name_ext'] = $('.name_ext').val();
             query['email_ext'] = $('.email_ext').val();
@@ -639,14 +642,20 @@ $(document).ready(function(){
     $('#form_isbn').submit(function(e){
 
         var isbn = $(this).find('input[name=isbn]').val();
+        var empty = false;
+
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
-        var data_ = api_isbn_search(isbn);
+        if(isbn.length != 0)
+            var data_ = api_isbn_search(isbn);
+        else
+            empty = true;
 
-        if(data_ == -1){
+        if(data_ == -1 | empty){
             e.preventDefault();
-            $(this).find('input[type=submit]').parent().parent().find('.text_no_book');
-            $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
+            var $this = $(this).find('input[type=submit]').parent().parent();
+            $this.find('.text_no_book').remove();
+            $this.append('<p class="place_pink text_no_book">' +
                'No se encontró el isbn verifica que este correcto</p>');
             return false;
         }

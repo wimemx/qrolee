@@ -1695,7 +1695,7 @@ def book_crossing(request, **kwargs):
                 user_book = models.ExternalUser.objects.get(id=obj.user)
                 user_book = user_book.name
 
-            if i == 0:
+            if i == 1:
                 dict_1[obj.book.id] = {
                     'user': user_book,
                     'travel': obj
@@ -1705,7 +1705,6 @@ def book_crossing(request, **kwargs):
                     'user': user_book,
                     'travel': obj
                 }
-    print dict_1
 
     context = {
         'books_1': dict_1,
@@ -1737,6 +1736,7 @@ def book(request, **kwargs):
                                                 annotate(count = db_model.Count('user'))
 
     status_book = models.Travel.objects.filter(book__code=code).latest('id')
+    create_user = models.Travel.objects.filter(book__code=code)
 
     if status_book:
         if int(status_book.type_user) == 1:
@@ -1753,7 +1753,7 @@ def book(request, **kwargs):
                 }
 
         if request.user :
-            exist_cheking = models.Travel.objects.filter(user=request.user.id).exclude(status=0)
+            exist_cheking = models.Travel.objects.filter(user=request.user.id, book__code = code).exclude(status=0)
             if exist_cheking and status_book.status == 1:
                 user_cheking = True
 
@@ -1782,6 +1782,7 @@ def book(request, **kwargs):
 
     context = {
         'book': book,
+        'create_user': create_user,
         'user_': user,
         'list_users': dict,
         'state_1': state_1,
