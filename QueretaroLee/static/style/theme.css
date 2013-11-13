@@ -1433,7 +1433,7 @@ p{
                          font-family: 'Conv_fontscore.com_d-dinproregular';
 
                      }
-                     
+
             .events .sidebar-b .overview{
 
             }
@@ -3951,7 +3951,7 @@ textarea{
     display: block!important;
 }*/
 .account-settings .member{
-    top: 50px;
+    top: 24px;
     right: -38px;
 }
 .member form{
