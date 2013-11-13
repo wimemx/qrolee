@@ -180,6 +180,7 @@ class Travel(models.Model):
     meta = models.TextField(max_length=255)
     user = models.IntegerField(max_length=10)
     is_new = models.BooleanField()
+    address = models.CharField(max_length=255)
     book = models.ForeignKey(Book)
 
     def __unicode__(self):

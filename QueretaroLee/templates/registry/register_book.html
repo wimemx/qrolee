@@ -41,11 +41,15 @@
                             <span class="title grid-3 no-margin">{{ book.title }}</span>
                             <span class="grid-3 no-margin" >Autor: {{ book.author }}</span>
                             <span class="grid-3 no-margin">ISBN: {{ book.isbn }}</span>
-                            <span class="grid-3 no-margin">Editorial: {{ book.publisher }}</span>
+                            <span class="grid-3 no-margin">
+                                {% if book.publisher %}
+                                    Editorial: {{ book.publisher }}
+                                {% endif %}
+                            </span>
                             <span class="grid-3 no-margin discussion genre_sel">
                                 <span class="fleft">Categoría:</span>
                                 <span class="select_wrapper grid-2 alpha">
-                                    <span class="grid-2 select sel_val no-margin">
+                                    <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;" >
                                         <span class="text">Categoría</span>
                                         <span class="dropdown"></span>
                                         <select class="change value" name="privacy">
@@ -63,11 +67,11 @@
                     <span class="line_divide"></span>
                 </span>
                 <div class="part_bottom">
-                    <span class="title title_center">¿Donde vas a liberar este libro?</span>
-                    <div class="grid-11 no-margin center">
-                        <span class="grid-5 no-margin contain_reg">
+                    <span class="title title_center">¿Dónde vas a liberar este libro?</span>
+                    <div class="grid-10 no-margin center">
+                        <span class="grid-4 no-margin contain_reg">
                             <input type="hidden" value="20.0000,-100.090909" class="lat_long" />
-                            <span class="grid-5 no-margin discussion selec_reg">
+                            <span class="grid-4 no-margin discussion selec_reg">
                                 <span class="select_wrapper grid-5 alpha">
                                     <span class="grid-3 select sel_val no-margin">
                                         <span class="text">Pais</span>
@@ -100,22 +104,25 @@
                                     </span>
                                 </span>
                             </span>
-                            <span class="title grid-3 text_2 no-margin">
+                            <span class="title grid-4 text_2 no-margin">
                                 Más información de donde vas a liberar el libro
                             </span>
-                            <span class="grid-5 no-margin">
+                            <span class="grid-4 no-margin">
                                 <input type="text"
-                                       placeholder="en el café, en el restaurante, en la plaza"
+                                       placeholder="en el café, en el restaurante..."
                                        class="meta" />
                             </span>
-                            <span class="grid-5 no-margin">
+                            <input class="address" type="hidden" value="" />
+                            <span class="grid-4 no-margin">
                                 <input type="hidden" name="api_type" class="api_type" value="{{ api_type }}"/>
                                 <span class="green_btn fright">Registrar</span>
                             </span>
                         </span>
                         <div id="reg_map" class="map_r grid-6 no-margin"></div>
+                        <span class="pixeles grid-6 recomendation">
+                            Arrastra el ping para poner más precisa tu ubicación
+                        </span>
                     </div>
-
                 </div>
             </div>
         </div>

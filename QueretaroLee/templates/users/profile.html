@@ -79,25 +79,23 @@
                         <span class='text_act' >
                             ¿Qué estás leyendo?
                             <input type="hidden" class="type_message"
-                                   value="show_titles" />
-                        <span class="green_btn ">Editar</span>
+                                   value="show_titles" /><br>
+                        <span class="title_author" style="line-height: 2.2; color: #f89883 !important">Editar</span>
                         </span>
                     {% else %}
                         No está leyendo nada en este momento
                     {% endif %}
                 {% else %}
-                    Acualmente está leyendo
-                    <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author">
-                            {{ act_title.title.title|truncatechars:20 }}
+                    Actualmente está leyendo:<br>
+                    <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author" style="margin:0">
+                            {{ act_title.title.title }}
                         </a>
-                    {% if user_profile.user.id == user.id %}
-                        <span class="green_btn message_alert ">
-                            <input class="type_message"
-                            type="hidden" value="edit_title_read"/>
-                            <input class="id_list"
-                            type="hidden" value="{{ act_title.id }}"/>
-                            <input class="name_title"
-                            type="hidden" value="{{ act_title.title.title }}"/>
+                    {% if user_profile.user.id == user.id %}<br>
+                        <span class="message_alert " style="line-height: 2.2; color: #f89883 !important">
+                            <input class="type_message" type="hidden" value="edit_title_read"/>
+                            <input class="id_list"type="hidden" value="{{ act_title.id }}"/>
+                            <input class="name_title"type="hidden" value="{{ act_title.title.title }}"/>
+                            Editar
                         </span>
                     {% endif %}
                 {% endif %}
@@ -176,15 +174,19 @@
                                      {% if forloop.counter <= 3 %}
                                         <span title="{{ obj.genre.name }}" style="cursor: auto;!important"
                                               class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
-                                            {{ obj.genre.name|truncatechars:11 }}
+                                            {% if list_genre|length == 1 %}
+                                                {{ obj.genre.name }}
+                                            {% else %}
+                                                {{ obj.genre.name|truncatechars:11 }}
+                                            {% endif %}
                                          </span>
                                      {% endif %}
                                  {% endif %}
                              {% empty %}
                                  {% if user_profile.user.id == user.id %}
-                                    <span class="place_pink my_items" style="cursor: none!important;" >Agrega un nuevo género</span>
+                                    <span class="place_pink my_items" style="cursor: auto;!important;" >Agrega un nuevo género</span>
                                  {% else %}
-                                     <span class="gray_7 my_items" style="cursor: none!important;">Ningun género favorito</span>
+                                     <span class="gray_7 my_items" style="cursor: auto;!important;">Ningun género favorito</span>
                                  {% endif %}
                              {% endfor %}
                          </span>
@@ -200,13 +202,21 @@
                                     {% endif %}
                                     ">
                                         <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.0|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.0|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -238,14 +248,22 @@
                                     ">
                                         <a title="{{ value.title }}" class="place_pink my_items"
                                            href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.1|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a title="{{ value.title }}" class="place_pink my_items"
                                            href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.1|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% endif %}

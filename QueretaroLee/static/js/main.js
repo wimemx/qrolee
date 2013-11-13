@@ -691,7 +691,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title:data[ind]['book'][0]
+                title: data[ind]['book']
             });
             }
             counter++;
@@ -785,7 +785,7 @@ function update_latlog(lat_long){
 function map_select(){
     var country = '';
     var state = '';
-    var city = '';;
+    var city = '';
     var index = 0;
     $.each($('.selec_reg .sel_val'), function(){
         if(index == 0)
@@ -796,6 +796,7 @@ function map_select(){
             city =$(this).find('option:selected').val();
         index++;
     });
+    $('.address').val(city + ', ' +state);
     map_cheking(country, state, city);
 }
 
@@ -806,7 +807,80 @@ function show_text($elem, message){
     });
 }
 
+function load_map_crossing(){
+    var query;
+    if($('.type_').val() == 1){
+        query = {
+            'status': 1
+        }
+    }else{
+        var code = $('.code_book').val();
+        query = {
+            'status': 1,
+            'book__code': code
+        }
+    }
+    fields = ['user','book','lat','long'];
+    and = 1;
+    join = {
+        'tables':{
+            0: JSON.stringify(['registry.book'])
+        },
+        'quieres':{
+            0: JSON.stringify(['id'])
+        },
+        'fields':{
+            0: JSON.stringify(['id','title'])
+        }
+    }
+    join = JSON.stringify(join);
+
+    var search = {
+        'type': 'registry.travel',
+        'fields': JSON.stringify(fields),
+        'value': JSON.stringify(query),
+        'and': and,
+        'join': join
+    }
+    search = JSON.stringify(search);
+    var csrf = $('.csrf_header').find('input').val();
+    var data = advanced_search(search, csrf);
+    dmap(data,2);
+}
+
 $(document).ready(function(){
+
+    $('.cuestion').click(function(){
+
+        var $cuestion = $(this);
+        var content = $cuestion.find('.content');
+        var height = parseInt(content.css('height').replace('px',''));
+        var max_height = parseInt(content.find('span').css('height').replace('px',''));
+
+        $.each($('.cuestion'),function(){
+
+            var hg = parseInt($(this).find('.content').css('height').replace('px',''));
+
+            if(hg > 0)
+                $(this).find('.content').animate({
+                    'height': 0
+                },250, function() {
+
+                });
+        });
+
+        if(height > 0)
+            height = 0;
+        else
+            height = max_height;
+
+        $(this).find('.content').animate({
+            'height': height
+        },300, function() {
+            // Animation complete.
+        });
+
+    });
 
     $('.btn_fr').click(function(){
         var opc_1 = '.tab_2';
@@ -815,8 +889,10 @@ $(document).ready(function(){
             opc_1 = '.tab_1';
             opc_2 = '.tab_2';
         }
-        $(opc_1).fadeOut(250,function(){
-                $(opc_2).fadeIn(250);
+        $(opc_1).fadeOut(300,function(){
+                $(opc_2).fadeIn(300, function(){
+                    map_select();
+                });
         });
     });
 
@@ -972,12 +1048,14 @@ $(document).ready(function(){
         }
     });
 
-    var view_more = true;
     $('.news-feed .more').click(function(){
         var $this = $(this);
+        var view_more = parseInt($this.find('input').val());
         var elements = $(this).parent().find('.viewport .overview .item').length - 2;
         var height = $(this).parent().outerHeight(true);
-        if(view_more){
+
+        if(view_more == 1){
+            view_more = 0;
             $(this).parent().animate({
                 'height': height+(elements * 45)
             }, function(){
@@ -985,24 +1063,24 @@ $(document).ready(function(){
                 $(this).find('.viewport').animate({
                     'height': h+(elements*45)
                 }, function(){
-                    $this.html('ver menos');
-                    view_more = false;
+                    $this.find('span').html('ver menos');
                 });
             });
         }else{
             var h = $(this).parent().find('.viewport').outerHeight(false);
+            view_more = 1;
             $(this).parent().find('.viewport').animate({
                 'height': h-(elements*45)
             }, function(){
                 $(this).parent().animate({
                     'height': height-(elements * 45)
                 },function(){
-                    $this.html('ver más');
-                    view_more = true;
+                    $this.find('span').html('ver más');
                 })
             });
 
         }
+        $this.find('input').val(view_more);
     });
 
     $('.filter .checkbox').click(function(){
@@ -1415,7 +1493,6 @@ $(document).ready(function(){
                var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
                     'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
-
             }
 
         }
@@ -1919,8 +1996,9 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
-        title = title.substring(0, 16);
-        h3.html(title+' ...');
+
+        title = truncText(title, 30);
+        h3.html(title);
         $('.results').append(item);
         return;
     }
@@ -2017,7 +2095,7 @@ query = {
 
 function dialog_titles(csrf, data, id){
     $('.dialog-confirm').empty();
-    div_closet = $('<span class="dialog_closet"></span>');
+    div_closet = $('');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);
@@ -2838,10 +2916,10 @@ function add_my_title(csrf, array_title, type){
                 $('.title_act_read').fadeOut(250,function(){
                     $(this).remove();
                 });
-                p = $('<p class="title_act_read">Acualmente está leyendo</p>');
-                a_author = $('<a class="title_author"></a>');
-                a_author.append(truncText(data.name,10));
-                span_btn = $('<span class="green_btn message_alert">Editar</span>');
+                p = $('<p class="title_act_read">Actualmente está leyendo:<br></p>');
+                a_author = $('<a class="title_author" style="margin:0 !important;"></a>');
+                a_author.append(data.name);
+                span_btn = $('<br><span class="message_alert " style="line-height: 2.2; color: #f89883 !important">Editar</span>');
                 input_l = $('<input class="type_message" type="hidden" value="edit_title_read">');
                 input_id = $('<input class="id_list" type="hidden" value="' + data.id_list + '">');
                 input_nam = $('<input class="name_title" type="hidden" value="' + data.name + '">');
@@ -3242,13 +3320,12 @@ function show_dialog(){
             if(type=="edit_title_read"){
                 name_title = $(this).find('.name_title').val();
                 text = 'Editar qué estoy leyendo actualmente';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
+                p_text = $('<p class="p_text_dialog" style=" margin-bottom: 0px; ">' + text + '</p>');
                 span_text.append(p_text);
-                text2 = '¿ Terminaste de leer ' + name_title + '?';
+                text2 = '¿Terminaste de leer ' + name_title + '?';
                 p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
                 span_text.append(p_text2);
-                p_text3 = $('<p class="p_text_mini2">Fecha en que terminaste de leer' +
-                    name_title + '</p>');
+                p_text3 = $('<p class="p_text_mini2">¿Cuándo terminaste de leerlo? </p>');
                 span_text.append(p_text3);
                 input_date = $('<input type="text" class="date_read"/>');
                 var date = new Date();
@@ -3285,13 +3362,14 @@ function show_dialog(){
 
             href = 'href="/accounts/delete_user/"';
         }
-        div_closet = $('<span class="dialog_closet"></span>');
+        div_closet = $('');
         div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
         btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
         btn_acept = $('<a class="dialog_btn green_btn" ' + href + ' >Aceptar</a>');
         container_btn = $('<div class="dialog_container_btn"></div>');
-        container_btn.append(btn_acept);
         container_btn.append(btn_cancel);
+        container_btn.append(btn_acept);
+
 
         $('.dialog-confirm').append(div_text);
         div_text.append(div_closet);
@@ -3485,7 +3563,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
 function d_show_dialog(type_message){
 
     $('.dialog-confirm').empty();
-    div_closet = $('<span class="dialog_closet"></span>');
+    div_closet = $('');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);

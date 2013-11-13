@@ -67,7 +67,10 @@
                 </span>
             </span>
             {% if events|length > 2 %}
-                <span class="spot more bold fright">ver todos</span>
+                <span class="spot more bold fright">
+                    <span>ver todos</span>
+                    <input type="hidden" value="1" />
+                </span>
             {% endif %}
             </span>
 
@@ -89,7 +92,10 @@
                 </span>
             </span>
             {% if groups|length > 2 %}
-            <span class="spot bold more fright">ver todos</span>
+            <span class="spot bold more fright">
+                <span>ver todos</span>
+                <input type="hidden" value="1" />
+            </span>
             {% endif %}
             </span>
 
@@ -111,7 +117,10 @@
                 </span>
             </span>
             {% if organizations|length > 2 %}
-                <span class="spot bold more fright">ver todos</span>
+                <span class="spot bold more fright">
+                    <span>ver todos</span>
+                    <input type="hidden" value="1" />
+                </span>
             {% endif %}
             </span>
 
@@ -128,7 +137,10 @@
                 </span>
             </span>
             {% if pages|length > 2 %}
-            <span class="spot bold more fright">ver todos</span>
+            <span class="spot bold more fright">
+                <span>ver todos</span>
+                <input type="hidden" value="1" />
+            </span>
             {% endif %}
             <a href="/accounts/users/registry_page/">
                 <span style="clear:both;background-image: none;" class="brown_btn fleft">

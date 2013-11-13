@@ -1681,25 +1681,30 @@ def get_page(request, **kwargs):
 def book_crossing(request, **kwargs):
 
     template = kwargs['template_name']
-    books_1 = models.Travel.objects.filter(status=1)
     dict_1 = {}
-
-    for obj in books_1:
-        user_book = account_models.User.objects.get(id=obj.user)
-        dict_1[obj.id] = {
-            'user': user_book,
-            'travel': obj
-        }
-
-    books_2 = models.Travel.objects.filter(status=0)
     dict_2 = {}
 
-    for obj in books_2:
-        user_book = account_models.User.objects.get(id=obj.user)
-        dict_2[obj.id] = {
-            'user': user_book,
-            'travel': obj
-        }
+    for i in range(2):
+        books = models.Travel.objects.filter(status=i)
+        print books
+        for obj in books:
+            if int(obj.type_user) == 1:
+                user_book = account_models.User.objects.get(id=obj.user)
+                user_book = user_book.username
+            else:
+                user_book = models.ExternalUser.objects.get(id=obj.user)
+                user_book = user_book.name
+
+            if i == 1:
+                dict_1[obj.book.id] = {
+                    'user': user_book,
+                    'travel': obj
+                }
+            else:
+                dict_2[obj.book.id] = {
+                    'user': user_book,
+                    'travel': obj
+                }
 
     context = {
         'books_1': dict_1,
@@ -1720,51 +1725,67 @@ def book(request, **kwargs):
 
     active = str(code).split('_')
     cheking = False
-
-    if int(active[1]) == 1:
-        cheking = True
+    user_cheking = False
 
     code = active[0]
     book = models.Book.objects.get(code=code)
-    list_users = models.Travel.objects.filter(book__code=code)
+    list_users = models.Travel.objects.filter(book__code=code).order_by('date')
 
-    count_user =models.Travel.objects.filter(book__code=code).\
-                values('user').annotate(count = db_model.Count('user'))
+    count_user =models.Travel.objects.filter(db_model.Q(book__code=code) &
+                                             db_model.Q(status=0)).values('user').\
+                                                annotate(count = db_model.Count('user'))
 
     status_book = models.Travel.objects.filter(book__code=code).latest('id')
+    create_user = models.Travel.objects.filter(book__code=code)
 
     if status_book:
-        find_user = models.Profile.objects.filter(user__id=status_book.user)
+        if int(status_book.type_user) == 1:
+            find_user = models.Profile.objects.filter(user__id=status_book.user)
+            if find_user:
+                find_user = {
+                    'name': find_user[0].user.username
+                }
+        else:
+            find_user = models.ExternalUser.objects.filter(id=status_book.user)
+            if find_user:
+                find_user = {
+                    'name': find_user[0].name
+                }
+
+        if request.user :
+            exist_cheking = models.Travel.objects.filter(user=request.user.id, book__code = code).exclude(status=0)
+            if exist_cheking and status_book.status == 1:
+                user_cheking = True
+
+    if int(active[1]) == 1 and not user_cheking:
+        cheking = True
 
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
-
     dict = {}
-    count = 1
+    index = 1
     for obj in list_users:
-        if count > 1:
+        picture = ''
+        if int(obj.type_user) == 1:
             user_book = account_models.User.objects.get(id=obj.user)
-            dict[obj.id] = {
-                'user': user_book,
-                'travel': obj
-            }
+            user_book = user_book.username
+            picture = models.Profile.objects.get(user__id=obj.user)
+            picture = picture.picture
+        else:
+            user_book = models.ExternalUser.objects.get(id=obj.user)
+            user_book = user_book.name
 
-        count += 1
-
-    if len(state_1) > 1:
-        state_1 = True
-    else:
-        state_1 = False
-
-    if len(state_2) > 1:
-        state_2 = True
-    else:
-        state_2 = False
-
+        dict[index] = {
+            'user': user_book,
+            'travel': obj,
+            'picture': picture
+        }
+        index = index + 1
 
     context = {
         'book': book,
+        'create_user': create_user,
         'user_': user,
         'list_users': dict,
         'state_1': state_1,

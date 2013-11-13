@@ -22,7 +22,7 @@
 
 {% block main_site %}
     <div class="grid-16">
-        <div class="grid-16 entity no-margin">
+        <div class="grid-16 entity no-margin profile_book">
             <span class="wrapper fleft borde_author borde_title">
                 {% if not book.picture %}
                     <img class="img_size_all" src="/static/img/create.png" alt="{{ book.title }}"/>
@@ -33,7 +33,7 @@
             </span>
                 <span class="general-info no-margin grid-7">
                 <h3 class="title d-title_profile" >
-                    {{ book.title|title|truncatechars:25 }}
+                    {{ book.title|title }}
                 </h3>
                 <p class="text_profile">
                     {% if name_author != 'autor anonimo' %}
@@ -63,19 +63,21 @@
                         <span class="title_author">
                             {{ book.user.username }}
                         </span>
-                            en Querétaro, México
+                        {% if create_user %}
+                            {{ create_user.0.address }}
+                        {% endif %}
                     </p>
                 </span>
 
                 <span class="grid-9 no-margin ">
                     <p class="text_profile">
-                        {% if not status_book.status %}
+                        {% if not count_user %}
                             nadie se ha encontrado este libro
                         {% endif %}
-                        {% if status_book.status and count_user|length == 1 %}
+                        {% if count_user and count_user|length == 1 %}
                             una persona se ha encontrado este libro
                         {% endif %}
-                        {% if status_book.status and count_user|length > 1  %}
+                        {% if count_user and count_user|length > 1  %}
                             {{ count_user|length }}
                             personas han encontrado este libro
                         {% endif %}
@@ -90,8 +92,8 @@
                     {% elif not status_book.status %}
                         <span style="background: url(/static/img/book_user.png) no-repeat 0px 0px;
                         height: 100px;width: 100px;float: left;"></span>
-                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ find_user.0.user.username }}</span>
-                        <span class="text_by grid-4">{{ find_user.0.city }}</span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ find_user.name }}</span>
+                        <span class="text_by grid-4"></span>
 
                     {% endif %}
                 </span>
@@ -101,9 +103,151 @@
                     <input type="hidden" value="2" class="type_"/>
                     <div class="grid-15 no-margin no-pandding book_register">
                         {% if cheking %}
-                            {% if user.is_active%}
+                            {% if user.is_active %}
                                 <div class="grid-5 no-margin">
                                     <span class="title grid-5 no-margin title_uno">Selecciona una opcion</span>
+                                    <input type="hidden" class="address" value="" />
+                                    <span class="value_option" >
+                                        {% if status_book.status %}
+                                            <input type="hidden" value="0" />
+                                            <span class="grid-5 no-margin btn_ra find">
+                                                <img src="/static/img/radioOn.png" class="radio_btn radio_buttom fleft">
+                                                <span class="fleft">Encontré este libro y lo estoy leyendo</span>
+                                            </span>
+                                            <span class="grid-5 no-margin btn_ra lib">
+                                                <img src="/static/img/radioOff.png" class="radio_btn fleft radio_buttom">
+                                                <span class="fleft">Deseo liberar este libro</span>
+                                            </span>
+                                        {% else %}
+                                            <input type="hidden" value="1" />
+                                            <span class="grid-5 no-margin find">
+                                                <img src="/static/img/radioOff.png" class="radio_btn radio_buttom fleft">
+                                                <span class="fleft">Encontré este libro y lo estoy leyendo</span>
+                                            </span>
+                                            <span class="grid-5 no-margin lib">
+                                                <img src="/static/img/radioOn.png" class="radio_btn fleft radio_buttom">
+                                                <span class="fleft">Deseo liberar este libro</span>
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="title grid-5 text_1 no-margin">¿ Dónde encontraste este libro ?</span>
+                                    <span class="grid-5 no-margin discussion selec_reg">
+                                        <span class="select_wrapper grid-5 alpha">
+                                            <span class="grid-3 select sel_val no-margin">
+                                                <span class="text">Pais</span>
+                                                <span class="dropdown"></span>
+                                                <select class="change value" name="privacy">
+                                                    <option value="Mexico">México</option>
+                                                    <option value="España">España</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                        <span class="select_wrapper grid-5 alpha">
+                                            <span class="grid-3 select sel_val no-margin">
+                                                <span class="text">Estado</span>
+                                                <span class="dropdown"></span>
+                                                <select class="change value" name="privacy">
+                                                    <option value="Guanajuato">Guanajuato</option>
+                                                    <option value="Queretaro">Queretaro</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                        <span class="select_wrapper grid-5 alpha">
+                                            <span class="grid-3 select sel_val no-margin">
+                                                <span class="text">Ciudad</span>
+                                                <span class="dropdown"></span>
+                                                <select class="change value" name="privacy">
+                                                    <option value="moroleon">Moroleon</option>
+                                                    <option value="uriangato">Uriangato</option>
+                                                    <option value="Queretaro">Queretaro</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span class="title grid-5 text_2 no-margin">
+                                        Más información de donde encontraste el libro
+                                    </span>
+                                    <span class="grid-5 no-margin">
+                                        <input type="text"
+                                               placeholder="en el café, en el restaurante, en la plaza"
+                                               class="meta" />
+                                    </span>
+                                    <span class="title grid-5 no-margin">
+                                        Comentario del libro
+                                    </span>
+                                    <span class="grid-5 no-margin">
+                                        <textarea class="text_descrip grid-5 no-margin"></textarea>
+                                    </span>
+                                </div>
+                                <div class="grid-10 no-margin map_book_reg">
+                                    <input type="hidden" value="20.0000,-100.090909" class="lat_long" />
+                                    <div id="reg_map" class="grid-10 no-margin map_crossing"></div>
+                                     <span class="pixeles grid-10 recomendation" style="left:30px;" >
+                                        Arrastra el ping para poner más precisa tu ubicación
+                                    </span>
+                                    <span class="grid-6 fright no-margin">
+                                        <span class="btn_reg fleft">Registrar</span>
+                                    </span>
+                                </div>
+                        {% else %}
+                            <div class="grid-15 no-margin no-pandding ">
+                                <span class="container_tab" >
+                                    <span class="grid-7 tab_1 container_pop no-margin center">
+                                        <input type="hidden" class="address" value="" />
+                                        <span class="title grid-7 no-margin">
+                                            Ingresa tu encuentro con este Libro Vagabungo
+                                        </span>
+                                        <form id="form_login" method="post" class="login grid-3 no-margin"
+                                              action="/registry/login/" style="display: block;">
+                                            {% csrf_token %}
+                                            <p>
+                                                <span class="text_field">Usuario</span>
+                                                <input name="username" class="required" type="text">
+                                            </p>
+                                            <p>
+                                                <span class="text_field">Contraseña</span>
+                                                <input name="password" class="required" type="password">
+                                            </p>
+                                            <p>
+                                                <input value="Ingresar" class="int_btn" type="submit">
+                                            </p>
+                                        </form>
+                                        <span class="title log grid-3 no-margin">
+                                            Ingresa con
+                                        </span>
+                                        <a class="social fleft" href="">
+                                            <span style="background: url('/static/img/social_login.png') no-repeat 0px 0px" class="fb_btn"></span>
+                                        </a>
+                                        <a class="social fleft" href="">
+                                            <span style="background: url('/static/img/social_login.png') no-repeat 0px -20px" class="twitter_btn"></span>
+                                        </a>
+                                        <span class="grid-3 text_log no-margin">
+                                            ¿no tienes cuenta?
+                                            <span class="title_author btn_fr t_1 cursor_p">
+                                                ingresa aquí
+                                           Ingresar como usuario anónimo
+                                            </span>
+                                        </span>
+                                        <img class="shadow" src="/static/img/form_shadow.png" alt="">
+                                    </span>
+                                    <span class="tab_2" style="display: none;height: 250px;">
+                                        <div class="grid-5 no-margin">
+                                    <span class="title grid-5 no-margin title_uno">
+                                        Registrarse como usuario anómino
+                                    </span>
+                                    <span class="title grid-5 no-margin">
+                                        Nombre
+                                    </span>
+                                    <span class="grid-5 no-margin">
+                                        <input type="text" value="" class="name_ext" />
+                                    </span>
+                                    <span class="title grid-5 no-margin ">
+                                        Email
+                                    </span>
+                                    <span class="grid-5 no-margin">
+                                        <input type="text" value="" class="email_ext" />
+                                    </span>
+                                    <span class="title grid-5 no-margin ">Selecciona una opcion</span>
                                     <span class="value_option" >
                                         {% if status_book.status %}
                                             <input type="hidden" value="0" />
@@ -183,71 +327,7 @@
                                         <span class="btn_reg fleft">Registrar</span>
                                     </span>
                                 </div>
-                        {% else %}
-                            <div class="grid-15 no-margin no-pandding ">
-                                <span class="container_tab" >
-                                    <span class="grid-7 tab_1 container_pop no-margin center">
-                                        <span class="title grid-7 no-margin">
-                                            Ingresa tu encuentro con este Libro Vagabungo
-                                        </span>
-                                        <form id="form_search" method="post" class="login grid-3 no-margin"
-                                              action="/qro_lee/book/" style="display: block;">
-                                            {% csrf_token %}
-                                            <p>
-                                                <span class="text_field">Usuario</span>
-                                                <input name="codec" class="required" type="text">
-                                            </p>
-                                            <p>
-                                                <span class="text_field">Contraseña</span>
-                                                <input name="codec" class="required" type="password">
-                                            </p>
-                                            <p>
-                                                <input value="Ingresar" class="int_btn" type="submit">
-                                            </p>
-                                        </form>
-                                        <span class="title log grid-3 no-margin">
-                                            Ingresa con
-                                        </span>
-                                        <a class="social fleft" href="">
-                                            <span style="background: url('/static/img/social_login.png') no-repeat 0px 0px" class="fb_btn"></span>
-                                        </a>
-                                        <a class="social fleft" href="">
-                                            <span style="background: url('/static/img/social_login.png') no-repeat 0px -20px" class="twitter_btn"></span>
-                                        </a>
-                                        <span class="grid-3 text_log no-margin">
-                                            ¿no tienes cuenta?
-                                            <span class="title_author btn_fr t_1 cursor_p">
-                                                ingresa aquí
-                                           Ingresar como usuario anonimo
-                                            </span>
-                                        </span>
-                                        <img class="shadow" src="/static/img/form_shadow.png" alt="">
-                                    </span>
-                                    <span class="grid-5 tab_2 container_pop no-margin center" style="display: none;height: 250px;">
-                                        <span class="title grid-5 no-margin">
-                                            Registrar como usuario anónimo
-                                        </span>
-                                        <form id="form_external" method="post" class="login grid-4 no-margin"
-                                              action="/registry/register_external_user/" style="display: block;">
-                                            {% csrf_token %}
-                                            <p>
-                                                <span class="text_field">Nombre completo</span>
-                                                <input name="name" class="required" type="text">
-                                            </p>
-                                            <p>
-                                                <span class="text_field">Email</span>
-                                                <input name="email" class="required" type="text">
-                                            </p>
-                                            <p>
-                                                <input value="Registrar" class="int_btn" type="submit">
-                                            </p>
-                                            <p>
-                                                <span class="title_author cursor_p grid-4 no-margin btn_fr t_2" style="text-align: center;">
-                                                   ¿ ya tienes cuenta ?<br> inicia sessión aquí
-                                                </span>
-                                            </p>
-                                        </form>
-                                        <img class="shadow" src="/static/img/form_shadow.png" alt="">
+
                                     </span>
 
                                 </span>
@@ -277,20 +357,24 @@
                                     <span class="discussion_response fleft">
                                         <span class="respond main fleft">
                                         <span class="wrapper no-margin fleft grid-1">
-                                            <img src="/static/img/create.png" alt=""/>
+                                            {% if value.picture %}
+                                                <img src="/static/media/users/{{ value.travel.user }}/profile/{{ value.picture }}" alt=""/>
+                                            {% else %}
+                                                <img src="/static/img/create.png" alt=""/>
+                                            {% endif %}
                                         </span>
                                         <span class="grid-6 din-r answer fright no-margin">
                                             <span class="name title grid-6 no-margin ">
                                                 {{ value.user }}
                                             </span>
                                             <span class="gray_text grid-6 no-margin " >
-                                                {% if value.travel.status %}
+                                                {% if not value.travel.status %}
                                                     encontrado
                                                 {% else %}
                                                     liberado
                                                 {% endif %}
                                                  el {{ value.travel.date }} en
-                                                plaza de armas, San juan del rio, Qro.
+                                                {{ value.travel.meta }}, {{ value.travel.address }}
                                             </span>
                                             <p>
                                                 {{ value.travel.description}}

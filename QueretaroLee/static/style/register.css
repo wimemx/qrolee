@@ -71,18 +71,19 @@
 }
 .caption .c{
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     position: relative;
     font-family:  "Lucida Bright";
     padding-top: 20px;
     font-style: italic;
 }
     .caption span{
-        font-size: 10px;
+        font-size: 12px;
         font-family: inherit;
         margin-top: 5px;
         display: block;
         font-style: normal;
+        font-family: 'Raleway';
     }
     .caption .left, .caption .right{
         width: 20px;
@@ -306,6 +307,9 @@ form.register{
 
     left: 118px;
 
+}
+.header{
+    height: 100px;
 }
 
 .checkbox{
