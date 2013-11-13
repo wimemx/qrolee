@@ -239,12 +239,7 @@ $(document).ready(function(){
         item_select(false, value);
 
     });
-    $('.sidebar-b .month .month').click(function(){
-        $('.d-width-container-event').find('.item').fadeIn(300);
-        $('.d-width-container-event').find('.item').css({
-            'display': 'block'
-        });
-    });
+
     $('.book_crossing .show_t').click(function(){
         var count = $(this).parent().find('.container_crossing').find('.grid-7').length;
         var item_height = count * 107;
@@ -506,11 +501,12 @@ function fb_obj_search(search, type){
                         $('.fb-img-preview').remove();
                     if(type){
                         $('.lightbox-wrapper').fadeOut(300);
-                        $('input.fb_i').val(obj.id);
                         $('p.fb').find('span').html('Has vinculado con: '+obj.name);
                         update_obj('fb_id',obj.id);
                         return;
                     }
+                    $('input.fb_id').val(obj.id);
+                    console.log(obj.id);
                     clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
                     $('input.fb_id').val(obj.id);
                     $('.lightbox-wrapper').fadeOut(300);

@@ -102,7 +102,7 @@
                         <option class="{{ obj.id }}" value="{{ obj.name }}">{{ obj.name }}</option>
                     {% endfor %}
                 </select>
-            <select class="latln_spot">
+                <select class="latln_spot">
                     {% for obj in spots %}
                         <option class="{{ obj.id }}" value="{{ obj.lat }},{{ obj.long }}">{{ obj.name }}</option>
                     {% endfor %}
@@ -113,7 +113,7 @@
             </p>
             <span class="grid-5 fix-left no-margin fright">
                 <input type="hidden" name="share_fb" value="0"/>
-                <input type="hidden" name="fb_id" value="-1" class="fb-session-required"/>
+                <input type="hidden" class="fb_id" name="fb_id" value="-1" />
                 <p class="checkbox fb-session-required"><span></span>Vincular evento con Facebook</p>
             </span>
             <p>
@@ -271,10 +271,12 @@
                                                     privacy_type: privacy
 
                                                 }
+                                        console.log(fb_data);
                                         FB.api(
                                             '/me/events','post',
                                             fb_data,
                                             function(response) {
+                                                console.log(response);
                                                 $.ajax({
                                                     type: "POST",
                                                     url: '/registry/update/'+data.success+'/',
@@ -294,7 +296,7 @@
                                             $('input[name=name]').val().charCodeAt(1)+''+
                                             $('input[name=name]').val().charCodeAt(2);
 
-                                    window.location.href = site_url+'/qro_lee/events/'+data.success;
+                                    //window.location.href = site_url+'/qro_lee/events/'+data.success;
 
                                 }else{
                                     $('.message').addClass('fail');

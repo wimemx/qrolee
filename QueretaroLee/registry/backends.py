@@ -7,6 +7,8 @@ from registry import views as registry_view
 import oauth2
 import urlparse
 import os
+import urllib
+import urllib2
 
 
 def user_exists(email=None, username=None, user=None):
@@ -57,16 +59,23 @@ class FacebookBackend:
             user_profile.fb_id = profile['id']
             user_profile.phone = ''
             user_profile.social_session = 1
-            user_profile.save()
             registry_view.create_default_list(user)
-
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
             os.mkdir(path+'/'+str(user.id), 0777)
             os.mkdir(path+'/'+str(user.id)+'/profile', 0777)
             os.mkdir(path+'/'+str(user.id)+'/entity', 0777)
             os.mkdir(path+'/'+str(user.id)+'/event', 0777)
             os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
-
+            fb_pic = 'https://graph.facebook.com/1493077013/picture?width=200'
+            response = urllib2.urlopen(fb_pic)
+            fb_pic = response.geturl()
+            path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
+            path += '/'+str(user.id)+'/profile/'
+            file_name = fb_pic.split('/')
+            file_name = file_name[-1]
+            urllib.urlretrieve(fb_pic, os.path.join(path, file_name))
+            user_profile.picture = file_name
+            user_profile.save()
         facebook_session.user_id = user.id
         facebook_session.save()
 
@@ -178,6 +187,7 @@ class SocialBackend:
                 userProfile.fb_username = profile['username']
                 userProfile.social_session = 1
                 userProfile.save()
+
             else:
                 userProfile, created = users_models.Profile.objects.get_or_create(
                     user_id=user.id, fb_username=profile['username'],
@@ -192,7 +202,6 @@ class SocialBackend:
             facebook_session.uid = profile['id']
             facebook_session.user = user
             facebook_session.save()
-
         return user
 
     def get_user(self, user_id):

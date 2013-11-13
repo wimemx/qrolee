@@ -35,9 +35,7 @@ import datetime
 from xml.dom import minidom
 
 
-
 def index(request, **kwargs):
-
     error = ''
     if request.GET:
 
@@ -295,7 +293,6 @@ def register(request):
             entity_cat = models.EntityCategory.objects.create(
                 entity_id=entity.id, category_id=ele)
     if entity is not None:
-        print redirect
         if redirect:
             succuess = request.user.id
         else:
@@ -426,7 +423,7 @@ def update_entity(request, **kwargs):
         field: value
     }
 
-    print dictionary
+
     if request.POST.get('event') == '1':
         event = models.Event.objects.filter(
             id=int(kwargs['entity_id'])).update(**dictionary)
@@ -563,7 +560,7 @@ def register_event(request, **kwargs):
 
 def ajax_register_event(request):
     event = dict(request.POST)
-    print event
+
     event['owner_id'] = int(request.user.id)
     profile = models.Profile.objects.filter(
         user__id=request.user.id)[0]
@@ -578,7 +575,6 @@ def ajax_register_event(request):
             event['share_fb'] = 0
         else:
             event['share_fb'] = 1
-
 
     del event['csrfmiddlewaretoken']
     copy = event
@@ -599,7 +595,11 @@ def ajax_register_event(request):
             else:
                 copy[e] = val[0]
 
-    place_spot = int(event['place_spot'])
+    if event['place_spot'] != '':
+        place_spot = int(event['place_spot'])
+    else:
+        place_spot = -1
+    del event['place_spot']
     event = copy
 
     event = models.Event.objects.create(**event)
@@ -779,10 +779,11 @@ def edit_event(request, **kwargs):
         entity_type = ['de la organizacion', 'organization']
     elif entity_type.name == 'spot':
         entity_type = ['del spot', 'spot']
-
+    spots = models.Entity.objects.filter(type__name='spot')
     context = {
         'entity': obj,
-        'entity_type': entity_type
+        'entity_type': entity_type,
+        'spots': spots
     }
     return render(request, template, context)
 
@@ -1071,7 +1072,6 @@ def delete_title(request):
     id_title = request.POST.get('id_title')
     id_list = request.POST.get('id_list')
     type_list = request.POST.get('type_list')
-    print id_title
     if type_list == 'T':
         title_favorite = account.ListTitle.objects.get(id=id_list)
         title_favorite.delete()

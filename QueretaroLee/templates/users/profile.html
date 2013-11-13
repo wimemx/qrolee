@@ -104,7 +104,7 @@
             </p>
         </span>
         {% if user_profile.user_id != user.id %}
-            <span class="member grid-3">
+            <span class="member no-margin grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member %}
                         <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
@@ -150,7 +150,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id|feed_type:-1 }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
