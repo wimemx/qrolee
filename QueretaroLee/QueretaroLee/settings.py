@@ -173,10 +173,3 @@ AUTHENTICATION_BACKENDS = (
     'registry.backends.FacebookBackend',
 
 )
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'fernando@wime.com.mx'
-EMAIL_HOST_PASSWORD = '1zqa2xws'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
