@@ -1012,6 +1012,7 @@ p{
             width: 100%;
             display: block;
             padding: 10px;
+            cursor: pointer;
         }
             .discussion .item .title{
                 font-size: 16px;

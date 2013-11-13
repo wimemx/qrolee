@@ -508,8 +508,7 @@ function fb_obj_search(search, type){
                         return;
                     }
                     $('input.fb_id').val(obj.id);
-                    console.log(obj.id);
-                    clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
+                    clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type','redirect']);
                     $('input.fb_id').val(obj.id);
                     $('.lightbox-wrapper').fadeOut(300);
                     $('input[name=name]').val(obj.name);
@@ -522,7 +521,7 @@ function fb_obj_search(search, type){
                     $('input[name=fb]').val(obj.id);
                     if(web[0])
                         $('input[name=website]').val(web[0]);
-                    var folder = '';
+                    var folder = '/entity/';
                     if(obj.location){
                         var address;
                         if('rsvp_status' in obj){

@@ -253,6 +253,7 @@ def register(request):
     category_ids = entity['category_ids'][0].split(' ')
     cat_ids = list()
     redirect = False
+    print entity
     if int(entity['redirect'][0]) == 1:
         redirect = True
     for ele in category_ids:
@@ -489,8 +490,10 @@ def media_upload(request):
             entity.picture = str(request.FILES['file'])
 
         entity.save()
-    if 'fb_img' in request.POST and folder != '':
+    if 'fb_img' in request.POST and folder == '/event/':
         folder = '/event/'
+    else:
+        folder = '/entity/'
 
     path_extension = str(request.user.id)+folder
     path = os.path.join(
@@ -670,7 +673,10 @@ def event(request, **kwargs):
         event_date.append(int(event.id))
         events_months.append(event_date)
     hc = calendar.HTMLCalendar(calendar.SUNDAY)
-    hc = hc.formatyear(datetime.datetime.now().year)
+    nextHc = hc.formatyear((datetime.datetime.now().year+1), 12)
+    hc = hc.formatyear(datetime.datetime.now().year, 12)
+    year = ' '+str(datetime.datetime.now().year)
+    nyear = ' '+str(datetime.datetime.now().year+1)
     hc = hc.replace('Sun', 'D')
     hc = hc.replace('Mon', 'L')
     hc = hc.replace('Tue', 'M')
@@ -678,21 +684,90 @@ def event(request, **kwargs):
     hc = hc.replace('Thu', 'J')
     hc = hc.replace('Fri', 'V')
     hc = hc.replace('Sat', 'S')
-    hc = hc.replace('January', 'Enero')
-    hc = hc.replace('February', 'Febrero')
-    hc = hc.replace('March', 'Marzo')
-    hc = hc.replace('April', 'Abril')
-    hc = hc.replace('May', 'Mayo')
-    hc = hc.replace('June', 'Junio')
-    hc = hc.replace('July', 'Julio')
-    hc = hc.replace('August', 'Agosto')
-    hc = hc.replace('September', 'Septiembre')
-    hc = hc.replace('November', 'Noviembre')
-    hc = hc.replace('December', 'Diciembre')
 
+    hc = hc.replace('dom', 'D')
+    hc = hc.replace('lun', 'L')
+    hc = hc.replace('mar', 'M')
+    hc = hc.replace('mié', 'M')
+    hc = hc.replace('jue', 'J')
+    hc = hc.replace('vie', 'V')
+    hc = hc.replace('sáb', 'S')
+
+    nextHc = nextHc.replace('Sun', 'D')
+    nextHc = nextHc.replace('Mon', 'L')
+    nextHc = nextHc.replace('Tue', 'M')
+    nextHc = nextHc.replace('Wed', 'M')
+    nextHc = nextHc.replace('Thu', 'J')
+    nextHc = nextHc.replace('Fri', 'V')
+    nextHc = nextHc.replace('Sat', 'S')
+
+    nextHc = nextHc.replace('dom', 'D')
+    nextHc = nextHc.replace('lun', 'L')
+    nextHc = nextHc.replace('mar', 'M')
+    nextHc = nextHc.replace('mié', 'M')
+    nextHc = nextHc.replace('jue', 'J')
+    nextHc = nextHc.replace('vie', 'V')
+    nextHc = nextHc.replace('sáb', 'S')
+
+    hc = hc.replace('January', 'Enero' + year)
+    hc = hc.replace('February', 'Febrero' + year)
+    hc = hc.replace('March', 'Marzo' + year)
+    hc = hc.replace('April', 'Abril' + year)
+    hc = hc.replace('May', 'Mayo' + year)
+    hc = hc.replace('June', 'Junio' + year)
+    hc = hc.replace('July', 'Julio' + year)
+    hc = hc.replace('August', 'Agosto' + year)
+    hc = hc.replace('September', 'Septiembre'+ year)
+    hc = hc.replace('October', 'Octubre' + year)
+    hc = hc.replace('November', 'Noviembre' + year)
+    hc = hc.replace('December', 'Diciembre' + year)
+
+    hc = hc.replace('enero', 'Enero' + year)
+    hc = hc.replace('febrero', 'Febrero' + year)
+    hc = hc.replace('marzo', 'Marzo' + year)
+    hc = hc.replace('Mzo', 'Marzo' + year)
+    hc = hc.replace('abril', 'Abril' + year)
+    hc = hc.replace('mayo', 'Mayo' + year)
+    hc = hc.replace('junio', 'Junio' + year)
+    hc = hc.replace('julio', 'Julio' + year)
+    hc = hc.replace('agosto', 'Agosto' + year)
+    hc = hc.replace('septiembre', 'Septiembre'+ year)
+    hc = hc.replace('octubre', 'Octubre' + year)
+    hc = hc.replace('noviembre', 'Noviembre' + year)
+    hc = hc.replace('noVmbre', 'Noviembre' + year)
+    hc = hc.replace('diciembre', 'Diciembre' + year)
+
+    nextHc = nextHc.replace('January', 'Enero' + nyear)
+    nextHc = nextHc.replace('February', 'Febrero' + nyear)
+    nextHc = nextHc.replace('March', 'Marzo' + nyear)
+    nextHc = nextHc.replace('April', 'Abril' + nyear)
+    nextHc = nextHc.replace('May', 'Mayo' + nyear)
+    nextHc = nextHc.replace('June', 'Junio' + nyear)
+    nextHc = nextHc.replace('July', 'Julio' + nyear)
+    nextHc = nextHc.replace('August', 'Agosto' + nyear)
+    nextHc = nextHc.replace('September', 'Septiembre'+ nyear)
+    nextHc = nextHc.replace('October', 'Octubre' + nyear)
+    nextHc = nextHc.replace('November', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('December', 'Diciembre' + nyear)
+
+    nextHc = nextHc.replace('enero', 'Enero' + nyear)
+    nextHc = nextHc.replace('febrero', 'Febrero' + nyear)
+    nextHc = nextHc.replace('marzo', 'Marzo' + nyear)
+    nextHc = nextHc.replace('Mzo', 'Marzo' + nyear)
+    nextHc = nextHc.replace('abril', 'Abril' + nyear)
+    nextHc = nextHc.replace('mayo', 'Mayo' + nyear)
+    nextHc = nextHc.replace('junio', 'Junio' + nyear)
+    nextHc = nextHc.replace('julio', 'Julio' + nyear)
+    nextHc = nextHc.replace('agosto', 'Agosto' + nyear)
+    nextHc = nextHc.replace('septiembre', 'Septiembre'+ nyear)
+    nextHc = nextHc.replace('octubre', 'Octubre' + nyear)
+    nextHc = nextHc.replace('noviembre', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('noVmbre', 'Noviembre' + nyear)
+    nextHc = nextHc.replace('diciembre', 'Diciembre' + nyear)
 
     html_parser = HTMLParser.HTMLParser()
     unescaped = html_parser.unescape(hc)
+    unescaped += html_parser.unescape(nextHc)
 
     if entity_type.name == 'group':
         entity_type = ['grupos', 'group']

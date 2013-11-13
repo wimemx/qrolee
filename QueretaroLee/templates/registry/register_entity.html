@@ -130,6 +130,7 @@
 
             <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="picture" value="1"/>
+                <input type="hidden" name="entity" value="{{ entity.id }}"/>
                 <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
@@ -148,6 +149,7 @@
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>
+                <input type="hidden" name="entity" value="{{ entity.id }}"/>
                 <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
                     Te recomendamos una imagen de 615 x 1607 pixeles
                 </span>
@@ -223,6 +225,7 @@
     $(document).ready(function(){
 
         var curr_url = window.location.href.split('#');
+
         if (curr_url.length > 1){
             $('input.redirect').val(1);
         }
