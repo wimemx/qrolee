@@ -2094,7 +2094,7 @@ query = {
 
 function dialog_titles(csrf, data, id){
     $('.dialog-confirm').empty();
-    div_closet = $('<span class="dialog_closet"></span>');
+    div_closet = $('');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);
@@ -2915,10 +2915,10 @@ function add_my_title(csrf, array_title, type){
                 $('.title_act_read').fadeOut(250,function(){
                     $(this).remove();
                 });
-                p = $('<p class="title_act_read">Acualmente está leyendo</p>');
-                a_author = $('<a class="title_author"></a>');
-                a_author.append(truncText(data.name,10));
-                span_btn = $('<span class="green_btn message_alert">Editar</span>');
+                p = $('<p class="title_act_read">Actualmente está leyendo:<br></p>');
+                a_author = $('<a class="title_author" style="margin:0 !important;"></a>');
+                a_author.append(data.name);
+                span_btn = $('<br><span class="message_alert " style="line-height: 2.2; color: #f89883 !important">Editar</span>');
                 input_l = $('<input class="type_message" type="hidden" value="edit_title_read">');
                 input_id = $('<input class="id_list" type="hidden" value="' + data.id_list + '">');
                 input_nam = $('<input class="name_title" type="hidden" value="' + data.name + '">');
@@ -3319,13 +3319,12 @@ function show_dialog(){
             if(type=="edit_title_read"){
                 name_title = $(this).find('.name_title').val();
                 text = 'Editar qué estoy leyendo actualmente';
-                p_text = $('<p class="p_text_dialog">' + text + '</p>');
+                p_text = $('<p class="p_text_dialog" style=" margin-bottom: 0px; ">' + text + '</p>');
                 span_text.append(p_text);
-                text2 = '¿ Terminaste de leer ' + name_title + '?';
+                text2 = '¿Terminaste de leer ' + name_title + '?';
                 p_text2 = $('<p class="p_text_mini">' + text2 + '</p>');
                 span_text.append(p_text2);
-                p_text3 = $('<p class="p_text_mini2">Fecha en que terminaste de leer' +
-                    name_title + '</p>');
+                p_text3 = $('<p class="p_text_mini2">¿Cuándo terminaste de leerlo? </p>');
                 span_text.append(p_text3);
                 input_date = $('<input type="text" class="date_read"/>');
                 var date = new Date();
@@ -3362,13 +3361,14 @@ function show_dialog(){
 
             href = 'href="/accounts/delete_user/"';
         }
-        div_closet = $('<span class="dialog_closet"></span>');
+        div_closet = $('');
         div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
         btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
         btn_acept = $('<a class="dialog_btn green_btn" ' + href + ' >Aceptar</a>');
         container_btn = $('<div class="dialog_container_btn"></div>');
-        container_btn.append(btn_acept);
         container_btn.append(btn_cancel);
+        container_btn.append(btn_acept);
+
 
         $('.dialog-confirm').append(div_text);
         div_text.append(div_closet);
@@ -3562,7 +3562,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
 function d_show_dialog(type_message){
 
     $('.dialog-confirm').empty();
-    div_closet = $('<span class="dialog_closet"></span>');
+    div_closet = $('');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);

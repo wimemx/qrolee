@@ -79,25 +79,23 @@
                         <span class='text_act' >
                             ¿Qué estás leyendo?
                             <input type="hidden" class="type_message"
-                                   value="show_titles" />
-                        <span class="green_btn ">Editar</span>
+                                   value="show_titles" /><br>
+                        <span class="title_author" style="line-height: 2.2; color: #f89883 !important">Editar</span>
                         </span>
                     {% else %}
                         No está leyendo nada en este momento
                     {% endif %}
                 {% else %}
-                    Acualmente está leyendo
-                    <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author">
-                            {{ act_title.title.title|truncatechars:20 }}
+                    Actualmente está leyendo:<br>
+                    <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author" style="margin:0">
+                            {{ act_title.title.title }}
                         </a>
-                    {% if user_profile.user.id == user.id %}
-                        <span class="green_btn message_alert ">
-                            <input class="type_message"
-                            type="hidden" value="edit_title_read"/>
-                            <input class="id_list"
-                            type="hidden" value="{{ act_title.id }}"/>
-                            <input class="name_title"
-                            type="hidden" value="{{ act_title.title.title }}"/>
+                    {% if user_profile.user.id == user.id %}<br>
+                        <span class="message_alert " style="line-height: 2.2; color: #f89883 !important">
+                            <input class="type_message" type="hidden" value="edit_title_read"/>
+                            <input class="id_list"type="hidden" value="{{ act_title.id }}"/>
+                            <input class="name_title"type="hidden" value="{{ act_title.title.title }}"/>
+                            Editar
                         </span>
                     {% endif %}
                 {% endif %}
