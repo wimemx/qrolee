@@ -556,7 +556,24 @@ $(document).ready(function(){
             });
     });
 
+    $('#form_login').submit(function(e){
+        var $form = $(this);
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(data) {
+                if(data.success == 'True')
+                    window.location.href = site_url + '/qro_lee/book/' +
+                        $('.code_book').val() + '_1';
+            });
+        return false;
+    });
+
     $('.btn_reg').click(function(){
+        $btn = $(this);
+        $btn.parent().find('.text_cheking').remove();
         var lat_long = $('.lat_long').val().split(',');
         var query = {
             'status': parseInt($('.value_option').find('input').val()),
@@ -565,6 +582,10 @@ $(document).ready(function(){
             'meta': $('.meta').val(),
             'description': $('.text_descrip').val(),
             'code_book': $('.code_book').val()
+        }
+        if($('.name_ext').length > 0){
+            query['name_ext'] = $('.name_ext').val();
+            query['email_ext'] = $('.email_ext').val();
         }
        $.ajax({
             type: "POST",
@@ -578,7 +599,10 @@ $(document).ready(function(){
         }).done(function(data){
 
                if(data['succes'] == 'True')
-                    window.location.href = site_url + '/qro_lee/book/'+data['code_book'];
+                    window.location.href = site_url + '/qro_lee/book/' + data['code_book'] +'_1';
+               else
+                    $btn.parent().append('<span class="text_cheking grid-5 place_pink">Ya has liberado este libro</span>');
+
             });
 
     });
@@ -620,8 +644,10 @@ $(document).ready(function(){
 
         if(data_ == -1){
             e.preventDefault();
+            $(this).find('input[type=submit]').parent().parent().find('.text_no_book');
             $(this).find('input[type=submit]').parent().parent().append('<p class="place_pink text_no_book">' +
                'No se encontró el isbn verifica que este correcto</p>');
+            return false;
         }
 
      });
@@ -650,7 +676,6 @@ $(document).ready(function(){
         if($(this).val().search(/^\s*$/) != 0){
             search_list_authors_titles($('.search_list'));
         }
-
     });
 
     $('.search_pages').click(function(){
@@ -854,45 +879,7 @@ $(document).ready(function(){
         }
 
         if($('#map').hasClass('map_crossing')){
-            var query;
-            if($('.type_').val() == 1){
-                query = {
-                    'status': 1
-                }
-            }else{
-                var code = $('.code_book').val();
-                query = {
-                    'status': 1,
-                    'book__code': code
-                }
-            }
-            fields = ['user','book','lat','long'];
-            and = 1;
-            join = {
-                'tables':{
-                    0: JSON.stringify(['registry.book'])
-                },
-                'quieres':{
-                    0: JSON.stringify(['id'])
-                },
-                'fields':{
-                    0: JSON.stringify(['id','title'])
-                }
-            }
-            join = JSON.stringify(join);
-
-            var search = {
-                'type': 'registry.travel',
-                'fields': JSON.stringify(fields),
-                'value': JSON.stringify(query),
-                'and': and,
-                'join': join
-            }
-            search = JSON.stringify(search);
-            var csrf = $('.csrf_header').find('input').val();
-            var data = advanced_search(search, csrf);
-            console.log(data);
-            dmap(data,2);
+            load_map_crossing();
         }
     }
 

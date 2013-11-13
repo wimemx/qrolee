@@ -788,7 +788,7 @@ function update_latlog(lat_long){
 function map_select(){
     var country = '';
     var state = '';
-    var city = '';;
+    var city = '';
     var index = 0;
     $.each($('.selec_reg .sel_val'), function(){
         if(index == 0)
@@ -799,6 +799,7 @@ function map_select(){
             city =$(this).find('option:selected').val();
         index++;
     });
+    $('.address').val(city + ', ' +state);
     map_cheking(country, state, city);
 }
 
@@ -809,7 +810,80 @@ function show_text($elem, message){
     });
 }
 
+function load_map_crossing(){
+    var query;
+    if($('.type_').val() == 1){
+        query = {
+            'status': 1
+        }
+    }else{
+        var code = $('.code_book').val();
+        query = {
+            'status': 1,
+            'book__code': code
+        }
+    }
+    fields = ['user','book','lat','long'];
+    and = 1;
+    join = {
+        'tables':{
+            0: JSON.stringify(['registry.book'])
+        },
+        'quieres':{
+            0: JSON.stringify(['id'])
+        },
+        'fields':{
+            0: JSON.stringify(['id','title'])
+        }
+    }
+    join = JSON.stringify(join);
+
+    var search = {
+        'type': 'registry.travel',
+        'fields': JSON.stringify(fields),
+        'value': JSON.stringify(query),
+        'and': and,
+        'join': join
+    }
+    search = JSON.stringify(search);
+    var csrf = $('.csrf_header').find('input').val();
+    var data = advanced_search(search, csrf);
+    dmap(data,2);
+}
+
 $(document).ready(function(){
+
+    $('.cuestion').click(function(){
+
+        var $cuestion = $(this);
+        var content = $cuestion.find('.content');
+        var height = parseInt(content.css('height').replace('px',''));
+        var max_height = parseInt(content.find('span').css('height').replace('px',''));
+
+        $.each($('.cuestion'),function(){
+
+            var hg = parseInt($(this).find('.content').css('height').replace('px',''));
+
+            if(hg > 0)
+                $(this).find('.content').animate({
+                    'height': 0
+                },250, function() {
+
+                });
+        });
+
+        if(height > 0)
+            height = 0;
+        else
+            height = max_height;
+
+        $(this).find('.content').animate({
+            'height': height
+        },300, function() {
+            // Animation complete.
+        });
+
+    });
 
     $('.btn_fr').click(function(){
         var opc_1 = '.tab_2';
@@ -818,8 +892,10 @@ $(document).ready(function(){
             opc_1 = '.tab_1';
             opc_2 = '.tab_2';
         }
-        $(opc_1).fadeOut(250,function(){
-                $(opc_2).fadeIn(250);
+        $(opc_1).fadeOut(300,function(){
+                $(opc_2).fadeIn(300, function(){
+                    map_select();
+                });
         });
     });
 
