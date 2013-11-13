@@ -487,7 +487,7 @@
                     <span class="contact">
                         <h3 class="title main">Contacto</h3>
                         <p>
-                            <a class="link_" >{{ owner.email }}</a>
+                            <a href="mailto:{{ owner.email }}" class="link_ d-pink" >{{ owner.email }}</a>
                         </p>
                         <p>
                             <a class="link_" href="{{ entity.website }}" >{{ entity.website }}</a>
@@ -506,7 +506,7 @@
                     <span class="contact">
                         <h3 class="title main fleft">Contacto</h3>
                         <p>
-                            <a class="link_ spot" style="cursor:auto " >{{ owner.email }}</a>
+                            <a href="mailto:{{ owner.email }}" class="link_ spot d-pink" style="cursor:auto " >{{ owner.email }}</a>
                         </p>
                         <h3 class="title main fleft">Miembros</h3>
                         <p>{{ followers|total_members }}</p>
