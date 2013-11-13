@@ -65,21 +65,23 @@ def feed_type(feed_id, user):
     obj_list = list()
     added_to = get_objects(feed.added_to_object, feed.added_to_type)
     obj = get_objects(feed.object, feed.type)
+    if added_to is None:
+        return ''
+    if obj is None:
+        return ''
+
     if user != -1:
         if feed.added_to_type == 'E':
             membership = rmodels.MemberToObject.objects.filter(
                 object=added_to.id, user_id=user.id, object_type='E', is_member=True)
             if not membership:
                 return ''
-    if feed.added_to_type == 'U':
-        membership = rmodels.MemberToObject.objects.filter(
-            object=obj.id, user_id=user.id, object_type='E', is_member=True)
-        if not membership:
-            return ''
-    if added_to is None:
-        return ''
-    if obj is None:
-        return ''
+        if feed.added_to_type == 'U':
+            membership = rmodels.MemberToObject.objects.filter(
+                object=obj.id, user_id=user.id, object_type='E', is_member=True)
+            if not membership:
+                return ''
+
     obj_list.append(added_to)
     obj_list.append(obj)
     img_url = '/static/media/users/'+str(feed.user_id)+'/'

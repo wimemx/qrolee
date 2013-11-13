@@ -461,6 +461,8 @@ function fb_obj_search(search, type){
                     span_wrapper.find('img').attr('src',obj.cover.source);
                 else if(obj.picture)
                     span_wrapper.find('img').attr('src',obj.picture.data.url);
+                else
+                    span_wrapper.find('img').attr('src','/static/img/create.png');
                 if(obj.link)
                     link.html(obj.link);
                 var web = ' ';

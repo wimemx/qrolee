@@ -1834,9 +1834,13 @@ p{
 .d-text_picture{
     margin-top: 70px;
 }
-
+.reg_ent .fb-connect{
+    top: 0px;
+    margin-bottom: 50px !important;
+}
 .fb-connect{
-    margin-top: -12px !important;
+    position: relative;
+    top: 20px;
     border-bottom: 1px solid #acacac;
     margin-bottom: 16px !important;
 }
@@ -1914,6 +1918,7 @@ p{
             }
             .lightbox.fb-objs .title{
                 font-size: 13px;
+                width: 160px !important;
             }
             .lightbox.fb-objs p{
                 font-size: 10px;
@@ -2718,7 +2723,6 @@ p{
     border: 1px dashed #acacac;
     border-radius: 10px;
     margin-bottom: 50px;
-    margin-top: 70px;
 }
     .fb-img-preview .wrap{
         display: block;
