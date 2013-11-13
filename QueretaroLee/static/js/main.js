@@ -1415,8 +1415,8 @@ $(document).ready(function(){
                         create_template(type, result, i, create_user);
                 });
             }else{
-               var p = $('<span class="item"><p class="center"> No se pudieron ' +
-                    'encontrar resultados para su búesqeda</p></span>');
+               var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
+                    'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
 
             }
