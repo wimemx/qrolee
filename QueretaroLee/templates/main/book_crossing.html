@@ -66,7 +66,7 @@
                                     <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                         <span class="grid-3 wrapper_mini_crossing borde_author">
                                             {% if not value.travel.book.picture %}
-                                                <img class="img_size_all" src="/static/img/create.png" />
+                                                <img class="img_size_all" src="/static/img/default_vert.png" />
                                             {% else %}
                                                 <img class="img_size_all"
                                                      src="{{ value.travel.book.picture }}" />
@@ -75,7 +75,7 @@
                                     </a>
                                     <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                         <span class="title titles_mini_crossing grid-4 no-margin ">
-                                            {{ value.travel.book.title }}
+                                            {{ value.travel.book.title|truncatechars:40 }}
                                         </span>
                                     </a>
                                     <span class="grid-4 no-margin text_top title_author">{{ value.travel.book.author }}</span>
@@ -100,7 +100,7 @@
                                         <a href="/qro_lee/book/{{ value.travel.book.code }}_0">
                                             <span class="grid-3 wrapper_mini_crossing borde_author">
                                                 {% if not value.travel.book.picture %}
-                                                    <img class="img_size_all" src="/static/img/create.png" />
+                                                    <img class="img_size_all" src="/static/img/default_vert.png" />
                                                 {% else %}
                                                     <img class="img_size_all"
                                                          src="{{ value.travel.book.picture }}" />

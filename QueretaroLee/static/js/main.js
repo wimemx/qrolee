@@ -692,7 +692,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title:data[ind]['book'][0]
+                title: data[ind]['book']
             });
             }
             counter++;
@@ -1049,12 +1049,14 @@ $(document).ready(function(){
         }
     });
 
-    var view_more = true;
     $('.news-feed .more').click(function(){
         var $this = $(this);
+        var view_more = parseInt($this.find('input').val());
         var elements = $(this).parent().find('.viewport .overview .item').length - 2;
         var height = $(this).parent().outerHeight(true);
-        if(view_more){
+
+        if(view_more == 1){
+            view_more = 0;
             $(this).parent().animate({
                 'height': height+(elements * 45)
             }, function(){
@@ -1062,24 +1064,24 @@ $(document).ready(function(){
                 $(this).find('.viewport').animate({
                     'height': h+(elements*45)
                 }, function(){
-                    $this.html('ver menos');
-                    view_more = false;
+                    $this.find('span').html('ver menos');
                 });
             });
         }else{
             var h = $(this).parent().find('.viewport').outerHeight(false);
+            view_more = 1;
             $(this).parent().find('.viewport').animate({
                 'height': h-(elements*45)
             }, function(){
                 $(this).parent().animate({
                     'height': height-(elements * 45)
                 },function(){
-                    $this.html('ver más');
-                    view_more = true;
+                    $this.find('span').html('ver más');
                 })
             });
 
         }
+        $this.find('input').val(view_more);
     });
 
     $('.filter .checkbox').click(function(){
@@ -1492,7 +1494,6 @@ $(document).ready(function(){
                var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
                     'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
-
             }
 
         }
@@ -1996,8 +1997,9 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
-        title = title.substring(0, 16);
-        h3.html(title+' ...');
+
+        title = truncText(title, 30);
+        h3.html(title);
         $('.results').append(item);
         return;
     }

@@ -41,7 +41,11 @@
                             <span class="title grid-3 no-margin">{{ book.title }}</span>
                             <span class="grid-3 no-margin" >Autor: {{ book.author }}</span>
                             <span class="grid-3 no-margin">ISBN: {{ book.isbn }}</span>
-                            <span class="grid-3 no-margin">Editorial: {{ book.publisher }}</span>
+                            <span class="grid-3 no-margin">
+                                {% if book.publisher %}
+                                    Editorial: {{ book.publisher }}
+                                {% endif %}
+                            </span>
                             <span class="grid-3 no-margin discussion genre_sel">
                                 <span class="fleft">Categoría:</span>
                                 <span class="select_wrapper grid-2 alpha">
@@ -115,6 +119,9 @@
                             </span>
                         </span>
                         <div id="reg_map" class="map_r grid-6 no-margin"></div>
+                        <span class="pixeles grid-6 recomendation">
+                            Arrastra el ping para poner más precisa tu ubicación
+                        </span>
                     </div>
 
                 </div>

@@ -176,15 +176,19 @@
                                      {% if forloop.counter <= 3 %}
                                         <span title="{{ obj.genre.name }}" style="cursor: auto;!important"
                                               class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
-                                            {{ obj.genre.name|truncatechars:11 }}
+                                            {% if list_genre|length == 1 %}
+                                                {{ obj.genre.name }}
+                                            {% else %}
+                                                {{ obj.genre.name|truncatechars:11 }}
+                                            {% endif %}
                                          </span>
                                      {% endif %}
                                  {% endif %}
                              {% empty %}
                                  {% if user_profile.user.id == user.id %}
-                                    <span class="place_pink my_items" style="cursor: none!important;" >Agrega un nuevo género</span>
+                                    <span class="place_pink my_items" style="cursor: auto;!important;" >Agrega un nuevo género</span>
                                  {% else %}
-                                     <span class="gray_7 my_items" style="cursor: none!important;">Ningun género favorito</span>
+                                     <span class="gray_7 my_items" style="cursor: auto;!important;">Ningun género favorito</span>
                                  {% endif %}
                              {% endfor %}
                          </span>
@@ -200,13 +204,21 @@
                                     {% endif %}
                                     ">
                                         <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.0|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.0|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -238,14 +250,22 @@
                                     ">
                                         <a title="{{ value.title }}" class="place_pink my_items"
                                            href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.1|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% else %}
                                     <span class=" my_items border_right" style="display: none;">
                                         <a title="{{ value.title }}" class="place_pink my_items"
                                            href="/qro_lee/profile/title/{{ key }}/">
-                                            {{ value.title|truncatechars:11 }}
+                                            {% if list_titles.1|length == 1  %}
+                                                {{ value.title }}
+                                            {% else %}
+                                                {{ value.title|truncatechars:11 }}
+                                            {% endif %}
                                         </a>
                                      </span>
                                  {% endif %}

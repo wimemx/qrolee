@@ -1766,17 +1766,20 @@ def book(request, **kwargs):
     dict = {}
     index = 1
     for obj in list_users:
-
+        picture = ''
         if int(obj.type_user) == 1:
             user_book = account_models.User.objects.get(id=obj.user)
             user_book = user_book.username
+            picture = models.Profile.objects.get(user__id=obj.user)
+            picture = picture.picture
         else:
             user_book = models.ExternalUser.objects.get(id=obj.user)
             user_book = user_book.name
 
         dict[index] = {
             'user': user_book,
-            'travel': obj
+            'travel': obj,
+            'picture': picture
         }
         index = index + 1
 
