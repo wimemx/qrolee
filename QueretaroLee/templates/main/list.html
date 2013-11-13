@@ -20,7 +20,7 @@
         <div class="grid-16 entities list__ {{ type.1|capfirst }}">
         <div class="grid-14">
             <div class="heading fleft">
-                <h3 class="title grid-3 fleft">{{ type.0|capfirst }}</h3>
+                <h3 class="title grid-3 fleft" style="font-size:20px !important;">{{ type.0|capfirst }}</h3>
                 <span class="search fright grid-4 no-margin">{% csrf_token %}
                     <input class="type" type="hidden" value="{{ type.1|capfirst }}"/>
                     <input class="my_list_typ" type="hidden" value="1"/>
@@ -35,7 +35,7 @@
             <p class="content content grid-9 no-margin">{{ content }}</p>
             {% if type.1 == 'list' %}
                 <a class="grid-3 no-margin fright" href="/registry/register_list/">
-                    <span style="background-image: none;padding-right: 9px;margin-top: 30px;" class="brown_btn fright">Crear listas</span>
+                    <span style="background-image: none;padding-right: 9px;margin-top: 20px;" class="brown_btn fright">Crear listas</span>
                 </a>
             {% endif %}
             <div id="scrollbar1">

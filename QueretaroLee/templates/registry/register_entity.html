@@ -40,7 +40,7 @@
             <div class="heading">
                 <h3 class="title title_create_entity grid-13 no-margin fleft">{{ entity_type.0|capfirst }}</h3>
             </div>
-            <p class="content">{{ content }}</p>
+            <p class="content grid-9">{{ content }}</p>
             <form enctype="multipart/form-data" method="post" id="registry" class="register_entity grid-8 no-margin" action="/registry/register/">{% csrf_token %}
                 <input class="profile-pic" type="hidden" value="" name="picture"/>
                 <input class="cover-pic" type="hidden" value="" name="cover_picture"/>
@@ -73,7 +73,7 @@
                             <span class="text"></span>
                             <span class="dropdown"></span>
                             <select class="change" name="privacy" id="">
-                                <option value="publica">Publica</option>
+                                <option value="publica">Pública</option>
                                 <option value="privada">Privada</option>
                             </select>
                         </span>
@@ -96,8 +96,8 @@
                     <input placeholder="http://qrolee.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>
                 <p>Página de Facebook
-                    <input style="width: 140px;" placeholder="facebook" class="grid-2 social regex_social fright no-margin" type="text" value="" name="fb"/>
-                    <span class="grid-3 text-right fright no-margin">https://facebook.com/</span>
+                    <input style="width: 156px;" placeholder="facebook" class="grid-2 social regex_social fright no-margin" type="text" value="" name="fb"/>
+                    <span class="grid-3 text-right fright no-margin fbSpan" style=" width: 123px; ">https://facebook.com/</span>
                 </p>
                 <p>Página de twitter
                     <span class="twitter">@</span>
@@ -108,19 +108,33 @@
                     <span class="message fright"></span>
                 </p>
                 <p class="submit">
-                    <input id="submit" class="fright" value="Crear {{ entity_type.2|lower }}" type="submit"/>
+                    <input id="submit" class="fright" value="Crear {{ entity_type.2|lower }}" type="submit" style="margin-top: -20px;"/>
                 </p>
 
                 </div>
 
             </form>
+
+            {% if entity_type.1 != 'spot' %}
+            <span class="fb-connect fb-session-required no-margin fright grid-5">
+                    {% if entity_type.1 == 'group' %}
+            <p class="textFB">¿Cuentas ya con un grupo en Facebook?</p>
+            <p class="fb {{ entity_type.1 }} fleft">Ver grupos de
+            {% else %}
+            <p class="textFB">¿Cuentas ya con una pagina en Facebook?</p>
+            <p class="fb {{ entity_type.1 }} fleft">Ver pages de
+            {% endif %}
+            <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
+                    </span>
+            {% endif %}
+
             <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="picture" value="1"/>
                 <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
-                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
                     Te recomendamos una imagen de 200 x 200 pixeles
                 </span>
             </form>
@@ -134,7 +148,7 @@
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>
-                <span class="grid-5 fright no-margin pixeles" style="bottom: -190px;">
+                <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
                     Te recomendamos una imagen de 615 x 1607 pixeles
                 </span>
             </form>
@@ -143,18 +157,7 @@
                 </div>
             {% endif %}
 
-            {% if entity_type.1 != 'spot' %}
-            <span class="fb-connect fb-session-required no-margin fright grid-5">
-                {% if entity_type.1 == 'group' %}
-                <p>¿Cuentas ya con un grupo en Facebook?</p>
-                <p class="fb {{ entity_type.1 }} fleft">Ver grupos de
-                {% else %}
-                 <p>¿Cuentas ya con una pagina en Facebook?</p>
-                <p class="fb {{ entity_type.1 }} fleft">Ver pages de
-                {% endif %}
-                    <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
-            </span>
-            {% endif %}
+
         </div>
 
     </div>

@@ -120,12 +120,18 @@ input:not([type='submit']){
     height: 25px!important;
 }
 .green_btn, .edit_green{
-    background: #cccc66;
-    font-family: 'Raleway' sans-serif;
-    cursor: pointer;
-    padding: 2px 8px 2px 8px;
-    font-size: 10px;
-    color: #000;
+    padding: 4px 9px 4px 9px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    height: 26px !important;
+    line-height: 17px !important;
+    left: 0px !important;
+    top: 0px !important;
+    font-weight: 400 !important;
+    background: #60967E !important;
+    border: 1px solid #326F53 !important;
+    color: #fff !important;
+    width: auto !important;
 }
 
 .brown_btn{
@@ -205,10 +211,18 @@ input:not([type='submit']){
     display: none !important;
 }
 .reject{
-        padding: 2px 8px 2px 8px;
-        font-size: 10px;
-        cursor: pointer;
-        background: #f89883;
+    text-align: center;
+    background: #f79882;
+    font-family: 'Raleway' sans-serif;
+    cursor: pointer;
+    padding: 3px 9px 4px 9px;
+    font-size: 12px;
+    line-height: 17px;
+    height: 17px;
+    font-weight: 500;
+    margin-right: 10px;
+    border: 1px solid #F57B5F;
+    color: #fff;
 }
 p{
     line-height:normal;
@@ -679,8 +693,16 @@ p{
             margin-left: 5px !important;
         }
         .color_btn.spot{
-            background: #f89883;
-            color: #000 !important;
+            background: #c69264 no-repeat 45px 9px;
+            color: #fff !important;
+            font-size: 12px;
+            text-decoration: none;
+            padding: 4px 9px;
+            font-family: 'Raleway' sans-serif;
+            cursor: pointer;
+            border: 1px solid #a77340;
+            text-align: center;
+            transition: all 0.3s;
         }
         .entity .general-info a{
             text-decoration: none;
@@ -700,11 +722,12 @@ p{
 
     .entity .member .private-icon{
         clear: both;
-        margin: 80px 10px 0px 0px;
+        margin-top: -6px;
     }
         .private-icon span{
             margin-left: 5px;
             color: #334845;
+            margin-top: -10px;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
             width: 30px;
@@ -827,12 +850,21 @@ p{
         .entity .member a{
             color: #222;
         }
+
+        .followerText{
+            font-size: 12px;
+            color: #777;
+            float: right;
+        }
         .entity .member .btn{
-            background: #edde84;
-            padding:5px 15px 5px 15px;
+            background: #F1E17D;
+            padding:5px 14px 5px 14px;
             font-size: 12px;
             font-family: 'Raleway' sans-serif;
             cursor:pointer;
+            font-weight: 500;
+            border: 1px solid #CE8D51;
+            margin-left: 94px;
         }
             .entity .member p{
                 font-size: 11px;
@@ -1339,7 +1371,7 @@ p{
                 width: 70px;
                 height: 70px;
                 display: block;
-                margin-right: 10px;
+                margin-right: 3px;
                 font-family: 'Raleway' sans-serif;
                 overflow: hidden;
             }
@@ -1609,13 +1641,13 @@ p{
 
     margin-left: 0px;
     height: 92px !important;
-    margin-bottom: 30px !important;
+    margin-bottom: 40px !important;
 }
 
 .d-wrapperspot{
 
     width: 120px !important;
-    height: 92px !important;
+
 }
 
 .d-title_spot{
@@ -1799,8 +1831,9 @@ p{
 }
 
 .fb-connect{
-    margin-top: 50px !important;
-    border-top: 1px solid #acacac;
+    margin-top: -12px !important;
+    border-bottom: 1px solid #acacac;
+    margin-bottom: 16px !important;
 }
     .fb-connect p.fb{
         color: #fff;
@@ -1811,6 +1844,8 @@ p{
         cursor: pointer;
         margin-top: 0px;
         width: auto !important;
+        margin-left: 29%;
+        font-family: 'Raleway' sans-serif-webkit-body;
     }
     .fb-connect p img{
         width: 16px;
@@ -1824,6 +1859,7 @@ p{
     top: 0px;
     z-index: 2;
     display: none;
+
 }
 .lightbox-wrapper.register{
     top: 140px;
@@ -1853,6 +1889,7 @@ p{
     }
     .lightbox.fb-objs{
         padding: 40px;
+        box-shadow: 0px 5px 5px #ccc
     }
     .fb-objs #scrollbar1 .scrollbar{
         right: 0px;
@@ -2942,17 +2979,16 @@ form p .invalid_messa{
 
 .alert-message{
     padding: 20px 10px 20px 10px;
-    max-width: 200px;
+    max-width: 300px;
     display: block;
     position: relative;
     z-index: 1;
     margin: 200px auto;
-    background: #EBDCC0;
     min-height: 90px;
-
+    box-shadow: 0px 5px 5px #ccc
 }
 .alert-message.gray{
-    background: #EFE8D6;
+
 }
 .message-header{
     width: 100%;
@@ -2979,7 +3015,7 @@ form p .invalid_messa{
         width: 43px;
     }
     .alert-message form .accept{
-        margin:0px 15px 0px 35px;
+        margin:0px 15px 0px 75px;
     }
     .alert-message .accept,.alert-message .reject{
         font-family: 'Raleway' sans-serif !important;
@@ -4028,7 +4064,7 @@ textarea{
     margin-top: 16px;
 }
 .loaded.del-wrapper{
-    bottom: -25px;
+    bottom: 1px;
 }
     .loaded.del-wrapper .del{
         display: block;
@@ -4149,7 +4185,19 @@ span.green_btn, span.yellow_btn {
     color: #fff !important;
 }
 
+.sendS{
+    margin-top: 40px;
+}
 
+.solSend{
+    margin-left: 60px !important;
+}
+
+.private-message {
+    font-family: 'Raleway' sans-serif;
+    color: #777;
+    font-size: 14px;
+}
 
 
 

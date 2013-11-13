@@ -23,7 +23,13 @@
         display: inline-block;
         position: relative;
         margin-top: 0px;
-
+        font-weight: 500;
+    }
+    .fbSpan{
+        font-family:'Conv_fontscore.com_d-dinproregular';
+        font-size: 12px;
+        color: #777;
+        text-align: left !important;
     }
     .twitter{
         position: absolute;
@@ -59,6 +65,8 @@
         #registry .select{
             padding: 0px;
             height: 27px;
+            margin-left: 15px !important;
+            padding-left: 6px;
         }
             #registry .select .text{
                 text-transform: capitalize;
@@ -66,7 +74,8 @@
                 height: 100%;
                 display: block;
                 color: #424242;
-                font-family: Arial, sans-serif;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
+                line-height: 27px;
             }
             #registry .select .dropdown{
                 position: absolute;
@@ -81,7 +90,7 @@
         .select,#registry p input:not([type='submit']),#registry p textarea{
             color: #424242;
             height: 100%;
-            text-indent: 5px;
+            text-indent: 1px;
             outline: none;
             display: block;
             border:1px solid #e4e4e4;
@@ -113,12 +122,20 @@
                 font-family: 'Conv_fontscore.com_d-dinproregular';
             }
             .multi_select .active{
-                background: #cccc66;
+                background: #EDD9AF;
             }
         #registry input[type='submit']{
-            background: #cccc66;
-            padding: 3px 10px 3px 10px;
-            font-family: 'Raleway' sans-serif;
+            padding: 4px 9px 4px 9px !important;
+            cursor: pointer !important;
+            font-size: 12px !important;
+            height: 28px !important;
+            line-height: 17px !important;
+            left: 0px !important;
+            top: 0px !important;
+            font-weight: 400 !important;
+            background: #60967E !important;
+            border: 1px solid #326F53 !important;
+            color: #fff !important;
         }
         .green_btn{
             padding: 2px 8px 2px 8px;
@@ -241,4 +258,13 @@ textarea{
 
 .edit_list .d-picture_user{
     margin-bottom: 40px !important;
+}
+
+.textFB{
+    font-family: 'Raleway' sans-serif;
+    text-align: center
+}
+
+.recomendation{
+    font-family:'Conv_fontscore.com_d-dinproregular';
 }

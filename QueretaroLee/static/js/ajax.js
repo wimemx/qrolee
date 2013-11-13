@@ -2151,9 +2151,9 @@ function search_all_header($this){
                             if(i == "org" & Object.keys(data['org']).length>0)
                                 text = 'Organizaciones';
                             if(i == "group" & Object.keys(data['group']).length>0)
-                                text = 'Grupos';
+                                text = 'Grupos de Lectura';
                             if(i == "spot" & Object.keys(data['spot']).length>0)
-                                text = 'Spots';
+                                text = 'Lugares';
                             if(i == "list" & Object.keys(data['list']).length>0)
                                 text = 'Listas';
                             if(i == "title" & Object.keys(data['title']).length>0)
