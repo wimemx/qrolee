@@ -152,7 +152,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id|feed_type:user }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>

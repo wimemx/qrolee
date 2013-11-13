@@ -49,6 +49,9 @@ input{
 input, textarea{
     outline: none;
 }
+span, div{
+    position: relative;
+}
 .search input.search_entities{
     width: 161px;
     margin-left: 32px;
@@ -866,12 +869,11 @@ p{
             cursor:pointer;
             font-weight: 500;
             border: 1px solid #CE8D51;
-            margin-left: 94px;
         }
             .entity .member p{
                 font-size: 11px;
                 margin-top: 10px;
-                clear: left;
+                clear: both;
             }
     .entity .nav{
         float: left;
@@ -1879,7 +1881,7 @@ p{
     .lightbox{
         background: url('../img/register_form_bg.png');
         position: relative;
-        background-color: #f4e5c8;
+        background-color: #f4e5c8 !important;
     }
     .lightbox .close{
             width: 9px;
@@ -2993,9 +2995,7 @@ form p .invalid_messa{
     min-height: 90px;
     box-shadow: 0px 5px 5px #ccc
 }
-.alert-message.gray{
 
-}
 .message-header{
     width: 100%;
     height: 20px;
@@ -3630,9 +3630,16 @@ textarea{
     margin-bottom: 20px;
 }
     .qr-div h3.title{
-        margin-top: 50px;
+        margin-top: 0px;
         float: none;
+        margin-bottom: 20px;
+        font-family: 'Raleway';
+        font-size: 30px !important;
+        color: #A77340;
+        line-height: 35px;
+
     }
+
     .qr-div .main.title{
         margin-top: 0px;
         font-size: 18px;
@@ -3641,15 +3648,28 @@ textarea{
 
 .qr-wrapper{
     background: #fffcf5;
-    height: 260px;
-    padding-top: 50px;
+    padding-top: 30px;
     margin-bottom: 100px !important;
-    border: 2px dashed #000000;
-    border-radius: 8px;
+}
+.qr-content{
+    padding: 25px 15px;
+    display: block;
+    border: 3px solid #3e4f4d;
+    border-bottom: none;
+    background: #fff;
+    width: 300px;
 }
     .qr{
         height: 160px;
         display: block;
+        margin: 0 auto !important;
+        float: none;
+        margin-bottom: 10px !important;
+    }
+    .ral{
+        font-family: 'Raleway';
+        font-weight: 600;
+        margin-bottom: 10px !important;
     }
         .qr img{
             width: 100%;
@@ -3668,7 +3688,22 @@ textarea{
         padding-top: 6px;
 
     }
-
+.qr-div .legend{
+    height: 100px;
+    background: #3e4f4d;
+}
+    .qr-div .legend p{
+        color: #fff;
+    }
+    .legend .logo{
+        left: -10px;
+        width: 74px;
+        height: 79px;
+        float: right;
+    }
+        .legend .logo span{
+            background: url('../img/logo_new.png') no-repeat 50% 50%;
+        }
 .book_register .title{
     font-size: 12px!important;
     margin-bottom: 10px!important;
@@ -3884,7 +3919,6 @@ textarea{
     width: 256px;
     border: 1px solid #c4c4c4;
     border-top: none;
-    padding: 0px 8px 0px 8px;
 }
 .value_sel .sel_{
     cursor: pointer;
@@ -3919,6 +3953,9 @@ textarea{
 .account-settings .member{
     top: 50px;
     right: -38px;
+}
+.member form{
+    width: 100%;
 }
 .account-settings:hover{
     cursor: pointer;
@@ -4178,11 +4215,11 @@ textarea{
     top: 20px;
 }
 
-span.green_btn, span.yellow_btn {
+span.green_btn, span.yellow_btn, input.green_btn {
     padding: 4px 9px 4px 9px !important;
     cursor: pointer !important;
     font-size: 12px !important;
-    height: 17px !important;
+    height: auto !important;
     line-height: 17px !important;
     left: 0px !important;
     top: 0px !important;
@@ -4192,10 +4229,26 @@ span.green_btn, span.yellow_btn {
     color: #fff !important;
 }
 
+p input.green_btn{
+    height: 25px !important;
+}
 .sendS{
     margin-top: 40px;
 }
 
+
+.sel_spots.edit_event .dropdown{
+    position: absolute;
+    top: 30px;
+    left: 165px;
+    z-index: 1;
+}
+
+    .sel_spots.edit_event .value_sel{
+        left: 0px;
+        top: 55px;
+        width: 148px;
+    }
 .solSend{
     margin-left: 60px !important;
 }

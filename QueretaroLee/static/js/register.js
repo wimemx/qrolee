@@ -178,7 +178,11 @@ function load_words(){
         'Un libro es un regalo que puedes abrir una y otra vez': 'Garrison Keillor',
         'No puedes abrir un libro sin aprender algo': 'Confucio'
     }
-    var random = parseInt((Math.random()*Object.keys(words).length)+1);
+    var len = 0;
+    for (word in words){
+        len++;
+    }
+    var random = Math.floor(Math.random()*(len+1));
     var index = 1;
     $.each(words, function(i){
         if(index == random){

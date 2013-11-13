@@ -113,17 +113,42 @@
                     </span>
                 </span>
             </p>
-            <p>Lugar del evento
+            <!--<p>Lugar del evento
                 <span class="controllers_wrapper">
                     <span class="green_btn fright">Editar</span>
                     <span class="yellow_btn fright">Guardar</span>
                 </span>
-                <span class="close right"></span>
                 <input type="hidden" class="lat" name="lat"/>
                 <input type="hidden" class="long" name="long"/>
                 <textarea name="location_name" class="map address value">{{ entity.location_name }}</textarea>
                 <span class="value area map">{{ entity.location_name }}</span>
-                <span id="map" class="grid-5 alpha fright"></span>
+
+            </p>-->
+        <p class="sel_spots edit_event" >Lugar del evento
+            <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                </span>
+                <span class="fright fadein dropdown">
+                </span>
+                <input name="location_name" type="text" value="" class="grid-4 map alpha address fright value"/>
+                <input name="lat" type="hidden" class="lat" value="" />
+                <input name="long" type="hidden" class="long" value="" />
+                <input type="hidden" class="place_spot" name="place_spot" value="0"/>
+                <span class="value area map">{{ entity.location_name }}</span>
+                <span class="grid-4 no-margin value_sel">
+                </span>
+                <select class="name_spot">
+                    {% for obj in spots %}
+                        <option class="{{ obj.id }}" value="{{ obj.name }}">{{ obj.name }}</option>
+                    {% endfor %}
+                </select>
+                <select class="latln_spot">
+                    {% for obj in spots %}
+                        <option class="{{ obj.id }}" value="{{ obj.lat }},{{ obj.long }}">{{ obj.name }}</option>
+                    {% endfor %}
+                </select>
+            <span id="map" class="grid-5 alpha fright"></span>
             </p>
         </span>
         <span class="d-picture_user grid-4 no-margin fright"  >

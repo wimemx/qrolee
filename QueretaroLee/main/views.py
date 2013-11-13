@@ -466,7 +466,6 @@ def get_events(request, **kwargs):
                 else:
                     current_month = int(request.POST.get('curr_month'))+1
 
-                print current_month
                 events_ = models.Event.objects.filter(
                     status=status, start_time__month=current_month,
                     start_time__year=int(request.POST.get('curr_year'))).order_by('start_time')
@@ -480,6 +479,7 @@ def get_events(request, **kwargs):
 
         events = list()
         for event in events_:
+
             event_data = list()
             event_data.append(event.name)
             event_data.append(event.start_time.day)
@@ -500,7 +500,7 @@ def get_events(request, **kwargs):
             is_attending = False
             if request.user.is_authenticated():
                 assist_event = models.AssistEvent.objects.filter(
-                    user=request.user)
+                    user_id=request.user.id, event_id=event.id)
             else:
                 assist_event = False
             if assist_event:
@@ -509,6 +509,7 @@ def get_events(request, **kwargs):
 
             if event.owner_id == request.user.id:
                 is_attending = True
+
             event_data.append(is_attending)
             if int(request.POST.get('id_entity')) == -1:
                 admins = models.MemberToObject.objects.filter(
@@ -1761,7 +1762,6 @@ def book(request, **kwargs):
     else:
         state_2 = False
 
-    print cheking
 
     context = {
         'book': book,

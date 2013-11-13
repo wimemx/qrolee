@@ -117,6 +117,7 @@
     .mission .bottom{
         position: absolute;
         width: 100%;
+        left:0px;
         height: 20px;
         display: block;
         background: url('../img/detail_bottom.png') no-repeat 50% 0px;
@@ -236,7 +237,7 @@ form.register{
             float: left;
             margin-right: 5px;
         }
-        form p input[type='submit']{
+        form p input[type='submit'], form p input.submit{
             background: #f2e28e !important;
             border: 1px solid #eacea9;
             padding:7px 10px 7px 10px;
@@ -244,6 +245,7 @@ form.register{
             font-family: 'Raleway', sans-serif;
             transition: all .5s;
             -webkit-transition: all .5s; /* Safari */
+            width: auto !important;
         }
         form p input[type='submit']:hover{
             border-color: #d1a574;
@@ -261,7 +263,7 @@ form.register{
             font-family: sans-serif;
         }
         .register .social-login{
-            display: inline-block !important;
+            display: block !important;
 
         }
             .social-login a{

@@ -66,7 +66,7 @@
     {% if owner.id != user.id %}
 
         {% if entity_type.1 == 'group' or entity_type.1 == 'spot' %}
-            <span class="member grid-3">
+            <span class="member no-margin grid-3">
                 <span class="grid-3 no-margin fright">
                     {% if member and entity.privacy == 0 %}
                         <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
@@ -93,8 +93,8 @@
                                 <img src="/static/img/private_icon.png" alt=""/><span class="fright" style="margin-top: 0px">Grupo Privado</span>
                             </p>
                             {% else %}
-                            <span class="btn no-ajax fleft">Seguir</span>
-                            <p class="din-r followers fleft followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
+                            <span class="btn no-ajax fright">Seguir</span>
+                            <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                             <p class="private-icon fright">
                                 <img src="/static/img/private_icon.png" alt=""/>
                                 <span class="fright">
@@ -126,7 +126,7 @@
         {% endif %}
 
         {% if entity_type.1 == 'organization' %}
-            <span class="member grid-6 no-margin">
+            <span class="member no-margin grid-6 no-margin">
                 <span class="grid-3 no-margin fright">
 
                 {% if member and entity.privacy == 0 %}
@@ -302,7 +302,7 @@
                     <div class="overview">
                         {% for news_feed in activity %}
                             {% autoescape off %}
-                                {{ news_feed.id|feed_type }}
+                                {{ news_feed.id|feed_type:-1 }}
                             {% endautoescape %}
                         {% endfor %}
                     </div>
