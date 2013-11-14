@@ -692,7 +692,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title: data[ind]['book']
+                title:data[ind]['book'][0]
             });
             }
             counter++;
@@ -1049,14 +1049,12 @@ $(document).ready(function(){
         }
     });
 
+    var view_more = true;
     $('.news-feed .more').click(function(){
         var $this = $(this);
-        var view_more = parseInt($this.find('input').val());
         var elements = $(this).parent().find('.viewport .overview .item').length - 2;
         var height = $(this).parent().outerHeight(true);
-
-        if(view_more == 1){
-            view_more = 0;
+        if(view_more){
             $(this).parent().animate({
                 'height': height+(elements * 45)
             }, function(){
@@ -1064,24 +1062,24 @@ $(document).ready(function(){
                 $(this).find('.viewport').animate({
                     'height': h+(elements*45)
                 }, function(){
-                    $this.find('span').html('ver menos');
+                    $this.html('ver menos');
+                    view_more = false;
                 });
             });
         }else{
             var h = $(this).parent().find('.viewport').outerHeight(false);
-            view_more = 1;
             $(this).parent().find('.viewport').animate({
                 'height': h-(elements*45)
             }, function(){
                 $(this).parent().animate({
                     'height': height-(elements * 45)
                 },function(){
-                    $this.find('span').html('ver más');
+                    $this.html('ver más');
+                    view_more = true;
                 })
             });
 
         }
-        $this.find('input').val(view_more);
     });
 
     $('.filter .checkbox').click(function(){
@@ -1494,6 +1492,7 @@ $(document).ready(function(){
                var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
                     'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
+
             }
 
         }
@@ -1997,9 +1996,8 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
-
-        title = truncText(title, 30);
-        h3.html(title);
+        title = title.substring(0, 16);
+        h3.html(title+' ...');
         $('.results').append(item);
         return;
     }
@@ -2096,7 +2094,7 @@ query = {
 
 function dialog_titles(csrf, data, id){
     $('.dialog-confirm').empty();
-    div_closet = $('');
+    div_closet = $('<span class="dialog_closet"></span>');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);
@@ -3363,7 +3361,7 @@ function show_dialog(){
 
             href = 'href="/accounts/delete_user/"';
         }
-        div_closet = $('');
+        div_closet = $('<span class="dialog_closet"></span>');
         div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
         btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
         btn_acept = $('<a class="dialog_btn green_btn" ' + href + ' >Aceptar</a>');
@@ -3564,7 +3562,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
 function d_show_dialog(type_message){
 
     $('.dialog-confirm').empty();
-    div_closet = $('');
+    div_closet = $('<span class="dialog_closet"></span>');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);
