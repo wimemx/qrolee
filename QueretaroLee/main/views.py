@@ -478,60 +478,60 @@ def get_events(request, **kwargs):
             #        events_ = models.Event.objects.filter(
             #            status=status, location_id=request.POST['id_entity'])
 
-        events = list()
-        for event in events_:
+    events = list()
+    for event in events_:
 
-            event_data = list()
-            event_data.append(event.name)
-            event_data.append(event.start_time.day)
-            event_data.append(event.start_time.isoweekday())
-            event_data.append(event.picture)
-            event_data.append(event.description)
-            if str(event.start_time.minute) == '0':
-                min = '00'
-            else:
-                min = str(event.start_time.minute).zfill(2)
-            event_data.append(
-                str(event.start_time.hour).zfill(2)+':'+min)
-            event_data.append(event.id)
-            event_data.append(event.location_name)
-            event_data.append(event.owner_id)
-            event_data.append(event.start_time.month)
-            event_data.append(event.fb_id)
-            is_attending = False
-            if request.user.is_authenticated():
-                assist_event = models.AssistEvent.objects.filter(
-                    user_id=request.user.id, event_id=event.id)
-            else:
-                assist_event = False
-            if assist_event:
-                if assist_event[0].is_attending:
-                    is_attending = True
-
-            if event.owner_id == request.user.id:
+        event_data = list()
+        event_data.append(event.name)
+        event_data.append(event.start_time.day)
+        event_data.append(event.start_time.isoweekday())
+        event_data.append(event.picture)
+        event_data.append(event.description)
+        if str(event.start_time.minute) == '0':
+            min = '00'
+        else:
+            min = str(event.start_time.minute).zfill(2)
+        event_data.append(
+            str(event.start_time.hour).zfill(2)+':'+min)
+        event_data.append(event.id)
+        event_data.append(event.location_name)
+        event_data.append(event.owner_id)
+        event_data.append(event.start_time.month)
+        event_data.append(event.fb_id)
+        is_attending = False
+        if request.user.is_authenticated():
+            assist_event = models.AssistEvent.objects.filter(
+                user_id=request.user.id, event_id=event.id)
+        else:
+            assist_event = False
+        if assist_event:
+            if assist_event[0].is_attending:
                 is_attending = True
 
-            event_data.append(is_attending)
-            if int(request.POST.get('id_entity')) == -1:
-                admins = models.MemberToObject.objects.filter(
-                    object=event.location_id, object_type='E', is_admin=1)
-                admins_list = list()
-                for a in admins:
-                    admins_list.append(a.user_id)
-                match = 0
-                for ele in admins_list:
-                    if request.user.id == ele:
-                        match += 1
-                if match == 0:
-                    event_data.append(False)
-                else:
-                    event_data.append(True)
+        if event.owner_id == request.user.id:
+            is_attending = True
+
+        event_data.append(is_attending)
+        if int(request.POST.get('id_entity')) == -1:
+            admins = models.MemberToObject.objects.filter(
+                object=event.location_id, object_type='E', is_admin=1)
+            admins_list = list()
+            for a in admins:
+                admins_list.append(a.user_id)
+            match = 0
+            for ele in admins_list:
+                if request.user.id == ele:
+                    match += 1
+            if match == 0:
+                event_data.append(False)
             else:
-                if request.user.id == event.owner_id:
-                    event_data.append(True)
-                else:
-                    event_data.append(False)
-            events.append(event_data)
+                event_data.append(True)
+        else:
+            if request.user.id == event.owner_id:
+                event_data.append(True)
+            else:
+                event_data.append(False)
+        events.append(event_data)
 
     context = {
         'events': list(events)
