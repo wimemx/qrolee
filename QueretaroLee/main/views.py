@@ -524,7 +524,7 @@ def get_events(request, **kwargs):
                 if match == 0:
                     event_data.append(False)
                 else:
-                     event_data.append(True)
+                    event_data.append(True)
             else:
                 if request.user.id == event.owner_id:
                     event_data.append(True)
