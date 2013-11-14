@@ -462,13 +462,15 @@ def media_upload(request):
     if 'list_picture' in request.POST:
         folder = '/list/'
         id = request.POST.get('list_picture')
-        entity = account.List.objects.get(id=id)
+        if int(id) != 0:
+            entity = account.List.objects.get(id=id)
 
-        if request.POST.get('cover'):
-            entity.cover_picture = str(request.FILES['file'])
-        else:
-            entity.picture = str(request.FILES['file'])
-        entity.save()
+            if request.POST.get('cover'):
+                entity.cover_picture = str(request.FILES['file'])
+            else:
+                entity.picture = str(request.FILES['file'])
+            entity.save()
+
     if 'entity' in request.POST:
         folder = '/entity/'
         id = request.POST.get('entity')
