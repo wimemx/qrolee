@@ -253,7 +253,6 @@ def register(request):
     category_ids = entity['category_ids'][0].split(' ')
     cat_ids = list()
     redirect = False
-    print entity
     if int(entity['redirect'][0]) == 1:
         redirect = True
     for ele in category_ids:
@@ -518,7 +517,6 @@ def media_upload(request):
             file_name = str(request.FILES['file'])
 
         handle_uploaded_file(path, file)
-
         context = {
             'file_name': file_name
         }
