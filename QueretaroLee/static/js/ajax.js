@@ -34,8 +34,7 @@ function populateCal(curr_month,$item, current_year){
     var edit = 0;
     if($('.d-edit-event').length > 0)
         edit = -1;
-    console.log('Month '+curr_month);
-    console.log('Year '+current_year);
+
     if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
@@ -49,6 +48,9 @@ function populateCal(curr_month,$item, current_year){
 
         if(current_year === undefined)
             current_year = curr_year;
+
+        console.log('Month '+curr_month);
+        console.log('Year '+current_year);
 
         $.ajax({
             type: "POST",
