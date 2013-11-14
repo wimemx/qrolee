@@ -34,12 +34,13 @@ function populateCal(curr_month,$item, current_year){
     var edit = 0;
     if($('.d-edit-event').length > 0)
         edit = -1;
+
     if((curr_month)>=0){
 
         var url = '/qro_lee/entity/events/' + $('.sidebar-b input.entity').val()+'/';
 
         var edit_events;
-        if($('.id_entity').val()==undefined){
+        if($('.id_entity').val() === undefined){
             edit_events = -1;
         }else{
             edit_events = $('.id_entity').val();
@@ -47,6 +48,9 @@ function populateCal(curr_month,$item, current_year){
 
         if(current_year === undefined)
             current_year = curr_year;
+
+        console.log('Month '+curr_month);
+        console.log('Year '+current_year);
 
         $.ajax({
             type: "POST",
@@ -61,6 +65,8 @@ function populateCal(curr_month,$item, current_year){
             },
             dataType: 'json'
         }).done(function(data){
+                console.log('---------- Event data -----------');
+                console.log(data);
                 var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
@@ -762,6 +768,7 @@ $(document).ready(function(){
           var count = 0;
                 $.each(data,function(i){
                     var event = data[i];
+                    console.log(event);
                     var len = event.length;
                     $.each(event,function(index){
                         var event_data = event[index];

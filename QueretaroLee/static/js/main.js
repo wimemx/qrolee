@@ -920,13 +920,13 @@ $(document).ready(function(){
             show_text($('.text_2'), 'Más información de donde encontraste el libro');
             $(this).find('img').attr('src','/static/img/radioOn.png');
             $(this).parent().find('.lib').find('img').attr('src','/static/img/radioOff.png');
-            $(this).parent().find('input').val(1);
+            $(this).parent().find('input').val(0);
         }else{
             show_text($('.text_1'), '¿Dónde vas a liberar este libro?');
             show_text($('.text_2'), 'Más información sobre dónde liberarás el libro');
             $(this).find('img').attr('src','/static/img/radioOn.png');
             $(this).parent().find('.find').find('img').attr('src','/static/img/radioOff.png');
-            $(this).parent().find('input').val(0);
+            $(this).parent().find('input').val(1);
         }
     });
 
