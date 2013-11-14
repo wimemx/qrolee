@@ -535,7 +535,7 @@ def get_events(request, **kwargs):
     context = {
         'events': list(events)
     }
-
+    print context
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 
