@@ -125,7 +125,7 @@ class TwitterBackend:
             os.mkdir(path+'/'+str(user.id)+'/profile', 0777)
             os.mkdir(path+'/'+str(user.id)+'/entity', 0777)
             os.mkdir(path+'/'+str(user.id)+'/event', 0777)
-
+            os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
         twitterSessionObj = users_models.TwitterSession.objects.get(
             oauth_token=request_token['oauth_token'])
         twitterSessionObj.user_id = user.id
