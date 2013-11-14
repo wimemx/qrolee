@@ -768,6 +768,7 @@ $(document).ready(function(){
           var count = 0;
                 $.each(data,function(i){
                     var event = data[i];
+                    console.log(event);
                     var len = event.length;
                     $.each(event,function(index){
                         var event_data = event[index];
