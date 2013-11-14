@@ -523,8 +523,10 @@ function fb_obj_search(search, type){
                     var folder = '/entity/';
                     if(obj.location){
                         var address;
+
                         if('rsvp_status' in obj){
                             folder = '/event/';
+                            console.log(obj);
                             $('.address').val(obj.location);
                             $('input.fb-url').val(obj.id);
                         }

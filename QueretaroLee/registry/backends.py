@@ -66,7 +66,7 @@ class FacebookBackend:
             os.mkdir(path+'/'+str(user.id)+'/entity', 0777)
             os.mkdir(path+'/'+str(user.id)+'/event', 0777)
             os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
-            fb_pic = 'https://graph.facebook.com/1493077013/picture?width=200'
+            fb_pic = 'https://graph.facebook.com/'+str(profile['id'])+'/picture?width=200'
             response = urllib2.urlopen(fb_pic)
             fb_pic = response.geturl()
             path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
