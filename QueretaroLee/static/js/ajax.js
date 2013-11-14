@@ -1413,7 +1413,6 @@ function add_titles_list(csrf, id_list){
 }
 
 function edit_title_read(id, type, $this){
-
 $.ajax({
         type: "POST",
         url: '/registry/edit_title_read/',
@@ -1731,13 +1730,6 @@ function search_list_authors_titles($this){
                             a_title =  $('<a title="' + data[i].name + '" href="' +
                                 href + '" class="title alpha title_book"></a>');
                             a_title.append(data[i].name);
-
-                            if(my_list_type==0){
-                                p_stars = $('<p class="fright"></p>');
-                            }else{
-                                p_stars = $('<p class="grid-3 no-margin"></p>');
-                            }
-
                             span_stars = $('<span class="fright mini_rate" ></span>');
                             for(ind = 0;ind<5;ind++){
                                 if(ind<data[i].grade)
@@ -1759,9 +1751,8 @@ function search_list_authors_titles($this){
                             p_text = $('<span class="d-text_list grid-8 no-margin" ></span>');
                             p_text.append(truncText(data[i].description,245));
                             span_title.append(a_title);
-                            p_stars.append(span_stars);
+                            span_data.append(span_stars);
                             span_data.append(p_by);
-                            span_data.append(p_stars);
                             span_data.append(p_text);
 
                             overview.append(div);
