@@ -17,7 +17,7 @@ from registry import models, views, settings
 
 
 from decimal import Decimal
-import simplejson
+import json as simplejson
 import calendar
 import HTMLParser
 import datetime
@@ -427,6 +427,7 @@ def get_events(request, **kwargs):
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
+            print events_
             if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(

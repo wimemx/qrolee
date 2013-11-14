@@ -27,7 +27,7 @@ import os
 import urlparse
 import urllib
 import ast
-import simplejson
+import json as simplejson
 import oauth2
 import hashlib
 import HTMLParser
