@@ -446,10 +446,7 @@ def logout(request):
 
 
 def media_upload(request):
-    print request.POST
-    print request.FILES
     if 'ie-fix' in request.POST:
-
         context = {
             'file_name': 'oh si'
         }
@@ -470,34 +467,37 @@ def media_upload(request):
         if 'list_picture' in request.POST:
             folder = '/list/'
             id = request.POST.get('list_picture')
-            entity = account.List.objects.get(id=id)
+            if id != '':
+                entity = account.List.objects.get(id=id)
 
-            if request.POST.get('cover'):
-                entity.cover_picture = str(request.FILES['file'])
-            else:
-                entity.picture = str(request.FILES['file'])
-            entity.save()
+                if request.POST.get('cover'):
+                    entity.cover_picture = str(request.FILES['file'])
+                else:
+                    entity.picture = str(request.FILES['file'])
+                entity.save()
         if 'entity' in request.POST:
             folder = '/entity/'
             id = request.POST.get('entity')
-            entity = models.Entity.objects.get(id=id)
-            if request.POST.get('cover'):
-                entity.cover_picture = str(request.FILES['file'])
-            else:
-                entity.picture = str(request.FILES['file'])
+            if id != '':
+                entity = models.Entity.objects.get(id=id)
+                if request.POST.get('cover'):
+                    entity.cover_picture = str(request.FILES['file'])
+                else:
+                    entity.picture = str(request.FILES['file'])
 
-            entity.save()
+                entity.save()
         if 'event' in request.POST:
             id = request.POST.get('event')
-            entity = models.Event.objects.get(id=id)
+            if id != '':
+                entity = models.Event.objects.get(id=id)
 
-            if 'event_cover_picture' in request.POST:
-                entity.cover_picture = str(request.FILES['file'])
-            else:
-                entity.picture = str(request.FILES['file'])
+                if 'event_cover_picture' in request.POST:
+                    entity.cover_picture = str(request.FILES['file'])
+                else:
+                    entity.picture = str(request.FILES['file'])
 
-            entity.save()
-        if 'fb_img' in request.POST and folder == '/event/':
+                entity.save()
+        if 'fb_img' in request.POST and request.POST.get('folder') == '/event/':
             folder = '/event/'
         else:
             folder = '/entity/'
@@ -518,10 +518,10 @@ def media_upload(request):
             file_name = str(request.FILES['file'])
 
         handle_uploaded_file(path, file)
+
         context = {
             'file_name': file_name
         }
-
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 

@@ -1864,6 +1864,9 @@ p{
     border-bottom: 1px solid #acacac;
     margin-bottom: 16px !important;
 }
+.fb-connect.fb-fix{
+    top: 20px;
+}
     .fb-connect p.fb{
         color: #fff;
         background: #3b579d;
