@@ -109,7 +109,7 @@
                                     <input type="hidden" class="address" value="" />
                                     <span class="value_option" >
                                         {% if status_book.status %}
-                                            <input type="hidden" value="1" />
+                                            <input type="hidden" value="0" />
                                             <span class="grid-5 no-margin btn_ra find">
                                                 <img src="/static/img/radioOn.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>
@@ -118,8 +118,8 @@
                                                 <img src="/static/img/radioOff.png" class="radio_btn fleft radio_buttom">
                                                 <span class="fleft">Deseo liberar este libro</span>
                                             </span>
-                                        {% else %}
-                                            <input type="hidden" value="0" />
+                                        {% else %}2
+                                            <input type="hidden" value="1" />
                                             <span class="grid-5 no-margin find">
                                                 <img src="/static/img/radioOff.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>
@@ -250,7 +250,7 @@
                                     <span class="title grid-5 no-margin ">Selecciona una opcion</span>
                                     <span class="value_option" >
                                         {% if status_book.status %}
-                                            <input type="hidden" value="1" />
+                                            <input type="hidden" value="0" />
                                             <span class="grid-5 no-margin btn_ra find">
                                                 <img src="/static/img/radioOn.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>
@@ -260,7 +260,7 @@
                                                 <span class="fleft">Deseo liberar este libro</span>
                                             </span>
                                         {% else %}
-                                            <input type="hidden" value="0" />
+                                            <input type="hidden" value="1" />
                                             <span class="grid-5 no-margin find">
                                                 <img src="/static/img/radioOff.png" class="radio_btn radio_buttom fleft">
                                                 <span class="fleft">Encontré este libro y lo estoy leyendo</span>

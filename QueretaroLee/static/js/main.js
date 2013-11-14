@@ -915,18 +915,19 @@ $(document).ready(function(){
     });
 
     $('.book_register .btn_ra').click(function(){
+        alert();
         if($(this).hasClass('find')){
             show_text($('.text_1'), '¿ Dónde encontraste este libro ?');
             show_text($('.text_2'), 'Más información de donde encontraste el libro');
             $(this).find('img').attr('src','/static/img/radioOn.png');
             $(this).parent().find('.lib').find('img').attr('src','/static/img/radioOff.png');
-            $(this).parent().find('input').val(1);
+            $(this).parent().find('input').val(0);
         }else{
             show_text($('.text_1'), '¿Dónde vas a liberar este libro?');
             show_text($('.text_2'), 'Más información sobre dónde liberarás el libro');
             $(this).find('img').attr('src','/static/img/radioOn.png');
             $(this).parent().find('.find').find('img').attr('src','/static/img/radioOff.png');
-            $(this).parent().find('input').val(0);
+            $(this).parent().find('input').val(1);
         }
     });
 
