@@ -915,7 +915,6 @@ $(document).ready(function(){
     });
 
     $('.book_register .btn_ra').click(function(){
-        alert();
         if($(this).hasClass('find')){
             show_text($('.text_1'), '¿ Dónde encontraste este libro ?');
             show_text($('.text_2'), 'Más información de donde encontraste el libro');
