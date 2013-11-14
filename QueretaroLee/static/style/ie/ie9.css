@@ -18,6 +18,8 @@ p.social-login{
 
     input{
         width: 100%;
+        height: 27px;
+        line-height: 27px;
     }
 
 .register .social-login a.twitter{
@@ -31,3 +33,71 @@ p.social-login{
         top: 37px;
         margin: 0px !important;
     }
+
+.top_.search_button{
+    top: 1px !important;
+}
+
+.news-feed a{
+    color: #000000;
+}
+
+.ie_7{
+    display: block;
+    float: left;
+    margin-right: 5px;
+}
+span.dark_yello_btn{
+    height: 27px !important;
+    right: 2px;
+    top: 1px !important;
+}
+.entity{
+    padding-bottom: 20px !important;
+}
+.entity .member .btn{
+    width: 65px !important;
+    line-height: 14px !important;
+}
+
+.dz-message span {
+    position: relative;
+    width: 100%;
+    display: block;
+    text-align: center;
+    line-height: 10px;
+    margin-top: 65px;
+}
+
+.dz-message .leg1 {
+    bottom: -17px;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+.data p input{
+        border: 1px solid #e4e4e4;
+        display: none;
+    }
+.data p .value{
+    top: -27px;
+}
+.fadein.fbSpan{
+    top: -27px;
+    position: relative;
+}
+
+#ie-fix{
+    text-indent: 0px !important;
+    position: relative;
+}
+    #ie-fix .pixeles{
+        bottom: -5px !important;
+        text-align: left;
+    }
+
+.scrollspot .d-spot {
+    margin-left: 0px;
+    height: 145px !important;
+    margin-bottom: 20px !important;
+}

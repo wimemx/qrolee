@@ -194,7 +194,6 @@ function post_to_fb(caption, description, content, redirect, url){
 }
 
 $(document).ready(function(){
-
     csrf_global = $('.csrf_header').find('input').val();
     $('.show_text').click(function(){
         var active = parseInt($(this).find('input').val());
@@ -508,8 +507,7 @@ function fb_obj_search(search, type){
                         return;
                     }
                     $('input.fb_id').val(obj.id);
-                    console.log(obj.id);
-                    clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type']);
+                    clear_input(['submit','location_id','picture','cover_picture','csrfmiddlewaretoken','entity_type','redirect']);
                     $('input.fb_id').val(obj.id);
                     $('.lightbox-wrapper').fadeOut(300);
                     $('input[name=name]').val(obj.name);
@@ -522,7 +520,7 @@ function fb_obj_search(search, type){
                     $('input[name=fb]').val(obj.id);
                     if(web[0])
                         $('input[name=website]').val(web[0]);
-                    var folder = '';
+                    var folder = '/entity/';
                     if(obj.location){
                         var address;
                         if('rsvp_status' in obj){
@@ -1518,6 +1516,7 @@ $(document).ready(function(){
 });
 
 
+var ie_logo = true;
 function edit_form($this, timeout, type, id, event){
     if(type == 0){
         if($this.parent().find('span.value.no-edit').length == 0){
@@ -1594,6 +1593,23 @@ function edit_form($this, timeout, type, id, event){
                     }
                 }
             });
+            if($('#ie-fix').length > 0){
+                if($.trim($('#ie-fix input.file').val()) != ''){
+                    if(ie_logo){
+                        $.ajax({
+                            type: "POST",
+                            url: $('#ie-fix').attr('action'),
+                            data: $('#ie-fix').serialize(),
+                            dataType: 'json'
+                        }).done(function(data){
+                                ie_logo = false;
+                                $('#ie-fix input.file').val('');
+                            });
+
+
+                    }
+                }
+            }
             if(valid){
                 if(event === undefined)
                     event = '-1'

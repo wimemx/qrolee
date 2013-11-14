@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('Fernando Avalos', 'fernando@wime.com.mx'),
     ('Daniel Bedolla ', 'daniel@wime.com.mx'),
-    )
+)
 
 MANAGERS = ADMINS
 
@@ -76,15 +76,15 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(os.path.dirname(__file__), '..', 'static').replace('\\','/'),
-    )
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    )
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'w(_)pb3u-uqr9z9z&amp;7cquthhgc(v91p+63kx_tbg-1ws#5ig37'
@@ -93,8 +93,8 @@ SECRET_KEY = 'w(_)pb3u-uqr9z9z&amp;7cquthhgc(v91p+63kx_tbg-1ws#5ig37'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
-    )
+#     'django.template.loaders.eggs.Loader',
+)
 
 
 
@@ -106,7 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    )
+)
 
 ROOT_URLCONF = 'QueretaroLee.urls'
 
@@ -116,7 +116,7 @@ WSGI_APPLICATION = 'QueretaroLee.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\', '/'),
-    )
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'account',
     'registry',
     'disqus',
-    )
+)
 
 DISQUS_API_KEY = 'gLvBBYtvFtkCttT2u8SMmZqnlEmWWMYhrbqmVbLlWSJdfk4RKaWraKITJknhtXL7'
 DISQUS_WEBSITE_SHORTNAME = 'qroleewimjapps'
@@ -163,8 +163,8 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-            },
-        }
+        },
+    }
 }
 
 AUTHENTICATION_BACKENDS = (
@@ -173,4 +173,4 @@ AUTHENTICATION_BACKENDS = (
     'registry.backends.TwitterBackend',
     'registry.backends.FacebookBackend',
 
-    )
+)

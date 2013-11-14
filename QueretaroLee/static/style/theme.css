@@ -235,6 +235,8 @@ p{
 }
 .header{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
+    position: relative;
+    z-index: 5;
 }
 
     .logo{
@@ -1024,6 +1026,7 @@ p{
             width: 100%;
             display: block;
             padding: 10px;
+            cursor: pointer;
         }
             .discussion .item .title{
                 font-size: 16px;
@@ -1858,7 +1861,6 @@ p{
 }
 .fb-connect{
     position: relative;
-    top: 20px;
     border-bottom: 1px solid #acacac;
     margin-bottom: 16px !important;
 }
@@ -1937,6 +1939,7 @@ p{
             .lightbox.fb-objs .title{
                 font-size: 13px;
                 width: 160px !important;
+                margin-bottom: 0px !important;
             }
             .lightbox.fb-objs p{
                 font-size: 10px;
@@ -4200,7 +4203,7 @@ textarea{
     margin-top: 16px;
 }
 .loaded.del-wrapper{
-    bottom: 1px;
+    bottom: -10px;
 }
     .loaded.del-wrapper .del{
         display: block;
@@ -4408,6 +4411,7 @@ p input.green_btn{
     cursor: pointer;
     font-size: 13px;
     font-family: 'Raleway';
+    margin-top: 20px !important;
 }
 .btn_login .main_btn:hover{
     border-color: #d1a574;

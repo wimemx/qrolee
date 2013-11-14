@@ -72,7 +72,7 @@
                         <form id="form_member" class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
-                            <input type="submit" class="btn " value="Eres seguidor">
+                            <input type="submit" class="btn fright" value="Eres seguidor">
                         </form>
 
                     {% elif member and entity.privacy != 0 %}
@@ -80,7 +80,7 @@
                         <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="follow_private" value="-1"/>
-                            <input type="submit" class="btn" value="Eres seguidor">
+                            <input type="submit" class="btn fright" value="Eres seguidor">
                         </form>
 
                     {% else %}
@@ -116,7 +116,7 @@
                             <form class="no_ajax fleft" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="membership" value="1"/>
-                                <input type="submit" class="btn " value="Seguir">
+                                <input type="submit" class="btn fright" value="Seguir">
                             </form>
 
                         {% endif %}
@@ -133,14 +133,14 @@
                     <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
-                        <input type="submit" class="btn " value="Eres seguidor">
+                        <input type="submit" class="btn fright" value="Eres seguidor">
                     </form>
                 {% elif member and entity.privacy != 0 %}
 
                     <form id="form_member" class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
-                        <input type="submit" class="btn" value="Eres seguidor">
+                        <input type="submit" class="btn fright" value="Eres seguidor">
                     </form>
                 {% else %}
 
@@ -159,7 +159,7 @@
                             <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="membership" value="1"/>
-                                <input type="submit" class="btn " value="Seguir">
+                                <input type="submit" class="btn fright" value="Seguir">
                             </form>
                         {% endif %}
                     {% endif %}
@@ -719,7 +719,7 @@
                         </span>
                         <!-- Gringue -->
                         <span class="grid-8 din-r answer fright no-margin">
-                            <span class="name title">Laura Rodríguez <span class="gray_text">hace 3 semanas</span></span>
+                            <span class="name title"><span>Laura Rodríguez</span> <span class="gray_text">hace 3 semanas</span></span>
                             <p>Pellentesque habitant morbi tristique senectus et netus et
                             malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
                             ultricies eget, tempor sit amet, ante. Donec eu libero sit
