@@ -1028,6 +1028,7 @@ $(document).ready(function(){
 
 
     if($('.discussion.load').length > 0){
+
         $('.discussion.load a.title').click(function(e){
             $(this).parent().parent().find('.item').each(function(){
                 $(this).removeClass('active');
@@ -1037,6 +1038,9 @@ $(document).ready(function(){
             e.preventDefault();
             discussion($(this).attr('id'));
             return false;
+        });
+        $('.discussion .overview .item').click(function(){
+            $(this).find('a.title').trigger('click');
         });
         $('.brown_btn.discuss').click(function(){
             $('.create-discussion input').val('');
@@ -1101,11 +1105,11 @@ function create_discussion(entity_id, name, content){
     }).done(function(data){
             $('.create-discussion-wrapper').parent().fadeOut(300);
             var discuss = data['response'];
-            var $span = $('<span class="item">' +
-                '<a href="#" id="'+discuss.id+'" style="margin-top: 5px;" class="title no-margin">'+discuss.name+'</a>' +
-                '<p class="no-margin">Por ' +
-                '<a class="spot category" href="#">' +discuss.username+'</a></p>' +
-                '<p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
+            var $span = $('<span class="item">');
+            var $a = $('<a href="#" id="'+discuss.id+'" style="margin-top: 5px;" class="title no-margin">'+discuss.name+'</a>');
+            var $p = $('<p class="no-margin">Por <a class="spot category" href="#">' +discuss.username+'</a></p><p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
+            $span.append($a);
+            $span.append($p);
             $span.find('a.title').click(function(e){
                 $(this).parent().parent().find('.item').each(function(){
                     $(this).removeClass('active');
@@ -1121,7 +1125,7 @@ function create_discussion(entity_id, name, content){
                 $('.discussion').find('.overview .item:eq(0)').before($span);
             else{
                 $('.discussion').find('.overview p').before($span);
-                $('.discussion').find('.overview p').remove();
+                $('.discussion').find('.overview p.d-not_found').remove();
             }
         });
 }
@@ -1171,7 +1175,11 @@ function discussion(id){
 
                         if($discussion_response.hasClass('item_'+discussion.id)){
                             $discussion_response.find('.answer p').html(discussion.content);
-                            $discussion_response.find('.name.title').html(discussion.username);
+                            $discussion_response.find('.name.title span:eq(0)').html(discussion.username);
+                            var date = discussion.date.split('T');
+                            date = date[0].split('-');
+                            date = date[2]+' de '+ months[parseInt(date[1])-1]+' del ' + date[0];
+                            $discussion_response.find('.name.title .gray_text').html(date);
                             if(!discussion.user_pic){
                                 discussion.user_pic = '/static/img/no_profile.png';
                             }else{
@@ -1277,8 +1285,11 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
 
                 if($discussion_response.hasClass('item_'+discussion.id)){
                     $discussion_response.find('.answer p').html(discussion.content);
-                    $discussion_response.find('.name.title').html(discussion.username);
-
+                    $discussion_response.find('.name.title span:eq(0)').html(discussion.username);
+                    var date = discussion.date.split('T');
+                    date = date[0].split('-');
+                    date = date[2]+' de '+ months[parseInt(date[1])-1]+' del ' + date[0];
+                    $discussion_response.find('.name.title span:eq(1)').html(date);
                     if(!discussion.user_pic){
                         discussion.user_pic = '/static/img/no_profile.png';
                     }else{
@@ -1303,6 +1314,14 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                         //$discussion_response.find('.respond_btn').remove();
                         if($discussion_response.find('.answer').find('.erase_btn').length > 0){
                                 $discussion_response.find('.answer').find('.erase_btn').click(function(){
+                                    $('.discussion_response').each(function(){
+                                        if($(this).hasClass("child_"+discussion.id)){
+                                            var child_id = $(this).attr('class').split('child_');
+                                            child_id = parseInt(child_id[1]);
+                                            erase_discussion(child_id, $(this));
+                                        }
+
+                                    });
                                     erase_discussion(discussion.id, $discussion_response);
                                 });
                             }

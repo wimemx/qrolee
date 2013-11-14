@@ -18,13 +18,13 @@
 
 {% block main_site %}
 {% if profile.is_new %}
-<!--<div class="create-entity">
+<div class="create-entity">
     <div class="container-16">
         <p>Para crear un grupo de lectura da click <a class="group" href="/registry/register_entity/group/">aquí</a></p>
         <p>Para crear una organización da click <a class="organization" href="/registry/register_entity/organiztion/">aquí</a></p>
         <a class="del-message" href="#">Aceptar</a>
     </div>
-</div>-->
+</div>
 {% endif %}
     <div class="grid-16 news-feed">
     <div class="grid-15 fright no-margin">
@@ -75,7 +75,7 @@
             </span>
 
             <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
-                <img src="/static/img/filter_sprite.png" style="position: relative; top:-65px;" alt=""/></span>Mis grupos</h3>
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-69px;" alt=""/></span>Mis grupos</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
@@ -83,7 +83,7 @@
                     {% for group in groups %}
                         <span class="item">
                             <p class="main title no-margin"><a href="/qro_lee/entity/group/{{ group.id }}">{{ group.name }}</a></p>
-                            <p class="no-margin gray_text"><span>{{ group|get_num_followers }}</span> miembros</p>
+                            <p class="no-margin gray_text"><span class="ie_7">{{ group|get_num_followers }}</span> miembros</p>
                         </span>
                     {% endfor %}
                 {% else %}
@@ -100,7 +100,7 @@
             </span>
 
             <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
-                <img src="/static/img/filter_sprite.png" style="position: relative; top:-65px;" alt=""/></span>Mis organizaciones</h3>
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-69px;" alt=""/></span>Mis organizaciones</h3>
             <span class="element">
             <span class="viewport">
                 <span class="overview">
@@ -108,7 +108,7 @@
                     {% for organization in organizations %}
                         <span class="item">
                             <p class="main title no-margin"><a href="/qro_lee/entity/organization/{{ organization.id }}">{{ organization.name }}</a></p>
-                            <p class="no-margin gray_text"><span>{{ organization|get_num_followers }}</span> miembros</p>
+                            <p class="no-margin gray_text"><span class="ie_7">{{ organization|get_num_followers }}</span> miembros</p>
                         </span>
                     {% endfor %}
                     {% else %}
@@ -125,7 +125,7 @@
             </span>
 
             <h3 class="title din-r"><span class="fleft" style="width: 20px;display:block; height: 20px; overflow: hidden;">
-                <img src="/static/img/filter_sprite.png" style="position: relative; top:-166px;" alt=""/></span>Mis páginas</h3>
+                <img src="/static/img/filter_sprite.png" style="position: relative; top:-170px;" alt=""/></span>Mis páginas</h3>
             <span style="padding-bottom: 50px;" class="element">
             <span class="viewport" style="margin-bottom: 20px;">
                 <span class="overview">
@@ -142,7 +142,7 @@
                 <input type="hidden" value="1" />
             </span>
             {% endif %}
-            <a href="/accounts/users/registry_page/">
+            <a class="fleft" href="/accounts/users/registry_page/">
                 <span style="clear:both;background-image: none;" class="brown_btn fleft">
                     Crear página
                 </span>
