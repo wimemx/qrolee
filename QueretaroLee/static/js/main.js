@@ -3018,12 +3018,12 @@ function get_titles_authors(list, csrf){
                 a_t.append(truncText(title[i2].title,15));
                 name_author = '<p class="p-d-text place_pink" >anonimo</a>';
                 if(title[i2].extras[1].length!=0)
-                    name_author = '<p class="p-d-text" >De <a class="place_pink" >' +
+                    name_author = '<p class="p-d-text grid-3 no-margin" >De <a class="place_pink" >' +
                         truncText(title[i2].extras[1][0],12)+'</a></p>';
 
                 p_author = $(name_author);
                 span_rate = $('<span class="grid-3 no-margin "></span>');
-                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                btn_del = $('<span class="pink_btn fleft size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
                 span_stars = $('<span class="grid-3 no-margin marg_bot"></span>');
@@ -3106,9 +3106,9 @@ function get_titles_authors(list, csrf){
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                 a_t = $('<a title="'+title[i2].name+'" class="title title_book alpha grid-4 "></a>');
                 a_t.append(truncText(title[i2].name,15));
-                p_author = $('<p class="p-d-text" > </p>');
+                p_author = $('<p class="p-d-text grid-3 no-margin" > </p>');
                 span_rate = $('<span class="grid-3 no-margin"></span>');
-                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                btn_del = $('<span class="pink_btn fleft size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
                 span.append(img);
