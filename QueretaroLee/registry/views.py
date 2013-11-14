@@ -1266,9 +1266,9 @@ def add_my_title(request):
     user = request.user
     list_id_titles = []
     list_id_authors = []
+
     if request.POST.get('list') != None:
         list = ast.literal_eval(request.POST.get('list'))
-
         if request.POST.get('type_list') == 'T':
 
             for obj in list:
@@ -1339,6 +1339,10 @@ def add_my_title(request):
                             my_list.save()
                             activity = account.Activity.objects.filter(object=my_list.title.id,
                                                                        added_to_object=my_list.list.id)
+                            activity_id = 1
+
+                            if obj['it']['default_type'][0] == 5:
+                                activity_id = 9
                             if not activity:
                                 activity_data = {
                                     'user_id': request.user.id,
@@ -1346,7 +1350,7 @@ def add_my_title(request):
                                     'added_to_object': my_list.list.id,
                                     'type': 'T',
                                     'added_to_type': 'L',
-                                    'activity_id': 1
+                                    'activity_id': activity_id
                                 }
                                 update_activity(activity_data)
                             else:
@@ -1466,7 +1470,7 @@ def add_my_title(request):
         context = simplejson.dumps(list_id_authors)
 
     if int(request.POST.get('type')) == 5:
-        list = account.ListTitle.objects.get(list__default_type=5,
+        list = account.ListTitle.objects.get(list__default_type=5,list__user=user,
                                               title__id=list_id_titles[0])
         context = {
             'name':list.title.title,
