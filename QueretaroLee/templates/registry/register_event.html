@@ -132,6 +132,7 @@
     </form>
             <form id="picture" class="fright dropzone no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_picture" value="1"/>
+                <input type="hidden" name="event" value="{{ obj.id }}"/>
                 <div class="del-wrapper">
                     <span class="spot del center picture">Eliminar foto</span>
                 </div>
@@ -141,6 +142,7 @@
             </form>
             <form id="cover" class="dropzone fright no-margin grid-5" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="event_cover_picture" value="1"/>
+                <input type="hidden" name="event" value="{{ obj.id }}"/>
                 <div class="del-wrapper">
                     <span class="spot del center cover">Eliminar foto</span>
                 </div>

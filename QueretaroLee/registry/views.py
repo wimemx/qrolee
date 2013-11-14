@@ -487,6 +487,7 @@ def media_upload(request):
 
                 entity.save()
         if 'event' in request.POST:
+            folder = '/event/'
             id = request.POST.get('event')
             if id != '':
                 entity = models.Event.objects.get(id=id)
@@ -497,11 +498,13 @@ def media_upload(request):
                     entity.picture = str(request.FILES['file'])
 
                 entity.save()
+
         if 'fb_img' in request.POST and request.POST.get('folder') == '/event/':
             folder = '/event/'
-        else:
+        elif request.POST.get('folder') == '/entity/':
             folder = '/entity/'
 
+        print folder
         path_extension = str(request.user.id)+folder
         path = os.path.join(
             os.path.dirname(__file__), '..',
