@@ -25,7 +25,7 @@
         <div class="grid-16 entity no-margin profile_book">
             <span class="wrapper fleft borde_author borde_title">
                 {% if not book.picture %}
-                    <img class="img_size_all" src="/static/img/create.png" alt="{{ book.title }}"/>
+                    <img class="img_size_all" src="/static/img/default_vert.png" alt="{{ book.title }}"/>
                 {% else %}
                     <img class="img_size_all" src="{{ book.picture }}"
                          alt="{{ book.picture }}"/>
@@ -118,7 +118,7 @@
                                                 <img src="/static/img/radioOff.png" class="radio_btn fleft radio_buttom">
                                                 <span class="fleft">Deseo liberar este libro</span>
                                             </span>
-                                        {% else %}2
+                                        {% else %}
                                             <input type="hidden" value="1" />
                                             <span class="grid-5 no-margin find">
                                                 <img src="/static/img/radioOff.png" class="radio_btn radio_buttom fleft">
