@@ -1966,5 +1966,6 @@ def policy_use(request, **kwargs):
     context = {
         'type': int(kwargs['type'])
     }
-
+    if int(kwargs['type']) == 6:
+        template = '404.html'
     return render(request, template, context)
