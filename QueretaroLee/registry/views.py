@@ -446,74 +446,81 @@ def logout(request):
 
 
 def media_upload(request):
+    print request.POST
+    print request.FILES
+    if 'ie-fix' in request.POST:
 
-    folder = '/entity/'
-
-    if 'event_picture' in request.POST:
-        folder = '/event/'
-    if 'event_cover_picture' in request.POST:
-        folder = '/event/'
-    if 'edit_profile' in request.POST:
-        folder = '/profile/'
-        id_user = request.user.id
-        user = models.Profile.objects.get(user=id_user)
-        user.picture = str(request.FILES['file'])
-        user.save()
-
-    if 'list_picture' in request.POST:
-        folder = '/list/'
-        id = request.POST.get('list_picture')
-        entity = account.List.objects.get(id=id)
-
-        if request.POST.get('cover'):
-            entity.cover_picture = str(request.FILES['file'])
-        else:
-            entity.picture = str(request.FILES['file'])
-        entity.save()
-    if 'entity' in request.POST:
+        context = {
+            'file_name': 'oh si'
+        }
+    else:
         folder = '/entity/'
-        id = request.POST.get('entity')
-        entity = models.Entity.objects.get(id=id)
-        if request.POST.get('cover'):
-            entity.cover_picture = str(request.FILES['file'])
-        else:
-            entity.picture = str(request.FILES['file'])
 
-        entity.save()
-    if 'event' in request.POST:
-        id = request.POST.get('event')
-        entity = models.Event.objects.get(id=id)
-
+        if 'event_picture' in request.POST:
+            folder = '/event/'
         if 'event_cover_picture' in request.POST:
-            entity.cover_picture = str(request.FILES['file'])
+            folder = '/event/'
+        if 'edit_profile' in request.POST:
+            folder = '/profile/'
+            id_user = request.user.id
+            user = models.Profile.objects.get(user=id_user)
+            user.picture = str(request.FILES['file'])
+            user.save()
+
+        if 'list_picture' in request.POST:
+            folder = '/list/'
+            id = request.POST.get('list_picture')
+            entity = account.List.objects.get(id=id)
+
+            if request.POST.get('cover'):
+                entity.cover_picture = str(request.FILES['file'])
+            else:
+                entity.picture = str(request.FILES['file'])
+            entity.save()
+        if 'entity' in request.POST:
+            folder = '/entity/'
+            id = request.POST.get('entity')
+            entity = models.Entity.objects.get(id=id)
+            if request.POST.get('cover'):
+                entity.cover_picture = str(request.FILES['file'])
+            else:
+                entity.picture = str(request.FILES['file'])
+
+            entity.save()
+        if 'event' in request.POST:
+            id = request.POST.get('event')
+            entity = models.Event.objects.get(id=id)
+
+            if 'event_cover_picture' in request.POST:
+                entity.cover_picture = str(request.FILES['file'])
+            else:
+                entity.picture = str(request.FILES['file'])
+
+            entity.save()
+        if 'fb_img' in request.POST and folder == '/event/':
+            folder = '/event/'
         else:
-            entity.picture = str(request.FILES['file'])
+            folder = '/entity/'
 
-        entity.save()
-    if 'fb_img' in request.POST and folder == '/event/':
-        folder = '/event/'
-    else:
-        folder = '/entity/'
+        path_extension = str(request.user.id)+folder
+        path = os.path.join(
+            os.path.dirname(__file__), '..',
+            'static/media/users/'+path_extension).replace('\\', '/')
 
-    path_extension = str(request.user.id)+folder
-    path = os.path.join(
-        os.path.dirname(__file__), '..',
-        'static/media/users/'+path_extension).replace('\\', '/')
+        if 'fb_img' in request.POST:
+            file = None
+            file_name = request.POST.get('fb_img').split('/')
+            file_name = file_name[-1]
+            urllib.urlretrieve(request.POST.get('fb_img'), os.path.join(path, file_name))
+        else:
+            path += str(request.FILES['file'])
+            file = request.FILES['file']
+            file_name = str(request.FILES['file'])
 
-    if 'fb_img' in request.POST:
-        file = None
-        file_name = request.POST.get('fb_img').split('/')
-        file_name = file_name[-1]
-        urllib.urlretrieve(request.POST.get('fb_img'), os.path.join(path, file_name))
-    else:
-        path += str(request.FILES['file'])
-        file = request.FILES['file']
-        file_name = str(request.FILES['file'])
-
-    handle_uploaded_file(path, file)
-    context = {
-        'file_name': file_name
-    }
+        handle_uploaded_file(path, file)
+        context = {
+            'file_name': file_name
+        }
 
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')

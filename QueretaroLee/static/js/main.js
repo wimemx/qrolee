@@ -194,7 +194,6 @@ function post_to_fb(caption, description, content, redirect, url){
 }
 
 $(document).ready(function(){
-
     csrf_global = $('.csrf_header').find('input').val();
     $('.show_text').click(function(){
         var active = parseInt($(this).find('input').val());
@@ -1518,6 +1517,7 @@ $(document).ready(function(){
 });
 
 
+var ie_logo = true;
 function edit_form($this, timeout, type, id, event){
     if(type == 0){
         if($this.parent().find('span.value.no-edit').length == 0){
@@ -1594,6 +1594,23 @@ function edit_form($this, timeout, type, id, event){
                     }
                 }
             });
+            if($('#ie-fix').length > 0){
+                if($.trim($('#ie-fix input.file').val()) != ''){
+                    if(ie_logo){
+                        $.ajax({
+                            type: "POST",
+                            url: $('#ie-fix').attr('action'),
+                            data: $('#ie-fix').serialize(),
+                            dataType: 'json'
+                        }).done(function(data){
+                                ie_logo = false;
+                                $('#ie-fix input.file').val('');
+                            });
+
+
+                    }
+                }
+            }
             if(valid){
                 if(event === undefined)
                     event = '-1'
