@@ -62,6 +62,7 @@ input:not([type='submit']){
     width: 100%;
     text-indent: 7px;
     font-family: arial !important;
+    border: 1px solid #e4e4e4;
 }
 .category{
     color:#8B5627 !important;
@@ -122,6 +123,7 @@ input:not([type='submit']){
     border-right: 0px;
     height: 25px!important;
     padding-bottom: 2px;
+    border: 1px solid #faf3e1;
 }
 .green_btn, .edit_green{
     padding: 4px 9px 4px 9px !important;
@@ -316,6 +318,7 @@ p{
         width: 133px;
         opacity: 0.9;
         font-family: arial!important;
+        border: 0;
     }
     .header .search span .icon{
         width: 27px;
@@ -1974,7 +1977,16 @@ p{
 }
 
 .d-brown-btn{
-    background-color: #e2c388 !important;
+    background: #c69264;
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+    padding: 4px 9px;
+    font-family: 'Raleway' sans-serif;
+    cursor: pointer;
+    border: 1px solid #a77340;
+    text-align: center;
+    transition: all 0.3s;
 }
 
 .d-group_user{
@@ -2667,7 +2679,8 @@ p{
 .input_add_book{
     background: #f9f2e1;
     width: 172px!important;
-    height: 27px!important;
+    height: 29px!important;
+    border: 0 !important;
 }
 
 .btn_search_book{
@@ -2964,7 +2977,8 @@ p{
 .page p{
     color: #222222;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 500;
+    font-family: 'Raleway';
 }
 
 .page_tags{
@@ -2973,6 +2987,7 @@ p{
 .textarea_tags{
     width: 99%;
     min-height: 50px;
+    border: 1px solid #e4e4e4;
 }
 
 .chec_pag{
@@ -3002,15 +3017,27 @@ p{
 }
 
 .btn_page{
-    font-size: 12px !important;
-    padding: 2px 10px 2px 10px !important;
-    color: #000000 !important;
+    background: #f89883;
+    border: 1px solid #EB6346;
+    color: #fff !important;
+    margin-right: 15px;
+    cursor: pointer;
+    padding: 4px 9px;
 }
 
 .btn_save_pag{
-    background: #7ca680;
-    margin-right: 10px;
-    padding-bottom: 1px !important;
+    padding: 4px 9px 4px 9px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    height: 26px !important;
+    line-height: 17px !important;
+    left: 0px !important;
+    top: 0px !important;
+    font-weight: 400 !important;
+    background: #60967E !important;
+    border: 1px solid #326F53 !important;
+    color: #fff !important;
+    width: auto !important;
 }
 
 form input:focus{
@@ -4397,4 +4424,7 @@ p input.green_btn{
 
 .title_act_read{
     margin-top: -5px;
+}
+.feed_index{
+    height: 600px!important;
 }

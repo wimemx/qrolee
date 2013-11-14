@@ -690,7 +690,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title: data[ind]['book']
+                title:data[ind]['book'][0]
             });
             }
             counter++;
@@ -1047,14 +1047,12 @@ $(document).ready(function(){
         }
     });
 
+    var view_more = true;
     $('.news-feed .more').click(function(){
         var $this = $(this);
-        var view_more = parseInt($this.find('input').val());
         var elements = $(this).parent().find('.viewport .overview .item').length - 2;
         var height = $(this).parent().outerHeight(true);
-
-        if(view_more == 1){
-            view_more = 0;
+        if(view_more){
             $(this).parent().animate({
                 'height': height+(elements * 45)
             }, function(){
@@ -1062,24 +1060,24 @@ $(document).ready(function(){
                 $(this).find('.viewport').animate({
                     'height': h+(elements*45)
                 }, function(){
-                    $this.find('span').html('ver menos');
+                    $this.html('ver menos');
+                    view_more = false;
                 });
             });
         }else{
             var h = $(this).parent().find('.viewport').outerHeight(false);
-            view_more = 1;
             $(this).parent().find('.viewport').animate({
                 'height': h-(elements*45)
             }, function(){
                 $(this).parent().animate({
                     'height': height-(elements * 45)
                 },function(){
-                    $this.find('span').html('ver más');
+                    $this.html('ver más');
+                    view_more = true;
                 })
             });
 
         }
-        $this.find('input').val(view_more);
     });
 
     $('.filter .checkbox').click(function(){
@@ -1492,6 +1490,7 @@ $(document).ready(function(){
                var p = $('<span class="item"><p class="center d-not_found"> No se han ' +
                     'encontrado resultados para<br> su búsqueda</p></span>');
                 $('.results').append(p);
+
             }
 
         }
@@ -2013,9 +2012,8 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
-
-        title = truncText(title, 30);
-        h3.html(title);
+        title = title.substring(0, 16);
+        h3.html(title+' ...');
         $('.results').append(item);
         return;
     }
@@ -2112,7 +2110,7 @@ query = {
 
 function dialog_titles(csrf, data, id){
     $('.dialog-confirm').empty();
-    div_closet = $('');
+    div_closet = $('<span class="dialog_closet"></span>');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);
@@ -3034,12 +3032,12 @@ function get_titles_authors(list, csrf){
                 a_t.append(truncText(title[i2].title,15));
                 name_author = '<p class="p-d-text place_pink" >anonimo</a>';
                 if(title[i2].extras[1].length!=0)
-                    name_author = '<p class="p-d-text" >De <a class="place_pink" >' +
+                    name_author = '<p class="p-d-text grid-3 no-margin" >De <a class="place_pink" >' +
                         truncText(title[i2].extras[1][0],12)+'</a></p>';
 
                 p_author = $(name_author);
                 span_rate = $('<span class="grid-3 no-margin "></span>');
-                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                btn_del = $('<span class="pink_btn fleft size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
                 span_stars = $('<span class="grid-3 no-margin marg_bot"></span>');
@@ -3122,9 +3120,9 @@ function get_titles_authors(list, csrf){
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                 a_t = $('<a title="'+title[i2].name+'" class="title title_book alpha grid-4 "></a>');
                 a_t.append(truncText(title[i2].name,15));
-                p_author = $('<p class="p-d-text" > </p>');
+                p_author = $('<p class="p-d-text grid-3 no-margin" > </p>');
                 span_rate = $('<span class="grid-3 no-margin"></span>');
-                btn_del = $('<span class="pink_btn size_btn_edit message_alert">-</span>');
+                btn_del = $('<span class="pink_btn fleft size_btn_edit message_alert">-</span>');
                 input_type = $('<input class="type_message" type="hidden" ' +
                     'value="delete_title_list"/>');
                 span.append(img);
@@ -3379,7 +3377,7 @@ function show_dialog(){
 
             href = 'href="/accounts/delete_user/"';
         }
-        div_closet = $('');
+        div_closet = $('<span class="dialog_closet"></span>');
         div_text = $('<div class="dialog_text grid-6 no-margin"></div>');
         btn_cancel = $('<span class="dialog_btn_cancel dialog_btn">Cancelar</span>');
         btn_acept = $('<a class="dialog_btn green_btn" ' + href + ' >Aceptar</a>');
@@ -3580,7 +3578,7 @@ function search_titles_and_author_in_api_bd(type, csrf, words){
 function d_show_dialog(type_message){
 
     $('.dialog-confirm').empty();
-    div_closet = $('');
+    div_closet = $('<span class="dialog_closet"></span>');
     closet(div_closet);
     div_text = $('<div class="dialog_text grid-8 no-margin"></div>');
     div_text.append(div_closet);

@@ -1,0 +1,59 @@
+/*------style 404 -----------------------*/
+
+html{
+        background: #445a58!important;
+}
+.log_ind{
+    width: 160px;
+    margin-top: 40px!important;
+}
+
+.log_ind img{
+    width: 100%;
+}
+
+.center .text{
+    font-size: 18px;
+    font-family: 'Raleway'!important;
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.center .message{
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 10px;
+    text-align: center;
+    font-family: 'lucida bright';
+}
+
+.center .image{
+    height: 26px;
+    width: 61px;
+}
+.center .a{
+    background: url("/static/img/deco2.png");
+    margin-top: 30px;
+}
+.center .b{
+    margin-top: 20px;
+    background: url("/static/img/deco.png");
+}
+
+.center .btn{
+    width: 53px;
+    background: #ebd7a5;
+    border: 1px solid #a77340;
+    padding: 4px 11px;
+    height: auto;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Raleway';
+    margin-top: 10px;
+}
+
+.center a{
+   text-decoration: none;
+}
