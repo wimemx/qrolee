@@ -466,7 +466,8 @@ def media_upload(request):
         if 'list_picture' in request.POST:
             folder = '/list/'
             id = request.POST.get('list_picture')
-            if id != '':
+
+            if int(id) != 0:
                 entity = account.List.objects.get(id=id)
 
                 if request.POST.get('cover'):
