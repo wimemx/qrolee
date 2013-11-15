@@ -480,17 +480,18 @@ def get_events(request, **kwargs):
                     start_time__lt=end_time).order_by('start_time')
 
             else:
-                current_month = int(request.POST.get('curr_month'))+1
-                start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
-                if int(request.POST.get('curr_month')) >= 11:
-                    end_time = datetime.datetime(start_time.year+1, 1, 1)
-                else:
-                    end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
-                events_ = models.Event.objects.filter(
-                    status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
 
-            if int(request.POST.get('curr_month')) == 100:
-                events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
+                if int(request.POST.get('curr_month')) == 100:
+                    events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
+                else:
+                    current_month = int(request.POST.get('curr_month'))+1
+                    start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+                    if int(request.POST.get('curr_month')) >= 11:
+                        end_time = datetime.datetime(start_time.year+1, 1, 1)
+                    else:
+                        end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
+                    events_ = models.Event.objects.filter(
+                        status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
 
             #if request.POST.get('id_entity') is not None:
             #    if int(request.POST['id_entity']) != -1:
