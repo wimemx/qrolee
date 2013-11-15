@@ -302,12 +302,12 @@ function invalid_f(form){
         return false;
 }
 
-
 function valid_form_list(form){
     $('.container_message_2').fadeOut(300);
     $('.invalid').remove();
     var succe = true;
     if(form.find('input[name=name]').val().length==0){
+
         succe = false;
     }
     
