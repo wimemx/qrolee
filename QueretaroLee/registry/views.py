@@ -2275,7 +2275,7 @@ def create_author(name_author, title):
             if len(response['result'][0]['mid']) != 0:
                 picture = 'https://www.googleapis.com/freebase/v1/image' + \
                           response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
-            print str(response['result'][0]['name']).encode('utf-8')
+            #print str(response['result'][0]['name']).encode('utf-8')
             print str(response['result'][0]['name']).decode('utf-8')
             dict_author = {
                 'name': str(response['result'][0]['name']).encode('utf-8'),
