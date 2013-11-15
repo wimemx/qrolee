@@ -615,9 +615,13 @@ $(document).ready(function(){
 
                if(data['succes'] == 'True')
                     window.location.href = site_url + '/qro_lee/book/' + data['code_book'] +'_1';
-               else
-                    $btn.parent().append('<span class="text_cheking grid-5 place_pink">Ya has liberado este libro</span>');
+               else{
+                   var message = 'Ya has liberado este libro';
+                   if(data.message == 1)
+                        message = 'Este libro lo tiene otra persona';
 
+                    $btn.parent().append('<span class="text_cheking grid-5 place_pink">'+message+'</span>');
+                }
             });
 
     });
@@ -663,7 +667,6 @@ $(document).ready(function(){
         else
             empty = true;
 
-        alert(data_);
         if(data_ == -1 | empty){
             e.preventDefault();
             var $this = $(this).find('input[type=submit]').parent().parent();
@@ -1076,7 +1079,6 @@ $(document).ready(function(){
 
 function api_isbn_search(isbn){
     var data_ = -1;
-    alert(data_);
     $.ajax({
             'async': false,
             'global': false,
@@ -1084,13 +1086,11 @@ function api_isbn_search(isbn){
             'dataType': "json",
             'success': function (data) {
                 data_ = data;
-                alert(data);
                 if(data['totalItems'] == 0){
                     data_ = -1;
                 }
             }
     }).done(function(data){
-            alert(data);
             if(data_ == -1){
                 var result = search_api($('.csrf_header').find('input').val(),isbn, -1);
                 if (result['result_api'] != -1){

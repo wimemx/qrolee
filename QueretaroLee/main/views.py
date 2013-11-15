@@ -1701,7 +1701,7 @@ def book_crossing(request, **kwargs):
         for obj in books:
             if int(obj.type_user) == 1:
                 user_book = account_models.User.objects.get(id=obj.user)
-                user_book = user_book.username
+                user_book = user_book.first_name
             else:
                 user_book = models.ExternalUser.objects.get(id=obj.user)
                 user_book = user_book.name

@@ -702,7 +702,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title:data[ind]['book'][0]
+                title:data[ind]['book']
             });
             }
             counter++;

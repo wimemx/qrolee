@@ -3553,8 +3553,9 @@ textarea{
 }
 
 .container_crossing{
-    height: 328px;
+    min-height: 328px;
     float: left;
+    margin-bottom: 25px;
 }
 .container_crossing .text{
     margin-top: 5px;

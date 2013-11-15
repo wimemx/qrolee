@@ -426,6 +426,8 @@
                                     </a>
                                 </p>
                             </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay listas que contengan este autor</p>
                             {% endfor %}
                         </div>
                         {% if list and list|length > 3 %}
@@ -461,6 +463,8 @@
                                         </h3>
                                     </a>
                                 </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay personas leyendo este título</p>
                             {% endfor %}
                         </div>
                         {% if list_user.items and list_user.items|length > 3 %}
@@ -498,6 +502,8 @@
                                         </a>
                                     </p>
                                 </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay listas que contengan este libro</p>
                             {% endfor %}
                         </div>
                         {% if list and list|length > 3 %}
@@ -542,6 +548,8 @@
                                         {% endif %}
                                 </p>
                             </span>
+                        {% empty %}
+                            <p class="center grid-3 d-not_found">no hay listas similares</p>
                         {% endfor %}
                     </div>
                     {% if list.items and list.items|length > 3 %}
