@@ -885,6 +885,19 @@ def admin_users(request, **kwargs):
         object=obj.id, object_type='E')
     admins = members.filter(is_admin=True)
     requests = members.filter(request=True)
+    admins_list = list()
+    admins = models.MemberToObject.objects.filter(
+        object=obj.id, object_type='E', is_admin=True)
+    for a in admins:
+        admins_list.append(a.user_id)
+
+    if obj:
+        match = 0
+        for ele in admins_list:
+            if request.user.id == ele:
+                match += 1
+        if match == 0:
+            return not_found(request)
     users = list()
     for member in members:
         users.append(member.user_id)

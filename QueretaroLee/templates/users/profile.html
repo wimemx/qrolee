@@ -97,7 +97,7 @@
             <span class="member no-margin grid-3">
                 <span class="grid-2 no-margin fright">
                     {% if member %}
-                        <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
+                        <form class="no_ajax fright" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
                             <input type="submit" class="btn fright" value="Dejar de seguir">
@@ -105,7 +105,7 @@
                         <p class="din-r followers fright">{{ followers|total_members }} {% if followers|total_members == 1 %}seguidor{% else %}seguidores{% endif %}</p>
 
                     {% else %}
-                        <form class="no_ajax fleft" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
+                        <form class="no_ajax fright" action="/accounts/users/profile/{{ user_profile.user_id }}/" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="1"/>
                             <input type="submit" class="btn fright" value="Seguir">

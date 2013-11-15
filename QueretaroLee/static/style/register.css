@@ -201,6 +201,7 @@ form.register{
             text-decoration: underline;
             font-family: inherit;
         }
+
     form p{
         position: relative;
         font-size: 12px;
@@ -208,6 +209,7 @@ form.register{
         min-height: 30px;
         font-family: 'Raleway', sans-serif;
         font-weight: 500;
+
     }
         form p input:not([type='submit']){
             background: #f4e5c8;
@@ -237,6 +239,8 @@ form.register{
             display: inline-block;
             float: left;
             margin-right: 5px;
+            position: relative;
+
         }
         form p input[type='submit'], form p input.submit{
             background: #f2e28e !important;

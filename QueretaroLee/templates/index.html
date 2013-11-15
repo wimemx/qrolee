@@ -22,6 +22,7 @@
         <p class="title"><span></span>
             <a class="close right" href="#"></a>
         </p>
+
         <form class="reset-password grid-4 center" action="/registry/recover_password/" >{% csrf_token %}
                         <span class="banner">Te enviaremos enseguida tus datos de ingreso</span>
         <p>
@@ -101,7 +102,7 @@
 
             </p>
             <p>
-                <input value="Crear cuenta" class="center" type="submit"/>
+                <input value="Crear cuenta" class="center submit" type="submit"/>
 
             </p>
             <p class="social-login center">
@@ -142,13 +143,13 @@ scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,us
             <span style="background: url('../static/img/welcome_icons_set2.png') no-repeat 0px -230px"></span>
         </span>
     </span>
-    <!--<p class="grid-4 center btn_login">
+    <p class="grid-4 center btn_login">
 
         <span class="main_btn register">¡Únete!</span>
         <span class="main_btn login" >Ingresa</span>
         <a href="/qro_lee/events/" class="text title_author">Ver eventos de Querétaro Lee</a>
 
-    </p>-->
+    </p>
     </p>
     <p class="grid-4 center caption">
         <span class="c">“Los libros tienen su orgullo: cuando se prestan, no vuelven nunca” </span>
