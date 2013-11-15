@@ -1051,7 +1051,7 @@ def get_titles(request,**kwargs):
         if len(rate_title) != 0:
             grade_title = rate_title[0]['score']
 
-        author_name = 'Autor Anónimo'
+        author_name = ''
         id_author = 0
         author =  account_models.AuthorTitle.objects.filter(title=obj)
 
@@ -1259,7 +1259,7 @@ def get_profile(request, **kwargs):
             if len(rate_title) != 0:
                 grade_title = rate_title[0]['score']
 
-            author_name = 'Autor Anónimo'
+            author_name = ''
 
             author =  account_models.AuthorTitle.objects.filter(title=obj.title)
 
@@ -1331,7 +1331,7 @@ def get_profile(request, **kwargs):
                                                        list__default_type=-1)
         author = account_models.AuthorTitle.objects.filter(title=profile)
 
-        name_author = 'Autor Anónimo'
+        name_author = ''
         id_author = 0
         if len(author) != 0:
             name_author = author[0].author.name

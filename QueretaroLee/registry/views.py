@@ -2090,7 +2090,7 @@ def register_ajax_book(request):
         author = dom.getElementsByTagName('name')[0].toxml()
         author = author.replace('<name>', '').replace('</name>', '')
         publisher = dom.getElementsByTagName('publisher')[0].toxml()
-        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
+        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '').replace('</publisher>','')
         picture = dom.getElementsByTagName('image_url')[0].toxml()
         picture = picture.replace('<image_url>', '').replace('</image_url>', '')
         pages = dom.getElementsByTagName('num_pages')[0].toxml()

@@ -113,13 +113,9 @@
                         {{ profile.title|title|truncatechars:40 }}
                 </h3>
                 <p class="text_profile">
-                    {% if name_author != 'Autor Anónimo' %}
+                    {% if name_author  %}
                         <a href="/qro_lee/profile/author/{{ id_author }}"
                                 class="title_author name_author" >
-                            {{ name_author|truncatechars:19 }}
-                        </a>
-                    {% else %}
-                        <a class="title_author name_author" >
                             {{ name_author|truncatechars:19 }}
                         </a>
                     {% endif %}

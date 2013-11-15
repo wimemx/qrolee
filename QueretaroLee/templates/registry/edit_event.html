@@ -19,17 +19,14 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="grid-16 edit">
+    <div class="grid-16 edit ">
         <div class="grid-14 center">
             <input type="hidden" value="event" class="type" />
             <input type="hidden" class="id_object" value="{{ entity.id }}" />
             <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <span class="title main">Editar evento
             <a href="/qro_lee/events/{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
-
         </span>
-
-
         <span class="data grid-9 fleft no-margin">
 
             <p>Nombre
@@ -133,7 +130,7 @@
                 <input name="lat" type="hidden" class="lat" value="" />
                 <input name="long" type="hidden" class="long" value="" />
                 <input type="hidden" class="place_spot" name="place_spot" value="0"/>
-                <span class="value area map">{{ entity.location_name }}</span>
+                <span class="value area fright map">{{ entity.location_name }}</span>
                 <span class="grid-4 no-margin value_sel">
                 </span>
                 <select class="name_spot">
@@ -147,6 +144,9 @@
                     {% endfor %}
                 </select>
             <span id="map" class="grid-5 alpha fright"></span>
+            <span class="pixeles grid-5 fright recomendation" style="margin-right: 17px;">
+                Arrastra el pin para poner más precisa tu ubicación
+            </span>
             </p>
         </span>
         <span class="d-picture_user grid-4 no-margin fright"  >
@@ -161,13 +161,16 @@
                         <span class="spot del center picture">Eliminar foto</span>
                     </span>
                 </span>
-                <span class="dropzone_user disable_upload">
+                <span class="dropzone_user disable_upload ">
                     <!--<span class="grid-4 no-margin text_cent">logotipo</span>-->
                     <form id="picture" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                         <input type="hidden" name="event_picture" value="1"/>
                         <input type="hidden" name="event" value="{{ entity.id }}"/>
                         <span class="del-wrapper func">
                             <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                        <span class="grid-4 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
                         </span>
                     </form>
                 </span>
@@ -180,13 +183,16 @@
                         <span class="del-wrapper func">
                             <span class="spot del center picture">Eliminar foto</span>
                         </span>
+                        <span class="grid-4 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
+                        </span>
                     </form>
                 </span>
             {% endif %}
     </span>
 
 
-    <span class="d-picture_user grid-4 no-margin fright"  >
+    <span class="d-picture_user grid-4 no-margin fright drop_evt"  >
                 {% if entity.cover_picture %}
 
                     <span class="d-picture_user wrapper_picture_user">
@@ -204,16 +210,22 @@
                             <span class="del-wrapper func">
                                 <span class="spot del center cover">Eliminar foto</span>
                             </span>
+                            <span class="grid-4 bottom_messa fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
+                        </span>
                         </form>
                     </span>
                 {% else %}
-                    <span class="dropzone_user ">
+                    <span class="dropzone_user drop_evt ">
                         <form id="cover" class="fright d-picture_profile dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
                             <input type="hidden" name="event_cover_picture" value="1"/>
                             <input type="hidden" name="event" value="{{ entity.id }}"/>
                             <span class="del-wrapper func">
                                 <span class="spot del center cover">Eliminar foto</span>
                             </span>
+                            <span class="grid-4 bottom_messa fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
+                        </span>
                         </form>
                     </span>
                 {% endif %}
@@ -228,7 +240,9 @@
             maxFiles: 1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Inserte aquí su foto',
+            dictDefaultMessage: 'Arrastre aquí el logotipo <span class="legend din-r leg1"> o bien </span>' +
+                    '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                    ' </span>',
             init: function() {
                this.on("addedfile", function(file) {
                     $('#picture .dz-message ').fadeOut(300);
@@ -252,7 +266,9 @@
             maxFiles:1,
             thumbnailWidth: 130,
             thumbnailHeight: 130,
-            dictDefaultMessage: 'Arrastre aquí el cover photo',
+            dictDefaultMessage: 'Arrastre aquí la foto de portada <span class="legend din-r leg1"> o bien </span>' +
+                    '<span class="legend din-r leg2">Selecciona una foto de tu equipo' +
+                    ' </span>',
             init: function() {
                 this.on("addedfile", function(file) {
                     $('#cover .dz-message').fadeOut(300);
