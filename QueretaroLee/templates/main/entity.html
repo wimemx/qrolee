@@ -700,7 +700,7 @@
                             {% for discussion in discussions %}
                                 <span class="item">
                                     <a href="#" id="{{ discussion.id }}" style="margin-top: 5px;" class="title no-margin">{{  discussion.name }}</a>
-                                    <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.firts_name }} {{ discussion.user.last_name }}</a></p>
+                                    <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.first_name }} {{ discussion.user.last_name }}</a></p>
                                     <p style="margin-top:5px;" class="no-margin gray_text">{{ discussion.id|get_num_comments }} comentarios</p>
                                 </span>
                             {% endfor %}
