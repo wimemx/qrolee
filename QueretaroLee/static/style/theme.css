@@ -614,7 +614,7 @@ p{
                 text-align: left;
                 margin-left: 0px;
                 font-family: 'Raleway' sans-serif;
-                font-weight: 400;
+                font-weight: 500;
                 text-decoration: none;
                 position: relative;
                 width: 100%;
@@ -1757,7 +1757,7 @@ p{
 .container_event .btn_edit{
     font-size: 12px !important;
     font-family: 'Raleway';
-    height: 17px !important;
+    height: 15px !important;
     background: #c69264 !important;
     border: 1px solid #a77340 !important;
 }
@@ -2120,12 +2120,12 @@ p{
 }
 
 .my_books .title_book{
-    margin-top: 20px!important;
+    margin-top: -2px!important;
 }
 
 .title_book{
     margin-bottom: 0px !important;
-    margin-top: 20px !important;
+    margin-top: 18px !important;
     width: auto !important;
 }
 
