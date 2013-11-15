@@ -141,7 +141,7 @@ input:not([type='submit']){
 }
 
 .brown_btn{
-    background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
+    background:#c69264 url('../img/settings_pointer.png') no-repeat 68px 9px;
     color: #fff;
     font-size: 12px;
     text-decoration: none;
@@ -3115,7 +3115,7 @@ p{
 }
 
 form input:focus{
-    background: rgb(252, 248, 239)!important;
+    background: #fff;
 }
 
 form p .invalid_messa{
