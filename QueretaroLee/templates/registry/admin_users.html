@@ -18,20 +18,7 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="wrapper_message " >
-        <div class="container-16 container_message">
-            <div class="alert-message">{% csrf_token %}
-                <span class="message-header">Administración</span>
-                <p>Estas apunto de eliminar a <span class="name"></span> <br>
-                    como administrador</p>
-                <span class="accept relative green_btn">Aceptar</span>
-                <span class="reject">Rechazar</span>
-                <input class="user" type="hidden"/>
-                <input class="type" type="hidden"/>
-                <input class="entity" value="{{ entity.id }}" type="hidden"/>
-            </div>
-        </div>
-    </div>
+
 
     <div class="grid-16 entity edit">
     <div class="grid-15 center">

@@ -984,8 +984,7 @@ def get_list(request, **kwargs):
                     encode('utf-8', 'ignore')
             else:
                 if field=='user':
-                    value = str(obj.__getattribute__(str(field)).first_name) \
-                            + ' ' +  str(obj.__getattribute__(str(field)).last_name)
+                    value = obj.__getattribute__(str(field)).first_name
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
@@ -1698,7 +1697,7 @@ def book_crossing(request, **kwargs):
 
     for i in range(2):
         books = models.Travel.objects.filter(status=i)
-        print books
+
         for obj in books:
             if int(obj.type_user) == 1:
                 user_book = account_models.User.objects.get(id=obj.user)

@@ -26,9 +26,7 @@
             <input type="hidden" class="entity" value="{{ entity.id }}"/>{% csrf_token %}
         <span class="title main">Editar evento
             <a href="/qro_lee/events/{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
-            {% block entity_menu %}
-                {% include 'blocks/entity_menu.html' %}
-            {% endblock %}
+
         </span>
 
 

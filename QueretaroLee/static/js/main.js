@@ -195,6 +195,16 @@ function post_to_fb(caption, description, content, redirect, url){
 
 $(document).ready(function(){
     csrf_global = $('.csrf_header').find('input').val();
+    $('.del').click(function(e){
+        e.preventDefault();
+        $('.admin-alert').fadeIn(300,function(){
+            $(this).find('p').html('¿Estás seguro que la deseas eliminar?');
+            $(this).find('.green_btn').click(function(){
+                window.location.href = $('.del').attr('href');
+            });
+        });
+        return false;
+    });
     $('.show_text').click(function(){
         var active = parseInt($(this).find('input').val());
         var height = 172;
@@ -2012,6 +2022,7 @@ function create_template(type, result,i, create_user){
             img.attr('src', url);
         }else if(create_user){
             var a;
+            h3.html(result[i].first_name+' '+result[i].last_name);
             if(result[i].extras[0][0]){
                 a = $('<a class="spot" href="/qro_lee/profile/title/'+result[i].extras[0][1]+'">'+result[i].extras[0][0]+'</a>')
                 p.html('Esta leyendo ');
@@ -2020,8 +2031,6 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
-        title = title.substring(0, 16);
-        h3.html(title+' ...');
         $('.results').append(item);
         return;
     }

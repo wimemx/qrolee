@@ -885,6 +885,19 @@ def admin_users(request, **kwargs):
         object=obj.id, object_type='E')
     admins = members.filter(is_admin=True)
     requests = members.filter(request=True)
+    admins_list = list()
+    admins = models.MemberToObject.objects.filter(
+        object=obj.id, object_type='E', is_admin=True)
+    for a in admins:
+        admins_list.append(a.user_id)
+
+    if obj:
+        match = 0
+        for ele in admins_list:
+            if request.user.id == ele:
+                match += 1
+        if match == 0:
+            return not_found(request)
     users = list()
     for member in members:
         users.append(member.user_id)
@@ -1369,21 +1382,21 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['description'])
 
                     li ={
-                        'title':str(obj['it']['attribute']['title']),
-                        'subtitle':'',
-                        'edition':'',
-                        'published_date':date_time,
-                        'cover':str(obj['it']['attribute']['cover']),
-                        'publisher':str(obj['it']['attribute']['publisher']),
-                        'language':str(obj['it']['attribute']['language']),
-                        'country':str(obj['it']['attribute']['country']),
-                        'type':'T',
-                        'isbn':str(obj['it']['attribute']['isbn']),
-                        'isbn13':str(obj['it']['attribute']['isbn13']),
-                        'pages':int(obj['it']['attribute']['pages']),
-                        'picture':str(obj['it']['attribute']['picture']),
-                        'description':desc[0:800],
-                        'id_google':obj['it']['attribute']['id_google']
+                        'title': str(obj['it']['attribute']['title']),
+                        'subtitle': '',
+                        'edition': '',
+                        'published_date': date_time,
+                        'cover': str(obj['it']['attribute']['cover']),
+                        'publisher': str(obj['it']['attribute']['publisher']),
+                        'language': str(obj['it']['attribute']['language']),
+                        'country': str(obj['it']['attribute']['country']),
+                        'type': 'T',
+                        'isbn': str(obj['it']['attribute']['isbn']),
+                        'isbn13': str(obj['it']['attribute']['isbn13']),
+                        'pages': int(obj['it']['attribute']['pages']),
+                        'picture': str(obj['it']['attribute']['picture']),
+                        'description': desc[0:800],
+                        'id_google': obj['it']['attribute']['id_google']
                     }
 
                     title_exist = account.Title.objects.filter(db_model.Q(id_google= li['id_google']) |

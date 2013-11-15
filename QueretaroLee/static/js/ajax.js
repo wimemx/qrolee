@@ -371,6 +371,11 @@ function findUser($ele, userEmail, entity, $parent, member){
                        $('.container_message').fadeIn(300,function(){
                            $(this).find('.name').html(name);
                            $(this).find('.user').val(user);
+                           if($('input.type').val() == 1){
+                               $(this).find('.element').html('administrador');
+                           }else if($('input.type').val() == 2){
+                               $(this).find('.element').html('miembro');
+                           }
                        });
                        counter = 1;
                        len = $('.affiliate').length;
@@ -652,11 +657,13 @@ $(document).ready(function(){
 
         //9786071111104
         //www.googleapis.com/books/v1/volumes?q=isbn:9681606353
+        var data_ = -1;
         if(isbn.length != 0)
-            var data_ = api_isbn_search(isbn);
+            data_ = api_isbn_search(isbn);
         else
             empty = true;
 
+        alert(data_);
         if(data_ == -1 | empty){
             e.preventDefault();
             var $this = $(this).find('input[type=submit]').parent().parent();
@@ -1069,6 +1076,7 @@ $(document).ready(function(){
 
 function api_isbn_search(isbn){
     var data_ = -1;
+    alert(data_);
     $.ajax({
             'async': false,
             'global': false,
@@ -1076,11 +1084,13 @@ function api_isbn_search(isbn){
             'dataType': "json",
             'success': function (data) {
                 data_ = data;
+                alert(data);
                 if(data['totalItems'] == 0){
                     data_ = -1;
                 }
             }
-    }).done(function(){
+    }).done(function(data){
+            alert(data);
             if(data_ == -1){
                 var result = search_api($('.csrf_header').find('input').val(),isbn, -1);
                 if (result['result_api'] != -1){
@@ -1090,7 +1100,6 @@ function api_isbn_search(isbn){
 
             }
         });
-
     return data_;
 
 }

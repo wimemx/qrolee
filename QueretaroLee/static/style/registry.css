@@ -116,12 +116,12 @@ span.green_btn,span.yellow_btn{
         padding: 10px 8px 0px 8px !important;
     }
     .data .value.map{
-        width: 167px;
+        width: 280px!important;
         max-height: 50px;
-        position: absolute;
-        top: 30px;
+        position: relative;
         left: 0px;
         padding: 10px 8px 5px 8px;
+        margin-bottom: 30px;
 
     }
     .data #map{
@@ -518,6 +518,9 @@ p.advanced_search_btn{
         margin-bottom: 5px;
         font-size: 16px !important;
         margin-right: 17px;
+    }
+    .results .item p{
+        margin-right: 17px !important;
     }
     .results .item .wrapper{
         margin:0px

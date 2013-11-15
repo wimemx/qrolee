@@ -204,15 +204,19 @@ input:not([type='submit']){
 
 .create-entity{
     width: 220px;
-    margin-top: 98px;
+    top: 98px;
     display: block;
-    margin-left: 69px;
+    left: 69px;
     height: 96px;
     border: 1px solid #a77340;
     background: #F4E5C8;
     z-index: 20;
     position: absolute;
     box-shadow: 0px 5px 5px rgba(156, 156, 156, 0.36);
+}
+.create-entity div{
+    width: 100%;
+    height: 100%;
 }
 .create-entity span{
     font-size: 13px;
@@ -266,7 +270,7 @@ input:not([type='submit']){
     background: #f79882;
     font-family: 'Raleway' sans-serif;
     cursor: pointer;
-    padding: 3px 9px 4px 9px;
+    padding: 4px 9px 4px 9px;
     font-size: 12px;
     line-height: 17px;
     height: 17px;
@@ -281,7 +285,7 @@ p{
 .header{
     background: url('../img/header_bg.png') repeat-x 0px 0px;
     position: relative;
-    z-index: 5;
+    z-index: 1000;
 }
 
     .logo{
@@ -687,7 +691,7 @@ p{
 }
     .entity .wrapper{
         width: 176px;
-        height: auto;
+        height: 176px;
         display: block;
         overflow: hidden;
         margin-bottom: 20px;
@@ -3139,7 +3143,8 @@ form p .invalid_messa{
     z-index: 1;
     margin: 200px auto;
     min-height: 90px;
-    box-shadow: 0px 5px 5px #ccc
+    box-shadow: 0px 5px 5px #ccc;
+    background: #F4E5C8;
 }
 
 .message-header{
@@ -3154,6 +3159,7 @@ form p .invalid_messa{
     color: #F3E4C8;
     font-family: 'Raleway' sans-serif;
     line-height: 20px;
+    font-size: 14px;
 }
     .alert-message p{
         font-family: 'Raleway' sans-serif;
@@ -3162,9 +3168,19 @@ form p .invalid_messa{
         margin-bottom: 14px;
     }
     .alert-message .accept{
-        margin-left: 40px;
-        margin-left: 40px;
+        margin-left: 85px;
         width: 43px;
+        padding: 4px 9px 4px 9px !important;
+        cursor: pointer !important;
+        font-size: 12px !important;
+        height: auto !important;
+        line-height: 17px !important;
+        left: 0px !important;
+        top: 0px !important;
+        font-weight: 400 !important;
+        background: #60967E !important;
+        border: 1px solid #326F53 !important;
+        color: #fff !important;
     }
     .alert-message form .accept{
         margin:0px 15px 0px 75px;
@@ -4556,4 +4572,17 @@ p input.green_btn{
 }
 .wrapper_user{
     height: 178px!important;
+}
+.cont_btn_evt{
+    margin-right: 34px;
+    padding-top: 40px;
+}
+.cont_btn_evt .member{
+    margin-top: 0px!important;
+}
+
+.cont_btn_evt .color_btn{
+    margin-right: 20px;
+    float: right;
+    margin-top: 20px;
 }

@@ -8,8 +8,23 @@
                         <span class="lin"></span>
                         <a href="/registry/edit/events/{{ entity.id }}">Organizar eventos</a>
                         <span class="lin"></span>
-                        <a style="border:none;" href="/registry/delete/{{ entity_type.1 }}/{{ entity.id }}">Borrar</a>
+                        <a class="del" style="border:none;" href="/registry/delete/{{ entity_type.1 }}/{{ entity.id }}">Borrar</a>
                     </span>
                 </span>
             </span>
+
+<div class="wrapper_message " >
+        <div class="container-16 container_message admin-alert">
+            <div class="alert-message">{% csrf_token %}
+                <span class="message-header">Administración</span>
+                <p>Estas apunto de eliminar a <span class="name"></span> <br>
+                    como <span class="element"></span></p>
+                <span class="accept">Aceptar</span>
+                <span class="reject">Rechazar</span>
+                <input class="user" type="hidden"/>
+                <input class="type" type="hidden"/>
+                <input class="entity" value="{{ entity.id }}" type="hidden"/>
+            </div>
+        </div>
+    </div>
 {% endblock %}
