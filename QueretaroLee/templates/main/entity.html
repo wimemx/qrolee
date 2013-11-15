@@ -548,6 +548,18 @@
                                 </h3>
                             </a>
                         </span>
+                        {% empty %}
+                            <span class="center grid-3 d-not_found">
+                                No hay
+                                {% if entity_type.1 == 'group' %}
+                                    grupos
+                                {% elif entity_type.1 == 'organization' %}
+                                    organizaciones
+                                {% else %}
+                                    lugares
+                                {% endif %}
+                                similares
+                            </span>
                         {% endfor %}
                     </div>
             </div>

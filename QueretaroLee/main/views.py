@@ -478,7 +478,6 @@ def get_events(request, **kwargs):
                 events_ = models.Event.objects.filter(location_id=int(entity),
                     status=status, start_time__gte=start_time, owner_id__in=admins_list,
                     start_time__lt=end_time).order_by('start_time')
-
             else:
 
                 if int(request.POST.get('curr_month')) == 100:
