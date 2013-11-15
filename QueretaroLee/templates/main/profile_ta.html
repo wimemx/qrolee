@@ -211,7 +211,7 @@
                     <a href="/accounts/users/profile/{{ profile.user.id }}"
                             class="user_list">
                         <span class="d-pink">
-                            {{ profile.user.username }}
+                            {{ profile.user.first_name }} {{ profile.user.last_name }}
                         </span>
                     </a>
                 </p>
@@ -377,12 +377,12 @@
                                         {{ value.title|truncatechars:25 }}
                                     </h3>
                                 </a>
-                                <span class="grid-3">
+                                <span class="grid-3 mini_rate">
                                     {% for x in 'xxxxx' %}
                                         {% if forloop.counter < value.grade %}
-                                            <img class="starts_mini" src="/static/img/comunityStar.png" />
+                                            <img class="starts_mini" src="/static/img/comunityStarmini.png" />
                                         {% else %}
-                                            <img class="starts_mini" src="/static/img/backgroundStar.png" />
+                                            <img class="starts_mini" src="/static/img/backgroundStarmini.png" />
                                         {% endif %}
                                     {% endfor %}
                                 </span>
@@ -422,7 +422,7 @@
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
                                     <a href="/accounts/users/profile/{{ obj.list.user.id }}"
                                        class="d-pink">
-                                        {{ obj.list.user.username }}
+                                        {{ obj.list.user.first_name }} {{ obj.list.user.last_name }}
                                     </a>
                                 </p>
                             </span>
@@ -457,7 +457,7 @@
                                     </a>
                                     <a href="/accounts/users/profile/{{ key }}">
                                         <h3 class="title grid-3 title_mini text_name_user">
-                                           {{ value.user.username|truncatechars:12 }}
+                                           {{ value.user.first_name }} {{ value.user.last_name }}
                                         </h3>
                                     </a>
                                 </span>
@@ -494,7 +494,7 @@
                                     </a>
                                     <p class="grid-3 p_text_mini text_list">Lista creada por
                                         <a href="/accounts/users/profile/{{ obj.list.user.id }}" class="d-pink ">
-                                            {{ obj.list.user.username }}
+                                            {{ obj.list.user.first_name }} {{ obj.list.user.last_name }}
                                         </a>
                                     </p>
                                 </span>
@@ -533,11 +533,11 @@
                                 <p class="grid-3 p_text_mini text_list">Lista creada por
                                         {% if type != 'list' %}
                                             <a href="/accounts/users/profile/{{ value.list.user.id }}" class="d-pink">
-                                                {{ value.list.user.username }}
+                                                {{ value.list.user.first_name }} {{ value.user.last_name }}
                                             </a>
                                         {% else %}
                                             <a href="/accounts/users/profile/{{ value.user.id }}" class="d-pink">
-                                                {{ value.user.username }}
+                                                {{ value.user.first_name }} {{ value.user.last_name }}
                                             </a>
                                         {% endif %}
                                 </p>

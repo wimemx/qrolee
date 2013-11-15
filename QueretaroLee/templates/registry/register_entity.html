@@ -82,19 +82,25 @@
                 {% else %}
                     <input type="hidden" value="publica" name="privacy"/>
                 {% endif %}
-                <p>Dirección
+                {% if entity_type.1 != 'group' %}
+                    <p>Dirección
+                        <input type="hidden" class="lat" name="lat"/>
+                        <input type="hidden" class="long" name="long"/>
+                        <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
+                    </p>
+                    <p style="margin:0px 0px 30px 0px;" class="textarea entity_map">
+                        <span style="width: 296px;" class="grid-5 map fright no-margin">
+                            <span id="map"></span>
+                            <span class="pixeles grid-5 recomendation">
+                                Arrastra el ping para poner más precisa tu ubicación
+                            </span>
+                        </span>
+                    </p>
+                {% else %}
                     <input type="hidden" class="lat" name="lat"/>
                     <input type="hidden" class="long" name="long"/>
-                    <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
-                </p>
-                <p style="margin:0px 0px 30px 0px;" class="textarea entity_map">
-                    <span style="width: 296px;" class="grid-5 map fright no-margin">
-                        <span id="map"></span>
-                        <span class="pixeles grid-5 recomendation">
-                            Arrastra el ping para poner más precisa tu ubicación
-                        </span>
-                    </span>
-                </p>
+                    <input class="grid-5 address fright no-margin" type="hidden" value="" name="address"/>
+                {% endif %}
                 <p>Sitio web
                     <input placeholder="http://qrolee.com" class="grid-5 regex_url fright no-margin" type="text" value="" name="website"/>
                 </p>
@@ -113,9 +119,7 @@
                 <p class="submit">
                     <input id="submit" class="fright" value="Crear {{ entity_type.2|lower }}" type="submit" style="margin-top: -20px;"/>
                 </p>
-
                 </div>
-
             </form>
 
             {% if entity_type.1 != 'spot' %}
@@ -130,8 +134,7 @@
             <img src="/static/img/FB-f-Logo__blue_50.png" alt=""/></p>
                     </span>
             {% endif %}
-
-            <form id="picture" class="fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+            <form id="picture" class="logo_ fright dropzone no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="picture" value="1"/>
                 <input type="hidden" name="entity" value="{{ entity.id }}"/>
                 <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
@@ -142,11 +145,8 @@
                     Te recomendamos una imagen de 200 x 200 pixeles
                 </span>
             </form>
-
-
-
             {% if entity_type.1 == 'group' %}
-            <form id="cover" class="dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
+            <form id="cover" class="cover_ dropzone fright no-margin grid-6" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="cover" value="1"/>
                 <!--<div class="preview grid-5 fright no-margin dropzone-previews"></div>-->
                 <div class="del-wrapper">
@@ -158,14 +158,11 @@
                 </span>
             </form>
                 <div class="fb-img-preview grid-6 fright no-margin">
-
                 </div>
             {% endif %}
-
-
         </div>
-
     </div>
+
     <script type="text/javascript">
     Dropzone.options.picture = {
         maxFiles: 1,
@@ -188,11 +185,9 @@
             $('.del.picture').click(function(){
                 this_.removeAllFiles();
                 $('.del.picture').fadeOut(300);
-                $('.dz-default.dz-message').fadeIn(300);
+                $('.logo_ .dz-default.dz-message').fadeIn(300);
                 $('.profile-pic').val('');
             });
-
-
         }
     };
     Dropzone.options.cover = {
@@ -219,7 +214,7 @@
             $('.del.cover').click(function(){
                 this_.removeAllFiles();
                 $('.del.cover').fadeOut(300);
-                $('.dz-default.dz-message').fadeIn(300);
+                $('.cover_ .dz-default.dz-message').fadeIn(300);
                 $('.cover-pic').val('');
             });
         }
