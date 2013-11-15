@@ -1655,7 +1655,7 @@ p{
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #a77340; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 0}
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 5px; }
