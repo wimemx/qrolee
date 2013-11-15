@@ -682,9 +682,18 @@ def advanced_search(request, **kwargs):
                     latitude = Decimal(distance[1])
                     longitude = Decimal(distance[2])
                     distance = float(distance[0])
+            elif 'first_name' in key:
+                words = query_list[key].split(' ')
+                for w in words:
+                    t1 = ('first_name__icontains', w)
+                    t = ('last_name__icontains', w)
+                    q_list.append(t)
+                    q_list.append(t1)
             else:
                 t = (key, query_list[key])
                 q_list.append(t)
+
+        print q_list
         query = [Q(x) for x in q_list]
 
         activity = None
@@ -877,10 +886,12 @@ def advanced_search(request, **kwargs):
 
                     if model_name == 'rate':
                         q_list.append(('type__in', activity))
+
                     query = [Q(x) for x in q_list]
                     related_object = parent_model.objects.filter(reduce(operator.and_, query))
                     if model_name == 'activity':
                         if related_object:
+                            related_object = related_object.order_by('-date')
                             related_object = account_models.Title.objects.filter(id=related_object[0].object)
                     if len(models) <= 2:
                         values = list()

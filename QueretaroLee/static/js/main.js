@@ -1210,14 +1210,12 @@ $(document).ready(function(){
                     }
                     filters.push(filter);
                 });
-
                 var activity = new Array();
                 $('.select_wrapper').each(function(){
                     activity.push($(this).find('input').val().toLowerCase());
                 });
 
                 query = {
-                    'username__icontains': $.trim($('.advanced_filter .search').val()),
                     'first_name__icontains': $.trim($('.advanced_filter .search').val())
                 }
                 fields = ['first_name',
@@ -1750,7 +1748,7 @@ function create_template(type, result,i, create_user){
     var span;
     if(type == 'user'){
         span = $('<span class="advanced_search fleft">');
-        var p = $('<p class="title">Usarios con gustos similares</p>');
+        var p = $('<p class="title">Usuarios con gustos similares</p>');
         p.append('<span>');
         span.append(p);
         p = $('<p class="checkbox A">Autores</p>');

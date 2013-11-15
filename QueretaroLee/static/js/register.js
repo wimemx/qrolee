@@ -106,7 +106,7 @@ $(document).ready(function(){
                         return;
                     }else if(data.success == 0){
                         $form.find('.banner').removeClass('success');
-                        $form.find('.banner').addClass('fail').html('No se encontro un usario con ese correo');
+                        $form.find('.banner').addClass('fail').html('No se encontro un usuario con ese correo');
                         $form.find('input[name=email]').val('');
                         return;
                     }
