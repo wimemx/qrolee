@@ -288,6 +288,7 @@ def register(request):
         if isinstance(val, list):
             copy[e] = val[0]
     entity = copy
+    entity['website']='http://'+entity['website']
     entity = models.Entity.objects.create(**entity)
     entity.save()
     if cat_ids:
