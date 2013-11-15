@@ -26,15 +26,7 @@
     </div>
     <div class="grid-16">
     <div class="grid-16 entity user_pro no-margin">
-        <span class="wrapper fleft">
-            {% if not user_profile.picture %}
-                <img class="img_size_all" src=/static/img/no_profile.png alt="{{ profile.user}}"/>
-            {% else %}
-                {% if owner.id == user.id %}
-                    <span class="brown_btn edit"></span>
-                {% endif %}
-                <img class="img_size_all" src="/static/media/users/{{ user_profile.user.id }}/profile/{{ user_profile.picture }}" alt="{{ entity.name }}"/>
-            {% endif %}
+        <span class="wrapper fleft" style="background: url('{{ picture_user }}') center;background-size: 100%;" >
         </span>
         <span class="general-info no-margin grid-7">
             <h3 class="title d-title_profile">
@@ -171,20 +163,18 @@
                          <span class="container_items grid-4 no-margin">
                              {% for obj in list_genre %}
                                  {% if obj.genre.name %}
-                                     {% if forloop.counter <= 3 %}
-                                        <span title="{{ obj.genre.name }}" style="cursor: auto;!important"
-                                              class="{% if forloop.counter0 == 0 %}first {% endif %} place_pink my_items {% if not forloop.last and forloop.counter != 3 %}border_right{% endif %}">
-                                            {% if list_genre|length == 1 %}
-                                                {{ obj.genre.name }}
-                                            {% else %}
-                                                {{ obj.genre.name|truncatechars:11 }}
-                                            {% endif %}
-                                         </span>
-                                     {% endif %}
+                                    <span title="{{ obj.genre.name }}" style="cursor: auto;!important"
+                                          class=" place_pink my_items {% if not forloop.last %}border_right{% endif %}">
+                                        {% if list_genre|length == 1 %}
+                                            {{ obj.genre.name }}
+                                        {% else %}
+                                            {{ obj.genre.name}}
+                                        {% endif %}
+                                     </span>
                                  {% endif %}
                              {% empty %}
                                  {% if user_profile.user.id == user.id %}
-                                    <span class="place_pink my_items" style="cursor: auto;!important;" >Agrega un nuevo género</span>
+                                    <span class="place_pink my_items add_tit " >Agrega un nuevo género</span>
                                  {% else %}
                                      <span class="gray_7 my_items" style="cursor: auto;!important;">Ningun género favorito</span>
                                  {% endif %}
@@ -195,28 +185,11 @@
                          </h3>
                          <span class="container_items grid-4 no-margin">
                              {% for key, value in list_titles.0.items %}
-                                 {% if forloop.counter <= 3 %}
-                                    <span class=" my_items
-                                     {% if not forloop.last and forloop.counter <= 3 %}
-                                        border_right
-                                    {% endif %}
-                                    ">
-                                        <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {% if list_titles.0|length == 1  %}
-                                                {{ value.title }}
-                                            {% else %}
-                                                {{ value.title|truncatechars:11 }}
-                                            {% endif %}
-                                        </a>
-                                     </span>
-                                 {% else %}
-                                    <span class=" my_items border_right" style="display: none;">
-                                        <a class="place_pink my_items" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
-                                            {% if list_titles.0|length == 1  %}
-                                                {{ value.title }}
-                                            {% else %}
-                                                {{ value.title|truncatechars:11 }}
-                                            {% endif %}
+                                 {% if forloop.counter <= 4 %}
+                                    <span class=" my_items">
+                                        <img class="fleft" src="/static/img/tag_title.png" />
+                                        <a class="place_pink my_items link_pro" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
+                                            {{ value.title }}
                                         </a>
                                      </span>
                                  {% endif %}
@@ -227,59 +200,43 @@
                                     <span class="gray_7 my_items" style="cursor: none!important;">Ningun libro favorito</span>
                                  {% endif %}
                              {% endfor %}
-                             {% if list_titles.0 and list_titles.0|length > 3 %}
-                                 <span class="place_pink span_all">
-                                     <span>Ver más</span>
-                                    <input type="hidden" value="1" />
+                             {% if list_titles.0.items|length > 4 and list_titles.0.items %}
+                                <span class=" my_items add_tit">
+                                    <a class="title_author grid-4 no-margin my_items">
+                                        Ver más
+                                    </a>
                                  </span>
                             {% endif %}
                          </span>
+
                          <h3 class="title grid-4 no-margin title_my_list">
                              Libros leídos
                          </h3>
                          <span class="container_items grid-4 no-margin">
                             <span class="container_items grid-4 no-margin">
                                 {% for key, value in list_titles.1.items %}
-                                 {% if forloop.counter <= 3 %}
-                                    <span class=" my_items
-                                     {% if not forloop.last and forloop.counter <= 3 %}
-                                        border_right
-                                    {% endif %}
-                                    ">
-                                        <a title="{{ value.title }}" class="place_pink my_items"
-                                           href="/qro_lee/profile/title/{{ key }}/">
-                                            {% if list_titles.1|length == 1  %}
+                                     {% if forloop.counter <= 4 %}
+                                        <span class=" my_items">
+                                            <img class="fleft" src="/static/img/tag_title.png" />
+                                            <a class="place_pink my_items link_pro" title="{{ value.title }}" href="/qro_lee/profile/title/{{ key }}/">
                                                 {{ value.title }}
-                                            {% else %}
-                                                {{ value.title|truncatechars:11 }}
-                                            {% endif %}
-                                        </a>
-                                     </span>
-                                 {% else %}
-                                    <span class=" my_items border_right" style="display: none;">
-                                        <a title="{{ value.title }}" class="place_pink my_items"
-                                           href="/qro_lee/profile/title/{{ key }}/">
-                                            {% if list_titles.1|length == 1  %}
-                                                {{ value.title }}
-                                            {% else %}
-                                                {{ value.title|truncatechars:11 }}
-                                            {% endif %}
-                                        </a>
-                                     </span>
-                                 {% endif %}
-                             {% empty %}
-                                    {% if user_profile.user.id == user.id %}
+                                            </a>
+                                         </span>
+                                     {% endif %}
+                                 {% empty %}
+                                     {% if user_profile.user.id == user.id %}
                                         <span class="place_pink my_items add_tit">Agrega un nuevo libro leído </span>
-                                    {% else %}
-                                        <span class="gray_7 my_items" style="cursor: none!important;">Ningun libro leído</span>
-                                    {% endif %}
-                             {% endfor %}
-                             {% if list_titles.1 and list_titles.1|length > 3 %}
-                                 <span class="place_pink span_all">
-                                     <span>Ver más</span>
-                                    <input type="hidden" value="1" />
-                                 </span>
-                            {% endif %}
+                                     {% else %}
+                                        <span class="gray_7 my_items" style="cursor: none!important;">Ningun libro favorito</span>
+                                     {% endif %}
+                                 {% endfor %}
+                                 {% if list_titles.1.items|length > 4 and list_titles.1.items %}
+                                    <span class=" my_items add_tit">
+                                        <a class="title_author grid-4 no-margin my_items">
+                                            Ver más
+                                        </a>
+                                     </span>
+                                {% endif %}
                             </span>
                         </span>
             </div>
@@ -301,12 +258,6 @@
                 {% endif %}
             {% endif %}
         </h3>
-        {% if user_profile.user.id == user.id %}
-            <span class="search fleft grid-4">
-                <input type="text" class="search_entities" />
-                <span class="top search_btn dark_yello_btn"></span>
-            </span>
-        {% endif %}
     </div>
     <div class="viewport margin_top">
     <div class="overview ">
@@ -670,18 +621,21 @@
                     <div class="grid-5 no-margin container_genres">
                         {% for obj in list_genre  %}
                             <span class="grid-4 no-margin genre">
-                                                <img src="/static/img/start.png"/>
-                                                    {{ obj.genre.name }}
-                                                </span>
+                            <img src="/static/img/start.png"/>
+                                {{ obj.genre.name }}
+                            </span>
                         {% endfor %}
                     </div>
                     <div class="grid-5 no-margin btn_genre">
                         {% if user_profile.user.id == user.id %}
                             <span class="green_btn message_alert ">
-                                                <input class="type_message"
-                                                       type="hidden" value="add_genre"/>
+                                <input class="type_message"
+                                   type="hidden" value="add_genre"/>
 
-                                                </span>
+                            </span>
+                            <span class="text_genre ">
+                                Añade tus géneros favoritos
+                            </span>
                         {% endif %}
                     </div>
                 </div>
@@ -741,7 +695,7 @@
                                    class="title alpha title_book">{{ value.name|truncatechars:30 }}</a>
                                 </span>
 
-                                <span class="container_btn grid-2 no-margin">
+                                <span class="container_btn grid-4 no-margin">
                                     {% if value.id_user == user.id %}
                                         <a href="/registry/edit_list/{{ value.type }}/{{ key }}">
                                             <span class="green_btn size_btn_edit " ></span>

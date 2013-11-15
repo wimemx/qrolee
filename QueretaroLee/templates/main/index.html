@@ -19,10 +19,18 @@
 {% block main_site %}
 {% if profile.is_new %}
 <div class="create-entity">
-    <div class="container-16">
-        <p>Para crear un grupo de lectura da click <a class="group" href="/registry/register_entity/group/">aquí</a></p>
-        <p>Para crear una organización da click <a class="organization" href="/registry/register_entity/organiztion/">aquí</a></p>
-        <a class="del-message" href="#">Aceptar</a>
+    <img class="pt" src="/static/img/triangulo2.png">
+    <div>
+        <a class="del-message" href="#"></a>
+        <p>
+            <span>Para crear una organización</span>
+            <a href="/registry/register_entity/organization/">De click aquí</a>
+        </p>
+        <p>
+            <span>Para crear un grupo </span>
+            <a href="/registry/register_entity/group/">De click aquí</a>
+        </p>
+
     </div>
 </div>
 {% endif %}

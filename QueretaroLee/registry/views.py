@@ -75,8 +75,10 @@ def index(request, **kwargs):
             if resp['status'] != '200':
                 raise Exception("Invalid response from Twitter.")
             request_token = dict(urlparse.parse_qsl(content))
+
             url = "%s?oauth_token=%s" % (settings.TWITTER_AUTH_URL,
                                          request_token['oauth_token'])
+
             twitterSession = models.TwitterSession.objects.create(
                 oauth_token=request_token['oauth_token'],
                 request_token=request_token)

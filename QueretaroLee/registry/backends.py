@@ -1,14 +1,20 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth import models as auth_models
 from django.contrib.auth.models import User
 
 from registry import models as users_models, settings
 from account import models as account
 from registry import views as registry_view
+
 import oauth2
 import urlparse
 import os
 import urllib
 import urllib2
+from requests_oauthlib import OAuth1
+import requests
+import ast
+import unicodedata
 
 
 def user_exists(email=None, username=None, user=None):
@@ -96,21 +102,42 @@ class TwitterBackend:
         token = oauth2.Token(request_token['oauth_token'],
                              request_token['oauth_token_secret'])
         token.set_verifier(oauth_verifier)
+
         client = oauth2.Client(consumer, token)
+
         resp, content = client.request(settings.TWITTER_ACCESS_URL, "POST")
         if resp['status'] != '200':
             return None
+
         access_token = dict(urlparse.parse_qsl(content))
         print access_token
         username = access_token['screen_name']
         uid = access_token['user_id']
         userExists = user_exists(username=username)
 
+        consumer = oauth2.Consumer(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        token = oauth2.Token(settings.TWITTER_TOKEN, settings.TWITTER_TOKEN_SECRET)
+        token.set_verifier(oauth_verifier)
+        client = oauth2.Client(consumer, token)
+        resp, content = client.request('https://api.twitter.com/1.1/search/tweets.json?q='+username)
+        content = content.split('"')
+        name = str(content[57])
+
+        name = name.split(' ')
+        if len(name) > 1:
+            last_name = name[1]
+            name = name[0]
+        else:
+            name = name[0]
+            last_name = ''
+        name = unicode(name, 'unicode-escape')
+        last_name = unicode(last_name, 'unicode-escape')
         if userExists:
             user = auth_models.User.objects.get(username=username)
+
         else:
             user, created = auth_models.User.objects.get_or_create(
-                username=username,
+                username=username, first_name=name, last_name=last_name
             )
             user.set_unusable_password()
             user.save()
@@ -133,6 +160,7 @@ class TwitterBackend:
         twitterSessionObj.save()
 
         return user
+
     def get_user(self, user_id):
         try:
             return auth_models.User.objects.get(pk=user_id)
