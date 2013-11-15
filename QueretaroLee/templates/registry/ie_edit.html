@@ -56,6 +56,19 @@
                 <input name="name" type="text" value="{{ entity.name }}" class="grid-5 alpha fright value"/>
                 <span class="value grid-5 alpha fright">{{ entity.name }}</span>
             </p>
+            <!--[if lte IE 9]>>
+            <span class="fleft" style="height: 70px; display: block;width: 100%;">
+                <p class="fleft" style="width: auto;">Logotipo</p>
+                <form id="ie-fix" class="fright ie-fix alpha fix-left grid-5" method="post" action="/registry/media/upload/">{% csrf_token %}
+                    <input type="hidden" name="entity" value="{{ entity.id }}"/>
+                    <input class="file" name="profile-pic"  type="file" />
+                    <input type="hidden" name="ie" value="sucks"/>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
+                        </span>
+                </form>
+            </span>
+            <![endif]-->
             <p>Página de Facebook
                 <span class="controllers_wrapper">
                 <span class="green_btn fright">Editar</span>
@@ -128,25 +141,23 @@
                     </span>
                 <span class="value no-edit grid-5 alpha fright" style="font-size: 12px;">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
             </p>
-            {% if entity_type.1 != 'group' %}
-                <p>Dirección
-                    <span class="controllers_wrapper">
-                    <span class="green_btn fright">Editar</span>
-                    <span class="yellow_btn fright">Guardar</span>
-                        </span>
-                    <textarea name="address" class="map address grid-5 alpha fright value">{{ entity.address }}</textarea>
-                    <span class="close right"></span>
-                    <input type="hidden" class="lat" name="lat"/>
-                    <input type="hidden" class="long" name="long"/>
-                    <input class="grid-5 address fright no-margin alpha" type="text" value="" name="address"/>
-                    <span class="value area map grid-5 fright">{{ entity.address }}</span>
-                    <span id="map" class="grid-5 alpha fright"></span>
-                </p>
-
-            {% endif %}
+            <p>Dirección
+                <span class="controllers_wrapper">
+                <span class="green_btn fright">Editar</span>
+                <span class="yellow_btn fright">Guardar</span>
+                    </span>
+                <span class="close right"></span>
+                <input type="hidden" class="lat" name="lat"/>
+                <input type="hidden" class="long" name="long"/>
+                <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
+                <textarea name="address" class="map address value">{{ entity.address }}</textarea>
+                <span class="value area map">{{ entity.address }}</span>
+                <span id="map" class="grid-5 alpha fright"></span>
+            </p>
         </span>
-        <span class="d-picture_user grid-5 no-margin fright fb-session-required"  >
-            <span class="fb-connect  no-margin fright grid-5">
+
+        <span class="d-picture_user grid-5 no-margin fright"  >
+            <span class="fb-connect fb-session-required no-margin fright grid-5">
         {% if entity.fb_id != None and entity.fb_id != '' %}
             <p>¿Deseas conectar tu cuenta de Facebook y Twitter?</p>
             <p class="checkbox"><span class="fb">
@@ -175,9 +186,9 @@
         {% endif %}
             </span>
         </span>
-        {% if entity.picture %}
         <div class="grid-5 fright no-margin">
-
+        <!--[if gte IE 10]>
+            {% if entity.picture %}
 
                 <span class="d-picture_user wrapper_picture_user">
                     <span class="img-wrapper">
@@ -211,9 +222,8 @@
                         </span>
                     </form>
                 </span>
-
+            {% endif %}
         </span>
-        {% endif %}
         {% if entity.type.name == 'group' %}
             <span class="d-picture_user fright no-margin grid-4"  >
                 {% if entity.cover_picture %}
@@ -254,6 +264,86 @@
                 {% endif %}
             </span>
         {% endif %}
+        <![endif]-->
+
+        <!--[if !IE]> -->
+            {% if entity.picture %}
+
+                <span class="d-picture_user wrapper_picture_user">
+                    <span class="img-wrapper">
+                    <img class="img_size_all"
+                         src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.picture }}" />
+                        </span>
+                    <span class="del-wrapper loaded">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                </span>
+                <span class="dropzone_user disable_upload">
+                    <form id="picture" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="entity" value="{{ entity.id }}"/>
+                        <span class="del-wrapper func">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
+                        </span>
+                    </form>
+                </span>
+            {% else %}
+                <span class="dropzone_user ">
+                    <form id="picture" class="fright dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                        <input type="hidden" name="entity" value="{{ entity.id }}"/>
+                            <span class="del-wrapper func">
+                            <span class="spot del center picture">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 200 x 200 pixeles
+                        </span>
+                    </form>
+                </span>
+            {% endif %}
+        </span>
+        {% if entity.type.name == 'group' %}
+            <span class="d-picture_user fright no-margin grid-4"  >
+                {% if entity.cover_picture %}
+
+                    <span class="d-picture_user wrapper_picture_user">
+                    <span class="img-wrapper">
+                        <img src="/static/media/users/{{ entity.user.id }}/entity/{{ entity.cover_picture }}" />
+                    </span>
+                        <span class="del-wrapper loaded">
+                            <span class="spot del center cover">Eliminar foto</span>
+                        </span>
+                    </span>
+                    <span class="dropzone_user disable_upload">
+                        <form id="cover" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                            <input type="hidden" name="entity" value="{{ entity.id }}"/>
+                                <input type="hidden" name="cover" value="1"/>
+                                <span class="del-wrapper func">
+                            <span class="spot del center cover">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
+                        </span>
+                        </form>
+                    </span>
+                {% else %}
+                    <span class="dropzone_user ">
+                        <form id="cover" class="fright  dropzone no-margin grid-4" action="/registry/media/upload/">{% csrf_token %}
+                            <input type="hidden" name="entity" value="{{ entity.id }}"/>
+                            <input type="hidden" name="cover" value="1"/>
+                                <span class="del-wrapper func">
+                            <span class="spot del center cover">Eliminar foto</span>
+                        </span>
+                        <span class="grid-5 fright no-margin pixeles recomendation" style="bottom: -190px;">
+                            Te recomendamos una imagen de 615 x 1607 pixeles
+                        </span>
+                        </form>
+                    </span>
+                {% endif %}
+            </span>
+        {% endif %}
+        <!-- <![endif]-->
         </div>
          <div class="grid-7 edit-form fright margin-40" style="padding-right: 43px">
             <span class="green_btn main fleft" style="background: #c69264 !important; border: 1px solid #a77340 !important; padding: 4px 16px !important;">Editar</span> <span class="yellow_btn main fleft">Guardar</span>
@@ -316,8 +406,7 @@
             }
         }
         $(document).ready(function(){
-            if($('#map').length > 0)
-                initialize();
+            initialize();
             var timeout = 200;
 
 

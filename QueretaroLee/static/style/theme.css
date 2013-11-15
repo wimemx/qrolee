@@ -270,7 +270,7 @@ input:not([type='submit']){
     background: #f79882;
     font-family: 'Raleway' sans-serif;
     cursor: pointer;
-    padding: 3px 9px 4px 9px;
+    padding: 4px 9px 4px 9px;
     font-size: 12px;
     line-height: 17px;
     height: 17px;
@@ -3143,7 +3143,8 @@ form p .invalid_messa{
     z-index: 1;
     margin: 200px auto;
     min-height: 90px;
-    box-shadow: 0px 5px 5px #ccc
+    box-shadow: 0px 5px 5px #ccc;
+    background: #F4E5C8;
 }
 
 .message-header{
@@ -3158,6 +3159,7 @@ form p .invalid_messa{
     color: #F3E4C8;
     font-family: 'Raleway' sans-serif;
     line-height: 20px;
+    font-size: 14px;
 }
     .alert-message p{
         font-family: 'Raleway' sans-serif;
@@ -3166,9 +3168,19 @@ form p .invalid_messa{
         margin-bottom: 14px;
     }
     .alert-message .accept{
-        margin-left: 40px;
-        margin-left: 40px;
+        margin-left: 85px;
         width: 43px;
+        padding: 4px 9px 4px 9px !important;
+        cursor: pointer !important;
+        font-size: 12px !important;
+        height: auto !important;
+        line-height: 17px !important;
+        left: 0px !important;
+        top: 0px !important;
+        font-weight: 400 !important;
+        background: #60967E !important;
+        border: 1px solid #326F53 !important;
+        color: #fff !important;
     }
     .alert-message form .accept{
         margin:0px 15px 0px 75px;

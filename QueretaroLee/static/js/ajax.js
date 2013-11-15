@@ -371,6 +371,11 @@ function findUser($ele, userEmail, entity, $parent, member){
                        $('.container_message').fadeIn(300,function(){
                            $(this).find('.name').html(name);
                            $(this).find('.user').val(user);
+                           if($('input.type').val() == 1){
+                               $(this).find('.element').html('administrador');
+                           }else if($('input.type').val() == 2){
+                               $(this).find('.element').html('miembro');
+                           }
                        });
                        counter = 1;
                        len = $('.affiliate').length;
