@@ -683,8 +683,7 @@ $(document).ready(function(){
     });
     $('.search_ent_field').keyup(function(){
 
-        if($(this).val().search(/^\s*$/) != 0)
-           search_entities($('.heading .search span.search_btn'));
+        search_entities($('.heading .search span.search_btn'));
 
     });
     $('.search_list').click(function(){
@@ -2101,7 +2100,6 @@ function search_entities($this){
                                     btn = $('<a class="green_btn" href="' +
                                         href_edit + '"></a>');
                                     div.append(a.append(img));
-                                    console.log(entity_obj[i]);
                                     if(entity_obj[i].is_admin == 1){
                                         div.append(a.append(btn));
                                     }

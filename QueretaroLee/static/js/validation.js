@@ -310,7 +310,6 @@ function valid_form_list(form){
 
         succe = false;
     }
-    
 
     if($('.add_my_list .d-item_book').length==0){
         $('.container_message_2').fadeIn(300);

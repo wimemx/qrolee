@@ -343,7 +343,7 @@ def user_profile(request, **kwargs):
             else:
                 items[field] = obj.__getattribute__(str(field))
         items['id_user'] = obj.user.id
-        items['name_user'] = obj.user.username
+        items['name_user'] = obj.user.first_name
         dict_pages[int(obj.id)] = items
 
     city = profile.city

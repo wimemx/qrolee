@@ -1611,8 +1611,6 @@ function edit_form($this, timeout, type, id, event){
                                 ie_logo = false;
                                 $('#ie-fix input.file').val('');
                             });
-
-
                     }
                 }
             }

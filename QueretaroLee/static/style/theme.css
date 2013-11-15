@@ -141,7 +141,7 @@ input:not([type='submit']){
 }
 
 .brown_btn{
-    background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
+    background:#c69264;
     color: #fff;
     font-size: 12px;
     text-decoration: none;
@@ -756,9 +756,11 @@ p{
             float: left;
         }
         .color_btn.organization{
-            background: #8ab493;
-            color: #222 !important;
+            background: #c69264;
             margin-left: 5px !important;
+            border: 1px solid #a77340;
+            font-family: 'Raleway' sans-serif;
+            color: white !important;
         }
         .color_btn.spot{
             background: #c69264 no-repeat 45px 9px;
@@ -798,7 +800,7 @@ p{
             margin-top: -10px;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
-            width: 30px;
+            width: 51px;
             height: 15px;
             position: relative;
             background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
@@ -3119,7 +3121,7 @@ p{
 }
 
 form input:focus{
-    background: rgb(252, 248, 239)!important;
+    background: #fff;
 }
 
 form p .invalid_messa{
@@ -4555,4 +4557,7 @@ p input.green_btn{
 .alert-text p{
     color: #f89883 !important;
 
+}
+.wrapper_user{
+    height: 178px!important;
 }
