@@ -141,6 +141,7 @@ input:not([type='submit']){
 }
 
 .brown_btn{
+    background:#c69264;
     color: #fff;
     font-size: 12px;
     text-decoration: none;
