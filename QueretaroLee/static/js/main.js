@@ -195,6 +195,16 @@ function post_to_fb(caption, description, content, redirect, url){
 
 $(document).ready(function(){
     csrf_global = $('.csrf_header').find('input').val();
+    $('.del').click(function(e){
+        e.preventDefault();
+        $('.admin-alert').fadeIn(300,function(){
+            $(this).find('p').html('¿Estás seguro que la deseas eliminar?');
+            $(this).find('.green_btn').click(function(){
+                window.location.href = $('.del').attr('href');
+            });
+        });
+        return false;
+    });
     $('.show_text').click(function(){
         var active = parseInt($(this).find('input').val());
         var height = 172;
