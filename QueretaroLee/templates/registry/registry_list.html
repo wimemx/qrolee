@@ -24,14 +24,7 @@
             <div class="dialog-confirm" ></div>
         </div>
     </div>
-    <div class="wrapper_message " >
-        <div class="container-16 container_message_2">
-            <div class="alert-message gray">
-                <p>La lista debe tener al menos un título o un autor</p>
-                <span class="green_btn accept_messa">Aceptar</span>
-            </div>
-        </div>
-    </div>
+
     <div class="lightbox-wrapper register">
         <div class="container-16">
             <div class="fb-objs grid-5 center lightbox">
@@ -84,11 +77,13 @@
                             <input type="hidden" class="radio_value" value="author"/>
                         </span>
                     </p>
+
                     <p class="submit submit_list">
                         <input id="submit" class="btn" value="Guardar" type="submit"/>
                     </p>
                 </div>
             </form>
+
             <form id="picture" class="picture_list fright dropzone grid-4" action="/registry/media/upload/">{% csrf_token %}
                 <input type="hidden" name="list_picture" value="0"/>
                 <div class="del-wrapper">
@@ -98,9 +93,16 @@
                     Te recomendamos una imagen de 140 x 176 pixeles
                 </span>
             </form>
-            <hr class="d-line_bottom">
+
                 <h3 class="title grid-13 title_list no-margin fleft">Libros de tu lista</h3>
             <div id="scrollbar1" class="d-paddin_top">
+        <div class="wrapper_message " >
+        <div class="container-16 container_message_2 alert-text" style="margin-bottom: -10px;">
+
+        <p>La lista debe tener al menos un título o un autor</p>
+
+        </div>
+        </div>
                 <div class="scrollbar"><div class="track"><div class="thumb">
                     <div class="end"></div></div></div></div>
                 <div class="viewport overview_list">

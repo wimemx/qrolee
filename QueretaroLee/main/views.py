@@ -914,10 +914,8 @@ def get_list(request, **kwargs):
             list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True, user=user)
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan listas de títulos o autores ' \
+                  'creadas por la comunidad de Querétaro Lee '
 
     fields_related_objects = account_models.List._meta.get_all_related_objects(
         local_only=True)
@@ -1004,10 +1002,7 @@ def get_titles(request,**kwargs):
         search = request.POST['field_value']
         book = account_models.Title.objects.filter(title__icontains=search)
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan títulos de libros, busca tus favoritos.'
 
     list_author = account_models.AuthorTitle.objects.all()
 
@@ -1084,10 +1079,7 @@ def get_authors(request, **kwargs):
         authors = account_models.Author.objects.filter(name__icontains=search)
 
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan autores, busca tus favoritos.'
     context = {
         'authors':authors,
         'content':content,

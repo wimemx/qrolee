@@ -101,6 +101,7 @@ class TwitterBackend:
         if resp['status'] != '200':
             return None
         access_token = dict(urlparse.parse_qsl(content))
+        print access_token
         username = access_token['screen_name']
         uid = access_token['user_id']
         userExists = user_exists(username=username)

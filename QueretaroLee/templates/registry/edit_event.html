@@ -298,12 +298,16 @@
                 },
                 onClose: function( selectedDate ) {
                     $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
-                }
+                },changeMonth: true,
+                changeYear: true,
+                yearRange: ":+1"
             });
             $( ".date-end" ).datepicker({
                 dateFormat: 'yy-mm-dd',
                 onSelect: function(dateText) {
-                }
+                },changeMonth: true,
+                changeYear: true,
+                yearRange: ":+1"
             });
 
 

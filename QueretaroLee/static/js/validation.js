@@ -299,10 +299,7 @@ function valid_form_list(form){
     $('.container_message_2').fadeOut(300);
     $('.invalid').remove();
     var succe = true;
-    if(form.find('input[name=name]').val().length==0){
-        form.find('input[name=name]').parent().append('<span class="invalid" style="display: inline;">Ingresa el nombre</span>');
-        succe = false;
-    }
+    
 
     if($('.add_my_list .d-item_book').length==0){
         $('.container_message_2').fadeIn(300);

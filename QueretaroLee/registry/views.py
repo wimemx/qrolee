@@ -218,18 +218,18 @@ def register_entity(request, **kwargs):
         user_id=request.user.id)
 
     if entity_type == 'group':
-        entity_type = ['Crear un nuevo grupo de lectura', 'group', 'grupo']
+        entity_type = ['¿Tienes ya un grupo operando o quieres iniciar uno?', 'group', 'grupo']
         content = ' Los lugares son espacios en Querétaro donde puedes se pueden llevar' \
               ' acabo actividades en torno a la lectura. Llena los campos que se ' \
               'presentan a continuación para registrar un lugar en Querétaro Lee.'
 
     elif entity_type == 'organization':
-        entity_type = ['Crear una nueva organización', 'organization', 'organización']
+        entity_type = ['¿Listo para crear una organización?', 'organization', 'organización']
         content = 'Llena los campos que se presentan a continuación para registrar ' \
               'una organización en Querétaro Lee.'
 
     elif entity_type == 'spot':
-        entity_type = ['Crear un nuevo lugar', 'spot', 'lugar']
+        entity_type = ['¿Listo para dar de alta un lugar?', 'spot', 'lugar']
         content = 'Llena los campos que se presentan a continuación para registrar un' \
               ' lugar en Querétaro Lee.'
 

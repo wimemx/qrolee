@@ -227,16 +227,17 @@ select{
         .edit.register .data input:not([type=submit]), .edit.register .data textarea{
             display: block;
             background: #fff;
-            border:1px solid #acacac;
+            border:1px solid #e4e4e4;
             margin:0px;
             padding: 0px;
+            color: #000;
         }
         .edit.register .select_wrapper{
             display: block;
         }
             .edit.register .select_wrapper .select{
                 background: #fff;
-                border:1px solid #acacac;
+                border:1px solid #e4e4e4;
             }
             .search_filters .select_wrapper .select.date{
                 padding:0px;
