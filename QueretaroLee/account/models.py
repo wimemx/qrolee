@@ -156,11 +156,11 @@ class Discussion(models.Model):
         user_pic = registry_models.Profile.objects.get(user_id=self.user.id)
         return dict(id=self.id, name=self.name, content=self.content,
                     date=self.date.isoformat(), entity=self.entity.id, user=self.user.id,
-                    username=self.user.first_name, parent_discussion=self.parent_discussion.id,
+                    username= self.user.first_name + ' ' + self.user.last_name , parent_discussion=self.parent_discussion.id,
                     user_pic=user_pic.picture,)
 
     def parent_as_json(self):
         user_pic = registry_models.Profile.objects.get(user_id=self.user.id)
         return dict(id=self.id, name=self.name, content=self.content,
                     date=self.date.isoformat(), entity=self.entity.id, user=self.user.id,
-                    username=self.user.first_name, user_pic=user_pic.picture,)
+                    username=self.user.first_name + ' ' + self.user.last_name, user_pic=user_pic.picture,)
