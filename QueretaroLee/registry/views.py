@@ -1382,7 +1382,7 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['description'])
 
                     li ={
-                        'title': unicode(str(obj['it']['attribute']['title']),'unicode-escape'),
+                        'title': str(obj['it']['attribute']['title']),
                         'subtitle': '',
                         'edition': '',
                         'published_date': date_time,
@@ -1395,7 +1395,7 @@ def add_my_title(request):
                         'isbn13': str(obj['it']['attribute']['isbn13']),
                         'pages': int(obj['it']['attribute']['pages']),
                         'picture': str(obj['it']['attribute']['picture']),
-                        'description': unicode(desc[0:800],'unicode-escape'),
+                        'description': desc[0:800],
                         'id_google': obj['it']['attribute']['id_google']
                     }
 
@@ -1463,10 +1463,10 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['biography'])
 
                     li ={
-                        'name': unicode(str(obj['it']['attribute']['name']),'unicode-escape'),
+                        'name': str(obj['it']['attribute']['name']),
                         'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
                         'biography': desc[0:500],
-                        'birthday': unicode(datetime.datetime.today(),'unicode-escape'),
+                        'birthday': datetime.datetime.today(),
                         'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
@@ -2275,19 +2275,18 @@ def create_author(name_author, title):
             if len(response['result'][0]['mid']) != 0:
                 picture = 'https://www.googleapis.com/freebase/v1/image' + \
                           response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
-            #print str(response['result'][0]['name']).encode('utf-8')
-            print str(response['result'][0]['name']).decode('utf-8')
+
             dict_author = {
-                'name': str(response['result'][0]['name']).encode('utf-8'),
+                'name': response['result'][0]['name'],
                 'picture': picture,
-                'biography': unicode(biography, 'unicode-escape'),
+                'biography': biography,
                 'birthday': datetime.datetime.today(),
                 'id_api' : response['result'][0]['id']
             }
 
         else:
             dict_author = {
-                'name': unicode(name_aut,'unicode-escape'),
+                'name': name_aut,
                 'picture': '',
                 'birthday': datetime.datetime.today(),
                 'id_api': name_aut
