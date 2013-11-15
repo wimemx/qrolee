@@ -258,7 +258,7 @@ input:not([type='submit']){
 }
 .fb_btn,.twitter_btn{
     width: 65px;
-    height: 15px;
+    height: 19px;
     display: block;
     margin: 0px 5px 0px 10px;
 }
@@ -3938,8 +3938,9 @@ textarea{
 .container_pop{
     margin-top: 30px!important;
     margin-bottom: 60px!important;
-    height: 212px;
+    height: 220px;
     background: #f4e5c8 url('../img/register_form_bg.png');
+    box-shadow: 0px 5px 5px #9C9C9C;
 }
 .container_pop .int_btn{
     margin-left: 0px;
