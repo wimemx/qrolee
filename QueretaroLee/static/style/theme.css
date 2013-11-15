@@ -141,7 +141,6 @@ input:not([type='submit']){
 }
 
 .brown_btn{
-    background:#c69264 url('../img/settings_pointer.png') no-repeat 68px 9px !important;
     color: #fff;
     font-size: 12px;
     text-decoration: none;
