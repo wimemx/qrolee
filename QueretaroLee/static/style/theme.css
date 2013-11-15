@@ -752,9 +752,11 @@ p{
             float: left;
         }
         .color_btn.organization{
-            background: #8ab493;
-            color: #222 !important;
+            background: #c69264;
             margin-left: 5px !important;
+            border: 1px solid #a77340;
+            font-family: 'Raleway' sans-serif;
+            color: white !important;
         }
         .color_btn.spot{
             background: #c69264 no-repeat 45px 9px;
