@@ -702,7 +702,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title:data[ind]['book'][0]
+                title:data[ind]['book']
             });
             }
             counter++;
@@ -1107,7 +1107,7 @@ $(document).ready(function(){
         var and = 0;
         var query, fields, search, result;
         var create_user = false;
-
+        var model = type[1];
         category_type = parseInt(type[3]);
         type = type[2];
         $('.advanced_search').remove();
@@ -1153,18 +1153,19 @@ $(document).ready(function(){
             }
         }
 
+        if(model != 'account.title'){
+            if(type == 'registry.category'
+                || type == 'account.genre'){
+                    if(create_user)
+                        create_template('user', result, category_type);
+                    else
+                        create_template('category', result, category_type);
 
-        if(type == 'registry.category'
-            || type == 'account.genre'){
-                if(create_user)
-                    create_template('user', result, category_type);
-                else
-                    create_template('category', result, category_type);
-
-        }else if(type == 'event'){
-            create_template('event');
-        }else if(type == 'privacy')
-            create_template('privacy');
+            }else if(type == 'event'){
+                create_template('event');
+            }else if(type == 'privacy')
+                create_template('privacy');
+        }
 
 
     });
@@ -1243,8 +1244,6 @@ $(document).ready(function(){
                         0: JSON.stringify(activity)
                     }
                 }
-                console.log(query);
-
                 join = JSON.stringify(join);
                 create_user = true;
 
@@ -2913,8 +2912,8 @@ function add_my_title(csrf, array_title, type){
                 $('.title_act_read').fadeOut(250,function(){
                     $(this).remove();
                 });
-                p = $('<p class="title_act_read">Actualmente está leyendo:<br></p>');
-                a_author = $('<a class="title_author" style="margin:0 !important;"></a>');
+                p = $('<p class="title_act_read">Actualmente está leyendo:<br><img src="/static/img/mini_book_read.png" /></p>');
+                a_author = $('<a class="title_author" style="margin:0 !important;padding-left: 5px;"></a>');
                 a_author.append(data.name);
                 span_btn = $('<br><span class="message_alert " style="line-height: 2.2; color: #f89883 !important">Editar</span>');
                 input_l = $('<input class="type_message" type="hidden" value="edit_title_read">');

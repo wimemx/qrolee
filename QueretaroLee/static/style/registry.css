@@ -338,6 +338,7 @@ select{
            font-size: 11px !important;
            font-weight: 400;
            color: #777;
+           margin-top: 10px;
            font-size: 11px!important;
        }
        .dz-message .legend{

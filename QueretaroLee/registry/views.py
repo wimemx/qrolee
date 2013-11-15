@@ -288,6 +288,7 @@ def register(request):
         if isinstance(val, list):
             copy[e] = val[0]
     entity = copy
+    entity['website']='http://' + str(entity['website'])
     entity = models.Entity.objects.create(**entity)
     entity.save()
     if cat_ids:
@@ -1930,10 +1931,12 @@ def cheking_book(request):
     list['book'] = book
     user = 0
     cheking = False
+    message = 0
 
     if 'name_ext' in list:
 
         exist_user = models.ExternalUser.objects.filter(email=list['email_ext'])
+        last_travel = models.Travel.objects.filter(book__code=code_book).latest('status')
 
         if exist_user:
             user_cheking = models.Travel.objects.filter(user = exist_user[0].id).latest('status')
@@ -1942,18 +1945,23 @@ def cheking_book(request):
                     cheking = True
 
         if not exist_user:
-            user_ext = models.ExternalUser.objects.create(
-                name = list['name_ext'],
-                email = list['email_ext']
-            )
-            user_ext.save()
+            if not last_travel.status :
+                user_ext = models.ExternalUser.objects.create(
+                    name = list['name_ext'],
+                    email = list['email_ext']
+                )
+                user_ext.save()
+                user = user_ext.id
+            else:
+                cheking = True
+                message =  1
+
         else:
             user_ext = exist_user[0]
 
         del list['name_ext']
         del list['email_ext']
         list['type_user'] = 0
-        user = user_ext.id
 
     else:
         list['type_user'] = 1
@@ -1974,7 +1982,8 @@ def cheking_book(request):
 
     context = {
         'succes': succes,
-        'code_book': code_book
+        'code_book': code_book,
+        'message': message
 
     }
 
@@ -2085,7 +2094,7 @@ def register_ajax_book(request):
         author = dom.getElementsByTagName('name')[0].toxml()
         author = author.replace('<name>', '').replace('</name>', '')
         publisher = dom.getElementsByTagName('publisher')[0].toxml()
-        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
+        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '').replace('</publisher>','')
         picture = dom.getElementsByTagName('image_url')[0].toxml()
         picture = picture.replace('<image_url>', '').replace('</image_url>', '')
         pages = dom.getElementsByTagName('num_pages')[0].toxml()

@@ -1661,7 +1661,7 @@ p{
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #a77340; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 0}
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5}
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 5px; }
@@ -3553,8 +3553,9 @@ textarea{
 }
 
 .container_crossing{
-    height: 328px;
+    min-height: 328px;
     float: left;
+    margin-bottom: 25px;
 }
 .container_crossing .text{
     margin-top: 5px;
@@ -4305,6 +4306,7 @@ textarea{
 .del-wrapper span.del{
     text-align: center;
     display: none;
+    top: 10px;
     cursor: pointer;
     font-family: 'Raleway' sans-serif;
     text-decoration: underline;
@@ -4476,14 +4478,12 @@ p input.green_btn{
 }
 .sel_spots.edit_event .dropdown{
     position: absolute;
-    top: 30px;
-    left: 165px;
+    right: 10px;
     z-index: 1;
 }
 
     .sel_spots.edit_event .value_sel{
-        left: 0px;
-        top: 55px;
+        right: 10px;
         width: 148px;
     }
 .solSend{
@@ -4585,4 +4585,11 @@ p input.green_btn{
     margin-right: 20px;
     float: right;
     margin-top: 20px;
+}
+.drop_evt .dz-message{
+    margin-top: 60px!important;
+}
+
+.drop_evt .bottom_messa{
+    bottom: -255px!important;
 }
