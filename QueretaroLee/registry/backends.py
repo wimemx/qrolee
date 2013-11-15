@@ -11,10 +11,6 @@ import urlparse
 import os
 import urllib
 import urllib2
-from requests_oauthlib import OAuth1
-import requests
-import ast
-import unicodedata
 
 
 def user_exists(email=None, username=None, user=None):

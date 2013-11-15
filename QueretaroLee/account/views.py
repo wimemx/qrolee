@@ -234,7 +234,7 @@ def user_profile(request, **kwargs):
                 user[str(field)] = obj.__getattribute__(str(field)).\
                     encode('utf-8', 'ignore')
             else:
-                if field =='user':
+                if field == 'user':
                     value = str(obj.__getattribute__(str(field)))
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
