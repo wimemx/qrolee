@@ -255,10 +255,11 @@ hyu
     <script type="text/javascript">
         $('.input_init').datepicker({
             dateFormat: 'yy-mm-dd',
-            changeYear: true,
-            yearRange: "-50:+0",
+            yearRange: "-90:+0",
             onSelect: function(dateText) {
-            }
+            },
+            changeMonth: true,
+            changeYear: true
         });
 
         Dropzone.options.picture = {

@@ -1,3 +1,4 @@
+#from mx.Tools.mxTools.hack import profile
 import urlparse
 import urllib
 import ast
@@ -359,6 +360,12 @@ def user_profile(request, **kwargs):
         birthday =  str(birthday.day) + '-' + str(array_date[birthday.month-1]) +\
               '-' + str(birthday.year)
 
+    picture_user = '/static/img/no_profile.png'
+    if profile.picture:
+        picture_user = '/static/media/users/' + str(profile.user.id) + '/profile/' +\
+                       str(profile.picture)
+
+
     context = {
         'user_profile': profile,
         'entities': dict_entities_user,
@@ -374,7 +381,8 @@ def user_profile(request, **kwargs):
         'activity': activity,
         'city': city,
         'birthday': birthday,
-        'btn_active': btn_active
+        'btn_active': btn_active,
+        'picture_user': picture_user
     }
     #print dict_entities_user
     return render(request, template, context)
@@ -677,16 +685,26 @@ def update_profile(request, **kwargs):
         field: value
     }
 
-    fields_related_objects = registry.Profile._meta.get_all_related_objects(
-        local_only=True)
+    success = 'False'
     profile_fields = registry.Profile._meta.get_all_field_names()
+
 
     if field in profile_fields:
         profile = registry.Profile.objects.filter(user=id_user).update(**dictionary)
+        success = 'True'
     else:
-        user = registry.User.objects.filter(id=id_user).update(**dictionary)
+        if field is not None:
+            user = registry.User.objects.filter(id=id_user).update(**dictionary)
+            success = 'True'
+        else:
+            success = field
 
-    context = {}
+    context = {
+        'success': success,
+        'id': id_user,
+        'type': 1
+    }
+
     context = simplejson.dumps(context)
     return HttpResponse(context, mimetype='application/json')
 

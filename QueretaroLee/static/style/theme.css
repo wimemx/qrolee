@@ -203,9 +203,54 @@ input:not([type='submit']){
 }
 
 .create-entity{
-    width: 100%;
+    width: 220px;
+    margin-top: 98px;
     display: block;
-    height: 75px;
+    margin-left: 69px;
+    height: 96px;
+    border: 1px solid #a77340;
+    background: #F4E5C8;
+    z-index: 20;
+    position: absolute;
+    box-shadow: 0px 5px 5px rgba(156, 156, 156, 0.36);
+}
+.create-entity span{
+    font-size: 13px;
+    padding: 0px 10px;
+    color: #000;
+    width: 100%;
+    float: left;
+    font-weight: 400;
+    font-family: 'Raleway';
+}
+.create-entity a{
+    float: left;
+    margin-left: 12px!important;
+    text-decoration: underline;
+    color:  #EE795F!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 10px;
+}
+.create-entity .pt{
+    position: absolute;
+    top: -6px;
+    left: 12px;
+}
+.create-entity .del-message{
+    position: absolute;
+    top: 12px;
+    width: 11px;
+    z-index: 21;
+    right: 10px;
+    height: 14px;
+    cursor: pointer;
+    background: url('/static/img/delete_pop.png');
+}
+.create-entity p{
+   margin-bottom: 0px;
+    margin-top: 11px;
+    margin-left: 10px;
+    float: left;
 }
 .fb_btn,.twitter_btn{
     width: 65px;
@@ -347,7 +392,7 @@ p{
     }
     .account-settings .member .pt{
         position: absolute;
-        right: 54px;
+        right:  122px;
         bottom: 30px;
     }
 
@@ -642,7 +687,7 @@ p{
 }
     .entity .wrapper{
         width: 176px;
-        height: 176px;
+        height: auto;
         display: block;
         overflow: hidden;
         margin-bottom: 20px;
@@ -1063,10 +1108,9 @@ p{
             border: 1px solid #D3A373;
             border-radius: 5px;
             background: #F7EFD8;
-            color: #454545;
+            color: #777;
             position: relative;
-
-
+            font-size: 11px !important;
         }
 
         .discussion .answer{
@@ -1611,7 +1655,7 @@ p{
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #a77340; }
-#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 5 }
+#scrollbar1 .scrollbar { position: absolute; right: 0px; width: 5px; z-index: 0}
 #scrollbar1 .track { background-color: #f4e5c8; height: 100%; width:5px; position: relative; padding: 0 1px; }
 #scrollbar1 .thumb { height: 20px; width: 5px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
 #scrollbar1 .thumb .end { overflow: hidden; height: 5px; width: 5px; }
@@ -1709,8 +1753,11 @@ p{
 }
 
 .container_event .btn_edit{
-    font-size: 12px!important;
-    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px !important;
+    font-family: 'Raleway';
+    height: 17px !important;
+    background: #c69264 !important;
+    border: 1px solid #a77340 !important;
 }
 
 .size_btn_edit{
@@ -2847,9 +2894,33 @@ p{
 .my_items.place_pink.first{
     padding-left: 0px;
 }
+.my_items{
+    float: left;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.my_items .link_pro{
+    float: left;
+    width: 196px;
+    margin-top: 0px;
 
-.container_items{
-    min-height: 20px;
+}
+.my_items .title_author{
+    font-family: 'Raleway';
+    font-size: 12px;
+    font-weight: 500;
+    color: #a77340!important;
+    cursor: pointer;
+    padding-top: 4px;
+    padding: 6px 0px 0px 0px;
+    margin-left: 20px;
+    text-decoration: none!important;
+}
+.my_items img{
+    padding-top: 3px;
+}
+.news-feed .container_titles{
+    overflow:inherit;
 }
 .img_profile_mini{
     width: 25px;
@@ -2940,7 +3011,7 @@ p{
 }
 
 .no_resuls{
-    font-size: 18px !important;
+    font-size: 14px !important;
     color: #fa907e;
     font-family: 'Raleway' sans-serif;
     text-align: center;
@@ -3292,7 +3363,6 @@ textarea{
 }
 
 .container_message_2{
-    position: fixed;
     z-index: 10;
     display: none;
 }
@@ -3402,8 +3472,6 @@ textarea{
 .ui-datepicker-title select{
     opacity: 1!important;
     width: 67px!important;
-    top: 2px!important;
-    left: 132px!important;
 }
 
 
@@ -4024,7 +4092,7 @@ textarea{
     width: 100%;
 }
 .value_sel .sel_:hover{
-    background-color: #C2BAAB;
+    background-color: #EDD9AF;
 }
 .value_sel .sel_ span{
     margin-left: 15px;
@@ -4033,7 +4101,7 @@ textarea{
     cursor: pointer;
     height: 23px!important;
     width: 20px;
-    border: 1px solid #acacac;
+    border: 1px solid #e4e4e4;
     background: #fff url('../img/dropdown.png') no-repeat 50%;
 }
 
@@ -4359,16 +4427,31 @@ p input.green_btn{
 }
 .cuestion .title{
     float: left;
-    background: #a06b37;
+    padding: 5px 0px 5px 20px;
+    font-size: 14px;
+    color: #946e00;
+    margin-bottom: 0px;
+    background: #f3e6c4;
+    border: 1px solid #cdb066;
+    border-bottom: 0px;
+    border-top: 0px;
 }
 .cuestion span{
     float: left;
 }
+.cuestion p{
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 13px;
+    margin-left: 14px;
+}
 .cuestion .content{
-    float: left;
-    overflow: hidden;
     height: 0px;
-    background: #edd5a5;
+    float: left;
+    border: 1px solid #cdb066;
+    overflow: hidden;
+    width: 580px;
+    border-top: 0px;
+    padding: 0px 10px;
 }
 .container_cuestions{
     margin-top: 20px;
@@ -4431,4 +4514,41 @@ p input.green_btn{
 }
 .feed_index{
     height: 600px!important;
+}
+
+.text_genre{
+    padding: 5px 10px;
+    float: left;
+    text-align: center;
+    line-height: 14px;
+    font-size: 11px !important;
+    font-weight: 400;
+    color: #777;
+    font-size: 11px!important;
+}
+.ui-datepicker .ui-datepicker-header {
+    position: relative;
+    padding: 1.2em 0;
+}
+
+.ui-datepicker-month{
+    top: -11px !important;
+}
+
+.ui-datepicker-year{
+    left: 79px;
+    top: -11px !important;
+}
+
+.alert-text{
+    color: #f89883 !important;
+    font-size: 14px!important;
+    font-family: 'Raleway' sans-serif!important;
+    text-align: center;
+    width: 100%!important;
+}
+
+.alert-text p{
+    color: #f89883 !important;
+
 }

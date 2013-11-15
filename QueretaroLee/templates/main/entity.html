@@ -700,7 +700,7 @@
                             {% for discussion in discussions %}
                                 <span class="item">
                                     <a href="#" id="{{ discussion.id }}" style="margin-top: 5px;" class="title no-margin">{{  discussion.name }}</a>
-                                    <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.username }}</a></p>
+                                    <p class="no-margin">Por <a class="spot category" href="#">{{ discussion.user.first_name }} {{ discussion.user.last_name }}</a></p>
                                     <p style="margin-top:5px;" class="no-margin gray_text">{{ discussion.id|get_num_comments }} comentarios</p>
                                 </span>
                             {% endfor %}
@@ -730,7 +730,6 @@
                             <input type="hidden" class="u_id" value="{{ user.id }}"/>
                             <span class="erase_btn btn">eliminar</span>
                         </span>
-
                     </span>
             </span>
             <div style="display: none;" class="grid-9 discuss main fright">
@@ -743,7 +742,7 @@
                     <span class="wrapper no-margin fleft grid-1">
                         <img src="/static/img/create.png" alt=""/>
                     </span>
-                    <textarea class="grid-8 din-r no-brradius fright no-margin">Escribe un comentario...</textarea>
+                    <textarea class="grid-8 din-r no-brradius fright no-margin" style="background: white;">Escribe un comentario...</textarea>
                     <span class="respond_btn main btn">responder</span>
                 </span>
             </div>

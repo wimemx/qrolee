@@ -1,0 +1,35 @@
+{% load staticfiles %}
+{% load registry_tags %}
+
+{% block style %}
+    <link href='http://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/404.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/quantum/16.css" %}"/>
+{% endblock %}
+{% block js %}
+{% endblock %}
+<div class="logo_404">
+    <div class="container-16">
+        <div class="grid-5 center" style="margin-top: 120px;">
+            <div class="log_ind center">
+                <img src="/static/img/logo_404.png" />
+            </div>
+            <span class="center image a">
+            </span>
+            <span class="text center">
+                Página no encontrada
+            </span>
+            <span class="message center">
+                Parece que ha habido un error con la página solicitada
+                Es posible que la dirección no exista
+            </span>
+            <span class="center image b">
+            </span>
+            <a class="btn center" href="/qro_lee/">
+                Ir al inicio
+            </a>
+        </div>
+    </div>
+</div>
+

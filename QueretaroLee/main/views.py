@@ -447,9 +447,18 @@ def get_events(request, **kwargs):
 
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
-            events_ = models.Event.objects.filter(
-                start_time__month=int(request.POST.get('curr_month'))+1,
-                location_id=int(entity), status=status).order_by('start_time')
+
+            current_month = int(request.POST.get('curr_month'))+1
+            start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+
+            if int(request.POST.get('curr_month')) >= 11:
+                end_time = datetime.datetime(start_time.year+1, 1, 1)
+            else:
+                end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
+
+            events_ = models.Event.objects.filter(location_id=int(entity),
+                status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
+
         else:
             if int(request.POST.get('id_entity')) != -1:
                 admins = models.MemberToObject.objects.filter(
@@ -458,11 +467,18 @@ def get_events(request, **kwargs):
                 for a in admins:
                     admins_list.append(a.user_id)
 
-                events_ = models.Event.objects.filter(
-                    status=status, start_time__month=int(request.POST.get(
-                        'curr_month'))+1,
-                    start_time__year=int(request.POST.get('curr_year')), location_id=int(request.POST.get('id_entity')),
-                    owner_id__in=admins_list).order_by('start_time')
+                current_month = int(request.POST.get('curr_month'))+1
+                start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+
+                if int(request.POST.get('curr_month')) >= 11:
+                    end_time = datetime.datetime(start_time.year+1, 1, 1)
+                else:
+                    end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
+
+                events_ = models.Event.objects.filter(location_id=int(entity),
+                    status=status, start_time__gte=start_time, owner_id__in=admins_list,
+                    start_time__lt=end_time).order_by('start_time')
+
             else:
                 current_month = int(request.POST.get('curr_month'))+1
                 start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
@@ -914,10 +930,8 @@ def get_list(request, **kwargs):
             list = account_models.List.objects.filter(name__icontains=search, default_type=-1,
                                           status=True, user=user)
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan listas de títulos o autores ' \
+                  'creadas por la comunidad de Querétaro Lee '
 
     fields_related_objects = account_models.List._meta.get_all_related_objects(
         local_only=True)
@@ -970,7 +984,8 @@ def get_list(request, **kwargs):
                     encode('utf-8', 'ignore')
             else:
                 if field=='user':
-                    value = str(obj.__getattribute__(str(field)))
+                    value = str(obj.__getattribute__(str(field)).first_name) \
+                            + ' ' +  str(obj.__getattribute__(str(field)).last_name)
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
@@ -1004,10 +1019,7 @@ def get_titles(request,**kwargs):
         search = request.POST['field_value']
         book = account_models.Title.objects.filter(title__icontains=search)
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan títulos de libros, busca tus favoritos.'
 
     list_author = account_models.AuthorTitle.objects.all()
 
@@ -1084,10 +1096,7 @@ def get_authors(request, **kwargs):
         authors = account_models.Author.objects.filter(name__icontains=search)
 
 
-    content = 'Pellentesque habitant morbi tristique senectus et ' \
-                  'netus et malesuada fames ac turpis egestas. Vestibulum ' \
-                  'tortor quam, feugiat vitae, ultricies eget, tempor sit ' \
-                  'amet, ante. Donec eu libero sit amet quam egestas semper. '
+    content = 'A continuación se despliegan autores, busca tus favoritos.'
     context = {
         'authors':authors,
         'content':content,

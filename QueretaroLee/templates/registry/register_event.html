@@ -38,7 +38,7 @@
     <div class="grid-16 edit register">
 
     <div style="margin-left:60px;" class="grid-14">
-    <span class="title main">Crear un nuevo evento en
+    <span class="title main" style="margin-top: 10px;font-weight: 500;">Crear un nuevo evento en
             <a href="/qro_lee/entity/{{ entity_type.1 }}/entity_{{ entity.id }}/" class="{{ entity_type.1 }}">{{ entity.name|capfirst }}</a>
 
         </span>
@@ -94,7 +94,7 @@
                 <input name="lat" type="hidden" class="lat" value="" />
                 <input name="long" type="hidden" class="long" value="" />
                 <input type="hidden" class="place_spot" name="place_spot" value="0"/>
-                <span class="grid-4 no-margin value_sel">
+                <span class="grid-4 no-margin value_sel" style="width: 272px; font-family: 'Conv_fontscore.com_d-dinproregular';">
                 </span>
                 <select class="name_spot">
                     {% for obj in spots %}
@@ -112,7 +112,7 @@
             </p>
             <p>
                 <span class="pixeles fright grid-5 recomendation" >
-                    Arrastra el ping para poner más precisa tu ubicación
+                    Arrastra el pin para poner más precisa tu ubicación
                 </span>
             </p>
             <span class="grid-5 fix-left no-margin fright">
@@ -124,7 +124,7 @@
                 <span class="message fleft"></span>
             </p>
             <p>
-                <input type="submit" class="green_btn submit" value="Crear evento"/>
+                <input type="submit" class="green_btn submit fright" value="Crear evento" style=" border: 1px solid #a77340 !important; background: #c69264 !important; "/>
             </p>
         </span>
 
@@ -234,12 +234,15 @@
                 },
                 onClose: function( selectedDate ) {
                     $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
-                }
+                },changeMonth: true,
+                changeYear: true,
+                yearRange: ":+1",
             });
             $( ".date-end" ).datepicker({
                 dateFormat: 'yy-mm-dd',
                 onSelect: function(dateText) {
-                }
+                },changeMonth: true,
+                changeYear: true,yearRange: ":+1",
             });
 
             $('form.grid-8').submit(function(e){

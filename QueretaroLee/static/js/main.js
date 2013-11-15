@@ -861,6 +861,7 @@ $(document).ready(function(){
         $.each($('.cuestion'),function(){
 
             var hg = parseInt($(this).find('.content').css('height').replace('px',''));
+            $cuestion.find('.title').css({'color':'#946e00'});
 
             if(hg > 0)
                 $(this).find('.content').animate({
@@ -878,7 +879,8 @@ $(document).ready(function(){
         $(this).find('.content').animate({
             'height': height
         },300, function() {
-            // Animation complete.
+            if(height!=0)
+                $cuestion.find('.title').css({'color':'#000'});
         });
 
     });
@@ -1519,7 +1521,9 @@ $(document).ready(function(){
 
 
 var ie_logo = true;
+var count_input = 0;
 function edit_form($this, timeout, type, id, event){
+    var lenght_ = $('.controllers_wrapper').length;
     if(type == 0){
         if($this.parent().find('span.value.no-edit').length == 0){
             $this.parent().find('span.value').fadeOut(timeout, function(){
@@ -1625,7 +1629,11 @@ function edit_form($this, timeout, type, id, event){
                         'event': event
                     },
                     dataType: 'json'
-                }).done(function(data){});
+                }).done(function(data){
+                        count_input++;
+                        if(count_input == (lenght_- 1) & data.success == 'True' & data.type == 1)
+                            window.location.href = site_url + '/accounts/users/profile/' + data.id;
+                    });
 
             }
         }else{
@@ -2153,7 +2161,6 @@ function dialog_titles(csrf, data, id){
                         if(id!=4)
                             type = 2;
                         type_add_list(csrf_global, type, words);
-
                     });
                 }
             }, 500);
@@ -2164,45 +2171,50 @@ function dialog_titles(csrf, data, id){
     div_text.append(span);
 
     list_title(csrf, data, div_text, id);
+    dict_titles = {};
 
 }
 
-function add_titles_dictionary($item, list){
+function add_titles_dictionary($item, list, type){
 
     var it = $item.find('.id_t').val();
-    var default_type = [];
+    var title_json;
+    var id = -1
+    var default_type;
 
-    if(parseInt($item.find('.list_f').val())==1){
-        default_type.push(0);
-    }
-    if(parseInt($item.find('.list_l').val())==1){
-        default_type.push(1);
-    }
-    if(parseInt($item.find('.list_p').val())==1){
-        default_type.push(2);
-    }
+    if(parseInt($item.find('.title_inte').val())==1)
+        id = parseInt($item.find('.id_tit').val());
 
-    if(parseInt($item.find('.selec_item').find('input').val())==1){
-        default_type.push(4);
-    }
+    if(type == 1){
 
-    title_json = {};
-    if(parseInt($item.find('.title_inte').val())==1){
-        title_json = {
-            it:{
-                'attribute': list[it],
-                'default_type': default_type,
-                'id': parseInt($item.find('.id_tit').val())
-            }};
+        default_type = [];
+
+        if(parseInt($item.find('.list_f').val())==1){
+            default_type.push(0);
+        }
+        if(parseInt($item.find('.list_l').val())==1){
+            default_type.push(1);
+        }
+        if(parseInt($item.find('.list_p').val())==1){
+            default_type.push(2);
+        }
+
+        if(parseInt($item.find('.selec_item').find('input').val())==1){
+            default_type.push(4);
+        }
+
     }else{
 
-        title_json = {
-            it:{
-                'attribute': list[it],
-                'default_type': default_type,
-                'id':-1
-            }};
+        default_type = [5];
+
     }
+    title_json = {
+        it:{
+            'attribute': list[it],
+            'default_type': default_type,
+            'id': id
+        }};
+
     dict_titles[it] = title_json;
 }
 
@@ -2518,6 +2530,7 @@ function list_title(csrf, data, div_text, type){
                     div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
                     item_title.append(div_item);
                     item_title.append('<input type="hidden" class="title_inte" value="1"/>');
+                    item_title.append('<input type="hidden" class="id_t" value="'+author_l[i].id_api +'"/>');
                     item_title.append('<input type="hidden" class="id_tit" value="' +
                         author_l[i].id + '"/>');
                     span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
@@ -2529,6 +2542,7 @@ function list_title(csrf, data, div_text, type){
                     }
 
                     array.push(obj);
+                    list_titles[author_l[i].id_api] = obj;
 
                     img_wrapper = $('<img class="img_size_all" src="'+url_mini+'"/></span>');
                     span_wrapper.append(img_wrapper);
@@ -2617,6 +2631,7 @@ function list_title(csrf, data, div_text, type){
                         div_item = $('<div class="d-item_book_mini ' + type_add + ' no-margin"></div>');
                         item_title.append(div_item);
                         item_title.append('<input type="hidden" class="title_inte" value="0"/>');
+                        item_title.append('<input type="hidden" class="id_t" value="'+author[i].id+'"/>');
                         span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
                         div_item.append(span_wrapper);
                         url = '/static/img/no_profile.png';
@@ -2640,6 +2655,7 @@ function list_title(csrf, data, div_text, type){
                         }
 
                         array.push(obj);
+                        list_titles[author[i].id] = obj;
 
                         img_wrapper = $('<img class="img_size_all" src="'+url+'"/></span>');
                         span_wrapper.append(img_wrapper);
@@ -2713,7 +2729,7 @@ function list_title(csrf, data, div_text, type){
                 $(this).find('input').val(1);
                 $(this).addClass('active_add_title');
                 var $item = $(this).parent().parent();
-                add_titles_dictionary($item, list_titles);
+                add_titles_dictionary($item, list_titles, 1);
 
             }else{
 
@@ -2723,12 +2739,11 @@ function list_title(csrf, data, div_text, type){
 
                 var $item = $(this).parent().parent();
                 var it = $item.find('.id_t').val();
-                add_titles_dictionary($item, list_titles);
+                add_titles_dictionary($item, list_titles, 1);
 
                 if(dict_titles[it]['it']['default_type'].length > 1){
                     delete dict_titles[it];
                 }
-
             }
         });
 
@@ -2740,60 +2755,14 @@ function list_title(csrf, data, div_text, type){
         if($('.input_add_book').val().length != 0)
             div_btn_save.append('<span class=" green_btn ">Guardar</span>');
 
-
         $('.btn_save').click(function(){
             array_title = [];
             var active_sel = false;
-            if(type == 4){
-                for(var it = 0;it< ($('.overview .item_ti').length);it++){
 
-                    var default_type = [];
-                    var active_title = false;
-
-                    if(parseInt($('.item_title_'+it).find('.list_f').val())==1){
-                        default_type.push(0);
-                        active_title = true;
-                    }
-                    if(parseInt($('.item_title_'+it).find('.list_l').val())==1){
-                        default_type.push(1);
-                        active_title = true;
-                    }
-                    if(parseInt($('.item_title_'+it).find('.list_p').val())==1){
-                        default_type.push(2);
-                        active_title = true;
-                    }
-
-                    if(parseInt($('.item_title_'+it).find('.selec_item').find('input').val())==1){
-                        default_type.push(4);
-                        active_title = true;
-                    }
-
-                    if(active_title){
-                        active_sel = true;
-                        title_json = {};
-                        if(parseInt($('.item_title_'+it).find('.title_inte').val())==1){
-                            title_json = {it:{
-                                'attribute':array[it],
-                                'default_type':default_type,
-                                'id':parseInt($('.item_title_'+it).find('.id_tit').val())
-                            }};
-                        }else{
-                            title_json = {it:{
-                                'attribute':array[it],
-                                'default_type':default_type,
-                                'id':-1
-                            }};
-                        }
-
-                        array_title.push(title_json);
-                    }
-                }
-            }else{
-                $.each(dict_titles,function(key){
-                        array_title.push(dict_titles[key]);
-                        active_sel = true;
-                });
-            }
+            $.each(dict_titles,function(key){
+                    array_title.push(dict_titles[key]);
+                    active_sel = true;
+            });
 
             if(active_sel){
                 div_btn_save.fadeOut(200);
@@ -2810,7 +2779,7 @@ function list_title(csrf, data, div_text, type){
         $('.dialog-confirm').fadeIn(100);
         $('.container_message').fadeIn(100);
         aling_message();
-        selec_item();
+        selec_item(list_titles);
         if($('.dialog_text #scrollbar1').length>0)
             $('.dialog_text #scrollbar1').tinyscrollbar();
 
@@ -3051,8 +3020,8 @@ function get_titles_authors(list, csrf){
                 }
                 span.append(img);
                 div.append(input_id);
-                div.append(input_title);
                 div.append(input_list);
+                div.append(input_title);
                 div.append(span);
                 div.append(div_text);
                 div_text.append(a_t);
@@ -3108,6 +3077,7 @@ function get_titles_authors(list, csrf){
 
         $.each(title,function(i2){
             if(container_list.find('.d-item_'+title[i2].id).length==0){
+
                 div = $('<div class="d-item_book d-item_' + title[i2].id +
                     ' grid-5 no-margin"></div>');
                 input_id =$('<input type="hidden" class="id_title"' +
@@ -3632,6 +3602,7 @@ function d_show_dialog(type_message){
     aling_message();
 }
 
+
 function list_titles_and_author(data, type, $container, type_message){
 
     $container.find('#scrollbar1').remove();
@@ -3859,7 +3830,6 @@ function list_titles_and_author(data, type, $container, type_message){
 
         $('.item_ti').click(function(){
             var item_act = $(this).find('.selec_item').hasClass('active_item');
-
             if(!acti & !item_act){
                 $(this).find('.selec_item').addClass('active_item');
                 title_active = parseInt($(this).find('.id_tit').val());
@@ -3870,8 +3840,6 @@ function list_titles_and_author(data, type, $container, type_message){
                 title_active = 0;
 
             }
-
-
         });
     }
     div_text.find('.btn_save').remove();
@@ -3918,6 +3886,7 @@ function list_titles_and_author(data, type, $container, type_message){
             }
 
         var csrf = csrf_global;
+
         if(active_sel){
             div_btn_save.fadeOut(200);
             add_my_title(csrf,array_title,5);

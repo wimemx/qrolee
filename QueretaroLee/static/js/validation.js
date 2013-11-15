@@ -1,4 +1,5 @@
 var valid_form = false;
+
 $(document).ready(function(){
 
     $('#form_member').submit(function(e){
@@ -235,14 +236,20 @@ function validate_regex(input, type){
     return ret;
 }
 
-function selec_item(){
+function selec_item(list_titles){
     $('.selec_item').click(function(){
+
         if(parseInt($(this).find('input').val())==0){
             $(this).addClass('active_item');
             $(this).find('input').val(1);
+            var $item = $(this).parent();
+            add_titles_dictionary($item, list_titles, 2);
         }else{
             $(this).removeClass('active_item');
             $(this).find('input').val(0);
+            var $item = $(this).parent();
+            var it = $item.find('.id_t').val();
+            delete dict_titles[it];
         }
     });
 }
@@ -300,9 +307,10 @@ function valid_form_list(form){
     $('.invalid').remove();
     var succe = true;
     if(form.find('input[name=name]').val().length==0){
-        form.find('input[name=name]').parent().append('<span class="invalid" style="display: inline;">Ingresa el nombre</span>');
+
         succe = false;
     }
+    
 
     if($('.add_my_list .d-item_book').length==0){
         $('.container_message_2').fadeIn(300);
