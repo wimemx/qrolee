@@ -702,7 +702,7 @@ function dmap(data,id){
                     new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                 ),
-                title:data[ind]['book'][0]
+                title:data[ind]['book']
             });
             }
             counter++;
@@ -1107,7 +1107,7 @@ $(document).ready(function(){
         var and = 0;
         var query, fields, search, result;
         var create_user = false;
-
+        var model = type[1];
         category_type = parseInt(type[3]);
         type = type[2];
         $('.advanced_search').remove();
@@ -1153,18 +1153,19 @@ $(document).ready(function(){
             }
         }
 
+        if(model != 'account.title'){
+            if(type == 'registry.category'
+                || type == 'account.genre'){
+                    if(create_user)
+                        create_template('user', result, category_type);
+                    else
+                        create_template('category', result, category_type);
 
-        if(type == 'registry.category'
-            || type == 'account.genre'){
-                if(create_user)
-                    create_template('user', result, category_type);
-                else
-                    create_template('category', result, category_type);
-
-        }else if(type == 'event'){
-            create_template('event');
-        }else if(type == 'privacy')
-            create_template('privacy');
+            }else if(type == 'event'){
+                create_template('event');
+            }else if(type == 'privacy')
+                create_template('privacy');
+        }
 
 
     });
@@ -1210,14 +1211,12 @@ $(document).ready(function(){
                     }
                     filters.push(filter);
                 });
-
                 var activity = new Array();
                 $('.select_wrapper').each(function(){
                     activity.push($(this).find('input').val().toLowerCase());
                 });
 
                 query = {
-                    'username__icontains': $.trim($('.advanced_filter .search').val()),
                     'first_name__icontains': $.trim($('.advanced_filter .search').val())
                 }
                 fields = ['first_name',
@@ -1245,8 +1244,6 @@ $(document).ready(function(){
                         0: JSON.stringify(activity)
                     }
                 }
-                console.log(query);
-
                 join = JSON.stringify(join);
                 create_user = true;
 
@@ -1750,7 +1747,7 @@ function create_template(type, result,i, create_user){
     var span;
     if(type == 'user'){
         span = $('<span class="advanced_search fleft">');
-        var p = $('<p class="title">Usarios con gustos similares</p>');
+        var p = $('<p class="title">Usuarios con gustos similares</p>');
         p.append('<span>');
         span.append(p);
         p = $('<p class="checkbox A">Autores</p>');
@@ -2915,8 +2912,8 @@ function add_my_title(csrf, array_title, type){
                 $('.title_act_read').fadeOut(250,function(){
                     $(this).remove();
                 });
-                p = $('<p class="title_act_read">Actualmente está leyendo:<br></p>');
-                a_author = $('<a class="title_author" style="margin:0 !important;"></a>');
+                p = $('<p class="title_act_read">Actualmente está leyendo:<br><img src="/static/img/mini_book_read.png" /></p>');
+                a_author = $('<a class="title_author" style="margin:0 !important;padding-left: 5px;"></a>');
                 a_author.append(data.name);
                 span_btn = $('<br><span class="message_alert " style="line-height: 2.2; color: #f89883 !important">Editar</span>');
                 input_l = $('<input class="type_message" type="hidden" value="edit_title_read">');
@@ -3295,10 +3292,10 @@ function show_dialog(){
 
             if(type=="edit_read"){
                 name_title = $(this).find('.name_title').val();
-                text = 'Editar libro leído';
+                text = name_title;
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
-                text2 = ' Fecha en que leíste ' + name_title;
+                text2 = '¿Cuándo terminaste de leerlo?';
                 p_text2 = $('<p class="p_text_mini2">' + text2 + '</p>');
                 span_text.append(p_text2);
                 input_date = $('<input type="text" class="date_read"/>');
@@ -3307,14 +3304,18 @@ function show_dialog(){
                     '-' + date.getDate());
                 span_text.append(input_date);
                 input_date.datepicker({
-                dateFormat: 'yy-mm-dd',
-                maxDate: '0D',
-                onSelect: function(dateText) {
-                    $('p').find('input.hour-init').val('00:00:00');
-                },
-                onClose: function( selectedDate ) {
-                    $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
-                }
+                    dateFormat: 'yy-mm-dd',
+                    yearRange: "-90:+0",
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy-mm-dd',
+                    maxDate: '0D',
+                    onSelect: function(dateText) {
+                        $('p').find('input.hour-init').val('00:00:00');
+                    },
+                    onClose: function( selectedDate ) {
+                        $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
+                    }
                 });
             }
             if(type=="edit_title_read"){
@@ -3333,6 +3334,10 @@ function show_dialog(){
                     '-' + date.getDate());
                 span_text.append(input_date);
                 input_date.datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    yearRange: "-90:+0",
+                    changeMonth: true,
+                    changeYear: true,
                     dateFormat: 'yy-mm-dd',
                     maxDate: '0D',
                     onSelect: function(dateText) {

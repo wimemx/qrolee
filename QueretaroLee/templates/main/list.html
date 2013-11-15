@@ -112,18 +112,13 @@
                                         </h3>
                                     </a>
                                     <p class="fleft margin_left no-margin grid-2">
-                                        {% if value.author != 'Autor Anónimo' %}
+                                        {% if value.author %}
                                             <a href="/qro_lee/profile/author/{{ value.id_author }}"
                                                    class="title_author" >
                                                 {{ value.author|truncatechars:17 }}
                                             </a>
-                                        {% else %}
-                                            <a class="title_author" >
-                                                {{ value.author|truncatechars:19 }}
-                                            </a>
                                         {% endif %}
                                     </p>
-
                                     <p class="fleft margin_left stars_title no-margin grid-2 ">
                                         <span class="mini_rate">
                                             {% for x in 'xxxxx' %}

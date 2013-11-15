@@ -113,13 +113,9 @@
                         {{ profile.title|title|truncatechars:40 }}
                 </h3>
                 <p class="text_profile">
-                    {% if name_author != 'Autor Anónimo' %}
+                    {% if name_author  %}
                         <a href="/qro_lee/profile/author/{{ id_author }}"
                                 class="title_author name_author" >
-                            {{ name_author|truncatechars:19 }}
-                        </a>
-                    {% else %}
-                        <a class="title_author name_author" >
                             {{ name_author|truncatechars:19 }}
                         </a>
                     {% endif %}
@@ -426,6 +422,8 @@
                                     </a>
                                 </p>
                             </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay listas que contengan este autor</p>
                             {% endfor %}
                         </div>
                         {% if list and list|length > 3 %}
@@ -461,6 +459,8 @@
                                         </h3>
                                     </a>
                                 </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay personas leyendo este título</p>
                             {% endfor %}
                         </div>
                         {% if list_user.items and list_user.items|length > 3 %}
@@ -498,6 +498,8 @@
                                         </a>
                                     </p>
                                 </span>
+                            {% empty %}
+                                <p class="center grid-3 d-not_found">no hay listas que contengan este libro</p>
                             {% endfor %}
                         </div>
                         {% if list and list|length > 3 %}
@@ -542,6 +544,8 @@
                                         {% endif %}
                                 </p>
                             </span>
+                        {% empty %}
+                            <p class="center grid-3 d-not_found">no hay listas similares</p>
                         {% endfor %}
                     </div>
                     {% if list.items and list.items|length > 3 %}

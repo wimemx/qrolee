@@ -72,18 +72,19 @@
                             ¿Qué estás leyendo?
                             <input type="hidden" class="type_message"
                                    value="show_titles" /><br>
-                        <span class="title_author" style="line-height: 2.2; color: #f89883 !important; cursor:pointer">Editar</span>
+                        <span class="title_author" style="line-height: 2.2; color: #f89883 !important; cursor:pointer!important;">Editar</span>
                         </span>
                     {% else %}
                         No está leyendo nada en este momento
                     {% endif %}
                 {% else %}
                     Actualmente está leyendo:<br>
+                    <img src="/static/img/mini_book_read.png" />
                     <a href="/qro_lee/profile/title/{{ act_title.title.id }}" title="{{ act_title.title.title }}" class="title_author" style="margin:0">
                             {{ act_title.title.title }}
                         </a>
                     {% if user_profile.user.id == user.id %}<br>
-                        <span class="message_alert " style="line-height: 2.2; color: #f89883 !important">
+                        <span class="message_alert " style="line-height: 2.2; color: #f89883 !important;cursor: pointer;">
                             <input class="type_message" type="hidden" value="edit_title_read"/>
                             <input class="id_list"type="hidden" value="{{ act_title.id }}"/>
                             <input class="name_title"type="hidden" value="{{ act_title.title.title }}"/>
@@ -306,14 +307,10 @@
             {{ value.title|truncatechars:16 }}
         </a>
         <p class="p-d-text" >
-            {% if value.author != 'autor anonimo' %}
+            {% if value.author %}
                 De
                 <a href="/qro_lee/profile/author/{{ value.id_author }}"
                         class="title_author" >
-                    {{ value.author|truncatechars:19 }}
-                </a>
-            {% else %}
-                <a class="place_pink" >
                     {{ value.author|truncatechars:19 }}
                 </a>
             {% endif %}
@@ -424,14 +421,10 @@
                 {{ value.title|truncatechars:16 }}
             </a>
             <p class="p-d-text" >
-                {% if value.author != 'autor anonimo' %}
+                {% if value.author %}
                     De
                     <a href="/qro_lee/profile/author/{{ value.id_author }}"
                        class="title_author" >
-                        {{ value.author|truncatechars:19 }}
-                    </a>
-                {% else %}
-                    <a class="title_author" >
                         {{ value.author|truncatechars:19 }}
                     </a>
                 {% endif %}
@@ -545,14 +538,10 @@
                     {{ value.title|truncatechars:16 }}
                 </a>
                 <p class="p-d-text" >
-                    {% if value.author != 'autor anonimo' %}
+                    {% if value.author %}
                         De
                         <a href="/qro_lee/profile/author/{{ value.id_author }}"
                            class="title_author" >
-                            {{ value.author|truncatechars:19 }}
-                        </a>
-                    {% else %}
-                        <a class="title_author" >
                             {{ value.author|truncatechars:19 }}
                         </a>
                     {% endif %}

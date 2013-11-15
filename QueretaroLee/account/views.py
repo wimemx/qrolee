@@ -286,7 +286,7 @@ def user_profile(request, **kwargs):
                 if len(rate_title) != 0:
                     grade_title = rate_title[0]['score']
 
-                author_name = 'autor anonimo'
+                author_name = ''
 
                 author =  models.AuthorTitle.objects.filter(title=obj.title)
                 activity = models.Activity.objects.filter(object=obj.title.id,
@@ -737,8 +737,8 @@ def list_user(request):
         search = request.POST['field_value']
         user = User.objects.filter(
             db_model.Q(username__icontains=search) |
-            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)).\
-            filter(is_active=True, is_staff=False)
+            db_model.Q(first_name__icontains=search)|db_model.Q(last_name__icontains=search)
+        ).filter(is_active=True, is_staff=False)
 
         author = models.Author.objects.filter(name__icontains=search)
         org = registry.Entity.objects.filter(name__icontains=search,

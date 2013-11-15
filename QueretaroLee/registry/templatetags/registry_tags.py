@@ -466,3 +466,13 @@ def is_auth(user):
         return True
     else:
         return False
+
+
+@register.filter
+def cut_word(text, index):
+
+    word = text
+    if len(text) > 30:
+        word = text[0:30] + ' ' + text[30:len(text)]
+
+    return  word

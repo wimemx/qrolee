@@ -495,8 +495,9 @@
                             <a href="mailto:{{ owner.email }}" class="link_ d-pink" >{{ owner.email }}</a>
                         </p>
                         <p>
-                            <a class="link_" href="{{ entity.website }}" >{{ entity.website }}</a>
+                            <a class="link_" href="{{ entity.website }}" >{{ entity.website|cut_word:30 }}</a>
                         </p>
+                        <br>
                         <p>{{ profile.phone }}</p>
                         <h3 style="margin-top: 20px;" class="title fleft main">Ubicación</h3>
                         <p class="p_addres">{{ entity.address.0 }} <br>
@@ -535,11 +536,10 @@
                     <div class="overview" style="border:none;height:auto;">
                         {% for similar_entity, followers in similar_entities %}
                             <span class="wrapper">
-                            <span class="fleft">
                                 {% if similar_entity.picture == '' %}
-                                    <img src="/static/img/create.png" alt="{{ similar_entity.name }}"/>
+                                    <span class="fleft" style="background:url('/static/img/create.png') center; background-size: 100%;">
                                 {% else %}
-                                    <img src="/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}" alt="{{ entity.name }}"/>
+                                    <span class="fleft" style="background:url('/static/media/users/{{ similar_entity.user_id }}/entity/{{ similar_entity.picture }}') center; background-size: 100%;">
                                 {% endif %}
                             </span>
                             <a href="/qro_lee/entity/{{ entity_type.1 }}/{{ similar_entity.id }}">

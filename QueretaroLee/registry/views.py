@@ -1792,14 +1792,18 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        activity = account.Activity.objects.filter(object=list_title.title.id,
-                                                added_to_object=list_title.list.id)
+        activity = account.Activity.objects.filter(
+            object=list_title.title.id, added_to_object=list_title.list.id,
+            type='T', added_to_type='L', user_id=request.user.id, activity_id=9)
+        print activity
+
         list_title.list = lis
         list_title.save()
 
-        if len(activity)!=0:
+        if activity:
             activity[0].date = act_date
             activity[0].added_to_object = list_title.list.id
+            activity[0].activity_id = 11
             activity[0].save()
         else:
             activity_data = {
@@ -1927,42 +1931,61 @@ def cheking_book(request):
     list['book'] = book
     user = 0
     cheking = False
+    message = 0
 
     if 'name_ext' in list:
 
         exist_user = models.ExternalUser.objects.filter(email=list['email_ext'])
+        last_travel = models.Travel.objects.filter(book__code=code_book).latest('date')
 
         if exist_user:
-            user_cheking = models.Travel.objects.filter(user = exist_user[0].id).latest('status')
-            if user_cheking:
-                if user_cheking.status:
-                    cheking = True
 
-        if not exist_user:
-            user_ext = models.ExternalUser.objects.create(
-                name = list['name_ext'],
-                email = list['email_ext']
-            )
-            user_ext.save()
-        else:
-            user_ext = exist_user[0]
+            user_cheking = models.Travel.objects.filter(user = exist_user[0].id)
+
+            if user_cheking:
+
+                if len(user_cheking) != 1:
+                    user_cheking.latest('date')
+
+                    if user_cheking.status:
+                        cheking = True
+
+                else:
+                    if user_cheking[0].status:
+                        cheking = True
+
+            user = exist_user[0].id
+
+        else :
+            if last_travel.status :
+                user_ext = models.ExternalUser.objects.create(
+                    name = list['name_ext'],
+                    email = list['email_ext']
+                )
+                user_ext.save()
+                user = user_ext.id
+            else:
+                cheking = True
+                message =  1
+
 
         del list['name_ext']
         del list['email_ext']
         list['type_user'] = 0
-        user = user_ext.id
 
     else:
         list['type_user'] = 1
         user = request.user.id
 
     list['user'] = user
+    print list
 
     if not cheking:
         travel = models.Travel.objects.create(**list)
         travel.save()
     else:
         travel = ''
+
 
     succes = 'False'
     code = 0
@@ -1971,7 +1994,8 @@ def cheking_book(request):
 
     context = {
         'succes': succes,
-        'code_book': code_book
+        'code_book': code_book,
+        'message': message
 
     }
 
@@ -2082,7 +2106,7 @@ def register_ajax_book(request):
         author = dom.getElementsByTagName('name')[0].toxml()
         author = author.replace('<name>', '').replace('</name>', '')
         publisher = dom.getElementsByTagName('publisher')[0].toxml()
-        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '')
+        publisher = publisher.replace('<publisher>', '').replace('</publisher>', '').replace('</publisher>','')
         picture = dom.getElementsByTagName('image_url')[0].toxml()
         picture = picture.replace('<image_url>', '').replace('</image_url>', '')
         pages = dom.getElementsByTagName('num_pages')[0].toxml()
