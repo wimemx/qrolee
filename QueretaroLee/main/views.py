@@ -17,7 +17,7 @@ from registry import models, views, settings
 
 
 from decimal import Decimal
-import simplejson
+import json as simplejson
 import calendar
 import HTMLParser
 import datetime
@@ -230,7 +230,7 @@ def get_entities(request, **kwargs):
             'user_entities': user_entities_value
         }
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
     else:
         if entity_type == 'group':
             entity_type = ['grupos de lectura', 'group','grupo de lectura']
@@ -261,7 +261,7 @@ def get_entities(request, **kwargs):
 
         if 'post' in request.POST:
             context = simplejson.dumps(context)
-            return HttpResponse(context, mimetype='application/json')
+            return HttpResponse(context, content_type='application/json')
 
         if entity_type[1] == 'spot':
             context['classspot'] = 'class=scrollspot';
@@ -421,12 +421,15 @@ def get_entity(request, **kwargs):
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
+    print entity
+    print int(request.POST.get('curr_month'))
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
+            print events_
             if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(
@@ -461,14 +464,15 @@ def get_events(request, **kwargs):
                     start_time__year=int(request.POST.get('curr_year')), location_id=int(request.POST.get('id_entity')),
                     owner_id__in=admins_list).order_by('start_time')
             else:
-                if int(request.POST.get('curr_month')) > 11:
-                    current_month = int(request.POST.get('curr_month'))-11
+                current_month = int(request.POST.get('curr_month'))+1
+                start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+                if int(request.POST.get('curr_month')) >= 11:
+                    end_time = datetime.datetime(start_time.year+1, 1, 1)
                 else:
-                    current_month = int(request.POST.get('curr_month'))+1
-
+                    end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
                 events_ = models.Event.objects.filter(
-                    status=status, start_time__month=current_month,
-                    start_time__year=int(request.POST.get('curr_year'))).order_by('start_time')
+                    status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
+
             if int(request.POST.get('curr_month')) == 100:
                 events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
 
@@ -535,9 +539,8 @@ def get_events(request, **kwargs):
     context = {
         'events': list(events)
     }
-    print context
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def event_view(request, **kwargs):
@@ -605,7 +608,7 @@ def event_view(request, **kwargs):
 
     if 'post' in request.POST:
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
 
     return render(request, template, context)
 
@@ -689,7 +692,7 @@ def advanced_search(request, **kwargs):
                 'response': 0
             }
             context = simplejson.dumps(context)
-            return HttpResponse(context, mimetype='application/json')
+            return HttpResponse(context, content_type='application/json')
         value = {}
         #fields = [item for item in fields if item not in fields_foreign]
         # remove = [0, 3, 5, 6, 7, 8, 10, 11]
@@ -890,7 +893,7 @@ def advanced_search(request, **kwargs):
             else:
                 value[obj.id] = context_fields
         context = simplejson.dumps(value)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
     return render(request, template, context)
 
 
@@ -984,7 +987,7 @@ def get_list(request, **kwargs):
 
     if request.POST.get('field_value')!=None:
         context = simplejson.dumps(dictionary)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
 
     return render(request, template, context)
 
@@ -1065,7 +1068,7 @@ def get_titles(request,**kwargs):
 
     if request.POST.get('field_value')!=None:
         context = simplejson.dumps(dict_items)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
 
     return render(request, template, context)
 
@@ -1138,7 +1141,7 @@ def get_authors(request, **kwargs):
 
     if request.POST.get('field_value')!= None:
         context = simplejson.dumps(dict_items)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
 
     return render(request, template, context)
 
@@ -1195,7 +1198,7 @@ def get_genre(request):
 
     context = simplejson.dumps(dictionary_genre)
 
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 @login_required(login_url='/')
@@ -1513,7 +1516,7 @@ def search_api(request, **kwargs):
                 'result_api': dom.childNodes.__contains__('error')
             }
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
     search = ast.literal_eval(request.POST.get('search'))
     q_ast = ast.literal_eval(search['q'])
     index = str(search['start_index']['0'])
@@ -1560,7 +1563,7 @@ def search_api(request, **kwargs):
         'result_api': response
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def get_a_discussion(request):
@@ -1573,7 +1576,7 @@ def get_a_discussion(request):
 
         }
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
     discussion = account_models.Discussion.objects.get(
         id=int(request.POST.get('id')))
     discussion_list = get_discussion(discussion=discussion)
@@ -1586,7 +1589,7 @@ def get_a_discussion(request):
         'discussion': res
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def create_discussion(request):
@@ -1598,7 +1601,7 @@ def create_discussion(request):
         'response': discussion.parent_as_json()
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def respond_to_discussion(request):
@@ -1610,7 +1613,7 @@ def respond_to_discussion(request):
         'response': response.as_json()
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def get_discussion(discussion):
@@ -1655,7 +1658,7 @@ def load_picture_profile(request):
     }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 @login_required(login_url='/')
@@ -1948,7 +1951,7 @@ def write_pdf(template_src, context_dict):
         html.encode("UTF-8")), result)
     if not pdf.err:
         return HttpResponse(
-            result.getvalue(), mimetype='application/pdf')
+            result.getvalue(), content_type='application/pdf')
     return HttpResponse('Gremlins ate your pdf! %s' % cgi.escape(html))
 
 

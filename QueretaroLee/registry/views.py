@@ -27,7 +27,7 @@ import os
 import urlparse
 import urllib
 import ast
-import simplejson
+import json as simplejson
 import oauth2
 import hashlib
 import HTMLParser
@@ -141,7 +141,7 @@ def login(request):
         }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def account_register(request):
@@ -207,7 +207,7 @@ def account_register(request):
         'url': url
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 @login_required(login_url='/')
@@ -324,7 +324,7 @@ def register(request):
         'success': succuess
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def edit_entity(request, **kwargs):
@@ -396,7 +396,7 @@ def delete_entity(request, **kwargs):
 
         }
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
 
     id_entity = int(kwargs['entity'])
     entity = models.Entity.objects.get(id=id_entity)
@@ -438,7 +438,7 @@ def update_entity(request, **kwargs):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def logout(request):
@@ -527,7 +527,7 @@ def media_upload(request):
             'file_name': file_name
         }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def handle_uploaded_file(destination, f):
@@ -646,7 +646,7 @@ def ajax_register_event(request):
         'success': success
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def post_event_fb(event, user, profile):
@@ -838,7 +838,7 @@ def get_events(request, **kwargs):
         'events': list(events)
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def edit_event(request, **kwargs):
@@ -989,7 +989,7 @@ def remove_add_user(request, **kwargs):
             'users': users
         }
         context = simplejson.dumps(context)
-        return HttpResponse(context, mimetype='application/json')
+        return HttpResponse(context, content_type='application/json')
     else:
         obj = kwargs['user_id']
         obj = models.MemberToObject.objects.get_or_create(
@@ -1019,7 +1019,7 @@ def remove_add_user(request, **kwargs):
         obj.save()
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def datetime_from_str(time_str):
@@ -1123,7 +1123,7 @@ def register_ajax_list(request):
         context['id_list'] = list.id
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def add_genre(request):
@@ -1151,7 +1151,7 @@ def add_genre(request):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def delete_title(request):
@@ -1168,7 +1168,7 @@ def delete_title(request):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def delete_list(request):
@@ -1180,7 +1180,7 @@ def delete_list(request):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def delete_page(request):
@@ -1192,7 +1192,7 @@ def delete_page(request):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def delete_picture(request):
@@ -1249,7 +1249,7 @@ def delete_picture(request):
         }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def add_rate(request):
@@ -1306,7 +1306,7 @@ def add_rate(request):
     }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def create_default_list(user):
@@ -1565,7 +1565,7 @@ def add_my_title(request):
 
         context = simplejson.dumps(context)
 
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def add_titles_author_list(request):
@@ -1738,7 +1738,7 @@ def update_list(request, **kwargs):
 
     context = {}
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def edit_title_read(request):
@@ -1867,7 +1867,7 @@ def edit_title_read(request):
         context['list_read'] = dict_list
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def update_activity(data):
@@ -1962,7 +1962,7 @@ def cheking_book(request):
     }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def registry_book(request, **kwargs):
@@ -2167,7 +2167,7 @@ def register_ajax_book(request):
 
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def register_title_click(request):
@@ -2202,7 +2202,7 @@ def register_title_click(request):
         }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def register_external_user(request):
@@ -2229,7 +2229,7 @@ def register_external_user(request):
     }
 
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def create_author(name_author, title):
@@ -2326,7 +2326,7 @@ def recover_password(request):
         'success': success
     }
     context = simplejson.dumps(context)
-    return HttpResponse(context, mimetype='application/json')
+    return HttpResponse(context, content_type='application/json')
 
 
 def reset_password(request, **kwargs):
