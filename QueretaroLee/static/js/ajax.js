@@ -1940,6 +1940,7 @@ function search_list_authors_titles($this){
                     }
                     $('.no_resuls').remove();
                     if(!empty_char){
+                        console.log(Object.keys(data));
                         if(Object.keys(data).length==0){
                             var empty = true;
                             if($('.type').val() == 'Title'){
@@ -2168,23 +2169,25 @@ function search_all_header($this){
                             var obj = data[i];
                             var count = 1;
                             var text = '';
-                            if(i == "users" & Object.keys(data['users']).length>0)
+
+                            if(i == "users" & get_obj_len(data['users']) > 0 )
+
                                 text = 'Personas';
-                            if(i == "author" & Object.keys(data['author']).length>0)
+                            if(i == "author" & get_obj_len(data['author']) >0)
                                 text = 'Autores';
-                            if(i == "org" & Object.keys(data['org']).length>0)
+                            if(i == "org" & get_obj_len(data['org']) >0)
                                 text = 'Organizaciones';
-                            if(i == "group" & Object.keys(data['group']).length>0)
+                            if(i == "group" & get_obj_len(data['group']) >0)
                                 text = 'Grupos de Lectura';
-                            if(i == "spot" & Object.keys(data['spot']).length>0)
+                            if(i == "spot" & get_obj_len(data['spot']) >0)
                                 text = 'Lugares';
-                            if(i == "list" & Object.keys(data['list']).length>0)
+                            if(i == "list" & get_obj_len(data['list']) >0)
                                 text = 'Listas';
-                            if(i == "title" & Object.keys(data['title']).length>0)
+                            if(i == "title" & get_obj_len(data['title']) >0)
                                 text = 'Títulos';
                             if(last_count == 0)
                                 $('.d-results').append('<img class="pt" src="/static/img/triangulo.png">');
-                            if(Object.keys(data[i]).length>0)
+                            if(get_obj_len(data[i]) >0)
                                 $('.d-results').append('<a class="user_profile person" >' + text + '</a>');
                             $.each(obj,function(i2){
                                 if(count<=2){
@@ -2255,7 +2258,7 @@ function search_all_header($this){
                             });
 
                             last_count++;
-                            if(last_count == Object.keys(data).length)
+                            if(last_count == get_obj_len(data))
                                 $('.d-results').append('<a class="user_profile person link_search_all" ' +
                                     'href="/qro_lee/advanced_search/" >ver todos</a>');
                         });
@@ -2265,6 +2268,16 @@ function search_all_header($this){
 
                 });
 }
+
+
+function get_obj_len(obj){
+    var i = 0;
+    for (ele in obj){
+        i++;
+    }
+    return i;
+}
+
 
 function load_img_profile(){
 
