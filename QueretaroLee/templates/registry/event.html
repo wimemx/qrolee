@@ -20,11 +20,15 @@
             <div class="heading d-heading_event grid-8">
                 <h3 class="title grid-10 fleft">Organizar eventos de <a class="{{ entity_type.1 }} title" href="/qro_lee/entity/{{ entity_type.1 }}/{{ id_entity }}/">{{ entity }}</a></h3>
                 <input type="hidden" class="id_entity" value="{{ id_entity }}"/>
-
             </div>
-         {% block entity_menu %}
-                {% include 'blocks/entity_menu.html' %}
-            {% endblock %}
+         <span class="grid-4 fright cont_btn_evt" >
+             {% block entity_menu %}
+                 {% include 'blocks/entity_menu.html' %}
+             {% endblock %}
+             <a class="color_btn {{ entity_type.1 }}" href="/registry/register_event/{{ entity_type.1 }}/{{ id_entity }}">
+                 Crear nuevo evento
+             </a>
+         </span>
         <div class="grid-16 load no-margin">
         <div class="grid-14 offset-1 fleft no-margin">
             <div class="sidebar-a grid-9 d-edit-event">
@@ -68,9 +72,6 @@
                 </div>
             </div>
             <div class="grid-4 sidebar-b fright no-margin">
-            <a class="color_btn {{ entity_type.1 }}" href="/registry/register_event/{{ entity_type.1 }}/{{ id_entity }}">
-                Crear nuevo evento
-            </a>
             <h3 class="title fix">Calendario</h3>
             <input class="entity" type="hidden" value="-1"/>{% csrf_token %}
                 <div class="grid-4 no-margin">

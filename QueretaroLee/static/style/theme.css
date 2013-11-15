@@ -4573,3 +4573,16 @@ p input.green_btn{
 .wrapper_user{
     height: 178px!important;
 }
+.cont_btn_evt{
+    margin-right: 34px;
+    padding-top: 40px;
+}
+.cont_btn_evt .member{
+    margin-top: 0px!important;
+}
+
+.cont_btn_evt .color_btn{
+    margin-right: 20px;
+    float: right;
+    margin-top: 20px;
+}

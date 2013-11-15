@@ -128,19 +128,22 @@
                     </span>
                 <span class="value no-edit grid-5 alpha fright" style="font-size: 12px;">{{ entity.date|date:"d \d\e M \d\e\l Y" }}</span>
             </p>
-            <p>Dirección
-                <span class="controllers_wrapper">
-                <span class="green_btn fright">Editar</span>
-                <span class="yellow_btn fright">Guardar</span>
-                    </span>
-                <span class="close right"></span>
-                <input type="hidden" class="lat" name="lat"/>
-                <input type="hidden" class="long" name="long"/>
-                <input class="grid-5 address fright no-margin" type="text" value="" name="address"/>
-                <textarea name="address" class="map address value">{{ entity.address }}</textarea>
-                <span class="value area map">{{ entity.address }}</span>
-                <span id="map" class="grid-5 alpha fright"></span>
-            </p>
+            {% if entity_type.1 != 'group' %}
+                <p>Dirección
+                    <span class="controllers_wrapper">
+                    <span class="green_btn fright">Editar</span>
+                    <span class="yellow_btn fright">Guardar</span>
+                        </span>
+                    <textarea name="address" class="map address grid-5 alpha fright value">{{ entity.address }}</textarea>
+                    <span class="close right"></span>
+                    <input type="hidden" class="lat" name="lat"/>
+                    <input type="hidden" class="long" name="long"/>
+                    <input class="grid-5 address fright no-margin alpha" type="text" value="" name="address"/>
+                    <span class="value area map grid-5 fright">{{ entity.address }}</span>
+                    <span id="map" class="grid-5 alpha fright"></span>
+                </p>
+
+            {% endif %}
         </span>
         <span class="d-picture_user grid-5 no-margin fright fb-session-required"  >
             <span class="fb-connect  no-margin fright grid-5">
@@ -313,7 +316,8 @@
             }
         }
         $(document).ready(function(){
-            initialize();
+            if($('#map').length > 0)
+                initialize();
             var timeout = 200;
 
 

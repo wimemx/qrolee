@@ -1382,21 +1382,21 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['description'])
 
                     li ={
-                        'title':str(obj['it']['attribute']['title']),
-                        'subtitle':'',
-                        'edition':'',
-                        'published_date':date_time,
-                        'cover':str(obj['it']['attribute']['cover']),
-                        'publisher':str(obj['it']['attribute']['publisher']),
-                        'language':str(obj['it']['attribute']['language']),
-                        'country':str(obj['it']['attribute']['country']),
-                        'type':'T',
-                        'isbn':str(obj['it']['attribute']['isbn']),
-                        'isbn13':str(obj['it']['attribute']['isbn13']),
-                        'pages':int(obj['it']['attribute']['pages']),
-                        'picture':str(obj['it']['attribute']['picture']),
-                        'description':desc[0:800],
-                        'id_google':obj['it']['attribute']['id_google']
+                        'title': unicode(str(obj['it']['attribute']['title']),'unicode_escape'),
+                        'subtitle': '',
+                        'edition': '',
+                        'published_date': date_time,
+                        'cover': str(obj['it']['attribute']['cover']),
+                        'publisher': str(obj['it']['attribute']['publisher']),
+                        'language': str(obj['it']['attribute']['language']),
+                        'country': str(obj['it']['attribute']['country']),
+                        'type': 'T',
+                        'isbn': str(obj['it']['attribute']['isbn']),
+                        'isbn13': str(obj['it']['attribute']['isbn13']),
+                        'pages': int(obj['it']['attribute']['pages']),
+                        'picture': str(obj['it']['attribute']['picture']),
+                        'description': unicode(desc[0:800],'unicode-escape'),
+                        'id_google': obj['it']['attribute']['id_google']
                     }
 
                     title_exist = account.Title.objects.filter(db_model.Q(id_google= li['id_google']) |
@@ -1463,10 +1463,10 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['biography'])
 
                     li ={
-                        'name': str(obj['it']['attribute']['name']),
+                        'name': unicode(str(obj['it']['attribute']['name']),'unicode-escape'),
                         'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
                         'biography': desc[0:500],
-                        'birthday': datetime.datetime.today(),
+                        'birthday': unicode(datetime.datetime.today(),'unicode-escape'),
                         'id_api': str(obj['it']['attribute']['id_api'])
                     }
 
@@ -2277,16 +2277,16 @@ def create_author(name_author, title):
                           response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
 
             dict_author = {
-                'name': response['result'][0]['name'],
+                'name': unicode(response['result'][0]['name'], 'unicode-escape'),
                 'picture': picture,
-                'biography': biography,
+                'biography': unicode(biography, 'unicode-escape'),
                 'birthday': datetime.datetime.today(),
                 'id_api' : response['result'][0]['id']
             }
 
         else:
             dict_author = {
-                'name': name_aut,
+                'name': unicode(name_aut,'unicode-escape'),
                 'picture': '',
                 'birthday': datetime.datetime.today(),
                 'id_api': name_aut
