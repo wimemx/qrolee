@@ -302,6 +302,7 @@ function invalid_f(form){
         return false;
 }
 
+
 function valid_form_list(form){
     $('.container_message_2').fadeOut(300);
     $('.invalid').remove();
