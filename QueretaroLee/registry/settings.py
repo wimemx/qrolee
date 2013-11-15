@@ -14,9 +14,12 @@ FACEBOOK_REDIRECT_URI = settings.SITE_URL
 
 TWITTER_KEY = '3glTubbyXhpssGis63gg'
 TWITTER_SECRET = 'JgVAEw9o39Vqd7ZLwnvI2GKiODzYfmC7bmMneqxSA'
+TWITTER_TOKEN = '89031212-75KoCg2nvlmQZoKfPyJPILmzXPY9XAU6Kku0L27w'
+TWITTER_TOKEN_SECRET = '8xIRi7gQSYUwvg2fvHEYW4LUBucUUnQkkWwzJHYuZM'
 TWITTER_REQUEST_URL = 'https://api.twitter.com/oauth/request_token'
 TWITTER_AUTH_URL = 'https://api.twitter.com/oauth/authorize'
 TWITTER_ACCESS_URL = 'https://api.twitter.com/oauth/access_token'
+TWITTER_CREDENTIALS = 'https://api.twitter.com/1.1/account/verify_credentials.json'
 TWITTER_REDIRECT = settings.SITE_URL
 
 GOOGLE_BOOKS_KEY = 'AIzaSyCIreWA7VgeIKPxH7-702YtpiDME61CrLM'
