@@ -108,3 +108,39 @@ span.dark_yello_btn{
 .footer{
     margin-top: 20px !important;
 }
+.int_btn, .register .submit, .login .submit{
+    line-height: 10px !important;
+}
+
+.wrapper_message {
+    z-index: 5;
+}
+.active_item{
+    background:transparent;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#50C4A47C,endColorstr=#50C4A47C);
+    zoom: 1;
+}
+.container_title{
+    margin-top: 25px !important;
+    float: left;
+}
+#scrollbar1{
+    float: left !important;
+}
+.dialog_text{
+    padding-bottom: 50px !important;
+}
+.dialog-confirm .btn_save{
+    position: absolute;
+    bottom: 20px;
+    right: 0px;
+}
+.login,.register{
+        overflow: hidden;
+        position: relative;
+    }
+.create-entity{
+    background:transparent;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#509C9C9C,endColorstr=#509C9C9C);
+    zoom: 1;
+}
