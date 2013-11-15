@@ -2031,6 +2031,12 @@ function create_template(type, result,i, create_user){
             item.append(p);
         }
         var title = h3.html();
+        var img_url = item.find('img').attr('src');
+        item.find('.wrapper').css({
+            'background': 'url("'+img_url+'") center no-repeat',
+            'background-size': '100%'
+        });
+        item.find('.wrapper img').remove();
         $('.results').append(item);
         return;
     }
