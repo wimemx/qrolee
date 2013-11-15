@@ -235,8 +235,7 @@ def user_profile(request, **kwargs):
                     encode('utf-8', 'ignore')
             else:
                 if field =='user':
-                    value = str(obj.__getattribute__(str(field)).first_name) + \
-                            ' ' + str(obj.__getattribute__(str(field)).last_name)
+                    value = str(obj.__getattribute__(str(field)).first_name)
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
@@ -343,7 +342,7 @@ def user_profile(request, **kwargs):
             else:
                 items[field] = obj.__getattribute__(str(field))
         items['id_user'] = obj.user.id
-        items['name_user'] = obj.user.username
+        items['name_user'] = obj.user.first_name
         dict_pages[int(obj.id)] = items
 
     city = profile.city
