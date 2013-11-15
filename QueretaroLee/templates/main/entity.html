@@ -73,6 +73,7 @@
                             {% csrf_token %}
                             <input type="hidden" name="membership" value="-1"/>
                             <input type="submit" class="btn fright" value="Eres seguidor">
+                        <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                         </form>
 
                     {% elif member and entity.privacy != 0 %}
@@ -81,6 +82,7 @@
                             {% csrf_token %}
                             <input type="hidden" name="follow_private" value="-1"/>
                             <input type="submit" class="btn fright" value="Eres seguidor">
+                        <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                         </form>
 
                     {% else %}
@@ -117,6 +119,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="membership" value="1"/>
                                 <input type="submit" class="btn fright" value="Seguir">
+                                <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                             </form>
 
                         {% endif %}
@@ -134,6 +137,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
                         <input type="submit" class="btn fright" value="Eres seguidor">
+                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                     </form>
                 {% elif member and entity.privacy != 0 %}
 
@@ -141,6 +145,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
                         <input type="submit" class="btn fright" value="Eres seguidor">
+                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                     </form>
                 {% else %}
 

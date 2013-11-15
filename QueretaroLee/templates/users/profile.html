@@ -180,7 +180,7 @@
                                  {% endif %}
                              {% endfor %}
                          </span>
-                         <h3 class="title grid-4 no-margin title_my_list">
+                         <h3 class="title grid-4 n  o-margin title_my_list">
                              Libros favoritos
                          </h3>
                          <span class="container_items grid-4 no-margin">
@@ -248,15 +248,13 @@
     <div class="sidebar-a grid-15 container_list">
     <input type="hidden" class="type_my_list" value="T" />
     <div class="heading">
-        <h3 class="title main grid-4 fleft">
+        <h3 class="title main grid-6 fleft">
             {% if user_profile.user.id == user.id %}
                 Mis libros favoritos
             {% else %}
                 Libros favoritos de
                 {% if user_profile.user.first_name %}
-                    {{ user_profile.user.first_name }}
-                {% else %}
-                    {{ user_profile.user.username }}
+                    {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                 {% endif %}
             {% endif %}
         </h3>
@@ -348,7 +346,10 @@
             </span>
         {% else %}
             <span class="grid-14 no_resuls">
-                {{ user_profile.user.username }} aún no añade libros favoritos
+                {% if user_profile.user.first_name %}
+                    {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                {% endif %}
+                aún no añade libros favoritos
             </span>
         {% endif %}
     {% endfor %}
@@ -375,9 +376,7 @@
         {% else %}
             Libros que ha leído
             {% if user_profile.user.first_name %}
-                {{ user_profile.user.first_name }}
-            {% else %}
-                {{ user_profile.user.username }}
+                {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
             {% endif %}
         {% endif %}
     </h3>
@@ -469,7 +468,9 @@
                 </span>
             {% else %}
                 <span class="grid-14 no_resuls">
-                    {{ user_profile.user.username }} aún no añade libros leídos
+                    {% if user_profile.user.first_name %}
+                        {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                    {% endif %} aún no añade libros leídos
                 </span>
             {% endif %}
         {% endfor %}
@@ -496,9 +497,7 @@
             {% else %}
                 Libros que desea leer
                 {% if user_profile.user.first_name %}
-                    {{ user_profile.user.first_name }}
-                {% else %}
-                    {{ user_profile.user.username }}
+                    {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                 {% endif %}
             {% endif %}
         </h3>
@@ -586,7 +585,9 @@
                     </span>
                 {% else %}
                     <span class="grid-14 no_resuls">
-                        {{ user_profile.user.username }} aún no añade libros que desea leer
+                        {% if user_profile.user.first_name %}
+                            {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                        {% endif %} aún no añade libros que desea leer
                     </span>
                 {% endif %}
             {% endfor %}
@@ -613,9 +614,7 @@
                     {% else %}
                         Géneros favoritos de
                         {% if user_profile.user.first_name %}
-                            {{ user_profile.user.first_name }}
-                        {% else %}
-                            {{ user_profile.user.username }}
+                            {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                         {% endif %}
                     {% endif %}
                 </h3>
@@ -649,14 +648,14 @@
     <div class="grid-16 load no-margin my_list">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-3 fleft">
+                <h3 class="title grid-6 fleft">
                     {% if user_profile.user.id == user.id %}
                         Mis listas
                     {% else %}
                         Listas de {{ user_profile.user.username }}
                     {% endif %}
                 </h3>
-                <span class="search fleft grid-4">
+                <span class="search fright grid-4">
                     <input class="type" type="hidden" value="List"/>
                     <input class="my_list_typ" type="hidden" value="0"/>
                     <input class="id_profile" type="hidden"
@@ -740,7 +739,9 @@
                                 </span>
                             {% else %}
                                 <span class="grid-15 no_resuls">
-                                    {{ user_profile.user.username }}
+                                    {% if user_profile.user.first_name %}
+                                        {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                                    {% endif %}
                                     aún no ha creado ninguna lista
                                 </span>
                             {% endif %}
@@ -756,7 +757,10 @@
                 {% if user_profile.user.id == user.id %}
                         Grupos a los que pertenezco
                     {% else %}
-                        Grupos a los que pertenece {{ user_profile.user.username }}
+                        Grupos a los que pertenece
+                        {% if user_profile.user.first_name %}
+                            {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                        {% endif %}
                     {% endif %}
             </h3>
             <div id="scrollbar1" class="d-margin_group_user" >
@@ -803,7 +807,9 @@
                                 </span>
                             {% else %}
                                 <span class="grid-15 no_resuls">
-                                    {{ user_profile.user.username }}
+                                    {% if user_profile.user.first_name %}
+                                        {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                                    {% endif %}
                                     aún no se ha unido a ningun grupo
                                 </span>
                             {% endif %}
@@ -814,14 +820,17 @@
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-3 fleft">
+                <h3 class="title grid-6 fleft">
                     {% if user_profile.user.id == user.id %}
                         Mis páginas
                     {% else %}
-                        Páginas de {{ user_profile.user.username }}
+                        Páginas de
+                        {% if user_profile.user.first_name %}
+                            {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                        {% endif %}
                     {% endif %}
                 </h3>
-                <span class="search fleft grid-4">
+                <span class="search fright grid-4">
                     <input type="text" class="field_pag search_entities">
                     <input type="hidden" value="{{ user_profile.user.id }}" class="profile_id_user"/>
                     <span class="top search_pages dark_yello_btn"></span>
@@ -887,7 +896,9 @@
                                 </span>
                             {% else %}
                                 <span class="grid-15 no_resuls">
-                                    {{ user_profile.user.username }}
+                                    {% if user_profile.user.first_name %}
+                                        {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                                    {% endif %}
                                     aún no ha creado ninguna página
                                 </span>
                             {% endif %}
