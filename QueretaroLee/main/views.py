@@ -984,7 +984,7 @@ def get_list(request, **kwargs):
                     encode('utf-8', 'ignore')
             else:
                 if field=='user':
-                    value = str(obj.__getattribute__(str(field)).first_name)
+                    value = obj.__getattribute__(str(field)).first_name
                     user['id_user'] = int(obj.__getattribute__(str(field)).id)
                 else:
                     value = str(obj.__getattribute__(str(field)))
