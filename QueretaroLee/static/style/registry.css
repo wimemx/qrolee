@@ -519,6 +519,9 @@ p.advanced_search_btn{
         font-size: 16px !important;
         margin-right: 17px;
     }
+    .results .item p{
+        margin-right: 17px !important;
+    }
     .results .item .wrapper{
         margin:0px
     }
