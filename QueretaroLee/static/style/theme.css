@@ -141,7 +141,7 @@ input:not([type='submit']){
 }
 
 .brown_btn{
-    background:#c69264 url('../img/settings_pointer.png') no-repeat 68px 9px;
+    background:#c69264 url('../img/settings_pointer.png') no-repeat 68px 9px !important;
     color: #fff;
     font-size: 12px;
     text-decoration: none;
@@ -794,7 +794,7 @@ p{
             margin-top: -10px;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
-            width: 30px;
+            width: 51px;
             height: 15px;
             position: relative;
             background:#c69264 url('../img/settings_pointer.png') no-repeat 45px 9px;
