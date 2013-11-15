@@ -1778,7 +1778,7 @@ p{
     height: 11px;
     float: right;
     padding: 5px 5px;
-    width: 14px;
+    width: 13px;
     background: #f79882 url("/static/img/delete.png") no-repeat center;
     border: 1px solid #eb6346;
 }
@@ -2160,8 +2160,8 @@ p{
     margin-top: 52px !important;
     font-family: 'Raleway' sans-serif !important;
     color: #000000;
-    font-weight: normal !important;
-    font-size: 14px !important;
+    font-weight: 500;
+    font-size: 13px !important;
 }
 
 .place_pink{
@@ -2408,7 +2408,7 @@ p{
 }
 
 .title_author{
-    color: #b69035 !important;
+    color: #a77340 !important;
     text-decoration:underline !important;
     margin-top: -7px !important;
 }
@@ -2499,8 +2499,9 @@ p{
 
 .p_text_mini{
     font-size: 13px !important;
-    margin-top: 5px;
+    margin-top: -11px;
     color: #777;
+    margin-bottom: 25px;
 }
 .p_text_mini2{
     width: auto;
@@ -2760,7 +2761,7 @@ p{
 }
 
 .p-d-text-author{
-    font-size: 11px !important;
+    font-size: 12px !important;
 
 }
 
@@ -2984,7 +2985,7 @@ p{
 }
 
 .scrollbar_add{
-    right: -12px !important;
+    right: 9px !important;
 }
 
 .text_profile{
@@ -4585,4 +4586,12 @@ p input.green_btn{
     margin-right: 20px;
     float: right;
     margin-top: 20px;
+}
+
+.all_book .span_text{
+    font-weight: 500 !important
+}
+
+.container_title .item_ti{
+    line-height: 1.6
 }
