@@ -1382,7 +1382,7 @@ def add_my_title(request):
                     desc = str(obj['it']['attribute']['description'])
 
                     li ={
-                        'title': unicode(str(obj['it']['attribute']['title']),'unicode_escape'),
+                        'title': unicode(str(obj['it']['attribute']['title']),'unicode-escape'),
                         'subtitle': '',
                         'edition': '',
                         'published_date': date_time,
@@ -2275,9 +2275,10 @@ def create_author(name_author, title):
             if len(response['result'][0]['mid']) != 0:
                 picture = 'https://www.googleapis.com/freebase/v1/image' + \
                           response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
-
+            print str(response['result'][0]['name']).encode('utf-8')
+            print str(response['result'][0]['name']).decode('utf-8')
             dict_author = {
-                'name': unicode(response['result'][0]['name'], 'unicode-escape'),
+                'name': str(response['result'][0]['name']).encode('utf-8'),
                 'picture': picture,
                 'biography': unicode(biography, 'unicode-escape'),
                 'birthday': datetime.datetime.today(),
