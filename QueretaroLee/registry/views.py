@@ -1792,14 +1792,18 @@ def edit_title_read(request):
             d = datetime_from_str(date)
             act_date = d[1].isoformat()
 
-        activity = account.Activity.objects.filter(object=list_title.title.id,
-                                                added_to_object=list_title.list.id)
+        activity = account.Activity.objects.filter(
+            object=list_title.title.id, added_to_object=list_title.list.id,
+            type='T', added_to_type='L', user_id=request.user.id, activity_id=9)
+        print activity
+
         list_title.list = lis
         list_title.save()
 
-        if len(activity)!=0:
+        if activity:
             activity[0].date = act_date
             activity[0].added_to_object = list_title.list.id
+            activity[0].activity_id = 11
             activity[0].save()
         else:
             activity_data = {
