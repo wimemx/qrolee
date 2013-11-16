@@ -199,8 +199,9 @@ $(document).ready(function(){
         e.preventDefault();
         $('.admin-alert').fadeIn(300,function(){
             $(this).find('p').html('¿Estás seguro que la deseas eliminar?');
-            $(this).find('.green_btn').click(function(){
+            $(this).find('.accept').click(function(){
                 window.location.href = $('.del').attr('href');
+
             });
         });
         return false;
