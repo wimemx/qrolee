@@ -5,6 +5,8 @@ from registry import views
 urlpatterns = patterns('',
     url(r'^login/$', views.login ,
         name='login'),
+    url(r'^social_login/$', views.social_login ,
+        name='social_login'),
     url(r'^logout/$', views.logout ,
         name='logout'),
     url(r'^account_register/$', views.account_register ,

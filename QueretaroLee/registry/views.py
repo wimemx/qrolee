@@ -507,7 +507,6 @@ def media_upload(request):
         elif request.POST.get('folder') == '/entity/':
             folder = '/entity/'
 
-        print folder
         path_extension = str(request.user.id)+folder
         path = os.path.join(
             os.path.dirname(__file__), '..',
@@ -1795,7 +1794,6 @@ def edit_title_read(request):
         activity = account.Activity.objects.filter(
             object=list_title.title.id, added_to_object=list_title.list.id,
             type='T', added_to_type='L', user_id=request.user.id, activity_id=9)
-        print activity
 
         list_title.list = lis
         list_title.save()
@@ -2375,3 +2373,72 @@ def reset_password(request, **kwargs):
             return HttpResponseRedirect('/')
     else:
         return HttpResponseRedirect('/')
+
+
+def social_login(request):
+    user_info = str(request.POST.get('response'))
+    user_info = user_info.replace('{', '')
+    user_info = user_info.replace('}', '')
+    user_info = user_info.replace('"', '')
+    user_info = user_info.split(',')
+    user_dict = dict()
+    values = (
+        'id', 'first_name', 'last_name',
+        'username', 'email'
+    )
+
+    for info in user_info:
+        d = info.split(':')
+        if d[0] in values:
+            user_dict[d[0]] = d[1]
+
+    user = models.User.objects.filter(
+        email=user_dict['email'])
+
+    if user:
+        user = user[0]
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth.login(request, user)
+    else:
+        userExists = models.User.objects.filter(
+            username=user_dict['username'])
+
+        user, created = auth_models.User.objects.get_or_create(
+            email=user_dict['email'], username='temp')
+
+        if userExists:
+            user.username = user_dict['username']+user_dict['id']
+        else:
+            user.username = user_dict['username']
+        user.set_unusable_password()
+        user.first_name = user_dict['first_name']
+        user.last_name = user_dict['last_name']
+        user.save()
+        user_profile = models.Profile.objects.create(user_id=user.id)
+        user_profile.fb_username = user_dict['username']
+        user_profile.fb_id = user_dict['id']
+        user_profile.phone = ''
+        user_profile.social_session = 1
+        create_default_list(user)
+        path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
+        os.mkdir(path+'/'+str(user.id), 0777)
+        os.mkdir(path+'/'+str(user.id)+'/profile', 0777)
+        os.mkdir(path+'/'+str(user.id)+'/entity', 0777)
+        os.mkdir(path+'/'+str(user.id)+'/event', 0777)
+        os.mkdir(path+'/'+str(user.id)+'/list/', 0777)
+        fb_pic = 'https://graph.facebook.com/'+str(user_dict['id'])+'/picture?width=200'
+        response = urllib2.urlopen(fb_pic)
+        fb_pic = response.geturl()
+        path = os.path.join(os.path.dirname(__file__), '..', 'static/media/users').replace('\\','/')
+        path += '/'+str(user.id)+'/profile/'
+        file_name = fb_pic.split('/')
+        file_name = file_name[-1]
+        urllib.urlretrieve(fb_pic, os.path.join(path, file_name))
+        user_profile.picture = file_name
+        user_profile.save()
+
+    context = {
+        'success': main_settings.SITE_URL+'qro_lee/book/'+request.POST.get('code')
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, content_type='application/json')

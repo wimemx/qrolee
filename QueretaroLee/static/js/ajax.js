@@ -516,6 +516,26 @@ function search_book_code(form){
     return false;
 }
 
+
+function auth_user(response){
+    var url = window.location.href.split('/');
+    var ret = null;
+    $.ajax({
+        type: "POST",
+        url: '/registry/social_login/',
+        dataType: 'json',
+        async: false,
+        data: {
+            'code': url[url.length-2],
+            'response': JSON.stringify(response),
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val()
+        }
+    }).done(function(data) {
+            ret = data;
+        });
+    return ret;
+}
+
 $(document).ready(function(){
     $('.content .sidebar-a .month').click(function(){
         var m = $.trim($(this).html()).toLowerCase();
@@ -535,6 +555,23 @@ $(document).ready(function(){
             }
 
         }
+    });
+    $('.book_cro').find('a.fb').click(function(e){
+        e.preventDefault();
+        FB.login(function(response){
+            if (response.status == 'connected') {
+
+                FB.api('/me', function(response) {
+                    var ret = auth_user(response);
+                    if (ret){
+                        window.location.href = ret.success;
+                    }
+                });
+            } else {
+
+            }
+        }, {scope: 'publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events'});
+        return false;
     });
     $('.part_bottom .green_btn').click(function(){
 
