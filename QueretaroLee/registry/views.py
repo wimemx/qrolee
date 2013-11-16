@@ -1934,16 +1934,28 @@ def cheking_book(request):
     if 'name_ext' in list:
 
         exist_user = models.ExternalUser.objects.filter(email=list['email_ext'])
-        last_travel = models.Travel.objects.filter(book__code=code_book).latest('status')
+        last_travel = models.Travel.objects.filter(book__code=code_book).latest('date')
 
         if exist_user:
-            user_cheking = models.Travel.objects.filter(user = exist_user[0].id).latest('status')
-            if user_cheking:
-                if user_cheking.status:
-                    cheking = True
 
-        if not exist_user:
-            if not last_travel.status :
+            user_cheking = models.Travel.objects.filter(user = exist_user[0].id)
+
+            if user_cheking:
+
+                if len(user_cheking) != 1:
+                    user_cheking.latest('date')
+
+                    if user_cheking.status:
+                        cheking = True
+
+                else:
+                    if user_cheking[0].status:
+                        cheking = True
+
+            user = exist_user[0].id
+
+        else :
+            if last_travel.status :
                 user_ext = models.ExternalUser.objects.create(
                     name = list['name_ext'],
                     email = list['email_ext']
@@ -1954,8 +1966,6 @@ def cheking_book(request):
                 cheking = True
                 message =  1
 
-        else:
-            user_ext = exist_user[0]
 
         del list['name_ext']
         del list['email_ext']
@@ -1966,12 +1976,14 @@ def cheking_book(request):
         user = request.user.id
 
     list['user'] = user
+    print list
 
     if not cheking:
         travel = models.Travel.objects.create(**list)
         travel.save()
     else:
         travel = ''
+
 
     succes = 'False'
     code = 0

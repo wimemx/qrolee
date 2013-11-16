@@ -3292,10 +3292,10 @@ function show_dialog(){
 
             if(type=="edit_read"){
                 name_title = $(this).find('.name_title').val();
-                text = 'Editar libro leído';
+                text = name_title;
                 p_text = $('<p class="p_text_dialog">' + text + '</p>');
                 span_text.append(p_text);
-                text2 = ' Fecha en que leíste ' + name_title;
+                text2 = '¿Cuándo terminaste de leerlo?';
                 p_text2 = $('<p class="p_text_mini2">' + text2 + '</p>');
                 span_text.append(p_text2);
                 input_date = $('<input type="text" class="date_read"/>');
@@ -3304,14 +3304,18 @@ function show_dialog(){
                     '-' + date.getDate());
                 span_text.append(input_date);
                 input_date.datepicker({
-                dateFormat: 'yy-mm-dd',
-                maxDate: '0D',
-                onSelect: function(dateText) {
-                    $('p').find('input.hour-init').val('00:00:00');
-                },
-                onClose: function( selectedDate ) {
-                    $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
-                }
+                    dateFormat: 'yy-mm-dd',
+                    yearRange: "-90:+0",
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy-mm-dd',
+                    maxDate: '0D',
+                    onSelect: function(dateText) {
+                        $('p').find('input.hour-init').val('00:00:00');
+                    },
+                    onClose: function( selectedDate ) {
+                        $( ".date-end" ).datepicker( "option", "minDate", selectedDate );
+                    }
                 });
             }
             if(type=="edit_title_read"){
@@ -3330,6 +3334,10 @@ function show_dialog(){
                     '-' + date.getDate());
                 span_text.append(input_date);
                 input_date.datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    yearRange: "-90:+0",
+                    changeMonth: true,
+                    changeYear: true,
                     dateFormat: 'yy-mm-dd',
                     maxDate: '0D',
                     onSelect: function(dateText) {

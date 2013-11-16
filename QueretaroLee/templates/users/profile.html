@@ -4,6 +4,12 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <style>
+    .ui-datepicker .ui-datepicker-header {
+        padding: 0.2em 0px!important;
+    }
+    </style>
+
 {% endblock %}
 
 {% block js %}
@@ -276,7 +282,7 @@
                 <input type="hidden" value="title" class="list_typ" />
                 <input type="hidden" value="add" class="add_type" />
                 <p class="d-add_text_book">
-                    + Añadir un nuevo libro
+                    + Añade un nuevo libro
                 </p>
             </div>
         </div>
@@ -391,7 +397,7 @@
                     <input type="hidden" value="title" class="list_typ" />
                     <input type="hidden" value="add" class="add_type" />
                     <p class="d-add_text_book">
-                        + Añadir un nuevo libro
+                        + Añade un nuevo libro
                     </p>
                 </div>
             </div>
@@ -508,7 +514,7 @@
                         <input type="hidden" value="title" class="list_typ" />
                         <input type="hidden" value="add" class="add_type" />
                         <p class="d-add_text_book">
-                            + Añadir un nuevo libro
+                            + Añade un nuevo libro
                         </p>
                     </div>
                 </div>
