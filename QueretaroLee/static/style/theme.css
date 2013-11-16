@@ -30,7 +30,7 @@
 
 
 html{
-    background: url('../img/bg.png');
+    background: url('../img/bg.png') !important;
     text-rendering: optimizeLegibility;
 }
 body{
@@ -51,6 +51,7 @@ input, textarea{
 }
 span, div{
     position: relative;
+    background-repeat: no-repeat !important;
 }
 .search input.search_entities{
     width: 161px;
@@ -283,9 +284,10 @@ p{
     line-height:normal;
 }
 .header{
-    background: url('../img/header_bg.png') repeat-x 0px 0px;
+    background: url('../img/header_bg.png') 0px 0px;
     position: relative;
     z-index: 1000;
+    background-repeat: repeat-x !important;
 }
 
     .logo{

@@ -28,6 +28,10 @@ import urllib2
 import urllib
 import httplib
 import os
+import urlparse
+import ast
+import oauth2
+import hashlib
 from xml.dom import minidom
 import xhtml2pdf.pisa as pisa
 import cStringIO as StringIO
@@ -421,15 +425,12 @@ def get_entity(request, **kwargs):
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
-    print entity
-    print int(request.POST.get('curr_month'))
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
-            print events_
             if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(
@@ -693,7 +694,6 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
 
-        print q_list
         query = [Q(x) for x in q_list]
 
         activity = None
@@ -1737,6 +1737,37 @@ def book_crossing(request, **kwargs):
 
 
 def book(request, **kwargs):
+    if 'twitter_login' in request.GET:
+        consumer = oauth2.Consumer(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        client = oauth2.Client(consumer)
+        resp, content = client.request(
+            settings.TWITTER_REQUEST_URL,
+            "POST", body=urllib.urlencode({
+                'oauth_callback': settings.SITE_URL+'qro_lee/book/'+request.GET.get('codes')
+            }))
+
+        if resp['status'] != '200':
+            raise Exception("Invalid response from Twitter.")
+        request_token = dict(urlparse.parse_qsl(content))
+
+        url = "%s?oauth_token=%s" % (settings.TWITTER_AUTH_URL,
+                                     request_token['oauth_token'])
+        url += '&codes='+kwargs['code']
+        twitterSession = models.TwitterSession.objects.create(
+            oauth_token=request_token['oauth_token'],
+            request_token=request_token)
+        twitterSession.save()
+        return HttpResponseRedirect(url)
+    elif 'oauth_token' in request.GET:
+        twitterSessionObj = models.TwitterSession.objects.get(
+            oauth_token=request.GET['oauth_token'])
+        request_token = ast.literal_eval(twitterSessionObj.request_token)
+        user = auth.authenticate(
+            oauth_verifier=request.GET['oauth_verifier'], request_token=request_token)
+        if user:
+            if user.is_active:
+                auth.login(request, user)
+
     template = kwargs['template_name']
 
     #state_1 = encontrado, state_2 = liberado
@@ -1785,7 +1816,7 @@ def book(request, **kwargs):
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
-    dict = {}
+    dict_ = {}
     index = 1
     for obj in list_users:
         picture = ''
@@ -1798,7 +1829,7 @@ def book(request, **kwargs):
             user_book = models.ExternalUser.objects.get(id=obj.user)
             user_book = user_book.name
 
-        dict[index] = {
+        dict_[index] = {
             'user': user_book,
             'travel': obj,
             'picture': picture
@@ -1809,7 +1840,7 @@ def book(request, **kwargs):
         'book': book,
         'create_user': create_user,
         'user_': user,
-        'list_users': dict,
+        'list_users': dict_,
         'state_1': state_1,
         'state_2': state_2,
         'count_user': count_user,
