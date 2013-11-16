@@ -49,9 +49,6 @@ function populateCal(curr_month,$item, current_year){
         if(current_year === undefined)
             current_year = curr_year;
 
-        console.log('Month '+curr_month);
-        console.log('Year '+current_year);
-
         $.ajax({
             type: "POST",
             url: url,
@@ -65,8 +62,7 @@ function populateCal(curr_month,$item, current_year){
             },
             dataType: 'json'
         }).done(function(data){
-                console.log('---------- Event data -----------');
-                console.log(data);
+
                 var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
@@ -134,7 +130,7 @@ function populateCal(curr_month,$item, current_year){
                         console.log(e);
                         if($.trim($('input.fb-session-required-val').val()) != 0){
 
-                            if(e[10]){
+                            if(e[10] != '-1'){
                                 if(!e[11]){
                                     var span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
                                     span_apply.click(function(){
