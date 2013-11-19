@@ -9,7 +9,8 @@ $(document).ready(function(){
         if($(this).hasClass('reset'))
             reset = true;
         var counter = 0;
-        $('form.reset-password.grid-4').fadeOut(300);
+        $('form.reset-password').fadeOut(300);
+        $('.form-container').css({'width':'260px'});
         $('.container').children().fadeOut(300,
         function(){
 
@@ -21,10 +22,10 @@ $(document).ready(function(){
                         $('.title span').html('Ingreso');
                         if($('form.register').is(':visible'))
                                 $('form.register').fadeOut(300,function(){
-                                $('form.login.grid-4').fadeIn(300);
+                                $('form.login').fadeIn(300);
                             });
                         else{
-                            $('form.login.grid-4').fadeIn(300);
+                            $('form.login').fadeIn(300);
                         }
                     });
                 }else if(reset){
@@ -35,22 +36,23 @@ $(document).ready(function(){
                         $('.title span').html('Restaurar datos');
                         if($('form.login').is(':visible'))
                                 $('form.login').fadeOut(300,function(){
-                                $('form.reset-password.grid-4').fadeIn(300);
+                                $('form.reset-password').fadeIn(300);
                             });
                         else{
-                            $('form.reset-password.grid-4').fadeIn(300);
+                            $('form.reset-password').fadeIn(300);
                         }
                     });
                 }else{
                     $('.title span').html('¡Únete!');
                     $('.form-container').fadeIn(300,
                         function(){
+                        $(this).css({'width':'460px'});
                         if($('form.login').is(':visible'))
                                 $('form.login').fadeOut(300,function(){
-                                $('form.register.grid-4').fadeIn(300);
+                                $('form.register').fadeIn(300);
                             });
                         else{
-                            $('form.register.grid-4').fadeIn(300);
+                            $('form.register').fadeIn(300);
                         }
 
                     });

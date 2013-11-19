@@ -175,6 +175,15 @@
 form.center.grid-4{
     display: none;
 }
+
+.part_3 .btn_sub{
+    width: 100px;
+}
+
+.part_1{
+    margin-right: 20px!important;
+}
+
 form.register{
     padding-bottom: 30px;
 }
@@ -239,7 +248,7 @@ form.register{
             height: 25px;
             display: inline-block;
             float: left;
-            margin-right: 5px;
+            marbtn_subgin-right: 5px;
             position: relative;
 
         }
@@ -272,6 +281,9 @@ form.register{
             display: block !important;
 
         }
+        .register .line_divide{
+            border-color: #777;
+        }
             .social-login a{
                 width: 68px;
                 height: 20px;
@@ -284,9 +296,11 @@ form.register{
                 float: left !important;
             }
             .register .social-login .fb{
-               margin-left: 45px;
-            }
 
+            }
+.cont_reg{
+    height: 305px;
+}
 
 .arrow{
 

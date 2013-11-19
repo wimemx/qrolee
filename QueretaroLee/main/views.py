@@ -1711,7 +1711,8 @@ def book_crossing(request, **kwargs):
     index = 1
 
     for i in range(2):
-        books = models.Travel.objects.filter(status=i)
+        books = models.Travel.objects.filter(status=i).order_by('-date')
+
         index = 1
 
         for obj in books:
