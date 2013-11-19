@@ -245,8 +245,8 @@ form.register{
         }
         form p input[type='submit'], form p input.submit{
             background: #f2e28e !important;
-            border: 1px solid #eacea9;
-            padding:7px 10px 7px 10px;
+            border: 1px solid #ce8d51;
+            padding:7px 15px;
             float: right;
             font-family: 'Raleway', sans-serif;
             transition: all .5s;
@@ -259,14 +259,14 @@ form.register{
         form p .reset{
             float: left;
             text-decoration: underline;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
-            font-family: sans-serif;
+            font-family: 'Conv_fontscore.com_d-dinproregular';
         }
         .social-login{
             line-height: 30px;
-            font-size: 10px;
-            font-family: sans-serif;
+            font-size: 11px;
+            font-family: 'Conv_fontscore.com_d-dinproregular';
         }
         .register .social-login{
             display: block !important;

@@ -2091,7 +2091,13 @@ def register_ajax_book(request):
 
         if len(date) < 3:
             publishedDate = str(date[0]) + '-01-01'
-        isbn13 = attribute['industryIdentifiers'][1]['identifier']
+
+        isbn13 = ''
+
+        if 'industryIdentifiers' in attribute:
+            if len(attribute['industryIdentifiers']) > 1:
+                isbn13 = attribute['industryIdentifiers'][1]['identifier']
+
         country = response['items'][0]['accessInfo']['country']
         title = attribute['title']
         language = attribute['language']
