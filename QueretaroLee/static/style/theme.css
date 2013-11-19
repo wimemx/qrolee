@@ -2213,6 +2213,7 @@ p{
     box-shadow: 0px 5px 5px #9C9C9C;
     background: url('../img/register_form_bg.png');
     background-color: #f4e5c8;
+	background-repeat: repeat !important;
 }
 
 .dialog_btn_cancel{
