@@ -49,9 +49,6 @@ function populateCal(curr_month,$item, current_year){
         if(current_year === undefined)
             current_year = curr_year;
 
-        console.log('Month '+curr_month);
-        console.log('Year '+current_year);
-
         $.ajax({
             type: "POST",
             url: url,
@@ -65,8 +62,6 @@ function populateCal(curr_month,$item, current_year){
             },
             dataType: 'json'
         }).done(function(data){
-                console.log('---------- Event data -----------');
-                console.log(data);
                 var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
@@ -131,10 +126,9 @@ function populateCal(curr_month,$item, current_year){
                             span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
                             p_2.append(span_place_2);
                         }
-                        console.log(e);
                         if($.trim($('input.fb-session-required-val').val()) != 0){
 
-                            if(e[10]){
+                            if(e[10] != '-1'){
                                 if(!e[11]){
                                     var span_apply = $('<span class="apply fb-session-required fright">asistir</span>');
                                     span_apply.click(function(){
@@ -516,7 +510,50 @@ function search_book_code(form){
     return false;
 }
 
+
+function auth_user(response){
+    var url = window.location.href.split('/');
+    var ret = null;
+    $.ajax({
+        type: "POST",
+        url: '/registry/social_login/',
+        dataType: 'json',
+        async: false,
+        data: {
+            'code': url[url.length-2],
+            'response': JSON.stringify(response),
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val()
+        }
+    }).done(function(data) {
+            ret = data;
+        });
+    return ret;
+}
+
 $(document).ready(function(){
+    $('#comments').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '/qro_lee/policy_use/5/',
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(data){
+            if(data.response == 1){
+                $('.container_message').find('p').html('Tus comentarios han sido enviados, gracias.');
+                $('.container_message').find('.accept, .reject').click(function(){
+                    window.location.href = site_url;
+                });
+            }else{
+                $('.container_message').find('p').html('Al parecer hubo un error, favor de intentar mas tarde.');
+                $('.container_message').find('.accept').click(function(){
+                    window.location.href = site_url;
+                });
+            }
+            $('.container_message').fadeIn(300);
+        });
+    });
+
     $('.content .sidebar-a .month').click(function(){
         var m = $.trim($(this).html()).toLowerCase();
         var ele_num = (curr_month%3);
@@ -535,6 +572,23 @@ $(document).ready(function(){
             }
 
         }
+    });
+    $('.book_cro').find('a.fb').click(function(e){
+        e.preventDefault();
+        FB.login(function(response){
+            if (response.status == 'connected') {
+
+                FB.api('/me', function(response) {
+                    var ret = auth_user(response);
+                    if (ret){
+                        window.location.href = ret.success;
+                    }
+                });
+            } else {
+
+            }
+        }, {scope: 'publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events'});
+        return false;
     });
     $('.part_bottom .green_btn').click(function(){
 

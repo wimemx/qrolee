@@ -30,7 +30,7 @@
 
 
 html{
-    background: url('../img/bg.png');
+    background: url('../img/bg.png') !important;
     text-rendering: optimizeLegibility;
 }
 body{
@@ -51,6 +51,7 @@ input, textarea{
 }
 span, div{
     position: relative;
+    background-repeat: no-repeat !important;
 }
 .search input.search_entities{
     width: 161px;
@@ -283,9 +284,10 @@ p{
     line-height:normal;
 }
 .header{
-    background: url('../img/header_bg.png') repeat-x 0px 0px;
+    background: url('../img/header_bg.png') 0px 0px;
     position: relative;
     z-index: 1000;
+    background-repeat: repeat-x !important;
 }
 
     .logo{
@@ -939,6 +941,7 @@ p{
                 font-size: 11px;
                 margin-top: 10px;
                 clear: both;
+                text-align: right;
             }
     .entity .nav{
         float: left;
@@ -1778,7 +1781,7 @@ p{
     height: 11px;
     float: right;
     padding: 5px 5px;
-    width: 14px;
+    width: 13px;
     background: #f79882 url("/static/img/delete.png") no-repeat center;
     border: 1px solid #eb6346;
 }
@@ -2160,8 +2163,8 @@ p{
     margin-top: 52px !important;
     font-family: 'Raleway' sans-serif !important;
     color: #000000;
-    font-weight: normal !important;
-    font-size: 14px !important;
+    font-weight: 500;
+    font-size: 13px !important;
 }
 
 .place_pink{
@@ -2211,6 +2214,7 @@ p{
     box-shadow: 0px 5px 5px #9C9C9C;
     background: url('../img/register_form_bg.png');
     background-color: #f4e5c8;
+	background-repeat: repeat !important;
 }
 
 .dialog_btn_cancel{
@@ -2408,7 +2412,7 @@ p{
 }
 
 .title_author{
-    color: #b69035 !important;
+    color: #a77340 !important;
     text-decoration:underline !important;
     margin-top: -7px !important;
 }
@@ -2499,8 +2503,9 @@ p{
 
 .p_text_mini{
     font-size: 13px !important;
-    margin-top: 5px;
+    margin-top: 7px;
     color: #777;
+    margin-bottom: 14px;
 }
 .p_text_mini2{
     width: auto;
@@ -2760,7 +2765,7 @@ p{
 }
 
 .p-d-text-author{
-    font-size: 11px !important;
+    font-size: 12px !important;
 
 }
 
@@ -2984,7 +2989,7 @@ p{
 }
 
 .scrollbar_add{
-    right: -12px !important;
+    right: 9px !important;
 }
 
 .text_profile{
@@ -4594,3 +4599,33 @@ p input.green_btn{
 .drop_evt .bottom_messa{
     bottom: -255px!important;
 }
+
+.all_book .span_text{
+    font-weight: 500 !important
+}
+
+.container_title .item_ti{
+    line-height: 1.6
+}
+
+#comments{
+
+}
+    #comments p{
+
+    }
+        #comments input, #comments textarea{
+            margin-top: 10px;
+            width: 100%;
+            text-indent: 0px;
+            padding: 0px 8px 0px 8px;
+        }
+        #comments p textarea{
+            padding-top: 8px;
+            font-family: arial !important;
+            border: 1px solid #e4e4e4;
+        }
+        #comments .submit{
+            position: relative;
+            left: 12px !important;
+        }

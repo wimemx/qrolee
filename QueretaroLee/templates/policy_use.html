@@ -10,6 +10,7 @@
    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script type="text/javascript" src="/static/js/ajax.js"></script>
+
 {% endblock %}
 
 {% block head %}
@@ -17,6 +18,17 @@
 {% endblock %}
 
 {% block main_site %}
+    <div class="wrapper_message " >
+        <div class="container-16 container_message admin-alert">
+            <div class="alert-message">{% csrf_token %}
+                <span class="message-header">Administración</span>
+                <p>Estas apunto de eliminar a <span class="name"></span> <br>
+                    como <span class="element"></span></p>
+                <span class="accept">Aceptar</span>
+                <span class="reject">Cerrar</span>
+            </div>
+        </div>
+    </div>
     <div class="grid-16 news-feed policy_use policy_type_{{ type }} ">
         <div class="grid-14 no-margin">
             <span class="grid-11">
@@ -29,6 +41,8 @@
                         FAQs
                     {% elif type == 4 %}
                         ¿Qué es Querétaro lee?
+                    {% else %}
+                        ¿Tienes alguna duda o sugerencia?
                     {% endif %}
                 </span>
                 {% if type == 1 or type == 2 %}
@@ -582,6 +596,10 @@
                             <span class="content">
                                 <span>
                                     <p>
+										Para registrarte en Querétaro Lee es muy sencillo, solamente
+										tienes que oprimir el botón que dice "Únete" y te mostrará un 
+										formulario que te pedirá tu información.
+										Tambien puedes hacerlo a través de Facebook O Twitter.
                                     </p>
                                 </span>
                             </span>
@@ -663,6 +681,26 @@
                             esfuerzos para lograr que Querétaro sea la Capital Mundial de la Lectura.
                         </p>
                     </div>
+                {% else %}
+                    <div class="grid-10 center">
+                        <p>
+                            Tu opinion es muy importante para nosotros. Si tienes alguna duda o sugerencia
+                            porfavor ponte en contacto con nosotros.
+                        </p>
+                    </div>
+                    <form id="comments" class="grid-5 center margin-50" method="post" action="#success">
+                    {% csrf_token %}
+                        <p>Nombre
+                            <input type="text" class="required" name="name"/>
+                        </p>
+                        <p>Correo electronico
+                            <input type="text" class="regex_email" name="email"/>
+                        </p>
+                        <p>Comentarios
+                            <textarea name="comments" id="" cols="30" rows="10"></textarea>
+                        </p>
+                        <input class="green_btn fright submit" type="submit" value="Enviar"/>
+                    </form>
                 {% endif %}
             </span>
         </div>

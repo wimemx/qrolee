@@ -118,8 +118,9 @@ class TwitterBackend:
         token = oauth2.Token(settings.TWITTER_TOKEN, settings.TWITTER_TOKEN_SECRET)
         token.set_verifier(oauth_verifier)
         client = oauth2.Client(consumer, token)
-        resp, content = client.request('https://api.twitter.com/1.1/search/tweets.json?q='+username)
+        resp, content = client.request('https://api.twitter.com/1.1/users/search.json?q='+username)
         content = content.split('"')
+        print content
         name = str(content[57])
 
         name = name.split(' ')

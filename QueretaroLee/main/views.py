@@ -10,11 +10,12 @@ from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Q
 from django.core import serializers
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 from registry.models import Entity, Type, Event
 from account import models as account_models
 from registry import models, views, settings
-
 
 from decimal import Decimal
 import json as simplejson
@@ -28,6 +29,10 @@ import urllib2
 import urllib
 import httplib
 import os
+import urlparse
+import ast
+import oauth2
+import hashlib
 from xml.dom import minidom
 import xhtml2pdf.pisa as pisa
 import cStringIO as StringIO
@@ -421,15 +426,12 @@ def get_entity(request, **kwargs):
 def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
-    print entity
-    print int(request.POST.get('curr_month'))
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 location_id=int(entity), status=status)
         else:
             events_ = models.Event.objects.filter(status=status)
-            print events_
             if request.POST.get('id_entity') is not None:
                 if int(request.POST['id_entity']) != -1:
                     events_ = models.Event.objects.filter(
@@ -449,8 +451,7 @@ def get_events(request, **kwargs):
         if int(entity) != -1:
 
             current_month = int(request.POST.get('curr_month'))+1
-            start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
-
+            start_time =  datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
             if int(request.POST.get('curr_month')) >= 11:
                 end_time = datetime.datetime(start_time.year+1, 1, 1)
             else:
@@ -484,7 +485,10 @@ def get_events(request, **kwargs):
                     events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
                 else:
                     current_month = int(request.POST.get('curr_month'))+1
-                    start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+                    if current_month > 12:
+                        current_month -= 12
+                    start_time = datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
+
                     if int(request.POST.get('curr_month')) >= 11:
                         end_time = datetime.datetime(start_time.year+1, 1, 1)
                     else:
@@ -693,7 +697,6 @@ def advanced_search(request, **kwargs):
                 t = (key, query_list[key])
                 q_list.append(t)
 
-        print q_list
         query = [Q(x) for x in q_list]
 
         activity = None
@@ -1737,6 +1740,37 @@ def book_crossing(request, **kwargs):
 
 
 def book(request, **kwargs):
+    if 'twitter_login' in request.GET:
+        consumer = oauth2.Consumer(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        client = oauth2.Client(consumer)
+        resp, content = client.request(
+            settings.TWITTER_REQUEST_URL,
+            "POST", body=urllib.urlencode({
+                'oauth_callback': settings.SITE_URL+'qro_lee/book/'+request.GET.get('codes')
+            }))
+
+        if resp['status'] != '200':
+            raise Exception("Invalid response from Twitter.")
+        request_token = dict(urlparse.parse_qsl(content))
+
+        url = "%s?oauth_token=%s" % (settings.TWITTER_AUTH_URL,
+                                     request_token['oauth_token'])
+        url += '&codes='+kwargs['code']
+        twitterSession = models.TwitterSession.objects.create(
+            oauth_token=request_token['oauth_token'],
+            request_token=request_token)
+        twitterSession.save()
+        return HttpResponseRedirect(url)
+    elif 'oauth_token' in request.GET:
+        twitterSessionObj = models.TwitterSession.objects.get(
+            oauth_token=request.GET['oauth_token'])
+        request_token = ast.literal_eval(twitterSessionObj.request_token)
+        user = auth.authenticate(
+            oauth_verifier=request.GET['oauth_verifier'], request_token=request_token)
+        if user:
+            if user.is_active:
+                auth.login(request, user)
+
     template = kwargs['template_name']
 
     #state_1 = encontrado, state_2 = liberado
@@ -1785,7 +1819,7 @@ def book(request, **kwargs):
     state_1 = models.Travel.objects.filter(book__code=code, status=0)
     state_2 = models.Travel.objects.filter(book__code=code, status=1)
 
-    dict = {}
+    dict_ = {}
     index = 1
     for obj in list_users:
         picture = ''
@@ -1798,7 +1832,7 @@ def book(request, **kwargs):
             user_book = models.ExternalUser.objects.get(id=obj.user)
             user_book = user_book.name
 
-        dict[index] = {
+        dict_[index] = {
             'user': user_book,
             'travel': obj,
             'picture': picture
@@ -1809,7 +1843,7 @@ def book(request, **kwargs):
         'book': book,
         'create_user': create_user,
         'user_': user,
-        'list_users': dict,
+        'list_users': dict_,
         'state_1': state_1,
         'state_2': state_2,
         'count_user': count_user,
@@ -1984,10 +2018,59 @@ def qr_to_pdf(request, **kwargs):
 
 
 def policy_use(request, **kwargs):
-    template = kwargs['template_name']
-    context = {
-        'type': int(kwargs['type'])
-    }
-    if int(kwargs['type']) == 6:
-        template = '404.html'
-    return render(request, template, context)
+    if request.POST:
+        form = dict(request.POST)
+        if form['name'][0] != '' and form['email'][0] != '' and form['comments'][0] != '':
+            response = 1
+            subject = 'Comentarios Querétaro Lee'
+            content = """
+                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title></title>
+            <style></style>
+        </head>
+        <body>
+            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+                            <tr>
+                                <td align="center" valign="top">
+                                    <h3>Hola,</h3>
+                                    <p>Nombre: {0}</p>
+                                    <p>Correo: {1}</p>
+                                    Comentarios:
+                                    <p>{2}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
+            """
+            content = content.format(
+                form['name'][0], form['email'][0], form['comments'][0])
+            msg = EmailMessage(
+                subject, content, from_email=settings.EMAIL_HOST_USER, to=['fernando@wime.com.mx'], )
+            msg.content_subtype = 'html'
+            msg.send()
+        else:
+            response = 0
+
+        context = {
+            'response': response
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, content_type='application/json')
+    else:
+        template = kwargs['template_name']
+        context = {
+            'type': int(kwargs['type'])
+        }
+        if int(kwargs['type']) == 6:
+            template = '404.html'
+        return render(request, template, context)

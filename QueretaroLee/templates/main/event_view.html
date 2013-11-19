@@ -101,7 +101,7 @@
                             <p>{{ event.location_name|replace:'#' }}</p>
                         {% endif %}
                         <div class="d-buttoms fb-session-required">
-                            {% if event.fb_id and not is_attending %}
+                            {% if event.fb_id != '-1' and not is_attending %}
                                 <span  id="d-btn-attend" class="btn_social" >Asistir</span>
                             {% endif %}
                             <span id="d-btn-facebook" class="btn_social">facebook</span>
