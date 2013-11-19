@@ -10,11 +10,12 @@ from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Q
 from django.core import serializers
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 from registry.models import Entity, Type, Event
 from account import models as account_models
 from registry import models, views, settings
-
 
 from decimal import Decimal
 import json as simplejson
@@ -2017,10 +2018,59 @@ def qr_to_pdf(request, **kwargs):
 
 
 def policy_use(request, **kwargs):
-    template = kwargs['template_name']
-    context = {
-        'type': int(kwargs['type'])
-    }
-    if int(kwargs['type']) == 6:
-        template = '404.html'
-    return render(request, template, context)
+    if request.POST:
+        form = dict(request.POST)
+        if form['name'][0] != '' and form['email'][0] != '' and form['comments'][0] != '':
+            response = 1
+            subject = 'Comentarios Querétaro Lee'
+            content = """
+                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title></title>
+            <style></style>
+        </head>
+        <body>
+            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+                            <tr>
+                                <td align="center" valign="top">
+                                    <h3>Hola,</h3>
+                                    <p>Nombre: {0}</p>
+                                    <p>Correo: {1}</p>
+                                    Comentarios:
+                                    <p>{2}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
+            """
+            content = content.format(
+                form['name'][0], form['email'][0], form['comments'][0])
+            msg = EmailMessage(
+                subject, content, from_email=settings.EMAIL_HOST_USER, to=['fernando@wime.com.mx'], )
+            msg.content_subtype = 'html'
+            msg.send()
+        else:
+            response = 0
+
+        context = {
+            'response': response
+        }
+        context = simplejson.dumps(context)
+        return HttpResponse(context, content_type='application/json')
+    else:
+        template = kwargs['template_name']
+        context = {
+            'type': int(kwargs['type'])
+        }
+        if int(kwargs['type']) == 6:
+            template = '404.html'
+        return render(request, template, context)

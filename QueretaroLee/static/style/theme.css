@@ -4607,3 +4607,25 @@ p input.green_btn{
 .container_title .item_ti{
     line-height: 1.6
 }
+
+#comments{
+
+}
+    #comments p{
+
+    }
+        #comments input, #comments textarea{
+            margin-top: 10px;
+            width: 100%;
+            text-indent: 0px;
+            padding: 0px 8px 0px 8px;
+        }
+        #comments p textarea{
+            padding-top: 8px;
+            font-family: arial !important;
+            border: 1px solid #e4e4e4;
+        }
+        #comments .submit{
+            position: relative;
+            left: 12px !important;
+        }

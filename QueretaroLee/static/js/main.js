@@ -4038,4 +4038,5 @@ function link_active(){
         if($(this).html() == text_url)
             $(this).css({'color':'#edde83'});
     });
+
 }

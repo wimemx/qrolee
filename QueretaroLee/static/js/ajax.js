@@ -62,7 +62,6 @@ function populateCal(curr_month,$item, current_year){
             },
             dataType: 'json'
         }).done(function(data){
-                console.log(data);
                 var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
@@ -532,6 +531,29 @@ function auth_user(response){
 }
 
 $(document).ready(function(){
+    $('#comments').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '/qro_lee/policy_use/5/',
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(data){
+            if(data.response == 1){
+                $('.container_message').find('p').html('Tus comentarios han sido enviados, gracias.');
+                $('.container_message').find('.accept, .reject').click(function(){
+                    window.location.href = site_url;
+                });
+            }else{
+                $('.container_message').find('p').html('Al parecer hubo un error, favor de intentar mas tarde.');
+                $('.container_message').find('.accept').click(function(){
+                    window.location.href = site_url;
+                });
+            }
+            $('.container_message').fadeIn(300);
+        });
+    });
+
     $('.content .sidebar-a .month').click(function(){
         var m = $.trim($(this).html()).toLowerCase();
         var ele_num = (curr_month%3);
