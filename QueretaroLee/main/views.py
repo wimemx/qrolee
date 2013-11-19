@@ -1708,28 +1708,34 @@ def book_crossing(request, **kwargs):
     template = kwargs['template_name']
     dict_1 = {}
     dict_2 = {}
+    index = 1
 
     for i in range(2):
         books = models.Travel.objects.filter(status=i)
+        index = 1
 
         for obj in books:
-            if int(obj.type_user) == 1:
-                user_book = account_models.User.objects.get(id=obj.user)
-                user_book = user_book.first_name
-            else:
-                user_book = models.ExternalUser.objects.get(id=obj.user)
-                user_book = user_book.name
+            if index < 7:
+                if int(obj.type_user) == 1:
+                    user_book = account_models.User.objects.get(id=obj.user)
+                    user_book = user_book.first_name
+                else:
+                    user_book = models.ExternalUser.objects.get(id=obj.user)
+                    user_book = user_book.name
 
-            if i == 1:
-                dict_1[obj.book.id] = {
-                    'user': user_book,
-                    'travel': obj
-                }
-            else:
-                dict_2[obj.book.id] = {
-                    'user': user_book,
-                    'travel': obj
-                }
+                if i == 1:
+                    dict_1[obj.book.id] = {
+                        'user': user_book,
+                        'travel': obj
+                    }
+                else:
+                    dict_2[obj.book.id] = {
+                        'user': user_book,
+                        'travel': obj
+                    }
+
+            index = index + 1
+
 
     context = {
         'books_1': dict_1,

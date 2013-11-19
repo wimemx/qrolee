@@ -647,7 +647,7 @@
                     {% if user_profile.user.id == user.id %}
                         Mis listas
                     {% else %}
-                        Listas de {{ user_profile.user.username }}
+                        Listas de {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                     {% endif %}
                 </h3>
                 <span class="search fright grid-4">
