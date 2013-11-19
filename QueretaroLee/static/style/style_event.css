@@ -68,7 +68,8 @@
 }
 
 #d-btn-attend{
-
+    position: relative;
+    top: -10px;
     text-align: center;
     color: #ffffff;
     font-family: 'Raleway';

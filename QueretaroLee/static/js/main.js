@@ -182,7 +182,7 @@ function post_to_fb(caption, description, content, redirect, url){
         {
             method: 'feed',
             name: 'Qro_lee',
-            link: 'http://localhost:8000/',
+            link: 'http://qrolee.com/',
             caption: caption,
             description: description,
             message: content

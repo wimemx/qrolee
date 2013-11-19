@@ -450,8 +450,7 @@ def get_events(request, **kwargs):
         if int(entity) != -1:
 
             current_month = int(request.POST.get('curr_month'))+1
-            start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
-
+            start_time =  datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
             if int(request.POST.get('curr_month')) >= 11:
                 end_time = datetime.datetime(start_time.year+1, 1, 1)
             else:
@@ -485,7 +484,10 @@ def get_events(request, **kwargs):
                     events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
                 else:
                     current_month = int(request.POST.get('curr_month'))+1
-                    start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+                    if current_month > 12:
+                        current_month -= 12
+                    start_time = datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
+
                     if int(request.POST.get('curr_month')) >= 11:
                         end_time = datetime.datetime(start_time.year+1, 1, 1)
                     else:

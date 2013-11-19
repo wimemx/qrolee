@@ -62,7 +62,7 @@ function populateCal(curr_month,$item, current_year){
             },
             dataType: 'json'
         }).done(function(data){
-
+                console.log(data);
                 var flag = true;
                 var counter = 0;
                 $('.d-width-container-event').empty();
@@ -127,7 +127,6 @@ function populateCal(curr_month,$item, current_year){
                             span_place_2 = $('<span class="place2">'+truncText(location_name[1],30)+'</span>');
                             p_2.append(span_place_2);
                         }
-                        console.log(e);
                         if($.trim($('input.fb-session-required-val').val()) != 0){
 
                             if(e[10] != '-1'){

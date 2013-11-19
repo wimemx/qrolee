@@ -941,6 +941,7 @@ p{
                 font-size: 11px;
                 margin-top: 10px;
                 clear: both;
+                text-align: right;
             }
     .entity .nav{
         float: left;
