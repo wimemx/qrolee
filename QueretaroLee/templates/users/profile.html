@@ -154,7 +154,7 @@
                 </div>
             </div>
             {% else %}
-                <p>No hay actividad reciente</p>
+                <p class="d-not_found">No hay actividad reciente</p>
             {% endif %}
         </div>
         <div class="titles_author grid-4 fright">
@@ -647,7 +647,7 @@
                     {% if user_profile.user.id == user.id %}
                         Mis listas
                     {% else %}
-                        Listas de {{ user_profile.user.username }}
+                        Listas de {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                     {% endif %}
                 </h3>
                 <span class="search fright grid-4">
@@ -894,7 +894,7 @@
                                     {% if user_profile.user.first_name %}
                                         {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
                                     {% endif %}
-                                    aún no ha creado ninguna página
+                                    Aún no ha creado ninguna página
                                 </span>
                             {% endif %}
                         {% endfor %}

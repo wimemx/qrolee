@@ -111,8 +111,8 @@
         {% endif %}
         {% if type == 'title' %}
             <span class="wrapper fleft borde_author borde_title">
-                {% if not profile.picture %}
-                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.title }}"/>
+                {% if not profile.cover %}
+                    <img class="img_size_all" src="/static/img/default_vert.png" alt="{{ profile.title }}"/>
                 {% else %}
                     <img class="img_size_all" src="{{ profile.cover }}"
                          alt="{{ profile.cover }}"/>
@@ -202,7 +202,7 @@
                     </a>
                 {% endif %}
                 {% if not profile.picture %}
-                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.name }}"/>
+                    <img class="img_size_all" src="/static/img/default_vert.png" alt="{{ profile.name }}"/>
                 {% else %}
                     <img class="img_size_all" src="/static/media/users/{{ profile.user.id }}/{{ type }}/{{ profile.picture }}"
                          alt="{{ profile.picture }}"/>

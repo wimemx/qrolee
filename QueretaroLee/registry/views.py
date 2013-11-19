@@ -2091,7 +2091,13 @@ def register_ajax_book(request):
 
         if len(date) < 3:
             publishedDate = str(date[0]) + '-01-01'
-        isbn13 = attribute['industryIdentifiers'][1]['identifier']
+
+        isbn13 = ''
+
+        if 'industryIdentifiers' in attribute:
+            if len(attribute['industryIdentifiers']) > 1:
+                isbn13 = attribute['industryIdentifiers'][1]['identifier']
+
         country = response['items'][0]['accessInfo']['country']
         title = attribute['title']
         language = attribute['language']
@@ -2107,10 +2113,11 @@ def register_ajax_book(request):
         publisher = publisher.replace('<publisher>', '').replace('</publisher>', '').replace('</publisher>','')
         picture = dom.getElementsByTagName('image_url')[0].toxml()
         picture = picture.replace('<image_url>', '').replace('</image_url>', '')
-        pages = dom.getElementsByTagName('num_pages')[0].toxml()
-        pages = pages.replace('<num_pages>', '').replace('</num_pages>', '')
-        pages = pages.replace('<![CDATA[', '')
-        pages = int(pages.replace(']]>', ''))
+        #pages = dom.getElementsByTagName('num_pages')[0].toxml()
+        #pages = pages.replace('<num_pages>', '').replace('</num_pages>', '')
+        #pages = pages.replace('<![CDATA[', '')
+        #pages = int(pages.replace(']]>', ''))
+        pages = 500
         isbn13 = dom.getElementsByTagName('isbn13')[0].toxml()
         isbn13 = isbn13.replace('<isbn13>', '').replace('</isbn13>', '')
         isbn13 = isbn13.replace('<![CDATA[', '')

@@ -3357,7 +3357,8 @@ function show_dialog(){
                 span_text.append(p_text);
             }
         }
-        if($('.type').val()=="account"){
+
+        if($('.type').val()=="profile"){
             text = 'Cerrar cuenta';
             text2 = '¿Estás seguro que deseas eliminar tu cuenta de ' +
                 'Querétaro Lee ? Esta acción no se puede deshacer';

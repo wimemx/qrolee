@@ -58,62 +58,78 @@
             </p>
 
         </form>
-        <form class="register grid-4 center" action="/registry/account_register/">{% csrf_token %}
+        <form class="register grid-4 grid-8 center" action="/registry/account_register/">{% csrf_token %}
             <span class="banner">¿Ya tienes una cuenta?, <span class="login">íngresa aquí</span></span>
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Nombre
-                <input name="first_name" class="required" type="text"/>
-            </p>
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Apellidos
-                <input name="last_name" class="required" type="text"/>
-            </p>
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Usuario
-                <input name="username" class="required" type="text"/>
-            </p>
-
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Contraseña
-                <input name="password" class="required match pass" type="password"/>
-            </p>
-
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Verificar contraseña
-                <input name="password_match" class="required match pass_match" type="password"/>
-            </p>
-            <p>
-                <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -75px"></span> E-mail
-                <input name="email" class="required regex_email" type="text"/>
-            </p>
-            <p class="small">
-                <input type="hidden" value="0" name="redirect-create" class="redirect-create"/>
-                <span class="checkbox"><span></span></span> ¿Cuentas ya con un grupo de lectura u organización?
-                <span class="grid-3 create center no-margin">
-                    <span class="grid-3 select no-margin">
-                        <span class="text"></span>
-                        <span class="dropdown"></span>
-                        <select class="change" name="redirect">
-                            <option value="group">Grupo de lectura</option>
-                            <option value="organization">Organización</option>
-                        </select>
-                    </span>
+            <span class="center cont_reg">
+                <span class="no-margin grid-4 part_1">
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Nombre
+                        <input name="first_name" class="required" type="text"/>
+                    </p>
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Apellidos
+                        <input name="last_name" class="required" type="text"/>
+                    </p>
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -25px"></span>Usuario
+                        <input name="username" class="required" type="text"/>
+                    </p>
+                     <p class="small">
+                        <input type="hidden" value="0" name="redirect-create" class="redirect-create"/>
+                        <span class="checkbox"><span></span></span> ¿Cuentas ya con un grupo de lectura u organización?
+                        <span class="grid-3 create center no-margin">
+                            <span class="grid-3 select no-margin">
+                                <span class="text"></span>
+                                <span class="dropdown"></span>
+                                <select class="change" name="redirect">
+                                    <option value="group">Grupo de lectura</option>
+                                    <option value="organization">Organización</option>
+                                </select>
+                            </span>
+                        </span>
+                    </p>
                 </span>
-            </p>
-            <p>
-                <input value="Crear cuenta" class="center submit" type="submit"/>
-            </p>
-            <p class="social-login center">
-                Crear cuenta con
-                <span class="clear"></span>
-                <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
-scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
-                   style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
-                <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -20px" class="twitter"></a>
-            </p>
+                <span class="no-margin grid-4 part_2">
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Contraseña
+                        <input name="password" class="required match pass" type="password"/>
+                    </p>
+
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -50px"></span> Verificar contraseña
+                        <input name="password_match" class="required match pass_match" type="password"/>
+                    </p>
+                    <p>
+                        <span class="icon" style="background: url('../static/img/register_icons.png') no-repeat 0px -75px"></span> E-mail
+                        <input name="email" class="required regex_email" type="text"/>
+                    </p>
+                    <p>
+                        <span class="checkbox "><span class="terms">
+                        </span>
+                            <input type="hidden" class="terms_user" value="0" />
+                        </span><a style="color: #454545;" href="/qro_lee/policy_use/1">Acepto términos y condiciones</a><br>
+                        <a style="color: #454545;" href="/qro_lee/policy_use/1">Ver términos y condiciones</a>
+
+                    </p>
+                </span>
+                <span class="no-margin grid-8 line_divide"></span>
+                <span class="no-margin grid-8 part_3">
+                    <p class="social-login fleft">
+                        <span class="fleft">Crear cuenta con</span>
+                        <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&
+        scope=publish_stream,email,manage_pages,status_update,create_event,rsvp_event,user_groups,user_events"
+                           style="background: url('../static/img/social_login.png') no-repeat 0px 0px" class="fb"></a>
+                        <a href="/?twitter_login=true" style="background: url('../static/img/social_login.png') no-repeat 0px -20px" class="twitter"></a>
+                    </p>
+                    <p class="btn_sub fright">
+                        <input value="Crear cuenta" class="center submit" type="submit"/>
+                    </p>
+                </span>
+             </span>
         </form>
-        <img class="shadow" src="/static/img/form_shadow.png" alt=""/>
+
     </div>
+
     <div class="container">
     <span class="grid-4 center welcome_banner">
         <span></span>

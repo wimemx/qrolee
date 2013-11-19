@@ -129,7 +129,7 @@
         {% endif %}
 
         {% if entity_type.1 == 'organization' %}
-            <span class="member no-margin grid-6 no-margin">
+            <span class="member no-margin grid-4 no-margin">
                 <span class="grid-3 no-margin fright">
 
                 {% if member and entity.privacy == 0 %}
@@ -137,7 +137,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="membership" value="-1"/>
                         <input type="submit" class="btn fright" value="Eres seguidor">
-                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
+                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} seguidores</p>
                     </form>
                 {% elif member and entity.privacy != 0 %}
 
@@ -145,7 +145,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
                         <input type="submit" class="btn fright" value="Eres seguidor">
-                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
+                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} seguidores</p>
                     </form>
                 {% else %}
 
@@ -192,7 +192,7 @@
                 <img class="img_size_all" src="/static/media/users/{{ owner.id }}/entity/{{ entity.picture }}" alt="{{ entity.name }}"/>
             {% endif %}
         </span>
-        <span class="general-info no-margin grid-10">
+        <span class="general-info no-margin grid-9">
             <h3 class="title {{ entity.type.name }}">{{ entity.name|capfirst }}</h3>
             <span class="social grid-7 no-margin">
                 {% if entity.fb != '' %}
