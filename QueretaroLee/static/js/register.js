@@ -85,9 +85,19 @@ $(document).ready(function(){
                 }
             });
     });
+
     $('form').submit(function(e){
+
         var $form = $(this);
-        if(valid_form){
+        var terms = true;
+        if($form.hasClass('register')){
+            var ter = parseInt($('.terms_user').val());
+            if(ter == 0)
+                terms = false;
+        }
+
+
+        if(valid_form & terms){
             $form.find('p').each(function(){
                 $(this).find('input[type=text]').css({
                     'border-color': '#c2baab'
@@ -134,16 +144,24 @@ $(document).ready(function(){
     $('.checkbox span').click(function(){
         if($.trim($(this).html()) == ''){
             $(this).html('×');
-            $('.create').animate({
-                'height': 30
-            });
-            $('.redirect-create').val(1);
+            if( ! $(this).hasClass('terms')){
+                $('.create').animate({
+                    'height': 30
+                });
+                $('.redirect-create').val(1);
+            }else{
+                $('.terms_user').val('1');
+            }
         }else{
             $(this).html('');
-            $('.create').animate({
-                'height': 0
-            });
-            $('.redirect-create').val(0);
+            if( ! $(this).hasClass('terms')){
+                $('.create').animate({
+                    'height': 0
+                });
+                $('.redirect-create').val(0);
+            }else{
+                $('.terms_user').val('0');
+            }
         }
 
     });
