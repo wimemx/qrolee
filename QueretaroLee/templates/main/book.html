@@ -60,7 +60,7 @@
                     <p class="text_profile">
                         Creado por:
                         <span class="title_author">
-                            {{ book.user.username }}
+                            {{ book.user.first_name }} {{ book.user.last_name }}
                         </span>
                         {% if create_user %}
                             {{ create_user.0.address }}

@@ -1832,7 +1832,7 @@ def book(request, **kwargs):
         picture = ''
         if int(obj.type_user) == 1:
             user_book = account_models.User.objects.get(id=obj.user)
-            user_book = user_book.username
+            user_book = user_book.first_name
             picture = models.Profile.objects.get(user__id=obj.user)
             picture = picture.picture
         else:
