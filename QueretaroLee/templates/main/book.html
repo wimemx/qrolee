@@ -91,7 +91,7 @@
                     {% elif not status_book.status %}
                         <span style="background: url(/static/img/book_user.png) no-repeat 0px 0px;
                         height: 100px;width: 100px;float: left;"></span>
-                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ find_user.name }}</span>
+                        <span class="title grid-4" style="margin-top: 20px;margin-left: 10px;">Este libro lo encontró {{ find_user.name }} {{ find_user.last_name }</span>
                         <span class="text_by grid-4"></span>
 
                     {% endif %}
@@ -357,7 +357,7 @@
                                         </span>
                                         <span class="grid-6 din-r answer fright no-margin">
                                             <span class="name title grid-6 no-margin ">
-                                                {{ value.user }}
+                                                {{ value.user }} {{ value.last_name }}
                                             </span>
                                             <span class="gray_text grid-6 no-margin " >
                                                 {% if not value.travel.status %}
