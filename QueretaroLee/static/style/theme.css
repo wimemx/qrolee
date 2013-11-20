@@ -2077,6 +2077,7 @@ p{
 .item_list{
     height: 145px !important;
     position: relative;
+    margin-top: 20px;
     padding: 0px 0px 0px 0px !important;
 }
 

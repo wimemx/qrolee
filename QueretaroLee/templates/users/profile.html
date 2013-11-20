@@ -642,13 +642,15 @@
     <div class="grid-16 load no-margin my_list">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-10 fleft">
-                    {% if user_profile.user.id == user.id %}
-                        Mis listas
-                    {% else %}
-                        Listas de {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
-                    {% endif %}
-                </h3>
+                <span class="grid-7 fleft">
+                    <h3 class="title fleft">
+                        {% if user_profile.user.id == user.id %}
+                            Mis listas
+                        {% else %}
+                            Listas de {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
+                        {% endif %}
+                    </h3>
+                </span>
                 <span class="search fright grid-4">
                     <input class="type" type="hidden" value="List"/>
                     <input class="my_list_typ" type="hidden" value="0"/>
@@ -814,7 +816,7 @@
     <div class="grid-16 load no-margin">
         <div class="sidebar-a grid-15">
             <div class="heading">
-                <h3 class="title grid-6 fleft">
+                <h3 class="title grid-7 fleft">
                     {% if user_profile.user.id == user.id %}
                         Mis páginas
                     {% else %}

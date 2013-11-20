@@ -187,6 +187,103 @@ class Travel(models.Model):
         return '%s, %s' % (self.book, self.user)
 
 
+class Course(models.Model):
+    name = models.CharField(max_length=255)
+    published = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+    type = models.CharField(max_length=255)
+    type_id = models.IntegerField(max_length=5)
+    status = models.BooleanField()
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.published)
+
+
+class Module(models.Model):
+    name = models.CharField(max_length=255)
+    text =  models.TextField(max_length=2000)
+    order = models.IntegerField(max_length=5)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField()
+    course = models.ForeignKey(Course)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.order)
+
+class Content(models.Model):
+    name = models.CharField(max_length=255)
+    text =  models.TextField(max_length=2000)
+    order = models.IntegerField(max_length=5)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField()
+    module = models.ForeignKey(Module)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.order)
+
+
+class Test(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(max_length=2000)
+    available = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+    meta = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.meta)
+
+class Inscription(models.Model):
+    course = models.ForeignKey(Course)
+    user = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.course, self.user)
+
+
+class Question(models.Model):
+    title = models.CharField(max_length=255)
+    meta = models.CharField(max_length=255, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(max_length=5)
+    type = models.IntegerField(max_length=5)
+    parent_id = models.IntegerField(max_length=5, null=True)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.title, self.order)
+
+
+class Question_Type(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(max_length=2000)
+    help_text = models.CharField(max_length=255)
+    meta = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.help_text)
+
+
+class Answer(models.Model):
+    value = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(max_length=5)
+    question = models.ForeignKey(Question)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.value, self.order)
+
+class Option(models.Model):
+    label = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+    order = models.IntegerField(max_length=5)
+    meta = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+    question = models.ForeignKey(Question)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.label, self.question)
+
+
 class MemberToObject(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=0)
