@@ -797,8 +797,8 @@ p{
     }
         .private-icon span{
             margin-left: 5px;
+            margin-right: 5px;
             color: #334845;
-            margin-top: -10px;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
             width: 51px;

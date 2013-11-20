@@ -92,13 +92,13 @@
                             <span style="width: 100px;left: -30px;position: relative;" class="btn no-action no-ajax fleft solSend">Solicitud enviada</span>
                             <p class="din-r followers fleft followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                             <p class="private-icon fright">
-                                <img src="/static/img/private_icon.png" alt=""/><span class="fright" style="margin-top: 0px">Grupo Privado</span>
+                                <img class="fright" src="/static/img/private_icon.png" alt=""/><span class="fright" style="margin-top: 0px">Grupo Privado</span>
                             </p>
                             {% else %}
                             <span class="btn no-ajax fright">Seguir</span>
                             <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} miembros</p>
                             <p class="private-icon fright">
-                                <img src="/static/img/private_icon.png" alt=""/>
+                                <img class="fright"  src="/static/img/private_icon.png" alt=""/>
                                 <span class="fright">
                                     {% if entity_type.1 == 'group' %}
                                         Grupo

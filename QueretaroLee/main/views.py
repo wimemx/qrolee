@@ -118,7 +118,7 @@ def get_entities(request, **kwargs):
             #print a.user_id
             if request.user.id == a.user_id:
                 request_user_is_admin.append(e.id)
-    user_entities = entity.filter(id__in=request_user_is_admin)
+    user_entities = entity.filter(id__in=request_user_is_admin,status=status)
     entity = entity.exclude(id__in=request_user_is_admin)
 
     if request.POST.get('field_search_entity'):
@@ -139,7 +139,7 @@ def get_entities(request, **kwargs):
                     #print a.user_id
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
-            user_entities = entity.filter(id__in=request_user_is_admin)
+            user_entities = entity.filter(id__in=request_user_is_admin,status=status)
             entity = entity.exclude(id__in=request_user_is_admin)
 
 
