@@ -414,6 +414,7 @@ def delete_entity(request, **kwargs):
 def update_entity(request, **kwargs):
     field = request.POST.get('field')
     value = request.POST.get('value')
+    print value
     if field == 'privacy':
         if value == 'Publica':
             value = 0

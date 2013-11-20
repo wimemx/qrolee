@@ -145,20 +145,20 @@
                         {% csrf_token %}
                         <input type="hidden" name="follow_private" value="-1"/>
                         <input type="submit" class="btn fright" value="Eres seguidor">
-                    <p class="din-r followers fright followerText" style="font-size: 12px !important">{{ followers|total_members }} seguidores</p>
+                    <p class="din-r followers fright fol|lowerText" style="font-size: 12px !important">{{ followers|total_members }} seguidores</p>
                     </form>
                 {% else %}
 
                     {% if entity.privacy != 0 and not request_sent %}
                         <span class="btn no-ajax fright">Seguir</span>
                             <p class="private-icon fright">
-                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                                <img class="fright" src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                             </p>
                     {% else %}
                         {% if request_sent %}
                             <span style="width: 100px;left: -30px;position: relative;" class="btn no-action no-ajax fleft">Solicitud enviada</span>
                             <p class="private-icon fright">
-                                <img src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
+                                <img class="fright" src="/static/img/private_icon.png" alt=""/><span class="fright">Organizacion <br> Privada</span>
                             </p>
                         {% else %}
                             <form class="no_ajax fright" action="/qro_lee/entity/{{ entity_type.1 }}/{{ entity.id }}/" method="post">

@@ -1806,7 +1806,7 @@ def book(request, **kwargs):
             find_user = models.Profile.objects.filter(user__id=status_book.user)
             if find_user:
                 find_user = {
-                    'name': find_user[0].user.username
+                    'name': find_user[0].user.first_name
                 }
         else:
             find_user = models.ExternalUser.objects.filter(id=status_book.user)

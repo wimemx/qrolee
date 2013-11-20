@@ -2023,7 +2023,7 @@ function create_template(type, result,i, create_user){
             h3.html(result[i].first_name+' '+result[i].last_name);
             if(result[i].extras[0][0]){
                 a = $('<a class="spot" href="/qro_lee/profile/title/'+result[i].extras[0][1]+'">'+result[i].extras[0][0]+'</a>')
-                p.html('Esta leyendo ');
+                p.html('Está leyendo ');
             }
             p.append(a);
             item.append(p);
