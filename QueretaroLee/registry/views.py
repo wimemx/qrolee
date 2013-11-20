@@ -1979,7 +1979,11 @@ def cheking_book(request):
         user = request.user.id
 
     list['user'] = user
-    print list
+    last_travel = models.Travel.objects.filter(book__code=code_book).latest('date')
+
+    if user != last_travel.user:
+        cheking = True
+        message = 1
 
     if not cheking:
         travel = models.Travel.objects.create(**list)
