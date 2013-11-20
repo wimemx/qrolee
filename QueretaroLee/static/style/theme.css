@@ -683,7 +683,6 @@ p{
 
 .entity{
     margin: 20px 0px 15px 0px !important;
-    border-bottom: 1px solid #acacac;
 }
 .entity_scro{
     margin-top: 62px!important;
@@ -4609,10 +4608,10 @@ p input.green_btn{
 }
 
 #comments{
-
+    clear: left;
 }
     #comments p{
-
+        font-family: 'Raleway';
     }
         #comments input, #comments textarea{
             margin-top: 10px;

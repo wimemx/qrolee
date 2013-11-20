@@ -41,8 +41,6 @@
                         FAQs
                     {% elif type == 4 %}
                         ¿Qué es Querétaro lee?
-                    {% else %}
-                        ¿Tienes alguna duda o sugerencia?
                     {% endif %}
                 </span>
                 {% if type == 1 or type == 2 %}
@@ -682,13 +680,20 @@
                         </p>
                     </div>
                 {% else %}
-                    <div class="grid-10 center">
+                    <h3 class="title grid-6 center no-margin">
+                        ¿Tienes alguna duda o sugerencia?
+                    </h3>
+                    <div class="grid-6 center no-margin margin-30">
                         <p>
-                            Tu opinion es muy importante para nosotros. Si tienes alguna duda o sugerencia
-                            porfavor ponte en contacto con nosotros.
+                            Querétaro Lee es una iniciativa de un grupo de personas e
+                            instituciones cuya pasión es la lectura y su difusión.
+                        </p>
+                        <p>
+                            ¿Tienes alguna duda o sugerencia? Nos encantaria escuchar
+                            tus comentarios, por favor envianos un correo.
                         </p>
                     </div>
-                    <form id="comments" class="grid-5 center margin-50" method="post" action="#success">
+                    <form id="comments" class="grid-6 center no-margin margin-30 " method="post" action="#success">
                     {% csrf_token %}
                         <p>Nombre
                             <input type="text" class="required" name="name"/>

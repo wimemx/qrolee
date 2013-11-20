@@ -97,11 +97,12 @@
 
                     {% endif %}
                 </span>
+            div.ruler
             <div class="grid-16 content book_cro single no-margin">
                 <div class="grid-15 no-margin">
                     <input type="hidden" value="{{ book.code }}" class="code_book"/>
                     <input type="hidden" value="2" class="type_"/>
-                    <div class="grid-15 no-margin no-pandding book_register">
+                    <div style="border:none;" class="grid-15 no-margin no-pandding book_register">
                         {% if cheking %}
                             {% if user.is_active %}
                                 <div class="grid-5 no-margin">
