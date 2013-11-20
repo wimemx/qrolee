@@ -191,8 +191,8 @@ form.register{
         display: block;
         margin: 30px 0px 20px 0px;
         width: 100%;
-        font-size: 10px;
-        text-align: center;
+        font-size: 13px;
+        text-align: left;
         font-weight: 400;
         font-family: sans-serif;
     }
@@ -205,6 +205,9 @@ form.register{
         color: #6DA278;
         font-size: 11px;
         font-family: 'Raleway';
+    }
+    .banner .login{
+    color: #f26e51;
     }
         .banner span{
             cursor: pointer;
