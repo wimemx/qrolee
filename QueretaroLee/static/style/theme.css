@@ -797,8 +797,8 @@ p{
     }
         .private-icon span{
             margin-left: 5px;
+            margin-right: 5px;
             color: #334845;
-            margin-top: -10px;
         }
         .entity .member .brown_btn,.events .member .brown_btn{
             width: 51px;
@@ -2077,6 +2077,7 @@ p{
 .item_list{
     height: 145px !important;
     position: relative;
+    margin-top: 20px;
     padding: 0px 0px 0px 0px !important;
 }
 
@@ -2132,7 +2133,7 @@ p{
 .title_book{
     margin-bottom: 0px !important;
     margin-top: 18px !important;
-    width: auto !important;
+    width: 150px !important;
 }
 
 .Title .title_book{
@@ -3886,6 +3887,12 @@ textarea{
 
 .selec_reg .select_wrapper{
     margin-bottom: 10px!important;
+}
+.selec_reg .sel_val{
+    top:0px;
+}
+.selec_reg .label{
+    top:2px;
 }
 
 .book_register input ,.book_register textarea{

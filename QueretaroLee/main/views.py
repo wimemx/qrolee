@@ -118,7 +118,7 @@ def get_entities(request, **kwargs):
             #print a.user_id
             if request.user.id == a.user_id:
                 request_user_is_admin.append(e.id)
-    user_entities = entity.filter(id__in=request_user_is_admin)
+    user_entities = entity.filter(id__in=request_user_is_admin,status=status)
     entity = entity.exclude(id__in=request_user_is_admin)
 
     if request.POST.get('field_search_entity'):
@@ -139,7 +139,7 @@ def get_entities(request, **kwargs):
                     #print a.user_id
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
-            user_entities = entity.filter(id__in=request_user_is_admin)
+            user_entities = entity.filter(id__in=request_user_is_admin,status=status)
             entity = entity.exclude(id__in=request_user_is_admin)
 
 
@@ -1806,13 +1806,15 @@ def book(request, **kwargs):
             find_user = models.Profile.objects.filter(user__id=status_book.user)
             if find_user:
                 find_user = {
-                    'name': find_user[0].user.username
+                    'name': find_user[0].user.first_name,
+                    'last_name': find_user[0].user.last_name
                 }
         else:
             find_user = models.ExternalUser.objects.filter(id=status_book.user)
             if find_user:
                 find_user = {
-                    'name': find_user[0].name
+                    'name': find_user[0].name,
+                    'last_name': ''
                 }
 
         if request.user :
@@ -1830,9 +1832,11 @@ def book(request, **kwargs):
     index = 1
     for obj in list_users:
         picture = ''
+        last_name = ''
         if int(obj.type_user) == 1:
             user_book = account_models.User.objects.get(id=obj.user)
-            user_book = user_book.username
+            last_name = user_book.last_name
+            user_book = user_book.first_name
             picture = models.Profile.objects.get(user__id=obj.user)
             picture = picture.picture
         else:
@@ -1841,6 +1845,7 @@ def book(request, **kwargs):
 
         dict_[index] = {
             'user': user_book,
+            'last_name': last_name,
             'travel': obj,
             'picture': picture
         }

@@ -288,7 +288,9 @@ def register(request):
         if isinstance(val, list):
             copy[e] = val[0]
     entity = copy
-    entity['website']='http://' + str(entity['website'])
+    if entity['website']:
+        entity['website']= 'http://' + str(entity['website'])
+
     entity = models.Entity.objects.create(**entity)
     entity.save()
     if cat_ids:
@@ -412,6 +414,7 @@ def delete_entity(request, **kwargs):
 def update_entity(request, **kwargs):
     field = request.POST.get('field')
     value = request.POST.get('value')
+    print value
     if field == 'privacy':
         if value == 'Publica':
             value = 0
@@ -1976,7 +1979,11 @@ def cheking_book(request):
         user = request.user.id
 
     list['user'] = user
-    print list
+    last_travel = models.Travel.objects.filter(book__code=code_book).latest('date')
+
+    if user != last_travel.user and not last_travel.is_new and not last_travel.status:
+        cheking = True
+        message = 1
 
     if not cheking:
         travel = models.Travel.objects.create(**list)

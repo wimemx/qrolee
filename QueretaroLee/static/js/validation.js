@@ -80,7 +80,7 @@ $(document).ready(function(){
 
                             value += text;
                         }else{
-                            value += 'constraseña nuevamente';
+                            value += 'contraseña nuevamente';
                         }
                         span.html(value);
                         $(this).find('input').css({
@@ -194,7 +194,7 @@ function closet($ele){
 }
 
 var url_regex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-var alpha_numeric_regex = /[^a-zA-Z0-9\.\-áéíóúñÁÉÍÓÚÑ()\s]+/;
+var alpha_numeric_regex = /[^a-zA-Z0-9\.\-áéíóúñÁÉÍÓÚÑ:()\s]+/;
 var numeric_regex = /[\d]+/;
 var alpha_regex = /[0-9]+/;
 var time_regex = /([0-9]{2}[:]){2}[0-9]{2}/;
