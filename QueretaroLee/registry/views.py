@@ -2355,8 +2355,9 @@ def recover_password(request):
         reset_code = hashlib.md5(user[0].username+str(user[0].last_login))
         pass_str = reset_code.hexdigest()
         pass_str = list(pass_str)
-
-        pass_str = pass_str[:3]+list(str(user[0].id))+pass_str[3:]
+        uid_len = str(len(str(user[0].id)))
+        uid_len = list(uid_len)
+        pass_str = pass_str[:3]+uid_len[:]+list(str(user[0].id))+pass_str[3:]
         pass_str = "".join(pass_str)
         context = Context({
             'user': user[0],
@@ -2381,14 +2382,17 @@ def recover_password(request):
 
 def reset_password(request, **kwargs):
     code = kwargs['code']
-    u_id = int(code[3])
+    uid_len = int(code[3])
+    u_id = int(code[4:4+uid_len])
     user = models.User.objects.filter(
         id=u_id)
     if user:
         u_code = hashlib.md5(user[0].username+str(user[0].last_login))
         u_code = u_code.hexdigest()
         u_code = list(u_code)
-        u_code = u_code[:3]+list(str(user[0].id))+u_code[3:]
+        uid_len = str(len(str(user[0].id)))
+        uid_len = list(uid_len)
+        u_code = u_code[:3]+uid_len+list(str(user[0].id))+u_code[3:]
         u_code = "".join(u_code)
         user = user[0]
         if u_code == code:
