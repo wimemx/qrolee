@@ -1181,6 +1181,7 @@ function create_discussion(entity_id, name, content, type){
             var $p = $('<p class="no-margin">Por <a class="spot category" href="#">' +discuss.username+'</a></p><p style="margin-top:5px;" class="no-margin gray_text">0 comentarios</p></span>');
             $span.append($a);
             $span.append($p);
+
             $span.find('a.title').click(function(e){
                 $(this).parent().parent().find('.item').each(function(){
                     $(this).removeClass('active');
@@ -1190,6 +1191,9 @@ function create_discussion(entity_id, name, content, type){
                     e.preventDefault();
                     discussion($(this).attr('id'), type);
                     return false;
+            });
+            $span.click(function(){
+                $(this).find('a.title').trigger('click');
             });
             $span.find('a.title').trigger('click');
             if($('.discussion').find('.overview .item').length > 0)

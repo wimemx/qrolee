@@ -319,10 +319,8 @@
             {% endif %}
         </div>
         <div class="coments load-margin grid-10 no-margin">
-                {% if entity_type.1 == 'group' and not member %}
-                    <div style="display: none;" >
-                {% else %}
-                    <div>
+                {% if entity_type.1 != 'group' and not member %}
+
                     <span style="display:none;" class="discussion_response main grid-9 no-margin fleft">
                     <span class="respond main fleft">
                         <span class="wrapper no-margin fleft grid-1">
@@ -359,7 +357,7 @@
                     </div>
                 {% endif %}
 
-                </div>
+
                 <div class="titles_author grid-5 border_left">
                     {% if type == 'author' %}
                         <div class="container_titles grid-5 no-margin border_bottom">

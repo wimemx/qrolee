@@ -1005,7 +1005,8 @@ p{
             margin-right: 20px;
         }
         .content.events .sidebar-a #scrollbar1 .viewport{
-            height: 480px;
+            max-height: 480px;
+            min-height: 100px;
         }
         .content.single.events .active-event{
             background: #f89883 !important;
@@ -1222,7 +1223,8 @@ p{
             border: 1px solid #D5B16E;
         }
         .group .content .sidebar-a #scrollbar1 .viewport{
-            height: 440px;
+            max-height: 440px;
+            min-height: 100px;
         }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
@@ -1664,7 +1666,7 @@ p{
 
 
 #scrollbar1 { width: 100%; clear: both; position:relative;}
-#scrollbar1 .viewport { width: 100%; height: 510px; overflow: hidden; position: relative; }
+#scrollbar1 .viewport { width: 100%; max-height: 510px; min-height: 150px; overflow: hidden; position: relative; }
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #a77340; }
@@ -1958,6 +1960,7 @@ p{
 }
     .lightbox-wrapper #scrollbar1 .viewport{
         height: 300px;
+
     }
         .lightbox-wrapper #scrollbar1 .track{
             position: absolute;
