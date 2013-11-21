@@ -1798,7 +1798,7 @@ function create_template(type, result,i, create_user){
 
     }else if(type == 'category'){
         span = $('<div class="advanced_search fleft"></div>');
-        var p = $('<p class="title">Búsqueda por categoria</p>');
+        var p = $('<p style="margin-bottom:10px;" class="title">Búsqueda por categoria</p>');
         span.append(p);
         $.each(result,function(indx){
             p = $('<p class="checkbox '+result[indx].id+'"></p>');
@@ -1809,7 +1809,7 @@ function create_template(type, result,i, create_user){
         if(i == 3){
             var filter = $('<div style="margin-top:20px;" class="search_filters fleft">');
             var _span =  $('<span class="select_wrapper date alpha fright">');
-            var inner_span = $('<span class="grid-2 select date no-margin">');
+            var inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
             _span.append(inner_span);
             var text = $('<span class="text">Distancia (km)</span>');
             inner_span.append(text);
@@ -1839,7 +1839,7 @@ function create_template(type, result,i, create_user){
 
         var filter = $('<div class="search_filters fleft">');
         span =  $('<span class="select_wrapper date alpha fright">');
-        var inner_span = $('<span class="grid-2 select date no-margin">');
+        var inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
         span.append(inner_span);
         var text = $('<span class="text">Desde</span>');
         inner_span.append(text);
@@ -1856,7 +1856,7 @@ function create_template(type, result,i, create_user){
         span.append(input_init);
         filter.append(span);
         span =  $('<span class="select_wrapper date alpha fright">');
-        inner_span = $('<span class="grid-2 select date no-margin">');
+        inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
         span.append(inner_span);
         text = $('<span class="text">Hasta</span>');
         inner_span.append(text);
@@ -1864,7 +1864,7 @@ function create_template(type, result,i, create_user){
         span.append(input_end);
         filter.append(span);
         span = $('<span class="advanced_search fleft">');
-        var p = $('<p class="title">Búsqueda por fecha</p>');
+        var p = $('<p style="margin-bottom:10px;"  class="title">Búsqueda por fecha</p>');
         span.append(p);
         span.append(filter);
         input_end.datepicker({

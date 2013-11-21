@@ -1531,8 +1531,12 @@ def get_profile(request, **kwargs):
             'count_vot': count_vot
         }
 
-    discussions = account_models.Discussion.objects.get_or_create(
-        object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=1)
+    if t != 'L':
+        discussions = account_models.Discussion.objects.get_or_create(
+            object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=1)
+    else:
+        discussions = account_models.Discussion.objects.get_or_create(
+            object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=profile.user_id)
     if discussions:
         discussions = discussions[0]
     else:
