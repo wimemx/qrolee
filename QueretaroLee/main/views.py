@@ -1622,9 +1622,13 @@ def search_api(request, **kwargs):
 
 
 def get_a_discussion(request):
+    try:
+        id = int(request.POST.get('id'))
+    except Exception:
+        id = request.POST.get('id')
     if 'erase' in request.POST:
         discussion = account_models.Discussion.objects.get(
-            id=int(request.POST.get('erase')))
+            id=id)
         discussion.status = 0
         discussion.save()
         context = {
@@ -1632,10 +1636,6 @@ def get_a_discussion(request):
         }
         context = simplejson.dumps(context)
         return HttpResponse(context, content_type='application/json')
-    try:
-        id = int(request.POST.get('id'))
-    except Exception:
-        id = request.POST.get('id')
     discussion = account_models.Discussion.objects.get(
         id=id)
     discussion_list = get_discussion(discussion=discussion)
