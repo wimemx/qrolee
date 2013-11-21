@@ -51,12 +51,14 @@ class Genre(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.name, self.status)
 
+
 class GenreTitle(models.Model):
     title = models.ForeignKey(Title)
     genre = models.ForeignKey(Genre)
 
     def __unicode__(self):
         return '%s, %s' % (self.title.title, self.genre.name)
+
 
 class List(models.Model):
     name = models.CharField(max_length=255)
@@ -150,19 +152,21 @@ class Discussion(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     meta = models.CharField(max_length=1)
     status = models.BooleanField(default=True)
-    entity = models.ForeignKey(registry_models.Entity)
+    type = models.CharField(max_length=1, default='E')
+    object = models.IntegerField()
     user = models.ForeignKey(User)
     parent_discussion = models.ForeignKey('self', blank=True, null=True)
 
     def as_json(self):
         user_pic = registry_models.Profile.objects.get(user_id=self.user.id)
         return dict(id=self.id, name=self.name, content=self.content,
-                    date=self.date.isoformat(), entity=self.entity.id, user=self.user.id,
-                    username=self.user.first_name + ' ' + self.user.last_name , parent_discussion=self.parent_discussion.id,
-                    user_pic=user_pic.picture,)
+                    date=self.date.isoformat(), object=self.object, user=self.user.id,
+                    username=self.user.first_name + ' ' + self.user.last_name, parent_discussion=self.parent_discussion.id,
+                    user_pic=user_pic.picture, type=self.type)
 
     def parent_as_json(self):
         user_pic = registry_models.Profile.objects.get(user_id=self.user.id)
         return dict(id=self.id, name=self.name, content=self.content,
-                    date=self.date.isoformat(), entity=self.entity.id, user=self.user.id,
-                    username=self.user.first_name + ' ' + self.user.last_name, user_pic=user_pic.picture,)
+                    date=self.date.isoformat(), object=self.object, user=self.user.id,
+                    username=self.user.first_name + ' ' + self.user.last_name,
+                    user_pic=user_pic.picture, type=self.type)

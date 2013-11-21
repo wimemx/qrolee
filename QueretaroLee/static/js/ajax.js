@@ -1105,7 +1105,7 @@ $(document).ready(function(){
             $(this).parent().addClass('active');
             $('.discussion_contents .discuss').remove();
             e.preventDefault();
-            discussion($(this).attr('id'));
+            discussion($(this).attr('id'), $('input.object_type').val());
             return false;
         });
         $('.discussion .overview .item').click(function(){
@@ -1123,10 +1123,10 @@ $(document).ready(function(){
 
             var name = $('.create-discussion input').val();
             var content = $('.create-discussion textarea').val();
-            create_discussion($('input.entity').val(), name, content);
+            create_discussion($('input.entity').val(), name, content, $('input.object_type').val());
         });
     }else if($('.coments .discussion').length > 0){
-        discussion($('input.discussion_id').val());
+        discussion($('input.discussion_id').val(), $('input.object_type').val());
     }
 
 });
@@ -1161,7 +1161,7 @@ function api_isbn_search(isbn){
 
 var textarea_flag = false;
 var textarea_flag2 = false;
-function create_discussion(entity_id, name, content){
+function create_discussion(entity_id, name, content, type){
     $.ajax({
         type: "POST",
         url: '/qro_lee/create_discussion/',
@@ -1169,7 +1169,8 @@ function create_discussion(entity_id, name, content){
             'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
             'entity_id': entity_id,
             'name':name,
-            'content': content
+            'content': content,
+            'type': type
         },
         dataType: 'json'
     }).done(function(data){
@@ -1187,7 +1188,7 @@ function create_discussion(entity_id, name, content){
                 $(this).parent().addClass('active');
                 $('.discussion_contents .discuss').remove();
                     e.preventDefault();
-                    discussion($(this).attr('id'));
+                    discussion($(this).attr('id'), type);
                     return false;
             });
             $span.find('a.title').trigger('click');
@@ -1201,13 +1202,14 @@ function create_discussion(entity_id, name, content){
 }
 
 
-function discussion(id){
+function discussion(id, type){
     $.ajax({
         type: "POST",
         url: '/qro_lee/get_a_discussion/',
         data: {
             'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
-            'id': id
+            'id': id,
+            'type': type
         },
         dataType: 'json'
     }).done(function(data){
@@ -1233,7 +1235,7 @@ function discussion(id){
             respond_discussion(
                 $item.find('.respond_btn'),
                 id, $item,
-                $('input.entity').val(), false
+                $('input.entity').val(), false, type
             );
 
             $.each(data, function(i){
@@ -1300,7 +1302,7 @@ function discussion(id){
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
                                     parent_id, $respond,
-                                    $('input.entity').val(), true
+                                    $('input.entity').val(), true, type
                                 );
                             });
 
@@ -1329,15 +1331,25 @@ function erase_discussion(id, $ele){
         },
         dataType: 'json'
         }).done(function(data){
+            $('.discussion_contents .main').each(function(){
+                if($(this).children().length > 0){
+                if(!$(this).hasClass('respond'))
+                    $(this).fadeOut(0, function(){
+                        $(this).remove();
+                    });
+                }
+            });
+
             $ele.fadeOut(300,function(){
                 $(this).remove();
             });
         });
 }
 
-function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
-
+function respond_discussion($ele, parent_discussion, $item, entity_id, is_son, type){
     $ele.click(function(){
+        if($.trim($item.find('textarea').val()) == '')
+            return 0;
         $.ajax({
         type: "POST",
         url: '/qro_lee/respond_to_discussion/',
@@ -1345,7 +1357,8 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
             'csrfmiddlewaretoken':$('.csrf_header').find('input').val(),
             'parent_discussion': parent_discussion,
             'response': $item.find('textarea').val(),
-            'entity_id': entity_id
+            'entity_id': entity_id,
+            'type': type
         },
         dataType: 'json'
         }).done(function(data){
@@ -1410,7 +1423,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son){
                                 respond_discussion(
                                     $respond.find('.respond_btn'),
                                     discussion.id, $respond,
-                                    $('input.entity').val(), true
+                                    $('input.entity').val(), true, type
                                 );
                         });
                     }

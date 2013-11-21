@@ -33,7 +33,17 @@
         <div class="dialog-confirm" ></div>
     </div>
 </div>
+{% if type == 'title' %}
+    <input type="hidden" class="object_type" value="T"/>
+{% elif type == 'author' %}
+    <input type="hidden" class="object_type" value="A"/>
+{% elif type == 'list' %}
+    <input type="hidden" class="object_type" value="L"/>
+{% endif %}
+    <input type="hidden" class="entity" value="{{ profile.id }}"/>
+
 <div class="grid-16 profile_tal">
+
     <div class="grid-16 entity no-margin {{ type }} ">
     {% csrf_token %}
         {% if type == 'author' %}
@@ -352,11 +362,42 @@
             </div>
             {% endif %}
             {% if type != 'list' %}
-                <div class="coments grid-10 no-margin">
-                {% load disqus_tags %}
-                {% set_disqus_identifier type profile.id %}
-                {% disqus_show_comments %}
-            </div>
+                <div class="coments load-margin grid-10 no-margin">
+                    <span style="display:none;" class="discussion_response main grid-9 no-margin fleft">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <!-- Gringue -->
+                        <span class="grid-8 din-r answer fright no-margin">
+                            <span class="name title"><span>Laura Rodríguez</span> <span class="gray_text">hace 3 semanas</span></span>
+                            <p>Pellentesque habitant morbi tristique senectus et netus et
+                            malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
+                            ultricies eget, tempor sit amet, ante. Donec eu libero sit
+                            amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                            Quisque sit amet est et sapien ullamcorper pharetra.
+                            Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
+                            <span class="respond_btn btn">responder</span>
+                            <input type="hidden" class="u_id" value="{{ user.id }}"/>
+                            <span class="erase_btn btn">eliminar</span>
+                        </span>
+                    </span>
+                    </span>
+                    <div style="display: none;" class="grid-9  discuss main no-margin fright">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <textarea class="grid-8 din-r no-brradius fright no-margin" style="background: white;">Escribe un comentario...</textarea>
+                        <span class="respond_btn main btn">responder</span>
+                    </span>
+                    </div>
+                    <input type="hidden" class="discussion_id" value="{{ discussions.id }}"/>
+
+                    <div class="discussion fleft">
+                        <div class="discussion_contents no-margin fleft"></div>
+                    </div>
+                </div>
             {% endif %}
             <div class="titles_author grid-5 border_left">
                 {% if type == 'author' %}
@@ -568,11 +609,42 @@
                 {% endif %}
             </div>
             {% if type == 'list' %}
-                <div class="coments grid-10 no-margin">
-                {% load disqus_tags %}
-                {% set_disqus_identifier type profile.id %}
-                {% disqus_show_comments %}
-            </div>
+                <div class="coments load-margin grid-10 no-margin">
+                    <span style="display:none;" class="discussion_response main grid-9 no-margin fleft">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <!-- Gringue -->
+                        <span class="grid-8 din-r answer fright no-margin">
+                            <span class="name title"><span>Laura Rodríguez</span> <span class="gray_text">hace 3 semanas</span></span>
+                            <p>Pellentesque habitant morbi tristique senectus et netus et
+                            malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
+                            ultricies eget, tempor sit amet, ante. Donec eu libero sit
+                            amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                            Quisque sit amet est et sapien ullamcorper pharetra.
+                            Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
+                            <span class="respond_btn btn">responder</span>
+                            <input type="hidden" class="u_id" value="{{ user.id }}"/>
+                            <span class="erase_btn btn">eliminar</span>
+                        </span>
+                    </span>
+                    </span>
+                    <div style="display: none;" class="grid-9  discuss main no-margin fright">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <textarea class="grid-8 din-r no-brradius fright no-margin" style="background: white;">Escribe un comentario...</textarea>
+                        <span class="respond_btn main btn">responder</span>
+                    </span>
+                    </div>
+                    <input type="hidden" class="discussion_id" value="{{ discussions.id }}"/>
+
+                    <div class="discussion fleft">
+                        <div class="discussion_contents no-margin fleft"></div>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

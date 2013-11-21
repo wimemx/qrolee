@@ -398,12 +398,20 @@ def get_entity(request, **kwargs):
     activity = account_models.Activity.objects.filter(
         added_to_object=entity.id, added_to_type='E').order_by('-date')
 
-    discussions = account_models.Discussion.objects.filter(
-        entity_id=entity.id, parent_discussion_id__isnull=True).order_by('-date')
-    if discussions:
-        discussions = discussions[0]
+    if entity.type.name == 'group':
+        discussions = account_models.Discussion.objects.filter(
+            object=entity.id, parent_discussion_id__isnull=True,
+            type='E').order_by('-date')
     else:
-        discussions = None
+        discussions = account_models.Discussion.objects.get_or_create(
+            object=entity.id, type='E',
+            parent_discussion_id__isnull=True, user_id=entity.user.id)
+
+    if entity.type.name != 'group':
+        if discussions:
+            discussions = discussions[0]
+        else:
+            discussions = None
     context = {
         'entity': entity,
         'calendar': unescaped,
@@ -621,13 +629,21 @@ def event_view(request, **kwargs):
     if event.owner_id == request.user.id:
         is_attending = True
 
+    discussions = account_models.Discussion.objects.get_or_create(
+        object=event.id, type='D', parent_discussion_id__isnull=True, user_id=event.owner_id)
+    if discussions:
+        discussions = discussions[0]
+    else:
+        discussions = None
+
     context = {
         'event': event,
         'date': date,
         'spot': spot,
         'list_event': events_q,
         'address': address.split('#'),
-        'is_attending': is_attending
+        'is_attending': is_attending,
+        'discussions': discussions
     }
 
     if 'post' in request.POST:
@@ -1235,8 +1251,9 @@ def get_profile(request, **kwargs):
 
     dict_items = {}
     list_picture = models.Profile.objects.all()
-
+    t = ''
     if type == 'author':
+        t = 'A'
         profile = account_models.Author.objects.get(id=profile)
         list = account_models.ListAuthor.objects.filter(author=profile, list__status=True)
         list_titles = account_models.AuthorTitle.objects.filter(author=profile)
@@ -1307,6 +1324,7 @@ def get_profile(request, **kwargs):
         }
 
     if type == 'title':
+        t = 'T'
         profile = account_models.Title.objects.get(id=profile)
         list_user = account_models.ListTitle.objects.filter(list__default_type=1,
                                                           title=profile, list__status=True)
@@ -1377,6 +1395,7 @@ def get_profile(request, **kwargs):
         }
 
     if type == 'list':
+        t = 'L'
         dict_titles = {}
         dict_authors = {}
         profile = account_models.List.objects.get(id=profile)
@@ -1512,7 +1531,15 @@ def get_profile(request, **kwargs):
             'count_vot': count_vot
         }
 
+    discussions = account_models.Discussion.objects.get_or_create(
+        object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=1)
+    if discussions:
+        discussions = discussions[0]
+    else:
+        discussions = None
+
     context['type'] = type
+    context['discussions'] = discussions
     context['profile'] = profile
     context['SITE_URL'] = settings.SITE_URL
 
@@ -1603,6 +1630,7 @@ def get_a_discussion(request):
     discussion = account_models.Discussion.objects.get(
         id=int(request.POST.get('id')))
     discussion_list = get_discussion(discussion=discussion)
+
     res = list()
     for lis in discussion_list:
         results = [ele.as_json() for ele in lis]
@@ -1617,8 +1645,9 @@ def get_a_discussion(request):
 
 def create_discussion(request):
     discussion = account_models.Discussion.objects.create(
-        entity_id=int(request.POST.get('entity_id')), name=request.POST.get('name'),
-        content=request.POST.get('content'), user_id=request.user.id)
+        object=int(request.POST.get('entity_id')), name=request.POST.get('name'),
+        content=request.POST.get('content'), type=request.POST.get('type'),
+        user_id=request.user.id)
 
     context = {
         'response': discussion.parent_as_json()
@@ -1629,9 +1658,10 @@ def create_discussion(request):
 
 def respond_to_discussion(request):
     response = account_models.Discussion.objects.create(
-        entity_id=int(request.POST.get('entity_id')),
+        object=int(request.POST.get('entity_id')),
         parent_discussion_id=int(request.POST.get('parent_discussion')),
-        content=request.POST.get('response'), user_id=request.user.id)
+        content=request.POST.get('response'), type=request.POST.get('type'),
+        user_id=request.user.id)
     context = {
         'response': response.as_json()
     }
@@ -1694,11 +1724,18 @@ def get_page(request, **kwargs):
     list_pages = account_models.Page.objects.filter(user__id=user_id, status=True).\
         exclude(id=page_id,)
     profile = models.Profile.objects.get(user__id=user_id)
+    discussions = account_models.Discussion.objects.get_or_create(
+        object=page.id, type='P', parent_discussion_id__isnull=True, user_id=page.user_id)
+    if discussions:
+        discussions = discussions[0]
+    else:
+        discussions = None
     context = {
-        'page':page,
-        'list_pages':list_pages,
-        'type':'page',
-        'profile':profile
+        'discussions': discussions,
+        'page': page,
+        'list_pages': list_pages,
+        'type': 'page',
+        'profile': profile
     }
 
     return render(request, template, context)

@@ -1119,9 +1119,12 @@ p{
             color: #777;
             position: relative;
             font-size: 11px !important;
-            margin-left: 0px !important;
+            margin: 0px !important;
+            height: auto;
         }
-
+        .discussion .discussion_contents .wrapper{
+            margin:0px;
+        }
         .discussion .answer{
             border-radius: 0px;
             border-top-left-radius: 5px;

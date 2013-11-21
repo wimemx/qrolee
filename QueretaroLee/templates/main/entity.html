@@ -63,6 +63,7 @@
     <input type="hidden" class="lat" value="{{ entity.lat }}"/>
     <input type="hidden" class="long" value="{{ entity.long }}"/>
     <div class="grid-16 entity no-margin">
+    <input type="hidden" class="object_type" value="E"/>
     {% if owner.id != user.id %}
 
         {% if entity_type.1 == 'group' or entity_type.1 == 'spot' %}
@@ -321,6 +322,7 @@
                 {% if entity_type.1 == 'group' and not member %}
                     <div style="display: none;" >
                 {% else %}
+                    <div>
                     <span style="display:none;" class="discussion_response main grid-9 no-margin fleft">
                     <span class="respond main fleft">
                         <span class="wrapper no-margin fleft grid-1">
@@ -340,22 +342,21 @@
                             <span class="erase_btn btn">eliminar</span>
                         </span>
                     </span>
-            </span>
-            <div style="display: none;" class="grid-9  discuss main fright">
-                <span class="respond main fleft">
-                    <span class="wrapper no-margin fleft grid-1">
-                        <img src="/static/img/create.png" alt=""/>
                     </span>
-                    <textarea class="grid-8 din-r no-brradius fright no-margin" style="background: white;">Escribe un comentario...</textarea>
-                    <span class="respond_btn main btn">responder</span>
-                </span>
-            </div>
-                    <input type="hidden" class="discussion_id" value="{{ discussions.id }}"/>
-                    <div class="discussion fleft">
-                    <div class="discussion_contents no-margin fleft">
-
+                    <div style="display: none;" class="grid-9  discuss main fright">
+                    <span class="respond main fleft">
+                        <span class="wrapper no-margin fleft grid-1">
+                            <img src="/static/img/create.png" alt=""/>
+                        </span>
+                        <textarea class="grid-8 din-r no-brradius fright no-margin" style="background: white;">Escribe un comentario...</textarea>
+                        <span class="respond_btn main btn">responder</span>
+                    </span>
                     </div>
+                    <input type="hidden" class="discussion_id" value="{{ discussions.id }}"/>
 
+                    <div class="discussion fleft">
+                        <div class="discussion_contents no-margin fleft"></div>
+                    </div>
                 {% endif %}
 
                 </div>
