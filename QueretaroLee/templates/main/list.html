@@ -72,7 +72,7 @@
                                     <p class="grid-3 no-margin">
                                         <span class="fright mini_rate">
                                             {% for x in 'xxxxx' %}
-                                                {% if forloop.counter < value.grade %}
+                                                {% if forloop.counter <= value.grade %}
                                                     <img src="/static/img/comunityStarmini.png" />
                                                 {% else %}
                                                     <img src="/static/img/backgroundStarmini.png" />
@@ -122,7 +122,7 @@
                                     <p class="fleft margin_left stars_title no-margin grid-2 ">
                                         <span class="mini_rate">
                                             {% for x in 'xxxxx' %}
-                                                {% if forloop.counter < value.grade %}
+                                                {% if forloop.counter <= value.grade %}
                                                     <img class="starts_mini"
                                                          src="/static/img/comunityStarmini.png" />
                                                 {% else %}

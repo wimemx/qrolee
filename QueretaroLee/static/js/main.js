@@ -3206,9 +3206,9 @@ function show_items_left($this){
         $this.find('input').val(0);
         $this.find('span').append('Ver todos');
         if(count > 3)
-            item_height = 336;
+            item_height = 336 + 25;
         else
-            item_height = count * 110;
+            item_height = count * 110 + 25;
     }
 
     div_container.animate({

@@ -1059,7 +1059,7 @@ def get_titles(request,**kwargs):
                 items[field] = str(obj.__getattribute__(str(field)))
 
         grade_title = 0
-        rate_title = account_models.Rate.objects.filter(element_id=obj.id). \
+        rate_title = account_models.Rate.objects.filter(element_id=obj.id, type='T'). \
             values('element_id'). \
             annotate(count = db_model.Count('element_id'),
                      score = db_model.Avg('grade'))
@@ -1375,7 +1375,6 @@ def get_profile(request, **kwargs):
             'name_author': name_author,
             'id_author': id_author
         }
-
 
     if type == 'list':
         dict_titles = {}

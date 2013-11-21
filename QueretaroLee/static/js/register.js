@@ -94,8 +94,10 @@ $(document).ready(function(){
         var terms = true;
         if($form.hasClass('register')){
             var ter = parseInt($('.terms_user').val());
-            if(ter == 0)
+            if(ter == 0){
                 terms = false;
+                $('.terms').css({'border':'1px solid #f89883'});
+            }
         }
 
 
