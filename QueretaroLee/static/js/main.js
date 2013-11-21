@@ -537,7 +537,6 @@ function fb_obj_search(search, type){
 
                         if('rsvp_status' in obj){
                             folder = '/event/';
-                            console.log(obj);
                             $('.address').val(obj.location);
                             $('input.fb-url').val(obj.id);
                         }
@@ -1048,7 +1047,7 @@ $(document).ready(function(){
 
     });
     $('.advanced_search_btn').click(function(){
-
+        $('#map').remove();
         if($('.advanced_search').is(':visible'))
             $('.advanced_search').fadeOut(300);
         else{
@@ -1125,7 +1124,6 @@ $(document).ready(function(){
             fields = ['name', 'id'];
         }else if(type == 'account.genre'){
             override = true;
-
             query = {
                 'name__icontains':''
             }
@@ -1149,6 +1147,7 @@ $(document).ready(function(){
                 if(!$('p.advanced_search_btn').is(':visible'))
                     $('p.advanced_search_btn').fadeIn(300);
                 result = advanced_search(search, csrf_global);
+
             }else{
                 $('p.advanced_search_btn').fadeOut(300);
             }
@@ -1378,6 +1377,7 @@ $(document).ready(function(){
                 }
             }
             join = JSON.stringify(join);
+
         }else if(type == 'account.list'){
             $('.advanced_search .checkbox').each(function(){
                 if($(this).find('span').html() != ''){
@@ -1488,7 +1488,7 @@ $(document).ready(function(){
                 api = search_api(csrf, query);
             }else
                 result = advanced_search(search, csrf);
-
+                console.log(search);
             if(result.response != 0){
                 $.each(result,function(i){
                     if(type == 'auth.user'){

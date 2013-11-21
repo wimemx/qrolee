@@ -399,7 +399,11 @@ def get_entity(request, **kwargs):
         added_to_object=entity.id, added_to_type='E').order_by('-date')
 
     discussions = account_models.Discussion.objects.filter(
-        entity__id=entity.id, parent_discussion_id=None).order_by('-date')
+        entity_id=entity.id, parent_discussion_id__isnull=True).order_by('-date')
+    if discussions:
+        discussions = discussions[0]
+    else:
+        discussions = None
     context = {
         'entity': entity,
         'calendar': unescaped,
@@ -859,11 +863,7 @@ def advanced_search(request, **kwargs):
 
                     models = ast.literal_eval(join['tables'][str(ele)])
 
-                    if 'user_id' in data['fields'] and not flag:
-                        related_object = obj.user_id
-                        flag = True
-                    else:
-                        related_object = obj.id
+                    related_object = obj.id
 
                     parent = str(models[0]).split('.')
                     app_label = parent[0]
@@ -922,7 +922,9 @@ def advanced_search(request, **kwargs):
                     value[obj.id] = context_fields
             else:
                 value[obj.id] = context_fields
+
         context = simplejson.dumps(value)
+
         return HttpResponse(context, content_type='application/json')
     return render(request, template, context)
 

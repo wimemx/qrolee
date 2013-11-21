@@ -210,6 +210,7 @@ class Module(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.name, self.order)
 
+
 class Content(models.Model):
     name = models.CharField(max_length=255)
     text =  models.TextField(max_length=2000)
@@ -231,6 +232,7 @@ class Test(models.Model):
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.meta)
+
 
 class Inscription(models.Model):
     course = models.ForeignKey(Course)
@@ -271,6 +273,7 @@ class Answer(models.Model):
 
     def __unicode__(self):
         return '%s, %s' % (self.value, self.order)
+
 
 class Option(models.Model):
     label = models.CharField(max_length=255)

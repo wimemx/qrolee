@@ -1111,7 +1111,7 @@ p{
             display: block;
             overflow: hidden;
         }
-        .discussion textarea, .discussion .answer{
+        .discussion .discuss textarea, .discussion .answer{
             padding: 8px;
             border: 1px solid #D3A373;
             border-radius: 5px;
@@ -1119,6 +1119,7 @@ p{
             color: #777;
             position: relative;
             font-size: 11px !important;
+            margin-left: 0px !important;
         }
 
         .discussion .answer{
@@ -1151,6 +1152,7 @@ p{
                 margin-left: 15px;
                 font-size: 11px;
                 font-weight: 400;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
             }
         .answer .btn{
             position: absolute;

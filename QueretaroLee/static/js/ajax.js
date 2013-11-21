@@ -831,7 +831,6 @@ $(document).ready(function(){
           var count = 0;
                 $.each(data,function(i){
                     var event = data[i];
-                    console.log(event);
                     var len = event.length;
                     $.each(event,function(index){
                         var event_data = event[index];
@@ -1097,7 +1096,7 @@ $(document).ready(function(){
         $('.nav .btn:eq(0)').trigger('click');
 
 
-    if($('.discussion.load').length > 0){
+    if($('.discussion.load').length > 0 ){
 
         $('.discussion.load a.title').click(function(e){
             $(this).parent().parent().find('.item').each(function(){
@@ -1126,6 +1125,8 @@ $(document).ready(function(){
             var content = $('.create-discussion textarea').val();
             create_discussion($('input.entity').val(), name, content);
         });
+    }else if($('.coments .discussion').length > 0){
+        discussion($('input.discussion_id').val());
     }
 
 });
@@ -2002,7 +2003,6 @@ function search_list_authors_titles($this){
                     }
                     $('.no_resuls').remove();
                     if(!empty_char){
-                        console.log(Object.keys(data));
                         if(Object.keys(data).length==0){
                             var empty = true;
                             if($('.type').val() == 'Title'){
