@@ -1537,6 +1537,7 @@ def get_profile(request, **kwargs):
     else:
         discussions = account_models.Discussion.objects.get_or_create(
             object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=profile.user_id)
+
     if discussions:
         discussions = discussions[0]
     else:
@@ -1631,8 +1632,12 @@ def get_a_discussion(request):
         }
         context = simplejson.dumps(context)
         return HttpResponse(context, content_type='application/json')
+    try:
+        id = int(request.POST.get('id'))
+    except Exception:
+        id = request.POST.get('id')
     discussion = account_models.Discussion.objects.get(
-        id=int(request.POST.get('id')))
+        id=id)
     discussion_list = get_discussion(discussion=discussion)
 
     res = list()
