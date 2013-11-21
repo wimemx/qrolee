@@ -1985,7 +1985,7 @@ function search_list_authors_titles($this){
                                 '" class="title alpha grid-4"></a>');
                             a.append(truncText(data[i].name,20));
                             p_text = $('<p class="grid-4 no-margin text_biography"></p>');
-                            p_text.append(truncText(data[i].biography,180));
+                            p_text.append(truncText(data[i].biography,140));
                             p_titles = $('<p class="title_author grid-4 no-margin">' +
                                 '</p>');
                             div.append(a);
@@ -2002,7 +2002,6 @@ function search_list_authors_titles($this){
                     }
                     $('.no_resuls').remove();
                     if(!empty_char){
-                        console.log(Object.keys(data));
                         if(Object.keys(data).length==0){
                             var empty = true;
                             if($('.type').val() == 'Title'){

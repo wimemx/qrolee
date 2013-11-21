@@ -4,6 +4,7 @@ from django import forms
 
 from registry import models
 from account import models as account
+from course import models as course
 
 
 # Attribute Model
@@ -75,15 +76,15 @@ admin.site.register(models.Profile)
 admin.site.register(models.Book)
 admin.site.register(models.Travel)
 admin.site.register(models.ExternalUser)
-admin.site.register(models.Answer)
-admin.site.register(models.Content)
-admin.site.register(models.Course)
-admin.site.register(models.Inscription)
-admin.site.register(models.Module)
-admin.site.register(models.Test)
-admin.site.register(models.Option)
-admin.site.register(models.Question)
-admin.site.register(models.Question_Type)
+admin.site.register(course.Answer)
+admin.site.register(course.Content)
+admin.site.register(course.Course)
+admin.site.register(course.Inscription)
+admin.site.register(course.Module)
+admin.site.register(course.Test)
+admin.site.register(course.Option)
+admin.site.register(course.Question)
+admin.site.register(course.Question_Type)
 admin.site.register(account.Author)
 admin.site.register(account.ListTitle)
 admin.site.register(account.List)
