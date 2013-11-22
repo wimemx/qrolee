@@ -612,11 +612,21 @@ def event_view(request, **kwargs):
                 if cat1 == cat2:
                     events_q[obj.id] = obj
 
+    if len(str(event.start_time.hour)) == 1:
+        hour = '0'+str(event.start_time.hour)
+    else:
+        hour = event.start_time.hour
+    if len(str(event.start_time.minute)) == 1:
+        minute = '0'+str(event.start_time.minute)
+    else:
+        minute = event.start_time.minute
     date = {
         'weekday': weekday,
         'day': day,
         'month': month,
-        'year': year
+        'year': year,
+        'hour': hour,
+        'minutes': minute
     }
     assist_event = models.AssistEvent.objects.filter(
         user=request.user.id)

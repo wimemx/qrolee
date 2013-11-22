@@ -1005,7 +1005,7 @@ p{
             margin-right: 20px;
         }
         .content.events .sidebar-a #scrollbar1 .viewport{
-            max-height: 480px;
+            height: 480px;
         }
         .content.single.events .active-event{
             background: #f89883 !important;

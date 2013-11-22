@@ -90,7 +90,8 @@
                         <span class="title">Fecha</span>
                         <p >
                             {{ date.weekday }} {{ date.day }}
-                            {{ date.month }} {{ date.year }}
+                            de {{ date.month }} del {{ date.year }}
+                            a las {{ date.hour }}:{{ date.minutes }}
                         </p>
                     </div>
                     <div class="d-address">
@@ -173,7 +174,7 @@
                         </span>
                     </span>
                     </span>
-                    <div style="display: none;" class="grid-9  discuss main fright">
+                    <div style="display: none;" class="grid-9  discuss no-margin main fright">
                     <span class="respond main fleft">
                         <span class="wrapper no-margin fleft grid-1">
                             <img src="/static/img/create.png" alt=""/>
