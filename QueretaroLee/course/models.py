@@ -5,11 +5,12 @@ from django.contrib.auth.models import User
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
-    published = models.CharField(max_length=255)
+    published = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=255)
     type_id = models.IntegerField(max_length=5)
-    status = models.BooleanField()
+    description = models.TextField(max_length=2000,null=True)
+    status = models.BooleanField(default=True)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.published)
@@ -20,7 +21,7 @@ class Module(models.Model):
     text =  models.TextField(max_length=2000)
     order = models.IntegerField(max_length=5)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField()
+    status = models.BooleanField(default=True)
     course = models.ForeignKey(Course)
 
     def __unicode__(self):
