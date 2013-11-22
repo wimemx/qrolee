@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/course.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=476600992414046";
+     fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="grid-16 courses view">
+        <div class="grid-14">
+        <a class="brown_btn fleft" href="/courses/">Ver todos los cursos</a>
+            <div class="container_course grid-3 no-margin">
+                {% for obj in coursess %}
+                    <div class="item {% if obj.id == course.id %} sele {% endif %}"
+                         {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                        <div class="container_item">
+                            <span class="title fleft">{{ obj.name }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="grid-11 no-margin view_courser">
+                <div class="container_text">
+                    <span class="grid-7 no-margin">
+                        <span class="title">{{ course.name }}</span>
+                    </span>
+                    <span class="grid-3 no-margin social_profile" style="cursor: auto;">
+                        <span class="btn_fb_profile" >
+                            <div class="fb-like" data-href="{{ SITE_URL }}/courses/course/{{ course.id }}"
+                                 data-layout="button_count" data-action="like" data-show-faces="true" data-share="false">
+                            </div>
+                        </span>
+                         <span class="btn_fb_profile" >
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ course.name }}" data-via="QroLee" data-lang="es">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                        </span>
+                    </span>
+                    <span class="grid-6 no-margin container_rate text_profile">
+                          <span class="container_starts_rate fleft">
+                        {% if my_grade == 0 %}
+                                {% for x in 'xxxxx' %}
+                                    <span class="rate">
+                                        {% if forloop.counter <= count_rate %}
+                                            <img src="/static/img/comunityStar.png" />
+                                        {% else %}
+                                            <img src="/static/img/backgroundStar.png" />
+                                        {% endif %}
+                                        <input class="grade" type="hidden" value="{{ forloop.counter0 }}"/>
+                                        <input class="type" type="hidden" value="C"/>
+                                        <input class="element_id" type="hidden" value="{{ course.id }}"/>
+                                    </span>
+                                {% endfor %}
+                        {% else %}
+                            {% for x in 'xxxxx' %}
+                                <span class="rate">
+                                    {% if forloop.counter <= count_rate %}
+                                        <img src="/static/img/starUser.png" />
+                                    {% else %}
+                                        <img src="/static/img/backgroundStar.png" />
+                                    {% endif %}
+                                    <input class="grade" type="hidden" value="{{ forloop.counter0 }}"/>
+                                    <input class="type" type="hidden" value="C"/>
+                                    <input class="element_id" type="hidden" value="{{ course.id }}"/>
+                                </span>
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+                    <span class="container_text_rate">
+                        <span class="text_rate border_right"> Total: {{ count_rate|floatformat:1 }} </span>
+                        {% if count_vot == 0 %}
+                            <span class="text_rate"> {{ count_vot }} votaciones </span>
+                        {% else %}
+                            <span class="text_rate border_right"> {{ count_vot }} votaciones </span>
+                        {% endif %}
+                            {% if my_grade >= 1 %}
+                                <span class="text_rate"> mi voto: {{ my_vot }} </span>
+                            {% endif %}
+                        </span>
+                    </span>
+                    <span class="by fleft grid-5">
+                        Por
+                        {% if course.type == 'E' %}
+                            <a href="/qro_lee/entity/organization/{{ course.type_id }}" class="place_pink">{{ by }}</a>
+                        {% else %}
+                            <a href="/accounts/users/profile/{{ course.type_id }}" class="place_pink">{{ by }}</a>
+                        {% endif %}
+                    </span>
+                    <p class="grid-8 no-margin">
+                        {{ course.description }}
+                    </p>
+                </div>
+                {% for key, value in modules.items %}
+                    <div class="grid-11 no-margin module" {% if not forloop.last %}style="border-bottom: 0px;"{% endif %} >
+                        <div class="grid-4 no-margin">
+                            <span class="title">{{ value.module.name }}</span>
+                            <p>
+                                {{ value.module.text|truncatechars:177 }}
+                            </p>
+                        </div>
+                        {% for obj in value.content %}
+                            <a href="/courses/content/{{ obj.id }}">
+                                <div class="grid-7 no-margin fright">
+                                    <span class="title grid-6 no-margin subtitle"
+                                          {% if forloop.last %}style="border-bottom: 0px;"{% endif %}
+                                            >{{ obj.name }}</span>
+                                    <img src="/static/img/theme.png" />
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

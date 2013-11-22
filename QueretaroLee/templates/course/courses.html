@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/course.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div class="grid-16 courses all">
+        <div class="grid-14">
+            <div class="grid-8 no-margin container_text">
+                <span class="gri-7 no-margin">
+                    <span class="title">¡Aprende!</span>
+                </span>
+                <p class="grid-7 no-margin">
+                    Términos y condiciones de uso de Querétaro Lee (propiedad de
+                    Faktor T México, S. A. de C. V.) .
+                    Este contrato describe los términos y condiciones (los "Términos y
+                    Condiciones") aplicables al uso de los servicios ofrecidos por Faktor
+                    T México, S.A. de C.V. dentro de los sitios www.qrolee.com, www.queretarolee.com
+                    ("Faktor T México " o el "sitio") para su producto " Querétaro Lee"
+                    ("el Servicio").
+                    Los Términos y Condiciones de Querétaro Lee son parte integrante de
+                    los Términos y Condiciones Generales de Faktor T México, S. A. de C. V..
+                    Mediante la aceptación de los Términos y Condiciones Generales en el
+                    momento del registro el Usuario acepta las políticas aquí contenidas.
+                </p>
+                <span class="brown_btn fleft">Crear nuevo curso</span>
+            </div>
+            <div class="container_course grid-6 no-margin">
+                {% for key, value in courses.items %}
+                    <a href="/courses/course/{{ key }}">
+                        <div class="item" {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                            <div class="container_item">
+                                <span class="title grid-4 fleft">{{ value.course.name }}</span>
+                                <span class="grid-2 no-margin fleft number">
+                                    <img  src="/static/img/starn_course.png" >
+                                    <span >{{ value.rate }}</span>
+                                    <img src="/static/img/modul.png" >
+                                    <span >{{ value.count_module }}</span>
+                                </span>
+                                <p class="grid-5 no-margin">
+                                    {{ value.course.description|truncatechars:200 }}
+                                </p>
+                            </div>
+                            {% if value.user_course %}
+                                <a class="green_btn" href="/registry/edit/{{ value.course.id }}"></a>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

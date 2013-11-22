@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/course.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=476600992414046";
+     fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="grid-16 courses view content">
+        <div class="grid-14">
+        <div class="container_course grid-3 no-margin">
+        <a href="/courses/course/{{ content.module.course.id }}"
+           class="brown_btn fleft">{{ content.module.course.name }}</a>
+        <div class="module_act module">
+            <span class="title grid-2 no-margin module_title">{{ content.module.name }}</span>
+        </div>
+        {% for obj in contents %}
+            <a href="/courses/content/{{ obj.id }}" class="module_act module {% if obj == content %} sele{% endif %}">
+                <img src="/static/img/theme.png">
+                <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
+            </a>
+        {% endfor %}
+        </div>
+        <div class="grid-11 no-margin view_courser">
+            <div class="container_text">
+                <span class="grid-7 no-margin">
+                    <span class="title">{{ content.name }}</span>
+                </span>
+            </div>
+            <div class="content_text">
+                {% autoescape off %}
+                    {{ content.text }}
+                {% endautoescape %}
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

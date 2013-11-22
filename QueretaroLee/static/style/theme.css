@@ -2352,7 +2352,7 @@ p{
     padding-right: 20px;
 }
 
-.entities .green_btn, .events .green_btn ,.single .green_btn{
+.entities .green_btn, .events .green_btn ,.single .green_btn, .courses .green_btn{
     border: 2px solid #a77340 !important;
     background: #C69263 url("/static/img/btn_edit.png") no-repeat 6px 6px !important;
     height: 30px!important;
