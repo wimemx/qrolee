@@ -21,7 +21,7 @@ DATABASES = {
         'USER': 'root',                      # Not used with sqlite3.
         'PASSWORD': 'root',                  # Not used with sqlite3.
         'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '8889',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -31,7 +31,7 @@ SITE_URL = 'http://localhost:8000/'
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Mexico_City'
+TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -131,7 +131,6 @@ INSTALLED_APPS = (
     'account',
     'registry',
     'disqus',
-    'course'
 )
 
 DISQUS_API_KEY = 'gLvBBYtvFtkCttT2u8SMmZqnlEmWWMYhrbqmVbLlWSJdfk4RKaWraKITJknhtXL7'
@@ -173,6 +172,5 @@ AUTHENTICATION_BACKENDS = (
     'registry.backends.TwitterBackend',
     'registry.backends.FacebookBackend',
 
-    )
+)
 
-EMAIL_HOST_USER="qrolee"

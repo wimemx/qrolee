@@ -1,6 +1,6 @@
 from QueretaroLee import settings
 
-EMAIL_HOST_USER = settings.EMAIL_HOST_USER
+
 SITE_URL = settings.SITE_URL
 #FACEBOOK_APP_ID = '570894232960484'
 #FACEBOOK_API_KEY = '570894232960484'

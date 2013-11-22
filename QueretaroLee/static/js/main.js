@@ -537,7 +537,6 @@ function fb_obj_search(search, type){
 
                         if('rsvp_status' in obj){
                             folder = '/event/';
-                            console.log(obj);
                             $('.address').val(obj.location);
                             $('input.fb-url').val(obj.id);
                         }
@@ -1048,7 +1047,7 @@ $(document).ready(function(){
 
     });
     $('.advanced_search_btn').click(function(){
-
+        $('#map').remove();
         if($('.advanced_search').is(':visible'))
             $('.advanced_search').fadeOut(300);
         else{
@@ -1125,7 +1124,6 @@ $(document).ready(function(){
             fields = ['name', 'id'];
         }else if(type == 'account.genre'){
             override = true;
-
             query = {
                 'name__icontains':''
             }
@@ -1149,6 +1147,7 @@ $(document).ready(function(){
                 if(!$('p.advanced_search_btn').is(':visible'))
                     $('p.advanced_search_btn').fadeIn(300);
                 result = advanced_search(search, csrf_global);
+
             }else{
                 $('p.advanced_search_btn').fadeOut(300);
             }
@@ -1378,6 +1377,7 @@ $(document).ready(function(){
                 }
             }
             join = JSON.stringify(join);
+
         }else if(type == 'account.list'){
             $('.advanced_search .checkbox').each(function(){
                 if($(this).find('span').html() != ''){
@@ -1488,7 +1488,7 @@ $(document).ready(function(){
                 api = search_api(csrf, query);
             }else
                 result = advanced_search(search, csrf);
-
+                console.log(search);
             if(result.response != 0){
                 $.each(result,function(i){
                     if(type == 'auth.user'){
@@ -1798,7 +1798,7 @@ function create_template(type, result,i, create_user){
 
     }else if(type == 'category'){
         span = $('<div class="advanced_search fleft"></div>');
-        var p = $('<p class="title">Búsqueda por categoria</p>');
+        var p = $('<p style="margin-bottom:10px;" class="title">Búsqueda por categoria</p>');
         span.append(p);
         $.each(result,function(indx){
             p = $('<p class="checkbox '+result[indx].id+'"></p>');
@@ -1809,7 +1809,7 @@ function create_template(type, result,i, create_user){
         if(i == 3){
             var filter = $('<div style="margin-top:20px;" class="search_filters fleft">');
             var _span =  $('<span class="select_wrapper date alpha fright">');
-            var inner_span = $('<span class="grid-2 select date no-margin">');
+            var inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
             _span.append(inner_span);
             var text = $('<span class="text">Distancia (km)</span>');
             inner_span.append(text);
@@ -1839,7 +1839,7 @@ function create_template(type, result,i, create_user){
 
         var filter = $('<div class="search_filters fleft">');
         span =  $('<span class="select_wrapper date alpha fright">');
-        var inner_span = $('<span class="grid-2 select date no-margin">');
+        var inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
         span.append(inner_span);
         var text = $('<span class="text">Desde</span>');
         inner_span.append(text);
@@ -1856,7 +1856,7 @@ function create_template(type, result,i, create_user){
         span.append(input_init);
         filter.append(span);
         span =  $('<span class="select_wrapper date alpha fright">');
-        inner_span = $('<span class="grid-2 select date no-margin">');
+        inner_span = $('<span style="left:0px;"  class="grid-2 select date no-margin">');
         span.append(inner_span);
         text = $('<span class="text">Hasta</span>');
         inner_span.append(text);
@@ -1864,7 +1864,7 @@ function create_template(type, result,i, create_user){
         span.append(input_end);
         filter.append(span);
         span = $('<span class="advanced_search fleft">');
-        var p = $('<p class="title">Búsqueda por fecha</p>');
+        var p = $('<p style="margin-bottom:10px;"  class="title">Búsqueda por fecha</p>');
         span.append(p);
         span.append(filter);
         input_end.datepicker({

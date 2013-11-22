@@ -1005,7 +1005,7 @@ p{
             margin-right: 20px;
         }
         .content.events .sidebar-a #scrollbar1 .viewport{
-            height: 480px;
+            max-height: 480px;
         }
         .content.single.events .active-event{
             background: #f89883 !important;
@@ -1111,7 +1111,7 @@ p{
             display: block;
             overflow: hidden;
         }
-        .discussion textarea, .discussion .answer{
+        .discussion .discuss textarea, .discussion .answer{
             padding: 8px;
             border: 1px solid #D3A373;
             border-radius: 5px;
@@ -1119,8 +1119,12 @@ p{
             color: #777;
             position: relative;
             font-size: 11px !important;
+            margin: 0px !important;
+            height: auto;
         }
-
+        .discussion .discussion_contents .wrapper{
+            margin:0px;
+        }
         .discussion .answer{
             border-radius: 0px;
             border-top-left-radius: 5px;
@@ -1151,6 +1155,7 @@ p{
                 margin-left: 15px;
                 font-size: 11px;
                 font-weight: 400;
+                font-family: 'Conv_fontscore.com_d-dinproregular';
             }
         .answer .btn{
             position: absolute;
@@ -1217,7 +1222,7 @@ p{
             border: 1px solid #D5B16E;
         }
         .group .content .sidebar-a #scrollbar1 .viewport{
-            height: 440px;
+            max-height: 440px;
         }
         .content .sidebar-a #scrollbar1 .viewport{
             height: 300px;
@@ -1659,7 +1664,7 @@ p{
 
 
 #scrollbar1 { width: 100%; clear: both; position:relative;}
-#scrollbar1 .viewport { width: 100%; height: 510px; overflow: hidden; position: relative; }
+#scrollbar1 .viewport { width: 100%; height: 510px;  overflow: hidden; position: relative; }
 #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; }
 #scrollbar1 .thumb .end,
 #scrollbar1 .thumb { background-color: #a77340; }
@@ -1953,6 +1958,7 @@ p{
 }
     .lightbox-wrapper #scrollbar1 .viewport{
         height: 300px;
+
     }
         .lightbox-wrapper #scrollbar1 .track{
             position: absolute;
