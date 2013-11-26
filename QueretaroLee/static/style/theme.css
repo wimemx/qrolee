@@ -53,6 +53,11 @@ span, div{
     position: relative;
     background-repeat: no-repeat !important;
 }
+ul, li{
+    list-style: none;
+    padding:0px;
+    margin: 0px;
+}
 .search input.search_entities{
     width: 161px;
     margin-left: 32px;
@@ -1095,6 +1100,10 @@ p{
     .discussion .discuss .title{
         margin-top: 40px;
         width: 100%;
+    }
+    .discussion .answer p{
+        margin:0px !important;
+        padding:0px !important;
     }
     .discussion .respond{
         display: block;

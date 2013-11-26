@@ -10,5 +10,6 @@ urlpatterns = patterns('',
         {'template_name': 'course/course.html'}, name='course'),
     url(r'content/(?P<id_content>[0-9]+)/$',views.get_content,
         {'template_name': 'course/content.html'}, name='content'),
-
+    url(r'remove/$',views.eliminate_course, name='remove_course'),
+    url(r'update_position/$',views.update_position, name='update_course_position'),
 )

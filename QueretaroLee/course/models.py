@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Course(models.Model):
     name = models.CharField(max_length=255)
     published = models.BooleanField()
@@ -18,7 +19,7 @@ class Course(models.Model):
 
 class Module(models.Model):
     name = models.CharField(max_length=255)
-    text =  models.TextField(max_length=2000)
+    text = models.TextField(max_length=2000)
     order = models.IntegerField(max_length=5)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
@@ -30,7 +31,7 @@ class Module(models.Model):
 
 class Content(models.Model):
     name = models.CharField(max_length=255)
-    text =  models.TextField(max_length=2000)
+    text = models.TextField(max_length=2000)
     order = models.IntegerField(max_length=5)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField()
@@ -49,6 +50,7 @@ class Test(models.Model):
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.meta)
+
 
 class Inscription(models.Model):
     course = models.ForeignKey(Course)

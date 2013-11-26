@@ -1,14 +1,18 @@
+.btn_fb_profile span, .btn_fb_profile div, .btn_fb_profile iframe{
+    height: 100%;
+    width: 100%;
+    display: block;
+}
 .courses{
     margin: 20px 10px 30px 10px;
     display: block;
 }
 
-.courses .grid-14{
+.courses{
     min-height: 640px;
-    padding: 40px 60px 40px 60px;
     background: #fffcf5;
     display: block;
-    margin: 0px;
+    padding-bottom: 80px;
 }
 
 .courses .container_text{
@@ -19,7 +23,6 @@
 .container_text .title{
     margin-left: 25px;
     margin-top: 20px;
-    width: auto;
     float: left;
 }
 .container_text p{
@@ -37,15 +40,39 @@
 .all .container_course{
     width: 360px!important;
 }
+.all .brown_btn{
+    width: auto !important;
+    padding: 4px 9px !important;
+}
+.container_course{
+    overflow: hidden;
+}
 .container_course .item{
+    position: relative;
     border: 1px solid #C4C4C4;
     float: left;
     height: auto;
     transition: all ease-in 0.3s;
+    padding-bottom: 25px;
 }
+    .container_course .item .remove{
+        position: relative;
+        right: 0px;
+        top: 0px;
+        margin: 0px;
+        text-align: center;
+        text-indent: 0px;
+    }
 .container_course .item:hover{
     background: #f8edd5;
     cursor: pointer;
+}
+.edit_wrapper{
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
 }
 .container_item{
     margin-left: 20px;
@@ -59,7 +86,13 @@
     font-size: 11px;
     margin-top: 10px!important;
 }
-
+.courses .brown_btn{
+    width: 100%;
+    text-align: center;
+    padding-left:0px;
+    padding-right:0px;
+    position: relative;
+}
 .container_course .number span{
     padding: 0px 3px;
     float: right;
@@ -187,7 +220,7 @@
     margin-bottom: 20px;
 }
 .content .view_courser p{
-    padding: 0px 25px;
+    padding-right: 25px;
     float: left;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -195,7 +228,7 @@
 
 .content_text{
     float: left;
-    padding: 20px 20px;
+    margin: 20px 0px 0px 35px;
 }
 
 .content .brown_btn{
@@ -211,4 +244,12 @@
     border-top: 0px;
     width: 100%;
     padding: 0px 0px;
+}
+
+.coments.grid-10{
+    margin-left: 35px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    background: #fffcf5;
 }
