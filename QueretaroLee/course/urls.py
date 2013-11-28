@@ -12,4 +12,8 @@ urlpatterns = patterns('',
         {'template_name': 'course/content.html'}, name='content'),
     url(r'remove/$',views.eliminate_course, name='remove_course'),
     url(r'update_position/$',views.update_position, name='update_course_position'),
+    url(r'register_course/$',views.register_course,
+        {'template_name': 'course/register_course.html'}, name='register_curse'),
+
+
 )

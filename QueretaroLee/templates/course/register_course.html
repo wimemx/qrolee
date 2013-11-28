@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/register.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/course.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/validation.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+
+    <div class="container-16 container_message create_module" >
+        <div class="dialog-confirm" >
+            <div class="dialog_text grid-6 no-margin" style="display: none;">
+                <span class="dialog_closet"></span>
+                <span>
+                    <p class="p_text_dialog">Se eliminará La Sombra del Viento tus libros favoritos</p>
+                </span>
+                <div class="dialog_container_btn">
+                    <span class="dialog_btn_cancel dialog_btn">Cancelar</span>
+                    <a class="dialog_btn green_btn">Aceptar</a>
+                </div>
+            </div>
+        </div>
+        <div class="create-discussion-wrapper margin-50 grid-8 lightbox center" style="display: none;">
+            <span class="close"></span>
+            <span class="create-discussion grid-7 center">
+                <p class="title center">Crea un nuevo módulo</p>
+                <p class="fleft labelText">Título del módulo
+                    <input type="text" name="name" class="fleft" autocomplete="off"></p>
+                <p class="fleft labelText">Descripción del módulo
+                    <textarea name="description" class="fleft"></textarea></p>
+                <span class="accept green_btn fright">Guardar</span>
+                <span class="remove fright">Cancelar</span>
+            </span>
+        </div>
+        <div class="create_content" style="display: none;">
+            crear tema
+        </div>
+   </div>
+    <div class="grid-16 courses register_course">
+        <div class="grid-14">
+            <span class="grid-8 no-margin title">
+                ¿Listo para crear un curso?
+            </span>
+            <p class="grid-8 no-margin text">
+                Lllena los campos que se presentan a continuación para registrar un curso
+                en Querétaro Lee.
+            </p>
+            <form enctype="multipart/form-data" method="post" id="register_course"                   action="/registry/register/">{% csrf_token %}
+                <p class="grid-8 no-margin field">
+                     <span class="attr">Nombre</span>
+                    <input name="name" />
+                </p>
+                <p class="grid-8 no-margin field">
+                     <span class="attr">Descripción</span>
+                    <textarea name="Description" ></textarea>
+                </p>
+                <span class="grid-8 no-margin discussion genre_sel">
+                    <span class="fleft">Autor del curso</span>
+                    <span class="select_wrapper grid-2 alpha">
+                        <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                            <span class="text">Autor del curso</span>
+                            <span class="dropdown"></span>
+                            <select class="change value" name="privacy">
+                                {% for key, value in list_autor.items %}
+                                    <option value="{{ value.name }}">
+                                        {{ value.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </span>
+                </span>
+                <span class="grid-3 no-margin fright">
+                    <input id="submit" class="accept fright" value="Guardar" type="submit">
+                    <span class="remove fright">Cancelar</span>
+                </span>
+           </form>
+            <div class="line_divide fleft"></div>
+            <div class="seccion">
+                <span class="title">
+                    Sección de Módulos
+                </span>
+                <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
+                <div class="item-mod one" style="display: none;">
+                    <div class="grid-7 no-margin part_l">
+                        <span class="title grid-6 no-margin">Módulo 1</span>
+                        <span class="description grid-6 no-margin">
+                            Querétaro Lee" ("el Servicio"). Los Términos y
+                            Condiciones de Querétaro Lee son parte integrante
+                            de los Términos y Condiciones Generales de Faktor T
+                            México, S. A. de C. V.. Mediante la aceptación de los
+                            Términos y Condiciones Generales en el momento del
+                            registro el Usuario acepta las políticas aquí contenidas.
+                        </span>
+                        <span class="grid-3 no-margin btns">
+                            <span class="pink_btn size_btn_edit btn_delete">
+                               <input type="hidden" value="Módulo 1" />
+                            </span>
+                            <span class="green_btn size_btn_edit del">
+                            </span>
+                       </span>
+                    </div>
+                    <div class="grid-7 no-margin part_r">
+                        <span class="content">
+                            <div class="item_content">
+                                <img src="/static/img/theme.png">
+                                <span class="title">tema 1</span>
+                            </div>
+                            <span class="place_pink">
+                                Añadir nuevo tema
+                            </span>
+
+                        </span>
+                        <span class="test">
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
