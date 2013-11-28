@@ -491,8 +491,7 @@ def get_events(request, **kwargs):
 
                 events_ = models.Event.objects.filter(
                     location_id=int(entity), status=status, start_time__gte=start_time, owner_id__in=admins_list,
-                    start_time__lt=end_time, start_time__month=current_month).order_by('start_time')
-                print events_
+                    start_time__lt=end_time).order_by('start_time')
             else:
 
                 if int(request.POST.get('curr_month')) == 100:
@@ -508,8 +507,7 @@ def get_events(request, **kwargs):
                     else:
                         end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
                     events_ = models.Event.objects.filter(
-                        status=status, start_time__gte=start_time, start_time__lt=end_time,
-                        start_time__month=current_month).order_by('start_time')
+                        status=status, start_time__gte=start_time, start_time__lt=end_time,).order_by('start_time')
 
             #if request.POST.get('id_entity') is not None:
             #    if int(request.POST['id_entity']) != -1:
