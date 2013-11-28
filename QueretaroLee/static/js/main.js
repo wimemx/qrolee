@@ -4080,9 +4080,8 @@ function show_type_message(type){
     if(type == 1){
         container_in = 'dialog_text';
     }else if(type == 3){
-        container_in = 'dialog_text';
+        container_in = 'create_content';
     }
-    alert(9);
 
     $('.container_message').fadeIn(200);
     $('.' + container_in).fadeIn(200);
