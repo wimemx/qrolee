@@ -2285,7 +2285,7 @@ def register_external_user(request):
 def create_author(name_author, title):
 
     name_aut = str(name_author)
-    name = str(name_author).replace(' ','+')
+    name = str(name_author).replace(' ', '+')
     query = ''
     key = '&key='+settings.GOOGLE_BOOKS_KEY
     search_author = '&limit=1&lang=es&filter=(all+type:%2Fbook%2Fauthor)&output=(%2Fcommon%2Ftopic%2Fimage+%2Fbook%2Fauthor%2Fworks_written+description)'
