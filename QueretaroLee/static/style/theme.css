@@ -4420,7 +4420,7 @@ textarea{
     top: 20px;
 }
 
-span.green_btn, span.yellow_btn, input.green_btn {
+span.green_btn, span.yellow_btn, input.green_btn ,#register_course .accept{
     padding: 4px 9px 4px 9px !important;
     cursor: pointer !important;
     font-size: 12px !important;

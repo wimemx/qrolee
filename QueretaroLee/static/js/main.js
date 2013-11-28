@@ -194,6 +194,14 @@ function post_to_fb(caption, description, content, redirect, url){
 }
 
 $(document).ready(function(){
+
+    $('.create_mod').click(function(){
+        show_type_message(2);
+    });
+    $('.create_module .accept').click(function(){
+        create_module($(this).parent());
+    });
+
     csrf_global = $('.csrf_header').find('input').val();
     $('.del').click(function(e){
         e.preventDefault();
@@ -4040,4 +4048,51 @@ function link_active(){
             $(this).css({'color':'#edde83'});
     });
 
+}
+
+
+function create_module($this){
+    var title = $this.find('p input').val();
+    var description = $this.find('p textarea').val();
+
+    var item = $('.one').clone();
+    item.fadeIn(200);
+    item.removeClass('one');
+    item.find('.part_l .title').html(title);
+    item.find('.part_l .description').html(description);
+    $('.seccion').append(item);
+    item.find('.btn_delete').click(function(){
+        show_type_message(1);
+        $('.dialog_text .dialog_btn_cancel').click(function(){
+            delele_mod($(this).parent().parent().parent());
+        });
+    });
+    item.find('.place_pink').click(function(){
+        show_type_message(3);
+    });
+
+    $('.lightbox').fadeOut(200);
+}
+
+function show_type_message(type){
+    var container_in = 'lightbox';
+
+    if(type == 1){
+        container_in = 'dialog_text';
+    }else if(type == 3){
+        container_in = 'dialog_text';
+    }
+    alert(9);
+
+    $('.container_message').fadeIn(200);
+    $('.' + container_in).fadeIn(200);
+    closet($('.dialog_closet'));
+    closet($('.dialog_btn'));
+    aling_message();
+}
+
+function delele_mod($this){
+    $this.fadeOut(200, function(){
+        $this.remove();
+    });
 }

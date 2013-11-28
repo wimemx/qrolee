@@ -10,5 +10,8 @@ urlpatterns = patterns('',
         {'template_name': 'course/course.html'}, name='course'),
     url(r'content/(?P<id_content>[0-9]+)/$',views.get_content,
         {'template_name': 'course/content.html'}, name='content'),
+    url(r'register_course/$',views.register_course,
+        {'template_name': 'course/register_course.html'}, name='register_curse'),
+
 
 )

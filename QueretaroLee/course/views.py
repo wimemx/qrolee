@@ -123,3 +123,33 @@ def get_content(request, **kwargs):
     }
 
     return render(request, template, context)
+
+
+def register_course(request, **kwargs):
+    template = kwargs['template_name']
+    list_autor = {}
+    entities = registry.Entity.objects.all().exclude(status=1)
+    users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
+
+    for obj in entities:
+        list_autor[obj.id] = {
+            'type': 'E',
+            'name': obj.name
+        }
+
+    for user in users:
+        name = user.first_name
+        if not user.first_name:
+            name = user.username
+
+        list_autor[user.id] = {
+            'type': 'U',
+            'name': name
+        }
+
+
+    context = {
+        'list_autor': list_autor
+    }
+
+    return render(request, template, context)
