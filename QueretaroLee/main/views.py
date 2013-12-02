@@ -1132,6 +1132,16 @@ def get_authors(request, **kwargs):
     dict_items = {}
     type = ['Autores', 'Author']
     authors = account_models.Author.objects.all()
+    for author in authors:
+        if 'https' in author.picture:
+            img_url = author.picture
+            path = os.path.join(os.path.dirname(__file__), '..', 'static/media/freebase/images').replace('\\','/')
+            picture = author.name.replace(' ', '').replace('/', '-')
+            picture += str(author.id)+'.png'
+            urllib.urlretrieve(img_url, os.path.join(path, picture))
+            author.picture = picture
+            author.img_url = img_url
+            author.save()
 
     if request.POST.get('field_value')!=None:
         search = request.POST['field_value']
