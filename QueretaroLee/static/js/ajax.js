@@ -1630,6 +1630,7 @@ $.ajax({
                 span = $('    <span class="wrapper_list borde_author" ></span>');
                 img = $('<img class="img_size_all" src="'+title[i2].cover +
                     '"/>');
+
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                 a_t = $('<a href="' + href +
                     '" class="title title_book alpha grid-4 "></a>');
@@ -2057,8 +2058,12 @@ function search_list_authors_titles($this){
                             a_wrapper = $('<a href="' + href + '" ></a>');
                             span = $('<span class="wrapper ' +
                                 'border_author "><span>');
+                            if($.trim(data[i].picture) != '')
+                                img_url = '/static/media/freebase/images/'+data[i].picture;
+                            else
+                                img_url = data[i].img_url;
                             img = $('<img class="img_size_all" alt="" ' +
-                                'src="' + data[i].picture + '"/>');
+                                'src="' + img_url + '"/>');
                             a_wrapper.append(span);
                             div.append(a_wrapper);
                             span.append(img);
@@ -2348,7 +2353,9 @@ function search_all_header($this){
                                     if(i == "author"){
                                         href = '/qro_lee/profile/author/' + obj[i2].id;
                                         if(obj[i2].picture!='')
-                                            src = obj[i2].picture;
+                                            src = '/static/media/freebase/images/'+obj[i2].picture;
+                                        else if(obj[i2].img_url!='')
+                                            src = obj[i2].img_url;
                                         name_user = obj[i2].name;
                                     }
                                     if(i == "org"){

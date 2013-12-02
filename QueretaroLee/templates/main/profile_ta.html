@@ -50,10 +50,11 @@
         {% if type == 'author' %}
             <span class="wrapper fleft borde_author">
                 {% if not profile.picture %}
-                    <img class="img_size_all" src="/static/img/create.png" alt="{{ profile.name }}"/>
+                    <img class="img_size_all" src="/static/img/create.png" alt="" />
+                {% elif profile.picture != '' %}
+                    <img class="img_size_all" src="/static/media/freebase/images/{{ profile.picture }}" alt="" />
                 {% else %}
-                    <img class="img_size_all" src="{{ profile.picture }}"
-                         alt="{{ profile.picture }}"/>
+                    <img class="img_size_all" src="{{ profile.img_url }}" alt="" />
                 {% endif %}
             </span>
             <span class="general-info no-margin grid-7">
@@ -339,7 +340,13 @@
                             <span class="item_title item_height grid-9 no-margin">
                                 <a href="/qro_lee/profile/author/{{ key }}">
                                     <span class="wrapper_title wrapper_title_list borde_author ">
-                                        <img class="img_size_all" src="{{ value.picture }}" />
+                                        {% if not value.picture %}
+                                            <img class="img_size_all" src="/static/img/create.png" alt="" />
+                                        {% elif value.picture != '' %}
+                                            <img class="img_size_all" src="/static/media/freebase/images/{{ value.picture }}" alt="" />
+                                        {% else %}
+                                            <img class="img_size_all" src="{{ value.img_url }}" alt="" />
+                                        {% endif %}
                                     </span>
                                 </a>
                                 <a href="/qro_lee/profile/author/{{ key }}">

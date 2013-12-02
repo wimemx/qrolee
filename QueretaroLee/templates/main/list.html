@@ -141,9 +141,12 @@
                                     <span class="wrapper borde_author">
                                         {% if not value.picture %}
                                             <img class="img_size_all" src="/static/img/create.png" alt="" />
+                                        {% elif value.picture != '' %}
+                                            <img class="img_size_all" src="/static/media/freebase/images/{{ value.picture }}" alt="" />
                                         {% else %}
-                                            <img class="img_size_all" src="{{ value.picture }}" alt="" />
+                                            <img class="img_size_all" src="{{ value.img_url }}" alt="" />
                                         {% endif %}
+
                                     </span>
                                 </a>
                                 <a title="{{ value.name }}"

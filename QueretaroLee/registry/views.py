@@ -1461,20 +1461,29 @@ def add_my_title(request):
 
         if request.POST.get('type_list') == 'A':
             for obj in list:
-
                 if obj['it']['id'] == -1:
                     desc = str(obj['it']['attribute']['biography'])
 
+                    picture = ''
+                    if str(obj['it']['attribute']['picture']) != '':
+                        img_url = str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid'
+                        path = os.path.join(os.path.dirname(__file__), '..', 'static/media/freebase/images').replace('\\','/')
+                        picture = str(obj['it']['attribute']['id_api']).replace('/', '-')
+                        picture = picture+'.png'
+                        urllib.urlretrieve(img_url, os.path.join(path, picture))
+
                     li ={
                         'name': str(obj['it']['attribute']['name']),
-                        'picture': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
+                        'img_url': str(obj['it']['attribute']['picture']) + '?maxwidth=250&maxheight=250&mode=fillcropmid',
                         'biography': desc[0:500],
                         'birthday': datetime.datetime.today(),
-                        'id_api': str(obj['it']['attribute']['id_api'])
+                        'id_api': str(obj['it']['attribute']['id_api']),
+                        'picture': picture
                     }
 
-                    author_exist = account.Author.objects.filter(db_model.Q(id_api=li['id_api']) |
-                                                                 db_model.Q(name=li['name']))
+                    author_exist = account.Author.objects.filter(
+                        db_model.Q(id_api=li['id_api']) | db_model.Q(name=li['name']))
+
                     if not author_exist:
                         author = account.Author.objects.create(**li)
                         author.save()
@@ -2298,6 +2307,7 @@ def create_author(name_author, title):
     biography = ' '
     picture = ' '
     author = ''
+    img_url = ''
 
     if str(name_author) != 'autor anonimo':
 
@@ -2310,15 +2320,20 @@ def create_author(name_author, title):
                 biography = biography[0:500]
 
             if len(response['result'][0]['mid']) != 0:
-                picture = 'https://www.googleapis.com/freebase/v1/image' + \
+                img_url = 'https://www.googleapis.com/freebase/v1/image' + \
                           response['result'][0]['mid'] + '?maxwidth=125&maxheight=125&mode=fillcropmid'
+                path = os.path.join(os.path.dirname(__file__), '..', 'static/media/freebase/images').replace('\\','/')
+                picture = str(response['result'][0]['id']).replace('/', '-')
+                picture += '.png'
+                urllib.urlretrieve(img_url, os.path.join(path, picture))
 
             dict_author = {
                 'name': response['result'][0]['name'],
-                'picture': picture,
+                'img_url': img_url,
                 'biography': biography,
                 'birthday': datetime.datetime.today(),
-                'id_api' : response['result'][0]['id']
+                'id_api': response['result'][0]['id'],
+                'picture': picture
             }
 
         else:

@@ -36,6 +36,7 @@ class Author(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     biography = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
+    img_url = models.CharField(max_length=255)
     id_api = models.TextField()
 
     def __unicode__(self):
