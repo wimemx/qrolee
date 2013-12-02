@@ -9,7 +9,7 @@ class Course(models.Model):
     published = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=255)
-    type_id = models.IntegerField(max_length=5)
+    type_pk = models.IntegerField(max_length=5)
     description = models.TextField(max_length=2000,null=True)
     status = models.BooleanField(default=True)
 
@@ -20,7 +20,7 @@ class Course(models.Model):
 class Module(models.Model):
     name = models.CharField(max_length=255)
     text = models.TextField(max_length=2000)
-    order = models.IntegerField(max_length=5)
+    order = models.IntegerField(max_length=5, default=0)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
     course = models.ForeignKey(Course)
@@ -32,7 +32,7 @@ class Module(models.Model):
 class Content(models.Model):
     name = models.CharField(max_length=255)
     text = models.TextField(max_length=2000)
-    order = models.IntegerField(max_length=5)
+    order = models.IntegerField(max_length=5, default=0)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField()
     module = models.ForeignKey(Module)

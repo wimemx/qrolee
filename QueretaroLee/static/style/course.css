@@ -154,12 +154,11 @@
     margin-bottom: 20px;
 }
 
-.view_courser{
+.view_courser .container_text{
     border-left:  1px solid #C4C4C4;
 }
 .module{
     border: 1px solid #c4c4c4;
-    border-left: 0px;
     border-right: 0px;
 }
 
@@ -253,6 +252,33 @@
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
     background: #fffcf5;
 }
+ul li{
+    border: 1px solid #c4c4c4;
+    border-right: none;
+}
+ul.child li{
+    border: none;
+}
+.sortable li:hover, .sortable .grid-7:hover{
+    cursor: url("https://maps.gstatic.com/mapfiles/openhand_8_8.cur"), default;
+}
+.activeHover{
+    border: 1px dashed #c4c4c4;
+}
+.nonActive{
+    opacity: 0.5;
+}
+.​openHand​{
+    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+}
+
+.closeHand {
+    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+}​
+.sortable.parent li:hover{
+    border: 1px dashed #c4c4c4 !important;
+}
+
     .register_course .text{
         font-size: 14px!important;
     }

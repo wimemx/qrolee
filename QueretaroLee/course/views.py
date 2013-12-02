@@ -11,6 +11,7 @@ from account import models as account
 
 import json
 import ast
+import pprint
 
 
 def get_courses(request, **kwargs):
@@ -44,14 +45,14 @@ def get_course(request, **kwargs):
     if courser.type == 'U':
         by = user.first_name
     else:
-        entity = registry.Entity.objects.get(id=courser.type_id)
+        entity = registry.Entity.objects.get(id=courser.type_pk)
         by = entity.name
 
     owner = False
-    if courser.type == 'U' and courser.type_id == request.user.id:
+    if courser.type == 'U' and courser.type_pk == request.user.id:
             owner = True
     elif courser.type == 'E':
-        entity = registry.Entity.objects.get(id=courser.type_id)
+        entity = registry.Entity.objects.get(id=courser.type_pk)
         admins = registry.MemberToObject.objects.filter(
             is_admin=True, object_type='E', object=entity.id)
         admins_list = list()
@@ -109,10 +110,10 @@ def dict_courses(courses, user):
         modules = models.Module.objects.filter(course=obj)
         user_course = False
 
-        if obj.type == 'U' and obj.type_id == user.id:
+        if obj.type == 'U' and obj.type_pk == user.id:
             user_course = True
         elif obj.type == 'E':
-            entity = registry.Entity.objects.get(id=obj.type_id)
+            entity = registry.Entity.objects.get(id=obj.type_pk)
             admins = registry.MemberToObject.objects.filter(
                 is_admin=True, object_type='E', object=entity.id)
             admins_list = list()
@@ -156,11 +157,11 @@ def get_content(request, **kwargs):
 
     if content.module.course.type == 'E':
         entity = registry.Entity.objects.get(
-            id=content.module.course.type_id)
+            id=content.module.course.type_pk)
         uid = entity.user_id
     else:
         user = User.objects.get(
-            id=content.module.course.type_id)
+            id=content.module.course.type_pk)
         uid = user.id
 
     discussions = account.Discussion.objects.get_or_create(
@@ -212,7 +213,6 @@ def update_position(request):
     model_name = app[1]
     model = get_model(app_label, model_name)
     elements = ast.literal_eval(request.POST.get('position'))
-    print model_name
     position = 0
     for value in elements:
         obj = model.objects.get(id=value)
@@ -225,6 +225,7 @@ def update_position(request):
     }
     context = json.dumps(context)
     return HttpResponse(context, content_type='application/json')
+
 
 def register_course(request, **kwargs):
     template = kwargs['template_name']
@@ -248,9 +249,43 @@ def register_course(request, **kwargs):
             'name': name
         }
 
-
     context = {
         'list_autor': list_autor
     }
 
     return render(request, template, context)
+
+
+def create_object(request):
+    data = """{"course.content":{"1":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_pk":1,"type":"E"}}}}},"2":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_id":1,"type":"E"}}}}}}}"""
+    data = ast.literal_eval(data)
+    create_objects(
+        data=data['course.content'], model_name='course.content')
+
+
+def create_objects(data, model_name, id=None):
+    # Get the number of parent models to create
+    for num_parent_models in data:
+        # For each parent model inside get fields
+        app = model_name.split('.')
+        app_label = app[0]
+        app_model_name = app[1]
+        model = get_model(app_label, app_model_name)
+        data_dict = dict()
+        id = -1
+        for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+
+            if len(parent_models_fields.split('.')) > 1:
+                id = create_objects(data=parent_models_values, model_name=parent_models_fields)
+            else:
+                data_dict[parent_models_fields] = parent_models_values
+
+        if id != -1:
+            for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+                if '_id' in parent_models_fields:
+                    data_dict[parent_models_fields] = id
+
+        object = model(**data_dict)
+        object.save()
+        return object.id
+

@@ -14,6 +14,6 @@ urlpatterns = patterns('',
     url(r'update_position/$',views.update_position, name='update_course_position'),
     url(r'register_course/$',views.register_course,
         {'template_name': 'course/register_course.html'}, name='register_curse'),
-
+    url(r'create_object/$',views.create_object, name='create_object'),
 
 )

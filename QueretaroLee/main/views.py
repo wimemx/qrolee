@@ -1248,7 +1248,6 @@ def get_genre(request):
         dictionary_genre[str(obj.id)] = genre
 
     context = simplejson.dumps(dictionary_genre)
-
     return HttpResponse(context, content_type='application/json')
 
 
@@ -1629,6 +1628,7 @@ def search_api(request, **kwargs):
     context = {
         'result_api': response
     }
+
     context = simplejson.dumps(context)
     return HttpResponse(context, content_type='application/json')
 

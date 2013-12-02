@@ -114,10 +114,10 @@
                         {{ course.description }}
                     </p>
                 </div>
-                {% if owner %}
-                <ul  class="fleft sortable">
+
+                <ul class="fleft {% if owner %}sortable{% endif %} parent">
                     <input type="hidden" class="model_name" value="course.module"/>
-                {% endif %}
+
 
                 {% for value in list_modules %}
                     <li id="{{ value.key }}" class="grid-11 no-margin module {% if owner %}ui-state-default{% endif %}" {% if not forloop.last %}style="border-bottom: 0px;"{% endif %} >
@@ -127,7 +127,7 @@
                                 {{ value.module.text|truncatechars:177 }}
                             </p>
                         </div>
-                        <ul style="width: 400px;" class="sortable fright">
+                        <ul style="width: 400px;" class="{% if owner %}sortable{% endif %} child fright">
                         <input type="hidden" class="model_name" value="course.content"/>
                         {% for obj in value.content %}
                             <li id="{{ obj.id }}" class="fleft">
@@ -144,9 +144,7 @@
                         </ul>
                     </li>
                 {% endfor %}
-                {% if owner %}
                 </ul>
-                {% endif %}
             </div>
         </div>
     </div>
