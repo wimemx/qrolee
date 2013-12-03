@@ -47,6 +47,7 @@ class Test(models.Model):
     available = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     meta = models.CharField(max_length=255)
+    module = models.ForeignKey(Module)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.meta)

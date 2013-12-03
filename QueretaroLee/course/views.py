@@ -75,17 +75,17 @@ def get_course(request, **kwargs):
     if len(my_rate) > 0:
             my_vot = my_rate[0].grade
 
-    dict_content = {}
     list_content = list()
     for obj in modules:
         content = models.Content.objects.filter(module=obj, status=True).order_by('order')
+        test = models.Test.objects.filter(module=obj)
         value = {
             'module': obj,
             'content': content,
-            'key': obj.id
+            'key': obj.id,
+            'test': test
         }
         list_content.append(value)
-
 
     context = {
         'courses': courses,
@@ -100,6 +100,79 @@ def get_course(request, **kwargs):
         'site_url': settings.SITE_URL
     }
 
+    return render(request, template, context)
+
+
+def get_test(request, **kwargs):
+    template = kwargs['template_name']
+    id_course = kwargs['id_test']
+    user = request.user
+    courses = models.Course.objects.filter(status=True)
+    courser = models.Course.objects.get(id=id_course, status=True)
+    modules = models.Module.objects.filter(course=courser, status=True).order_by('order')
+    rate = account.Rate.objects.filter(
+        element_id=courser.id, type='C').values('element_id').annotate(
+            count=db_model.Count('element_id'), score=db_model.Avg('grade'))
+    my_rate = account.Rate.objects.filter(
+        user=user, element_id=courser.id, type='C')
+
+    if courser.type == 'U':
+        by = user.first_name
+    else:
+        entity = registry.Entity.objects.get(id=courser.type_pk)
+        by = entity.name
+
+    owner = False
+    if courser.type == 'U' and courser.type_pk == request.user.id:
+            owner = True
+    elif courser.type == 'E':
+        entity = registry.Entity.objects.get(id=courser.type_pk)
+        admins = registry.MemberToObject.objects.filter(
+            is_admin=True, object_type='E', object=entity.id)
+        admins_list = list()
+        for a in admins:
+            admins_list.append(a.user_id)
+        match = 0
+        for ele in admins_list:
+            if user.id == ele:
+                match += 1
+
+        if match != 0:
+            owner = True
+
+    count_vot = 0
+    count_rate = 0
+    my_vot = 0
+    if len(rate) > 0:
+        count_vot = rate[0]['count']
+        count_rate = rate[0]['score']
+    if len(my_rate) > 0:
+            my_vot = my_rate[0].grade
+
+    list_content = list()
+    for obj in modules:
+        content = models.Content.objects.filter(module=obj, status=True).order_by('order')
+        test = models.Test.objects.filter(module=obj)
+        value = {
+            'module': obj,
+            'content': content,
+            'key': obj.id,
+            'test': test
+        }
+        list_content.append(value)
+
+    context = {
+        'courses': courses,
+        'course': courser,
+        'my_grade': len(my_rate),
+        'count_rate': count_rate,
+        'my_vot': my_vot,
+        'count_vot': count_vot,
+        'by': by,
+        'list_modules': list_content,
+        'owner': owner,
+        'site_url': settings.SITE_URL
+    }
     return render(request, template, context)
 
 

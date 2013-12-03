@@ -142,6 +142,18 @@
                             </li>
                         {% endfor %}
                         </ul>
+                        {% for obj in value.test %}
+                            <span class="test" class="fright no-margin">
+                            <a href="/courses/test/{{ obj.id }}" class="fright">
+                                <span class="grid-7 no-margin fright">
+                                    <span class="title grid-6 no-margin subtitle"
+                                          {% if forloop.last %}style="border-bottom: 0px;"{% endif %}
+                                            >{{ obj.name }}</span>
+                                    <img src="/static/img/theme.png" />
+                                </span>
+                            </a>
+                            </span>
+                        {% endfor %}
                     </li>
                 {% endfor %}
                 </ul>

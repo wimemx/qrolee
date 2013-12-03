@@ -268,7 +268,8 @@ ul.child li{
 .nonActive{
     opacity: 0.5;
 }
-.​openHand​{
+
+.​openHand ​{
     cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
 }
 
@@ -393,4 +394,8 @@ ul.child li{
     top: 0px!important;
     background: #C69263 url("http://localhost:8000/static/img/btn_edit.png") no-repeat center !important;
     background-size: 16px 14px!important;
+}
+
+.test .subtitle{
+    border-top: 1px solid #c4c4c4 !important;
 }
