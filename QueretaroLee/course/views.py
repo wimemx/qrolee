@@ -86,7 +86,6 @@ def get_course(request, **kwargs):
         }
         list_content.append(value)
 
-
     context = {
         'courses': courses,
         'course': courser,
@@ -151,7 +150,6 @@ def dict_courses(courses, user):
 
 def get_content(request, **kwargs):
     template = kwargs['template_name']
-
     content = models.Content.objects.get(id=kwargs['id_content'])
     contents = models.Content.objects.filter(module=content.module)
 
@@ -290,3 +288,44 @@ def create_objects(data, model_name, id=None):
         object.save()
         return object.id
 
+
+def edit_course(request, **kwargs):
+    template = kwargs['template_name']
+    list_autor = {}
+    entities = registry.Entity.objects.all().exclude(status=1)
+    users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
+    user = request.user
+    id_course = kwargs['id_course']
+    course = models.Course.objects.filter(id=id_course, status=True)
+    modules = models.Module.objects.filter(course=course)
+    dict_mod = {}
+    for obj in modules:
+        content = models.Content.objects.filter(module=obj)
+        dict_mod[obj.id] = {
+            'module': obj,
+            'content': content
+        }
+
+    for obj in entities:
+        list_autor[obj.id] = {
+            'type': 'E',
+            'name': obj.name
+        }
+
+    for user in users:
+        name = user.first_name
+        if not user.first_name:
+            name = user.username
+
+        list_autor[user.id] = {
+            'type': 'U',
+            'name': name
+        }
+
+    context = {
+        'list_autor': list_autor,
+        'course': course,
+        'dict_mod': dict_mod
+    }
+
+    return render(request, template, context)

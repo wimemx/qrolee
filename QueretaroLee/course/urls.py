@@ -4,6 +4,8 @@ from account import views as auth
 from course import views
 
 urlpatterns = patterns('',
+    url(r'edit_course/(?P<id_course>[0-9]+)/$',views.edit_course,
+        {'template_name': 'course/edit_course.html'}, name='edit_curse'),
     url(r'^$',views.get_courses,
         {'template_name': 'course/courses.html'}, name='courses'),
     url(r'course/(?P<id_course>[0-9]+)/$',views.get_course,
@@ -15,5 +17,6 @@ urlpatterns = patterns('',
     url(r'register_course/$',views.register_course,
         {'template_name': 'course/register_course.html'}, name='register_curse'),
     url(r'create_object/$',views.create_object, name='create_object'),
+
 
 )
