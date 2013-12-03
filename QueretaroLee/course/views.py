@@ -257,6 +257,7 @@ def register_course(request, **kwargs):
 
 
 def create_object(request):
+    print request.POST
     data = """{"course.content":{"1":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_pk":1,"type":"E"}}}}},"2":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_id":1,"type":"E"}}}}}}}"""
     data = ast.literal_eval(data)
     create_objects(

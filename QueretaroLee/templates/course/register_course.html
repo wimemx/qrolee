@@ -103,10 +103,10 @@
                 Lllena los campos que se presentan a continuación para registrar un curso
                 en Querétaro Lee.
             </p>
-            <form enctype="multipart/form-data" method="post" id="register_course"  action="/registry/register/">{% csrf_token %}
+            <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}
                 <p class="grid-8 no-margin field">
                      <span class="attr">Nombre</span>
-                    <input name="name" />
+                        <input name="name" />
                 </p>
                 <p class="grid-8 no-margin field">
                      <span class="attr">Descripción</span>
@@ -187,19 +187,29 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            $('#registry').submit(function(e){
+            $('#register_course').submit(function(e){
+                var valid = true;
+                var name = $(this).find('input[name=name]').val();
+                var desc = $(this).find('textarea[name=Description]').val();
+                course_json['name'] = name;
+                course_json['description'] = desc;
 
-                if(invalid_f($(this))){
+                if(valid){
 
                     $.ajax({
                         type: "POST",
                         url: $(this).attr('action'),
-                        data: $(this).serialize(),
+                        data: {
+                            'data': JSON.stringify(course_json),
+                            'csrfmiddlewaretoken': csrf_global
+                        },
                         dataType: 'json'
                     }).done(function(data) {
 
                             });
                 }
+
+                return false;
 
             });
         });
