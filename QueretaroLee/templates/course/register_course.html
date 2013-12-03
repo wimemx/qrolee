@@ -12,6 +12,29 @@
     <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
     <script type="text/javascript" src="{% static "js/main.js" %}"></script>
     <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script src=" {% static "js/tinymce/tinymce.min.js" %}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: ".textarea_tinymce",
+            theme: "modern",
+            language: 'es',
+            plugins: [
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor "
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft" +
+                    " aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar2: "print preview media | forecolor backcolor emoticons",
+            image_advtab: true,
+            resize: false,
+            templates: [
+                {title: 'Test template 1', content: 'Test 1'},
+                {title: 'Test template 2', content: 'Test 2'}
+            ]
+        });
+    </script>
 {% endblock %}
 
 
@@ -22,15 +45,15 @@
 {% block main_site %}
 
     <div class="container-16 container_message create_module" >
-        <div class="dialog-confirm" >
-            <div class="dialog_text grid-6 no-margin" style="display: none;">
+        <div class="dialog-confirm"     style="display: none;" >
+            <div class="dialog_text grid-6 no-margin" >
                 <span class="dialog_closet"></span>
                 <span>
                     <p class="p_text_dialog">Se eliminará La Sombra del Viento tus libros favoritos</p>
                 </span>
                 <div class="dialog_container_btn">
                     <span class="dialog_btn_cancel dialog_btn">Cancelar</span>
-                    <a class="dialog_btn green_btn">Aceptar</a>
+                    <span class="dialog_btn green_btn">Aceptar</span>
                 </div>
             </div>
         </div>
@@ -46,8 +69,29 @@
                 <span class="remove fright">Cancelar</span>
             </span>
         </div>
-        <div class="create_content" style="display: none;">
-            crear tema
+        <div class="create_content grid-16 courses" style="display: none;">
+            <div class="grid-14">
+                <div class="heading">
+                <h3 class="title title_page fleft">¿Listo para añadir un tema a Módulo 1 ?</h3>
+            </div>
+                <p>
+                    Introduce el nombre de tu tema
+                    <p>
+                        <input type="text" class="name">
+                    </p>
+                <p>
+                    Escribe el contenido de tu tema
+                    <p>
+                        <textarea name="text" class="textarea_tinymce textarea_page "></textarea>
+                    </p>
+                </p>
+                <p>
+                    <span class="container_btn">
+                        <span class="btn_page d-pink_buttom fleft">Cancelar</span>
+                        <span class="btn_page btn_save_pag fright">Guardar</span>
+                    </span>
+                </p>
+            </div>
         </div>
    </div>
     <div class="grid-16 courses register_course">
@@ -59,7 +103,7 @@
                 Lllena los campos que se presentan a continuación para registrar un curso
                 en Querétaro Lee.
             </p>
-            <form enctype="multipart/form-data" method="post" id="register_course"                   action="/registry/register/">{% csrf_token %}
+            <form enctype="multipart/form-data" method="post" id="register_course"  action="/registry/register/">{% csrf_token %}
                 <p class="grid-8 no-margin field">
                      <span class="attr">Nombre</span>
                     <input name="name" />
@@ -96,19 +140,15 @@
                 </span>
                 <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
                 <div class="item-mod one" style="display: none;">
+                    <input type="hidden" value="0" />
                     <div class="grid-7 no-margin part_l">
-                        <span class="title grid-6 no-margin">Módulo 1</span>
+                        <span class="title grid-6 no-margin"></span>
                         <span class="description grid-6 no-margin">
-                            Querétaro Lee" ("el Servicio"). Los Términos y
-                            Condiciones de Querétaro Lee son parte integrante
-                            de los Términos y Condiciones Generales de Faktor T
-                            México, S. A. de C. V.. Mediante la aceptación de los
-                            Términos y Condiciones Generales en el momento del
-                            registro el Usuario acepta las políticas aquí contenidas.
                         </span>
                         <span class="grid-3 no-margin btns">
                             <span class="pink_btn size_btn_edit btn_delete">
-                               <input type="hidden" value="Módulo 1" />
+                               <input type="hidden" class="name" value="modulo 1" />
+                               <input class="message" type='hidden' value="1"/>
                             </span>
                             <span class="green_btn size_btn_edit del">
                             </span>
@@ -116,22 +156,52 @@
                     </div>
                     <div class="grid-7 no-margin part_r">
                         <span class="content">
-                            <div class="item_content">
+                            <div class="item_content item_one" style="display: none;">
+                                <input type="hidden" value="0">
                                 <img src="/static/img/theme.png">
-                                <span class="title">tema 1</span>
+                                <span class="title"></span>
+                                <span class="pink_btn size_btn_edit btn_delete">
+                                    <input type="hidden" class="name" value="tema 1" />
+                                    <input class="message" type='hidden' value="2"/>
+                                </span>
                             </div>
                             <span class="place_pink">
                                 Añadir nuevo tema
                             </span>
-
                         </span>
                         <span class="test">
-
+                            <div class="item_test test_one" style="display: none;">
+                                <input type="hidden" value="0">
+                                <img src="/static/img/theme.png">
+                                <span class="title"></span>
+                            </div>
+                            <span class="place_pink">
+                                Añadir nueva prueba
+                            </span>
                         </span>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('#registry').submit(function(e){
+
+                if(invalid_f($(this))){
+
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('action'),
+                        data: $(this).serialize(),
+                        dataType: 'json'
+                    }).done(function(data) {
+
+                            });
+                }
+
+            });
+        });
+    </script>
 {% endblock %}
