@@ -268,8 +268,7 @@ ul.child li{
 .nonActive{
     opacity: 0.5;
 }
-
-.​openHand ​{
+.​openHand​{
     cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
 }
 
@@ -345,29 +344,31 @@ ul.child li{
 
     .item-mod .test{
         float: left;
+        padding-top: 10px;
     }
 
-    .item-mod .item_content{
+    .item-mod .item_content, .item-mod .item_test{
         width: 100%!important;
         float: left;
         padding-bottom: 10px;
     }
 
-    .item-mod .content img{
+    .item-mod .content img,.item-mod .test img{
         float: left;
         padding:  0px 10px;
     }
-    .item-mod .content span{
+    .item-mod .content span,.item-mod .test span{
         float: left;
         width: 200px;
         margin-bottom: 0px;
         margin-top: 0px;
         font-size: 12px!important;
     }
-    .item-mod .content .place_pink{
+    .item-mod .content .place_pink ,.item-mod .test .place_pink{
         padding: 0px 10px;
         padding-bottom: 10px;
         float: left;
+        margin-left: 20px;
     }
 
 #register_course .remove{
@@ -394,6 +395,26 @@ ul.child li{
     top: 0px!important;
     background: #C69263 url("http://localhost:8000/static/img/btn_edit.png") no-repeat center !important;
     background-size: 16px 14px!important;
+}
+.create_content .container_btn{
+    float: right;
+}
+
+.create_content .btn_save_pag{
+    height: auto!important;
+    padding: 3px 9px!important;
+}
+
+.item_content .btn_delete{
+    height: 13px;
+    width: 13px!important;
+    float: right!important;
+    margin-right: 0px;
+}
+
+.register_course .create_mod{
+    width: auto!important;
+    padding: 4px 9px;
 }
 
 .test .subtitle{
