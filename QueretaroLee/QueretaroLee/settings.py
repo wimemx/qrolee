@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'account',
     'registry',
     'disqus',
+    'course'
 )
 
 DISQUS_API_KEY = 'gLvBBYtvFtkCttT2u8SMmZqnlEmWWMYhrbqmVbLlWSJdfk4RKaWraKITJknhtXL7'

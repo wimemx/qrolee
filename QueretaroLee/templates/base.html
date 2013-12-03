@@ -33,12 +33,13 @@
 
     <script type="text/javascript" src="{% static "js/prefixfree.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/json3.min.js" %}"></script>
+    <div id="fb-root"></div>
     <script>
         window.fbAsyncInit = function() {
             // init the FB JS SDK
             FB.init({
-                appId      : '476600992414046', //'570894232960484', //  App ID from the app dashboard
-                channelUrl : 'http://qrolee.com/',//'http://localhost:8000/', //
+                appId      : '570894232960484', //'476600992414046', //  App ID from the app dashboard
+                channelUrl : 'http://localhost:8000/', //'http://qrolee.com/',//
                 status     : true,                                 // Check Facebook Login status
                 xfbml      : true                                  // Look for social plugins on the page
             });
@@ -105,6 +106,7 @@
 	  ga('send', 'pageview');
 
 	</script>
+
 </head>
 
 

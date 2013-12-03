@@ -1923,7 +1923,10 @@ function create_template(type, result,i, create_user){
                 a_wrapper.attr('href','/qro_lee/profile/author/'+result[i].id);
                 a_title.attr('href','/qro_lee/profile/author/'+result[i].id);
                 h3.html(result[i].name);
-                url = result[i].picture;
+                if($.trim(result[i].picture) != '')
+                    url = '/static/media/freebase/images/'+result[i].picture;
+                else
+                    url = result[i].img_url;
             }else{
                 a_wrapper.attr('href','/accounts/users/profile/'+result[i].id);
                 a_title.attr('href','/accounts/users/profile/'+result[i].id);
@@ -2571,8 +2574,13 @@ function list_title(csrf, data, div_text, type){
                         author_l[i].id + '"/>');
                     span_wrapper =  $('<span class="wrapper_list wrapper_title_mini border_author" ></span>');
                     div_item.append(span_wrapper);
-                    url_mini = '' + author_l[i].picture;
-                    url = '' + author_l[i].picture;
+                    if($.trim(author_l[i].picture) != ''){
+                        url_mini = '/static/media/freebase/images/' + author_l[i].picture;
+                        url = '' + author_l[i].picture;
+                    }else{
+                        url_mini = ''+ author_l[i].img_url;
+                        url = '' + author_l[i].img_url;
+                    }
                     var obj = {
                         'title':author_l[i].name
                     }
@@ -2821,7 +2829,6 @@ function list_title(csrf, data, div_text, type){
 
 }
 function add_my_title(csrf, array_title, type){
-
     var type_list = 'T';
     if($('.d_type_list').length > 0)
         type_list  = $('.d_type_list').val();
@@ -2874,6 +2881,7 @@ function add_my_title(csrf, array_title, type){
                         a_ref = $('<a href="'+href+'"></a>');
                         a_wrapper = $('<a href="'+href+'"></a>');
                         span = $('    <span class="wrapper_list borde_author" ></span>');
+
                         img = $('<img class="img_size_all" src="'+title[i2].cover +
                             '"/>');
                         div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
@@ -3123,7 +3131,11 @@ function get_titles_authors(list, csrf){
                 input_list = $('<input type="hidden" class="type_list"' +
                     'value="type_list"/>');
                 span = $('    <span class="wrapper_list" ></span>');
-                img = $('<img class="img_size_all" src="'+title[i2].picture +
+                if($.trim(title[i2].picture) != '')
+                    img_url = '/static/media/freebase/images/'+title[i2].picture;
+                else
+                    img_url = title[i2].img_url;
+                img = $('<img class="img_size_all" src="'+img_url +
                     '"/>');
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                 a_t = $('<a title="'+title[i2].name+'" class="title title_book alpha grid-4 "></a>');

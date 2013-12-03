@@ -18,6 +18,8 @@
 {% endblock %}
 
 {% block main_site %}
+
+
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -28,26 +30,28 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
     <div class="grid-16 courses view">
-        <div class="grid-14">
-        <a class="brown_btn fleft" href="/courses/">Ver todos los cursos</a>
-            <div class="container_course grid-3 no-margin">
-                {% for obj in coursess %}
-                    <div class="item {% if obj.id == course.id %} sele {% endif %}"
-                         {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
-                        <div class="container_item">
-                            <span class="title fleft">{{ obj.name }}</span>
+        <div class="grid-15 load-margin">
+        <div class="grid-3 fleft no-margin">
+            <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
+            <div class="container_course grid-3 fleft no-margin">
+                    {% for obj in courses %}
+                        <div class="item {% if obj.id == course.id %} sele {% endif %}"
+                             {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                            <div class="container_item">
+                                <span class="title fleft">{{ obj.name }}</span>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
             </div>
-            <div class="grid-11 no-margin view_courser">
+        </div>
+            <div class="grid-11 fleft no-margin view_courser">
                 <div class="container_text">
                     <span class="grid-7 no-margin">
                         <span class="title">{{ course.name }}</span>
                     </span>
                     <span class="grid-3 no-margin social_profile" style="cursor: auto;">
                         <span class="btn_fb_profile" >
-                            <div class="fb-like" data-href="{{ SITE_URL }}/courses/course/{{ course.id }}"
+                            <div class="fb-like" data-href="{{ site_url }}/courses/course/{{ course.id }}"
                                  data-layout="button_count" data-action="like" data-show-faces="true" data-share="false">
                             </div>
                         </span>
@@ -110,26 +114,37 @@
                         {{ course.description }}
                     </p>
                 </div>
-                {% for key, value in modules.items %}
-                    <div class="grid-11 no-margin module" {% if not forloop.last %}style="border-bottom: 0px;"{% endif %} >
+
+                <ul class="fleft {% if owner %}sortable{% endif %} parent">
+                    <input type="hidden" class="model_name" value="course.module"/>
+
+
+                {% for value in list_modules %}
+                    <li id="{{ value.key }}" class="grid-11 no-margin module {% if owner %}ui-state-default{% endif %}" {% if not forloop.last %}style="border-bottom: 0px;"{% endif %} >
                         <div class="grid-4 no-margin">
                             <span class="title">{{ value.module.name }}</span>
                             <p>
                                 {{ value.module.text|truncatechars:177 }}
                             </p>
                         </div>
+                        <ul style="width: 400px;" class="{% if owner %}sortable{% endif %} child fright">
+                        <input type="hidden" class="model_name" value="course.content"/>
                         {% for obj in value.content %}
-                            <a href="/courses/content/{{ obj.id }}">
-                                <div class="grid-7 no-margin fright">
+                            <li id="{{ obj.id }}" class="fleft">
+                            <a href="/courses/content/{{ obj.id }}" class="fright">
+                                <span class="grid-7 no-margin fright">
                                     <span class="title grid-6 no-margin subtitle"
                                           {% if forloop.last %}style="border-bottom: 0px;"{% endif %}
                                             >{{ obj.name }}</span>
                                     <img src="/static/img/theme.png" />
-                                </div>
+                                </span>
                             </a>
+                            </li>
                         {% endfor %}
-                    </div>
+                        </ul>
+                    </li>
                 {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

@@ -531,6 +531,66 @@ function auth_user(response){
 }
 
 $(document).ready(function(){
+    $('.sortable li, .sortable .grid-7').mouseup(function(){
+        $(this).removeClass('closeHand');
+        $(this).addClass('openHand');
+    }).mousedown(function(){
+        $(this).removeClass('openHand');
+        $(this).addClass('closeHand');
+        });
+    $('.sortable li, .sortable .grid-7').mouseover(function(){
+        $(this).addClass('activeHover');
+        $(this).parent().find('li').each(function(){
+                if(!$(this).hasClass('activeHover'))
+                    $(this).addClass('nonActive');
+            });
+    }).mouseout(function(){
+        $(this).removeClass('activeHover');
+            $(this).parent().find('li').each(function(){
+                    $(this).removeClass('nonActive');
+            });
+        });
+    $( ".sortable" ).sortable({
+        revert: true,
+        update: function(e, ui) {
+            var position = new Array();
+            var model_name = $(this).find('.model_name:eq(0)').val();
+
+            if($(this).hasClass('child')){
+                var model_name = $(this).find('.model_name').val();
+                $(this).find('li').each(function(){
+                    position.push(parseInt($(this).attr('id')));
+                });
+            }else{
+                $(this).find('li').each(function(){
+                    if($(this).parent().hasClass('parent'))
+                        position.push(parseInt($(this).attr('id')));
+                });
+            }
+
+
+            update_position(position, model_name);
+        }
+
+    });
+    $( "ul, li" ).disableSelection();
+    $('.container_course .remove').click(function(){
+        eliminateCourse($(this).closest('.item').attr('id'), 'course.course');
+    });
+    var course_height = $('.container_course').outerHeight(true);
+    $('a.all_courses').click(function(e){
+        e.preventDefault();
+        if($('.container_course').outerHeight(true) < 10){
+           $('.container_course').animate({
+                'height': course_height
+            }, 300);
+        }else{
+            $('.container_course').animate({
+                'height': 0
+            }, 300);
+        }
+        return false;
+    });
     $('#comments').submit(function(e){
         e.preventDefault();
         $.ajax({
@@ -803,89 +863,10 @@ $(document).ready(function(){
     $('.search_button').click(function(){
         search_all_header($(this));
     });
-    if(entity_search_events){
 
-        $('.sidebar-b .year tr').css({
-            'left':(curr_month*125)*-1
-        });
+    if(entity_search_events)
+        search_events($item);
 
-
-        var edit_events;
-
-        if($('.id_entity').val()==undefined){
-            edit_events = -1;
-        }else{
-            edit_events = $('.id_entity').val();
-        }
-
-        $.ajax({
-            type: "POST",
-            url: '/qro_lee/entity/events/'+$('.sidebar-b input.entity').val()+'/',
-            data: {
-                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
-                'curr_month': -1,
-                'id_entity':edit_events
-            },
-            dataType: 'json'
-        }).done(function(data){
-          var count = 0;
-                $.each(data,function(i){
-                    var event = data[i];
-                    var len = event.length;
-                    $.each(event,function(index){
-                        var event_data = event[index];
-                        var month = event_data[0];
-                        var day = event_data[1];
-                        var id = event_data[2];
-                        var year = event_data[3];
-                        var $table;
-                        $table = $('.overview').children('table');
-                        $.each($table, function(){
-                            var $this_ = $(this);
-                        $(this).find('.month:odd').each(function(index){
-                            if((month-1) == index && year == parseInt($this_.find('.year').html())){
-
-                                $table = $(this).parent().parent().parent();
-
-                                $table.find('tr').each(function(){
-                                    $(this).find('td').each(function(){
-                                        if($(this).html() == day){
-                                            $(this).addClass('active-event');
-                                            $(this).click(function(){
-                                                    var day = $(this).html();
-                                                    var lenth = $('.item').length;
-                                                    $('.item').each(function(index){
-                                                        if(!$(this).find('.date').hasClass('day_'+day))
-                                                            $(this).fadeOut();
-                                                        else{
-                                                            $(this).fadeIn();
-                                                            $(this).css('display','block');
-                                                        }
-                                                    });
-
-
-
-                                            });
-                                        }
-                                    });
-                                });
-                            }
-                        });
-                        });
-
-                        if(count == (len-1)){
-                            populateCal(curr_month,$item);
-
-                        }
-                        count++;
-                    });
-                });
-
-            });
-
-
-
-    }
 
     $('.sidebar-b .controller .next').click(function(){
             if( curr_month < 23 && clickable){
@@ -1131,6 +1112,88 @@ $(document).ready(function(){
 
 });
 
+
+
+
+function search_events($item){
+    $('.sidebar-b .year tr').css({
+            'left':(curr_month*125)*-1
+        });
+
+
+        var edit_events;
+
+        if($('.id_entity').val()==undefined){
+            edit_events = -1;
+        }else{
+            edit_events = $('.id_entity').val();
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/qro_lee/entity/events/'+$('.sidebar-b input.entity').val()+'/',
+            data: {
+                'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+                'curr_month': -1,
+                'id_entity':edit_events
+            },
+            dataType: 'json'
+        }).done(function(data){
+          var count = 0;
+                $.each(data,function(i){
+                    var event = data[i];
+                    var len = event.length;
+                    $.each(event,function(index){
+                        var event_data = event[index];
+                        var month = event_data[0];
+                        var day = event_data[1];
+                        var id = event_data[2];
+                        var year = event_data[3];
+                        var $table;
+                        $table = $('.overview').children('table');
+                        $.each($table, function(){
+                            var $this_ = $(this);
+                        $(this).find('.month:odd').each(function(index){
+                            if((month-1) == index && year == parseInt($this_.find('.year').html())){
+
+                                $table = $(this).parent().parent().parent();
+
+                                $table.find('tr').each(function(){
+                                    $(this).find('td').each(function(){
+                                        if($(this).html() == day){
+                                            $(this).addClass('active-event');
+                                            $(this).click(function(){
+                                                    var day = $(this).html();
+                                                    var lenth = $('.item').length;
+                                                    $('.item').each(function(index){
+                                                        if(!$(this).find('.date').hasClass('day_'+day))
+                                                            $(this).fadeOut();
+                                                        else{
+                                                            $(this).fadeIn();
+                                                            $(this).css('display','block');
+                                                        }
+                                                    });
+
+
+
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                        });
+
+                        if(count == (len-1)){
+                            populateCal(curr_month,$item);
+
+                        }
+                        count++;
+                    });
+                });
+
+            });
+}
 
 function api_isbn_search(isbn){
     var data_ = -1;
@@ -1567,6 +1630,7 @@ $.ajax({
                 span = $('    <span class="wrapper_list borde_author" ></span>');
                 img = $('<img class="img_size_all" src="'+title[i2].cover +
                     '"/>');
+
                 div_text = $('<div class="d-container_text_book grid-3 no-margin"></div>');
                 a_t = $('<a href="' + href +
                     '" class="title title_book alpha grid-4 "></a>');
@@ -1994,8 +2058,12 @@ function search_list_authors_titles($this){
                             a_wrapper = $('<a href="' + href + '" ></a>');
                             span = $('<span class="wrapper ' +
                                 'border_author "><span>');
+                            if($.trim(data[i].picture) != '')
+                                img_url = '/static/media/freebase/images/'+data[i].picture;
+                            else
+                                img_url = data[i].img_url;
                             img = $('<img class="img_size_all" alt="" ' +
-                                'src="' + data[i].picture + '"/>');
+                                'src="' + img_url + '"/>');
                             a_wrapper.append(span);
                             div.append(a_wrapper);
                             span.append(img);
@@ -2285,7 +2353,9 @@ function search_all_header($this){
                                     if(i == "author"){
                                         href = '/qro_lee/profile/author/' + obj[i2].id;
                                         if(obj[i2].picture!='')
-                                            src = obj[i2].picture;
+                                            src = '/static/media/freebase/images/'+obj[i2].picture;
+                                        else if(obj[i2].img_url!='')
+                                            src = obj[i2].img_url;
                                         name_user = obj[i2].name;
                                     }
                                     if(i == "org"){
@@ -2533,8 +2603,49 @@ function add_rate($this){
             });
         });
 }
+
+function update_position(position, model){
+    console.log(position);
+    $.ajax({
+        type: "POST",
+        url: '/courses/update_position/',
+        data: {
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'position': JSON.stringify(position),
+            'model': model
+        },
+        dataType: 'json'
+    }).done(function(data){
+
+        });
+}
+
+function eliminateCourse(id, model){
+    $.ajax({
+        type: "POST",
+        url: '/courses/remove/',
+        data: {
+            'csrfmiddlewaretoken': $('.csrf_header').find('input').val(),
+            'id': id,
+            'model': model
+        },
+        dataType: 'json'
+    }).done(function(data){
+            if(data.response == 1){
+                //Success function
+                $('#'+id).fadeOut(300,function(){
+                    $(this).remove();
+                });
+            }else{
+                //Fail function
+
+            }
+        });
+}
 $(document).click(function(){
     $('.search_result').fadeOut(250);
+    men_1 = true;
+    combo_act = true;
     if(!men_1)
         $('.sub-menu').fadeOut(250);
     men_1 = false;

@@ -19,7 +19,7 @@
 
 {% block main_site %}
     <div class="grid-16 courses all">
-        <div class="grid-14">
+        <div class="grid-15 load-margin">
             <div class="grid-8 no-margin container_text">
                 <span class="gri-7 no-margin">
                     <span class="title">¡Aprende!</span>
@@ -41,25 +41,32 @@
             </div>
             <div class="container_course grid-6 no-margin">
                 {% for key, value in courses.items %}
-                    <a href="/courses/course/{{ key }}">
-                        <div class="item" {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
-                            <div class="container_item">
+                    <span id="{{ key }}" class="item" {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                        {% if value.user_course %}
+                            <span class="remove fright">x</span>
+                        {% endif %}
+                        <a class="fleft" href="/courses/course/{{ key }}">
+                            <span class="container_item">
                                 <span class="title grid-4 fleft">{{ value.course.name }}</span>
+
                                 <span class="grid-2 no-margin fleft number">
                                     <img  src="/static/img/starn_course.png" >
                                     <span >{{ value.rate }}</span>
                                     <img src="/static/img/modul.png" >
                                     <span >{{ value.count_module }}</span>
                                 </span>
+
                                 <p class="grid-5 no-margin">
                                     {{ value.course.description|truncatechars:200 }}
                                 </p>
-                            </div>
+                            </span>
+                            </a>
                             {% if value.user_course %}
-                                <a class="green_btn" href="/registry/edit/{{ value.course.id }}"></a>
+                                <span class="edit_wrapper">
+                                    <a class="green_btn" href="/registry/edit/{{ value.course.id }}"></a>
+                                </span>
                             {% endif %}
-                        </div>
-                    </a>
+                    </span>
                 {% endfor %}
             </div>
         </div>

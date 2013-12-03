@@ -136,7 +136,6 @@ def get_entities(request, **kwargs):
                 admins = models.MemberToObject.objects.filter(
                     object_type='E', object=e.id, is_admin=True)
                 for a in admins:
-                    #print a.user_id
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
             user_entities = entity.filter(id__in=request_user_is_admin,status=status)
@@ -461,17 +460,16 @@ def get_events(request, **kwargs):
 
     if int(request.POST.get('curr_month')) != -1:
         if int(entity) != -1:
-
             current_month = int(request.POST.get('curr_month'))+1
-            start_time =  datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
+            start_time = datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
             if int(request.POST.get('curr_month')) >= 11:
                 end_time = datetime.datetime(start_time.year+1, 1, 1)
             else:
                 end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
 
-            events_ = models.Event.objects.filter(location_id=int(entity),
-                status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
-
+            events_ = models.Event.objects.filter(
+                location_id=int(entity), status=status,
+                start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
         else:
             if int(request.POST.get('id_entity')) != -1:
                 admins = models.MemberToObject.objects.filter(
@@ -481,15 +479,18 @@ def get_events(request, **kwargs):
                     admins_list.append(a.user_id)
 
                 current_month = int(request.POST.get('curr_month'))+1
-                start_time =  datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
+
+                if current_month > 12:
+                    current_month -= 12
+                start_time = datetime.datetime(int(request.POST.get('curr_year')),current_month,1)
 
                 if int(request.POST.get('curr_month')) >= 11:
                     end_time = datetime.datetime(start_time.year+1, 1, 1)
                 else:
                     end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
 
-                events_ = models.Event.objects.filter(location_id=int(entity),
-                    status=status, start_time__gte=start_time, owner_id__in=admins_list,
+                events_ = models.Event.objects.filter(
+                    location_id=int(entity), status=status, start_time__gte=start_time, owner_id__in=admins_list,
                     start_time__lt=end_time).order_by('start_time')
             else:
 
@@ -506,7 +507,7 @@ def get_events(request, **kwargs):
                     else:
                         end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
                     events_ = models.Event.objects.filter(
-                        status=status, start_time__gte=start_time, start_time__lt=end_time).order_by('start_time')
+                        status=status, start_time__gte=start_time, start_time__lt=end_time,).order_by('start_time')
 
             #if request.POST.get('id_entity') is not None:
             #    if int(request.POST['id_entity']) != -1:
@@ -1131,6 +1132,15 @@ def get_authors(request, **kwargs):
     dict_items = {}
     type = ['Autores', 'Author']
     authors = account_models.Author.objects.all()
+    for author in authors:
+        if 'https' in author.picture:
+            img_url = author.picture
+            path = os.path.join(os.path.dirname(__file__), '..', 'static/media/freebase/images').replace('\\', '/')
+            picture = str(author.id)+'.png'
+            urllib.urlretrieve(img_url, os.path.join(path, picture))
+            author.picture = picture
+            author.img_url = img_url
+            author.save()
 
     if request.POST.get('field_value')!=None:
         search = request.POST['field_value']
@@ -1247,7 +1257,6 @@ def get_genre(request):
         dictionary_genre[str(obj.id)] = genre
 
     context = simplejson.dumps(dictionary_genre)
-
     return HttpResponse(context, content_type='application/json')
 
 
@@ -1615,6 +1624,7 @@ def search_api(request, **kwargs):
         url = 'https://www.googleapis.com/freebase/v1/search?query='
         query += search_author + key
         url += query
+
     response = urllib2.urlopen(url)
     response = simplejson.load(response)
 
@@ -1627,6 +1637,7 @@ def search_api(request, **kwargs):
     context = {
         'result_api': response
     }
+
     context = simplejson.dumps(context)
     return HttpResponse(context, content_type='application/json')
 
