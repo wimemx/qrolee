@@ -99,7 +99,7 @@
             <span class="grid-8 no-margin title">
                 Editar {{ course.0.name }}
             </span>
-            <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}
+            <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object__/">{% csrf_token %}
                 <p class="grid-8 no-margin field">
                      <span class="attr">Nombre</span>
                         <input name="name" value="{{ course.0.name }}"  />
@@ -181,15 +181,15 @@
                 </div>
                 {% for key, value in dict_mod.items %}
                     <div class="item-mod" >
-                        <input type="hidden" value="0" />
+                        <input type="hidden" value="{{ key }}" />
                         <div class="grid-7 no-margin part_l">
                             <span class="title grid-6 no-margin">{{ value.module.name }}</span>
                             <span class="description grid-6 no-margin">{{ value.module.text }}
                             </span>
                             <span class="grid-3 no-margin btns">
                                 <span class="pink_btn size_btn_edit btn_delete">
-                                   <input type="hidden" class="name" value="modulo 1" />
-                                   <input class="message" type='hidden' value="1"/>
+                                   <input type="hidden" class="name" value="{{ value.module.name }}" />
+                                   <input class="message" type='hidden' value="{{ key }}"/>
                                 </span>
                                 <span class="green_btn size_btn_edit del">
                                 </span>
@@ -210,14 +210,15 @@
                                 </div>
                                 {% for obj in value.content %}
                                     <div class="item_content ">
-                                        <input type="hidden" value="0">
+                                        <input type="hidden" value="{{ obj.id }}">
                                         <img src="/static/img/theme.png">
                                         <span class="title">{{ obj.name }}</span>
+                                        <input type="hidden" class="text" value="{{ obj.text }}"/>
                                         <span class="green_btn size_btn_edit del">
                                         </span>
                                         <span class="pink_btn size_btn_edit btn_delete">
-                                            <input type="hidden" class="name" value="tema 1" />
-                                            <input class="message" type='hidden' value="2"/>
+                                            <input type="hidden" class="name" value="{{ obj.name }}" />
+                                            <input class="message" type='hidden' value="{{ obj.id }}"/>
                                         </span>
                                     </div>
                                 {% endfor %}
@@ -243,7 +244,36 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
+            var last_mod = 1;
+            $.each($('.item-mod '), function(){
+                var id = parseInt($(this).find('input').val());
+                last_mod = id;
+                if(id != 0){
+                    var name = $(this).find('.part_l .title').text();
+                    var text = $(this).find('.part_l .description').text();
+                    course_json['course.module'][id] = {
+                        'name': name,
+                        'text': text,
+                        'order': 1,
+                        'course.content': {
+                        }
+                    };
+                    $.each($(this).find('.content .item_content'), function(){
+                        var id_ = parseInt($(this).find('input').val());
+                        if(id_ != 0){
+                            name = $(this).find('.title').text();
+                            text = $(this).find('.text').val();;
+                            course_json['course.module'][id]['course.content'][id_] = {
+                                'name': name,
+                                'text': text,
+                                'order': 1
+                            };
+                        }
+                    });
+                }
+            });
 
+            count_course = last_mod + 1;
             $('#register_course').submit(function(e){
                 var valid = true;
                 var name = $(this).find('input[name=name]').val();

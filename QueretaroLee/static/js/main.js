@@ -10,7 +10,7 @@ var course_json = {
     'type_id': 1,
     'type': 'E',
     'course.module': {
-        0: ''
+
     }
 };
 var count_course = 1;
@@ -216,6 +216,33 @@ $(document).ready(function(){
     $('.create_content .d-pink_buttom').click(function(){
         fade_out();
     });
+    $('.edit_course .btns .green_btn').click(function(){
+        show_type_message(4);
+        var mod = $(this).parent().parent().parent();
+        var name = mod.find('.part_l .title').text();
+        $('.create_module').find('.title').html('Editar ' + name);
+        $('.create_module').find('p input').val(name);
+        $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
+        $('.create_module .accept').unbind("click").click(function(){
+            if($(this).hasClass('edit_for')){
+                var id = parseInt(mod.find('input').val());
+                edit_module($(this).parent(), mod, id);
+            }
+        });
+    });
+    $('.edit_course .btns .btn_delete').click(function(){
+        delete_module($(this));
+    });
+    $('.edit_course .content .btn_delete').click(function(){
+        delete_content($(this));
+    });
+    $('.edit_course .content .green_btn').click(function(){
+        update_content($(this));
+    });
+    $('.edit_course .content .place_pink').click(function(){
+        add_content($(this));
+    });
+
     $('.create_module .accept').click(function(){
         if($(this).hasClass('reg_for')){
             create_module($(this).parent());
@@ -4078,14 +4105,19 @@ function link_active(){
     });
 }
 
-function edit_module($this, $mod){
+function edit_module($this, $mod, type){
+
     var name = $this.find('p input').val();
     var text = $this.find('p textarea').val();
     var id = $mod.find('input').val();
     $mod.find('.part_l .title').html(name);
     $mod.find('.part_l .description').html(text);
-    course_json['course.module'][id]['name'] = name;
-    course_json['course.module'][id]['text'] = text;
+    var type_id = count_course;
+    if(type != 0)
+        type_id = type;
+
+    course_json['course.module'][type_id]['name'] = name;
+    course_json['course.module'][type_id]['text'] = text;
     fade_out();
 }
 
@@ -4097,7 +4129,6 @@ function create_module($this){
         'text': description,
         'order': count_course,
         'course.content': {
-            0: ''
         }
     };
 
@@ -4111,96 +4142,24 @@ function create_module($this){
     $('.seccion').append(item);
     item.find('.pink_btn input').val(title);
     item.find('.btn_delete').click(function(){
-        var $del = $(this);
-        show_type_message(1);
-        $('.p_text_dialog').html($(this).find('input').val());
-        $('.dialog_text .green_btn').click(function(){
-            var $item = $del.parent().parent().parent();
-            var id = parseInt($item.find('input').val());
-            delete course_json['course.module'][id];
-            delele_mod($item);
-            fade_out();
-
-        });
+       delete_module($(this));
     });
     item.find('.btns .green_btn').click(function(){
         show_type_message(4);
         var mod = $(this).parent().parent().parent();
         var name = mod.find('.part_l .title').text();
         $('.create_module').find('.title').html('Editar ' + name);
-        var i = 0;
         $('.create_module').find('p input').val(name);
         $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
         $('.create_module .accept').unbind("click").click(function(){
             if($(this).hasClass('edit_for')){
-                edit_module($(this).parent(), mod);
+                edit_module($(this).parent(), mod, 0);
             }
         });
     });
 
-    var count_cont = 1;
     item.find('.place_pink').click(function(){
-        show_type_message(3);
-        var i = 0;
-        $('.create_content .btn_save_pag').unbind("click").click(function(){
-                var item_content = item.find('.content .item_one').clone();
-                item_content.removeClass('item_one');
-                item_content.fadeIn(200);
-                if (tinyMCE) tinyMCE.triggerSave();
-                var text = $('.create_content .textarea_page').val();
-                var name = $('.create_content .name').val();
-                item_content.find('.title').html(name);
-                item_content.find('input').val(count_cont);
-                item_content.find('.btn_delete .name').val(name);
-                item.find('.content').append(item_content);
-                var id = parseInt(item.find('input').val());
-
-                course_json['course.module'][id]['course.content'][count_cont] = {
-                    'name': name,
-                    'text': text,
-                    'order': count_cont
-                };
-                count_cont++;
-
-                item_content.find('.btn_delete').click(function(){
-                    var $del = $(this);
-                    show_type_message(1);
-                    $('.p_text_dialog').html($(this).find('input').val());
-                    $('.dialog_text .green_btn').unbind("click").click(function(){
-
-                            var $item_cont = $del.parent();
-                            var id_parent = parseInt($item_cont.parent().parent().parent().find('input').val());
-                            var id = parseInt($item_cont.find('input').val());
-                            delete course_json['course.module'][id_parent]['course.content'][id];
-                            delele_mod($item_cont);
-                            fade_out();
-                    });
-                });
-
-                item_content.find('.green_btn').click(function(){
-                    var $this_ = $(this).parent();
-                    var id_ = parseInt($this_.find('input').val());
-                    var id_parent = parseInt($this_.parent().parent().parent().find('input').val());
-                    var content = course_json['course.module'][id_parent]['course.content'][id_];
-                    show_type_message(3);
-                    $('.create_content .name').val(content['name']);
-                    tinymce.activeEditor.setContent(content['text']);
-
-                    $('.create_content .title').text('Editar ' + name);
-                    $('.create_content .btn_save_pag').unbind("click").click(function(){
-
-                        if (tinyMCE) tinyMCE.triggerSave();
-                        var text = $('.create_content .textarea_page').val();
-                        var name = $('.create_content .name').val();
-                        content = course_json['course.module'][id_parent]['course.content'][id_];
-                        content['name'] = name;
-                        content['text'] = text;
-                        $this_.find('.title').html(name);
-                        fade_out();
-                    });
-                });
-                fade_out();
-        });
+        add_content($(this));
     });
     fade_out();
 }
@@ -4245,8 +4204,112 @@ function fade_out(){
     });
 }
 
-function delele_mod($this){
-    $this.fadeOut(200, function(){
-        $(this).remove();
+function delete_module($this){
+    var $del = $this;
+    show_type_message(1);
+    $('.p_text_dialog').html($this.find('input').val());
+    $('.dialog_text .green_btn').click(function(){
+        var $item = $del.parent().parent().parent();
+        var id = parseInt($item.find('input').val());
+        delete course_json['course.module'][id];
+        $item.fadeOut(200, function(){
+            $(this).remove();
+        });
+        fade_out();
+
     });
+}
+
+function delete_content($this){
+    var $del = $this;
+    show_type_message(1);
+    $('.p_text_dialog').html($this.find('input').val());
+    $('.dialog_text .green_btn').unbind("click").click(function(){
+
+        var $item_cont = $del.parent();
+        var id_parent = parseInt($item_cont.parent().parent().parent().find('input').val());
+        var id = parseInt($item_cont.find('input').val());
+        delete course_json['course.module'][id_parent]['course.content'][id];
+        $item_cont.fadeOut(200, function(){
+            $(this).remove();
+        });
+        fade_out();
+    });
+}
+
+function update_content($this){
+    var $this_ = $this.parent();
+    var id_ = parseInt($this_.find('input').val());
+    var id_parent = parseInt($this_.parent().parent().parent().find('input').val());
+    var content = course_json['course.module'][id_parent]['course.content'][id_];
+    show_type_message(3);
+    $('.create_content .name').val(content['name']);
+    tinymce.activeEditor.setContent(content['text']);
+
+    $('.create_content .title').text('Editar ' + name);
+    $('.create_content .btn_save_pag').unbind("click").click(function(){
+
+        if (tinyMCE) tinyMCE.triggerSave();
+        var text = $('.create_content .textarea_page').val();
+        var name = $('.create_content .name').val();
+        content = course_json['course.module'][id_parent]['course.content'][id_];
+        content['name'] = name;
+        content['text'] = text;
+        $this_.find('.title').html(name);
+        fade_out();
+    });
+}
+
+function add_content($item){
+    show_type_message(3);
+    var item = $item.parent().parent().parent();
+    var count_cont = parseInt($item.parent().find('.item_content').
+        last().find('input').val()) + 1;
+
+    $('.create_content .btn_save_pag').unbind("click").click(function(){
+        var item_content = item.find('.content .item_one').clone();
+        item_content.removeClass('item_one');
+        item_content.fadeIn(200);
+        if (tinyMCE) tinyMCE.triggerSave();
+        var text = $('.create_content .textarea_page').val();
+        var name = $('.create_content .name').val();
+        item_content.find('.title').html(name);
+        item_content.find('input').val(count_cont);
+        item_content.find('.btn_delete .name').val(name);
+        item.find('.content').find('.place_pink').before(item_content);
+        var id = parseInt(item.find('input').val());
+        course_json['course.module'][id]['course.content'][count_cont] = {
+            'name': name,
+            'text': text,
+            'order': count_cont
+        };
+        count_cont++;
+
+        item_content.find('.btn_delete').click(function(){
+           delete_content($(this));
+        });
+
+        item_content.find('.green_btn').click(function(){
+            update_content($(this));
+        });
+        fade_out();
+    });
+}
+
+function update_model(model, id, field, value){
+
+     $.ajax({
+            type: "POST",
+            url: '/registry/',
+            data: {
+                'csrfmiddlewaretoken': csrf_global,
+                'model': model,
+                'id': id,
+                'field': field,
+                'value': value
+            },
+            dataType: 'json'
+        }).done(function(data){
+                     return data;
+                 });
 }
