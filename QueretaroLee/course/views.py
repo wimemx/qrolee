@@ -234,6 +234,7 @@ def register_course(request, **kwargs):
     for obj in entities:
         list_autor[obj.id] = {
             'type': 'E',
+            'id': obj.id,
             'name': obj.name
         }
 
@@ -244,6 +245,7 @@ def register_course(request, **kwargs):
 
         list_autor[user.id] = {
             'type': 'U',
+            'id': user.id,
             'name': name
         }
 

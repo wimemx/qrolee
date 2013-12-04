@@ -213,6 +213,15 @@ $(document).ready(function(){
     $('.create_mod').click(function(){
         show_type_message(2);
     });
+    $('.register_course .change').change(function(){
+        $.each($(this).find('option'), function(){
+            if($(this).attr('selected') == 'selected'){
+                var nam_class = $(this).attr('class').split('-');
+                course_json['type_id'] = nam_class[0];
+                course_json['type'] = nam_class[1];
+            }
+        });
+    });
     $('.create_content .d-pink_buttom').click(function(){
         fade_out();
     });
@@ -4173,6 +4182,10 @@ function show_type_message(type){
     cont_mess.find('.accept').removeClass('reg_for');
     cont_mess.find('.accept').removeClass('edit_for');
     $('.lightbox .title').html('Crea un nuevo módulo');
+    $('.lightbox ').find('input[name=name]').val('');
+    $('.lightbox ').find('input[name=description]').val('');
+    $('.create_content .name').val('');
+    tinymce.activeEditor.setContent('');
 
     if(type == 1){
         container_in = 'dialog-confirm';

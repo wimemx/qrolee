@@ -120,7 +120,7 @@
                             <span class="dropdown"></span>
                             <select class="change value" name="privacy">
                                 {% for key, value in list_autor.items %}
-                                    <option value="{{ value.name }}">
+                                    <option  class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
                                         {{ value.name }}
                                     </option>
                                 {% endfor %}
@@ -139,6 +139,7 @@
                     Sección de Módulos
                 </span>
                 <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
+                <span class="" ></span>
                 <div class="item-mod one" style="display: none;">
                     <input type="hidden" value="0" />
                     <div class="grid-7 no-margin part_l">
