@@ -59,8 +59,8 @@ $(document).ready(function(){
         $(this).find('p').each(function(){
             if(!$(this).hasClass('submit')){
                 $(this).find('.invalid').remove();
-                if($(this).find('input').hasClass('required') &&
-                     $.trim($(this).find('input').val()) == ''){
+                if($(this).find('input, textarea').hasClass('required') &&
+                     $.trim($(this).find('input, textarea').val()) == ''){
                         valid--;
                         var span = $('<span class="invalid"></span>');
                         var value = 'Ingrese su ';
@@ -83,7 +83,7 @@ $(document).ready(function(){
                             value += 'contraseña nuevamente';
                         }
                         span.html(value);
-                        $(this).find('input').css({
+                        $(this).find('input, textarea').css({
                             'border': '1px solid #f89883'
                         });
                         //$(this).append(span);
@@ -318,6 +318,105 @@ function valid_form_list(form){
         });
         succe = false
     }
-
     return succe;
+}
+
+function valid_course($form){
+    var no_contents = false;
+    var form = true;
+    $('.no_resuls').remove();
+    var text = $('<div class="grid-14 no_resuls"></div>');
+
+    if($('.seccion .item-mod').length == 1){
+        text.text('El curso debe tener al menos un módulo');
+        $('.seccion').append(text);
+        form = false;
+    }
+
+    $.each($('.seccion .item-mod'),function(){
+        if(!$(this).hasClass('one'))
+            if($(this).find('.item_content').length == 1)
+                no_contents = true;
+    });
+
+    if(no_contents){
+        text.text('Cada módulo debe tener al menos un tema');
+        $('.seccion').append(text);
+        form = false;
+    }
+
+    var name = $form.find('input[name=name]').val();
+    var desc = $form.find('textarea[name=Description]').val();
+
+    if(name.length == 0 || desc.length == 0)
+        form = false;
+
+    return form;
+}
+
+function valid_module($this){
+    var error = true;
+    var name = $this.parent().find('input[name=name]').val();
+    var desc = $this.parent().find('textarea[name=description]').val();
+    if(name.length == 0 || desc.length == 0)
+        error = false;
+
+    return error;
+}
+
+function valid_question($this){
+    var type = parseInt($this.parent().parent().find('.field_option').val());
+    var error = true;
+    var field = '';
+
+    if(type == 1){
+
+        field = '.option_b';
+
+    }else{
+
+        var no_check = 0;
+        field = '.option_a';
+        var count_answer = 0;
+
+        $.each($(field + ' .item-answer'), function(){
+
+            var border = '1px solid rgb(228, 228, 228)';
+            if(!$(this).hasClass('answer-one') && $(this).find('.field_').val().length == 0){
+                error = false;
+                if (count_answer < 3){
+                    border = '1px solid rgb(248, 152, 131)';
+                }
+                count_answer++;
+            }
+            $(this).find('.field_').css({'border': border});
+
+            if($(this).find('.multi_check').hasClass('active'))
+                no_check++;
+        });
+
+        if(no_check == 0){
+            error = false;
+            $('.option_a .lab2').css(
+                {
+                    'color': '#f89883'
+                }
+            );
+        }else{
+            $('.option_a .lab2').css(
+                {
+                    'color': '#454545'
+                }
+            );
+        }
+    }
+    $(field + ' .name_c').css({'border': '1px solid #e4e4e4'});
+    if($(field + ' .name_c').val().length == 0){
+        $(field + ' .name_c').css(
+            {
+                'border': '1px solid rgb(248, 152, 131)'
+            });
+        error = false;
+    }
+    return error;
 }

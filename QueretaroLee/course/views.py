@@ -298,9 +298,13 @@ def edit_course(request, **kwargs):
     users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
     user = request.user
     id_course = kwargs['id_course']
+    rate = account.Rate.objects.filter(
+        element_id=id_course, type='C').values('element_id').annotate(
+        count=db_model.Count('element_id'), score=db_model.Avg('grade'))
     course = models.Course.objects.filter(id=id_course, status=True)
     modules = models.Module.objects.filter(course=course)
     dict_mod = {}
+
     for obj in modules:
         content = models.Content.objects.filter(module=obj)
         dict_mod[obj.id] = {
@@ -311,6 +315,7 @@ def edit_course(request, **kwargs):
     for obj in entities:
         list_autor[obj.id] = {
             'type': 'E',
+            'id': obj.id,
             'name': obj.name
         }
 
@@ -321,13 +326,18 @@ def edit_course(request, **kwargs):
 
         list_autor[user.id] = {
             'type': 'U',
+            'id': user.id,
             'name': name
         }
 
+    score = 0
+    if rate:
+        score = rate[0]['score']
     context = {
         'list_autor': list_autor,
         'course': course,
-        'dict_mod': dict_mod
+        'dict_mod': dict_mod,
+        'count_rate': score
     }
 
     return render(request, template, context)

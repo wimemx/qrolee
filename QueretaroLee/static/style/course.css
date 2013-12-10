@@ -282,8 +282,11 @@ ul.child li{
     .register_course .grid-14{
         padding: 40px 50px;
     }
-    .register_course .text{
+    .register_course .text, .create_test .text{
         font-size: 14px!important;
+    }
+    .register_course .label{
+        padding: 5px 0px 15px 0px;
     }
 
     .register_course .field input ,.register_course .field textarea{
@@ -297,10 +300,11 @@ ul.child li{
     .register_course .field{
         padding: 4px 0px;
     }
-    .register_course .field .attr, .register_course .discussion .fleft{
+    .register_course .field .attr, .create_test .field .attr, .register_course .discussion .fleft{
         padding: 5px 0px;
         float: left;
         font-size: 13px;
+        color: #000;
         font-weight: 500!important;
         font-family: 'Raleway'!important;
     }
@@ -320,7 +324,7 @@ ul.child li{
         margin-top: 20px;
     }
     .register_course textarea{
-        height: 80px;
+        height: 105px;
     }
 .item-mod{
     width: 100%;
@@ -340,25 +344,25 @@ ul.child li{
     .item-mod .part_l{
         border-right: 1px solid #C4C4C4;
     }
+    .item-mod .part_r{
+        width: 419px;
+    }
     .item-mod .content{
         float: left;
         width: 100%;
-        padding-top: 10px;
+        padding-top: 21px;
         padding-bottom: 5px;
         border-bottom: 1px solid #c4c4c4;
     }
-
     .item-mod .test{
         float: left;
         padding-top: 10px;
     }
-
     .item-mod .item_content, .item-mod .item_test{
         width: 100%!important;
         float: left;
         padding-bottom: 10px;
     }
-
     .item-mod .content img,.item-mod .test img{
         float: left;
         padding:  0px 10px;
@@ -411,11 +415,11 @@ ul.child li{
     padding: 3px 9px!important;
 }
 
-.item_content .btn_delete{
+.item_content .btn_delete, .item_test .btn_delete{
     width: 13px!important;
     float: right!important;
 }
-.item_content .green_btn{
+.item_content .green_btn,  .item_test .green_btn{
     float: right!important;
     margin-right: 0px;
 }
@@ -423,4 +427,227 @@ ul.child li{
 .register_course .create_mod{
     width: auto!important;
     padding: 4px 9px;
+}
+
+.register_course .rate_{
+    padding: 0px 103px;
+    float: left;
+}
+.register_course .rate_ span{
+    width: 18px;
+    height: 17px;
+    display: block;
+    float: left;;
+}
+.container_text .edit_{
+    margin-top: 0px;
+    margin-left: 0px;
+}
+.btn_form .brown_btn ,.container_text .edit_{
+    padding: 4px 9px 4px 9px !important;
+    line-height: 17px !important;
+    width: auto;
+    color: #000;
+    margin-right: 15px;
+    background: #e2c388!important;
+    border: 1px solid #d5b16e;
+    font-weight: 500;
+}
+.green_btn_light{
+    cursor: pointer;
+    padding: 4px 9px 4px 9px !important;
+    line-height: 17px !important;
+    color: #000;
+    font-size: 13px;
+    margin-right: 15px;
+    background: #60967E !important;
+    border: 1px solid #326F53 !important;
+    font-weight: 500;
+}
+
+.span_{
+    padding-top: 5px;
+}
+
+.create_content .grid-14, .create_test .grid-14{
+    padding: 40px 50px;
+}
+
+.form_edit{
+    padding-top: 20px;
+}
+.contai_btns{
+
+}
+
+.create_test .option span{
+    padding-left: 5px!important;
+}
+.create_test .grid-8{
+    padding-bottom: 20px;
+}
+.type_test .option{
+    float: right;
+}
+.create_test .info_{
+    left: 25px;
+    top: 5px;
+    width: 255px;
+    float: left;
+    font-size: 10px;
+    padding-bottom: 15px;
+}
+
+.create_test .select_wrapper{
+    left: 0px!important;
+}
+.create_test .line_divide{
+    width: 100%;
+    float: left;
+}
+.create_test .container_btn{
+    float: right;
+    margin-right: 0px;
+}
+.create_test .container_btn .btn_save_pag{
+    margin-right: 0px!important;
+    height: auto!important;
+}
+.create_test .heading .title{
+    margin-bottom: 0px;
+}
+.create_test .label{
+    margin-top: 10px;
+}
+.create_test .container_test{
+    width: 100%;
+    margin-top: 20px;
+    float: left;
+}
+.create_test .fix-right{
+    padding-top: 7px;
+}
+.create_test .container_cuestion{
+    padding-right: 19px;
+}
+.create_test .create_cuestion{
+    border-left: 1px solid #c4c4c4;
+}
+.multi_check{
+    cursor: pointer;
+}
+.create_cuestion .option_c{
+    float: left;
+    width: 90%;
+    margin-left: 5%;
+}
+    .option_c .option span{
+        padding-top: 5px;
+    }
+    .option_c .option{
+        margin-top: 10px;
+        float: left;
+        width: 50%;
+    }
+    .option img{
+        width: 15px;
+        height: 15px;
+        float: left;
+    }
+    .option span{
+        float: left;
+        margin-top: -5px;
+        margin-left: 5px;
+    }
+    .option_c .line_divide{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+.create_cuestion .title{
+    font-size: 13px;
+    float: left;
+}
+
+.rad_sel{
+    cursor: pointer;
+}
+.create_test .create_option{
+    float: left;
+    width: 100%;
+}
+
+.create_option .attr{
+    padding-top: 5px;
+    float: left
+}
+.create_option p{
+    float: left;
+    width: 100%;
+}
+.create_option .lab1{
+    color: #000;
+    font-size: 13px;
+    margin-right: 5px;
+}
+.create_option .lab2{
+    margin-top: 3px;
+}
+.create_option .field_{
+    float: left;
+    width: 301px;
+}
+.create_option .multi_check{
+    margin-left: 11px;
+}
+.btn_cuest{
+    float: right;
+    margin-top: 20px!important;
+}
+.btn_cuest .green_btn ,.item_cuestion .green_btn{
+    top: 0px!important;
+    height: 21px!important;
+    border: 1px solid #a77340 !important;
+    width: 23px!important;
+    background-size: 16px!important;
+    margin-right: 0px;
+}
+.item_cuestion{
+    margin-top: 10px;
+    float: left;
+    width: 100%;
+}
+.item_cuestion .title{
+    font-size: 14px;
+}
+.item_cuestion .green_btn{
+    width: 17px!important;
+    height: 17px!important;
+    background-size: 12px!important;
+}
+.item_cuestion .btn_delete{
+    width: 7px;
+    height: 7px;
+    background-size: 10px;
+}
+.item-answer .btn_delete{
+    height: 7px;
+    width: 7px;
+    background-size: 10px;
+    margin-right: 0px;
+}
+
+.create_test .dialog-confirm{
+    position: fixed;
+    left: 34%!important;
+    top: 240px;
+    z-index: 20;
+}
+.create_test .dialog-confirm .green_btn{
+    width: auto!important;
+    left: -91px!important;
+    font-size: 12px!important;
+    top: -4px!important;
+    height: 16px!important;
+    padding: 3px 9px!important;
 }
