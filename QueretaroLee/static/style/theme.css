@@ -2369,7 +2369,7 @@ p{
 
 .entities .green_btn, .events .green_btn ,.single .green_btn, .courses .green_btn{
     border: 2px solid #a77340 !important;
-    background: #C69263 url("/static/img/btn_edit.png") no-repeat 6px 6px !important;
+    background: #C69263 url("/static/img/btn_edit.png") no-repeat center !important;
     height: 30px!important;
     top: -34px!important;
     width: 30px!important;
@@ -4429,7 +4429,7 @@ textarea{
     top: 20px;
 }
 
-span.green_btn, span.yellow_btn, input.green_btn ,#register_course .accept, .test-wrap .accept{
+span.green_btn, span.yellow_btn, input.green_btn ,#register_course .accept,.test-wrap .accept, .create_test .dialog-confirm .green_btn{
     padding: 4px 9px 4px 9px !important;
     cursor: pointer !important;
     font-size: 12px !important;

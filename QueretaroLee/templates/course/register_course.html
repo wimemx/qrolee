@@ -93,24 +93,203 @@
                 </p>
             </div>
         </div>
+        <div class="create_test grid-16 courses" style="display: none;">
+            <div class="dialog-confirm"     style="display: none;" >
+                <div class="dialog_text grid-6 no-margin" >
+                    <span class="dialog_closet"></span>
+                    <span>
+                        <p class="p_text_dialog">Se eliminará La Sombra del Viento tus libros favoritos</p>
+                    </span>
+                    <div class="dialog_container_btn">
+                        <span class="dialog_btn_cancel dialog_btn">Cancelar</span>
+                        <span class="dialog_btn green_btn">Aceptar</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-14">
+                <div class="heading">
+                    <input type="hidden" class="id_mod_" value="0" >
+                    <input type="hidden" class="id_test_" value="0" >
+                    <h3 class="title title_page fleft">¿Listo para crear una prueba?</h3>
+                </div>
+                <p class="grid-8 no-margin text label">
+                    Llena los campos que se presentan a continuación para
+                        registrar una prueba en módulo final
+                </p>
+                <p class="grid-8 no-margin field">
+                    <span class="attr">Nombre</span>
+                    <input type="text" class="name grid-5 no-margin fright" />
+                </p>
+                <p class="grid-8 no-margin type_questi field type_test typ_rad">
+                    <span class="attr">Tipo de la prueba</span>
+                    <input type="hidden" class="field_option" value="0" >
+                    <span class="option grid-5 no-margin type_a" >
+                        <img src="/static/img/radioOn.png" class="rad_sel">
+                        <span class="rad_sel attr">Calificado</span>
+                        <span class="info_">
+                            Se desplegarán las preguntas de la prueba al azar y al
+                            ser respondidas por el usuario se desplegará una calificación.
+                        </span>
+                    </span>
+                    <span class="option grid-5 no-margin type_b" >
+                        <img src="/static/img/radioOff.png" class="rad_sel">
+                        <span class="rad_sel attr">Superado</span>
+                        <span class="info_">
+                            Se desplegarán las preguntas de la prueba al azar y al
+                            ser respondidas por el usuario se desplegará una calificación.
+                        </span>
+                    </span>
+                </p>
+                <p >
+                    <span class="grid-8 no-margin discussion genre_sel field">
+                        <span class="fleft attr correct_answers">Respuestas correctas</span>
+                        <span class="grid-5 no-margin fright correct_answers">
+                            <span class="select_wrapper grid-2 alpha">
+                                <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                                    <span class="text">Selecciona</span>
+                                    <span class="dropdown"></span>
+                                    <select class="change value" name="privacy">
+                                        {% for x in 'xxx' %}
+                                            <option value="{{ forloop.counter }}">
+                                                {{ forloop.counter }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </span>
+                        </span>
+                    </span>
+                </p>
+                <span class="container_btn">
+                    <span class="btn_page d-pink_buttom fleft">Cancelar</span>
+                    <span class="btn_page btn_save_pag fright">Guardar</span>
+                </span>
+                <span class="line_divide"></span>
+                <span class="container_test">
+                    <span class="title fleft">Sección de preguntas</span>
+                    <span class="grid-7 no-margin container_cuestion">
+                        <span class="item_cuestion cuestion-one" style="display: none;">
+                            <input class="id" type="hidden" value="0" />
+                            <span class="title">Pregunta example</span>
+                            <span class="green_btn size_btn_edit del">
+                            </span>
+                            <span class="pink_btn size_btn_edit btn_delete">
+                               <input type="hidden" class="name" value="mod">
+                               <input class="message" type="hidden" value="mod">
+                            </span>
+                        </span>
+                        <span class="place_pink">Añadir nueva pregunta</span>
+                    </span>
+                    <span class="grid-7 no-margin create_cuestion">
+                        <span class="option_c typ_rad"  style="display: none;">
+                            <span class="title">Tipo de pregunta</span>
+                            <input class="field_option" type="hidden" value="0" />
+                            <span class="option type_a" >
+                                <img src="/static/img/radioOn.png" class="rad_sel">
+                                <span class="rad_sel attr">Opción Múltiple</span>
+                            </span>
+                            <span class="option type_b" >
+                                <img src="/static/img/radioOff.png" class="rad_sel">
+                                <span class="rad_sel attr">Verdadero o falso</span>
+                            </span>
+                            <span class="line_divide"></span>
+                            <span class="create_option option_a" style="display: none;">
+                                <p>
+                                    <span class="attr">Pregunta</span>
+                                    <input type="text" class="name_c fright grid-5 no-margin">
+                                </p>
+                                <p>
+                                    <span class="fleft lab1">Posibles respuestas</span>
+                                    <span class="fleft lab2">(No olvides marcar la respuesta/as correctas)</span>
+                                </p>
+                                <p class="item-answer answer-one" style="display: none;">
+                                    <input type="text" class="field_">
+                                    <input type="hidden" class="id" value="0">
+                                    <img class="multi_check" src="/static/img/checkboxoff.png" />
+                                    <span class="pink_btn size_btn_edit btn_delete" >
+                                       <input type="hidden" class="name" value="mod">
+                                       <input class="message" type="hidden" value="mod">
+                                    </span>
+                                </p>
+                                <p class="item-answer">
+                                    <input type="text" class="field_">
+                                    <input type="hidden" class="id" value="1">
+                                    <img class="multi_check" src="/static/img/checkboxoff.png" />
+                                    <span class="pink_btn size_btn_edit btn_delete" >
+                                       <input type="hidden" class="name" value="mod">
+                                       <input class="message" type="hidden" value="mod">
+                                    </span>
+                                </p>
+                                <p class="item-answer">
+                                    <input type="text" class="field_">
+                                    <input type="hidden" class="id" value="2">
+                                    <img class="multi_check" src="/static/img/checkboxoff.png" />
+                                    <span class="pink_btn size_btn_edit btn_delete" >
+                                       <input type="hidden" class="name" value="mod">
+                                       <input class="message" type="hidden" value="mod">
+                                    </span>
+                                </p>
+                                <p class="item-answer">
+                                    <input type="text" class="field_">
+                                    <input type="hidden" class="id" value="3">
+                                    <img class="multi_check" src="/static/img/checkboxoff.png" />
+                                    <span class="pink_btn size_btn_edit btn_delete" >
+                                       <input type="hidden" class="name" value="mod">
+                                       <input class="message" type="hidden" value="mod">
+                                    </span>
+                                </p>
+
+                                <span class="place_pink">Añadir nueva respuesta</span>
+                            </span>
+                            <span class="create_option option_b" style="display: none;">
+                                <p>
+                                    <span class="attr">Pregunta</span>
+                                    <input type="text" class="name_c fright grid-5 no-margin">
+                                </p>
+                                <span class="grid-5 no-margin fright check_box typ_check">
+                                    <input class="field_option" type="hidden" value="0" />
+                                    <span class="option type_a" >
+                                        <img src="/static/img/checkboxoff.png" class="rad_sel">
+                                        <span class="rad_sel attr">Verdadero</span>
+                                    </span>
+                                    <span class="option type_b" >
+                                        <img src="/static/img/checkboxon.png" class="rad_sel">
+                                        <span class="rad_sel attr">Falso</span>
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="grid-3 no-margin btn_cuest">
+                                <span class="green_btn size_btn_edit del">
+                                </span>
+                                <span class="pink_btn size_btn_edit btn_delete">
+                                   <input type="hidden" class="name" value="mod">
+                                   <input class="message" type="hidden" value="mod">
+                                </span>
+                           </span>
+                        </span>
+
+                    </span>
+                </span>
+            </div>
+        </div>
    </div>
     <div class="grid-16 courses register_course">
         <div class="grid-14">
             <span class="grid-8 no-margin title">
                 ¿Listo para crear un curso?
             </span>
-            <p class="grid-8 no-margin text">
+            <p class="grid-8 no-margin text label">
                 Lllena los campos que se presentan a continuación para registrar un curso
                 en Querétaro Lee.
             </p>
             <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}
                 <p class="grid-8 no-margin field">
                      <span class="attr">Nombre</span>
-                        <input name="name" />
+                        <input name="name" class="required regex_alpha_numeric" />
                 </p>
                 <p class="grid-8 no-margin field">
                      <span class="attr">Descripción</span>
-                    <textarea name="Description" ></textarea>
+                    <textarea name="Description" class="required regex_alpha_numeric" ></textarea>
                 </p>
                 <span class="grid-8 no-margin discussion genre_sel">
                     <span class="fleft">Autor del curso</span>
@@ -139,9 +318,8 @@
                     Sección de Módulos
                 </span>
                 <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
-                <div class="grid-14 no_resuls" style="display: none;">El curso debe tener al menos un módulo</div>
                 <div class="item-mod one" style="display: none;">
-                    <input type="hidden" value="0" />
+                    <input type="hidden" class="id_modl" value="0" />
                     <div class="grid-7 no-margin part_l">
                         <span class="title grid-6 no-margin"></span>
                         <span class="description grid-6 no-margin">
@@ -175,8 +353,14 @@
                         <span class="test">
                             <div class="item_test test_one" style="display: none;">
                                 <input type="hidden" value="0">
-                                <img src="/static/img/theme.png">
-                                <span class="title"></span>
+                                <img src="/static/img/star_test.png">
+                                <span class="title">test uno</span>
+                                <span class="green_btn size_btn_edit del">
+                                </span>
+                                <span class="pink_btn size_btn_edit btn_delete">
+                                    <input type="hidden" class="name" value="test 1" />
+                                    <input class="message" type='hidden' value="2"/>
+                                </span>
                             </div>
                             <span class="place_pink">
                                 Añadir nueva prueba
@@ -191,17 +375,18 @@
         $(document).ready(function(){
 
             $('#register_course').submit(function(e){
-                var valid = true;
                 var name = $(this).find('input[name=name]').val();
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
                 course_json['description'] = desc;
+                console.log(course_json);
                 var course_data = {
                     'course.course': {
                         1: course_json
                     }
                 }
-                if(valid){
+
+                if(valid_course($(this))){
 
                     $.ajax({
                         type: "POST",

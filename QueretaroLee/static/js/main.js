@@ -9,11 +9,12 @@ var course_json = {
     'description': 'text',
     'type_id': 1,
     'type': 'E',
-    'course.module': {
-    }
+    'course.module': {}
 };
+var question_json = {
+}
+var selected;
 var count_course = 1;
-var count_content = 1;
 var entity_search_atc = false;
 var arr_titles = new Array();
 var dict_titles = {};
@@ -212,16 +213,83 @@ $(document).ready(function(){
     $('.create_mod').click(function(){
         show_type_message(2);
     });
+    $('.del_course').click(function(){
+        show_type_message(1);
+        $('.dialog_text .p_text_dialog').text('Eliminar curso');
+        $('.dialog_text .green_btn').unbind("click").click(function(){
+            eliminateCourse($('.id_course').val(), 'course.course');
+            window.location.href = site_url + '/courses/';
+        });
+    });
+    $('.contai_btns .green_btn_light').click(function(){
+
+    });
+
+    $('.btn_cuest .green_btn').click(function(){
+        $(this).parent().removeClass('edit_');
+        if(valid_question($(this)))
+            add_question($(this));
+    });
+    $('.btn_cuest .btn_delete').click(function(){
+        $('.option_c').fadeOut(250);
+    });
+
+    $('.create_option .place_pink').click(function(){
+        var $item = $('.answer-one').clone();
+        $item.removeClass('answer-one');
+        var id = parseInt($('.create_option').find('.item-answer').last().find('.id').val());
+        $item.find('.id').val(id + 1);
+        $('.option_a .place_pink').before($item);
+        $item.fadeIn(250);
+        click_check($item.find('.multi_check'));
+        delete_item_answer($item.find('.btn_delete'));
+
+    });
+
+    $('.rad_sel').click(function(){
+
+        var $parent = $(this).parent().parent();
+        var option_a = 'radioOff.png';
+        var option_b = 'radioOn.png';
+        if(!$parent.hasClass('typ_rad')){
+            option_b = 'checkboxon.png';
+            option_a = 'checkboxoff.png';
+        }
+        var value = 1;
+
+        if($(this).parent().hasClass('type_a')){
+            option_a = 'radioOn.png';
+            option_b = 'radioOff.png';
+            if(!$parent.hasClass('typ_rad')){
+                option_b = 'checkboxoff.png';
+                option_a = 'checkboxon.png';
+            }
+            value = 0;
+        }
+
+        $parent.find('.type_a img:eq(0)').attr('src','/static/img/' + option_a);
+        $parent.find('.type_b img:eq(0)').attr('src','/static/img/' + option_b);
+        $parent.find('.field_option:eq(0)').val(value);
+
+        if($parent.hasClass('option_c'))
+            fade_create_cuestion_option(value);
+
+    });
     $('.register_course .change').change(function(){
         $.each($(this).find('option'), function(){
+            var nam_class = $(this).attr('class').split('-');
             if($(this).attr('selected') == 'selected'){
-                var nam_class = $(this).attr('class').split('-');
                 course_json['type_id'] = nam_class[0];
                 course_json['type'] = nam_class[1];
             }
+            if($('.sel_val input').val() == nam_class[0])
+                selected = $(this);
         });
     });
-    $('.create_content .d-pink_buttom').click(function(){
+    $('.register_course input[name=name], textarea[name=Description]').keyup(function(){
+        $(this).css({'border':'1px solid #e4e4e4'});
+    })
+    $('.create_content .d-pink_buttom, .create_test .d-pink_buttom').click(function(){
         fade_out();
     });
     $('.edit_course .btns .green_btn').click(function(){
@@ -232,17 +300,19 @@ $(document).ready(function(){
         $('.create_module').find('p input').val(name);
         $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
         $('.create_module .accept').unbind("click").click(function(){
-            if($(this).hasClass('edit_for')){
+            if($(this).hasClass('edit_for') && valid_module($(this))){
                 var id = parseInt(mod.find('input').val());
                 edit_module($(this).parent(), mod, id);
             }
         });
     });
     $('.edit_course .btns .btn_delete').click(function(){
-        delete_module($(this));
+        //delete_module($(this));
+        del_item($(this), 'course.module');
     });
     $('.edit_course .content .btn_delete').click(function(){
-        delete_content($(this));
+        //delete_content($(this));
+        del_item($(this), 'course.content');
     });
     $('.edit_course .content .green_btn').click(function(){
         update_content($(this));
@@ -250,9 +320,26 @@ $(document).ready(function(){
     $('.edit_course .content .place_pink').click(function(){
         add_content($(this));
     });
+    $('.edit_course .test .place_pink').click(function(){
+        $('.create_test').removeClass('edit_');
+        add_test($(this));
+    });
+    $('.edit_course .test .item_test .btn_delete').click(function(){
+        del_item($(this), 'course.test');
+    });
+    $('.edit_course .test .item_test .green_btn').click(function(){
+        $('.create_test').addClass('edit_');
+        add_test($(this));
+    });
+    $('.type_questi .rad_sel').click(function(){
+        if(parseInt($('.type_questi .field_option').val()) == 1)
+            $('.correct_answers').fadeIn(300);
+        else
+            $('.correct_answers').fadeOut(300);
+    });
 
     $('.create_module .accept').click(function(){
-        if($(this).hasClass('reg_for')){
+        if($(this).hasClass('reg_for') && valid_module($(this))){
             create_module($(this).parent());
         }
     });
@@ -431,7 +518,6 @@ $(document).ready(function(){
         });
 
     $('.radio_btn').click(function(){
-        if(!$(this).hasClass('test-radio')){
         $('.d-add_text_book').empty();
         $('.title_list').empty();
         $('.add_my_list').find('.d-item_book').fadeOut(250,function(){
@@ -453,7 +539,6 @@ $(document).ready(function(){
             $('.type_list').val('A');
             $('.title_list').append('Autores de tu lista');
             $('.d-add_text_book').append('+ Añadir un nuevo autor');
-        }
         }
     });
     $('.multi_select span').click(function(){
@@ -930,7 +1015,6 @@ $(document).ready(function(){
         var content = $cuestion.find('.content');
         var height = parseInt(content.css('height').replace('px',''));
         var max_height = parseInt(content.find('span').css('height').replace('px',''));
-
         $.each($('.cuestion'),function(){
 
             var hg = parseInt($(this).find('.content').css('height').replace('px',''));
@@ -944,6 +1028,7 @@ $(document).ready(function(){
                 });
         });
 
+
         if(height > 0)
             height = 0;
         else
@@ -955,7 +1040,9 @@ $(document).ready(function(){
             if(height!=0)
                 $cuestion.find('.title').css({'color':'#000'});
         });
-
+    });
+    $('.container_cuestion .place_pink').click(function(){
+        clear_create_cuestion($(this));
     });
 
     $('.btn_fr').click(function(){
@@ -4122,10 +4209,9 @@ function edit_module($this, $mod, type){
     var id = $mod.find('input').val();
     $mod.find('.part_l .title').html(name);
     $mod.find('.part_l .description').html(text);
-    var type_id = count_course;
+    var type_id = id;
     if(type != 0)
         type_id = type;
-
     course_json['course.module'][type_id]['name'] = name;
     course_json['course.module'][type_id]['text'] = text;
     fade_out();
@@ -4140,6 +4226,8 @@ function create_module($this){
         'order': count_course,
         'course_dm': '',
         'course.content': {
+        },
+        'course.test': {
         }
     };
 
@@ -4148,59 +4236,14 @@ function create_module($this){
     item.removeClass('one');
     item.find('.part_l .title').html(title);
     item.find('.part_l .description').html(description);
-    item.find('input').val(count_course);
+    item.find('.id_modl').val(count_course);
     count_course++;
     $('.seccion').append(item);
     item.find('.pink_btn input').val(title);
-    item.find('.btn_delete').click(function(){
-       delete_module($(this));
+    item.find('.btns .btn_delete').click(function(){
+       //delete_module($(this));
+        del_item($(this), 'course.module');
     });
-    var count_cont = 1;
-    item.find('.place_pink').click(function(){
-        show_type_message(3);
-        var i = 0;
-        $('.create_content .btn_save_pag').click(function(){
-            if(i == 0){
-                var item_content = item.find('.content .item_one').clone();
-                item_content.removeClass('item_one');
-                item_content.fadeIn(200);
-                if (tinyMCE) tinyMCE.triggerSave();
-                var text = $('.create_content .textarea_page').val();
-                var name = $('.create_content .name').val();
-                item_content.find('.title').html(name);
-                item_content.find('input').val(count_cont);
-                item_content.find('.btn_delete .name').val(name);
-                item.find('.content').append(item_content);
-                var id = parseInt(item.find('input').val());
-
-                course_json['course.module'][id]['course.content'][count_cont] = {
-                    'name': name,
-                    'text': text,
-                    'order': count_cont,
-                    'module_dm':''
-                };
-                count_cont++;
-
-                item_content.find('.btn_delete').click(function(){
-                    var $del = $(this);
-                    var i2 = 0;
-                    show_type_message(1);
-                    $('.p_text_dialog').html($(this).find('input').val());
-                    $('.dialog_text .green_btn').click(function(){
-                        if(i2 == 0){
-                            var $item_cont = $del.parent();
-                            var id_parent = parseInt($item_cont.parent().parent().parent().find('input').val());
-                            var id = parseInt($item_cont.find('input').val());
-                            delete course_json['course.module'][id_parent]['course.content'][id];
-                            delele_mod($item_cont);
-                            fade_out();
-                        }
-                        i2++;
-
-                    });
-                });
-
-                fade_out();
     item.find('.btns .green_btn').click(function(){
         show_type_message(4);
         var mod = $(this).parent().parent().parent();
@@ -4209,14 +4252,18 @@ function create_module($this){
         $('.create_module').find('p input').val(name);
         $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
         $('.create_module .accept').unbind("click").click(function(){
-            if($(this).hasClass('edit_for')){
+            if($(this).hasClass('edit_for') && valid_module($(this))){
                 edit_module($(this).parent(), mod, 0);
             }
         });
     });
 
-    item.find('.place_pink').click(function(){
+    item.find('.content .place_pink').click(function(){
         add_content($(this));
+    });
+    item.find('.test .place_pink').click(function(){
+        $('.create_test').removeClass('edit_');
+        add_test($(this));
     });
     fade_out();
 }
@@ -4226,25 +4273,37 @@ function show_type_message(type){
     var position = 'fixed';
     var btn_accept = '';
     var cont_mess = $('.container_message');
-    fade_out();
     cont_mess.find('.accept').removeClass('reg_for');
     cont_mess.find('.accept').removeClass('edit_for');
     $('.lightbox .title').html('Crea un nuevo módulo');
     $('.lightbox ').find('input[name=name]').val('');
-    $('.lightbox ').find('input[name=description]').val('');
+    $('.lightbox ').find('textarea[name=description]').val('');
     $('.create_content .name').val('');
     tinymce.activeEditor.setContent('');
+    fade_out();
 
-    if(type == 1){
-        container_in = 'dialog-confirm';
-    }else if(type == 2){
-       btn_accept = 'reg_for';
-    }else if(type == 3){
-        container_in = 'create_content';
-        position = 'absolute';
-        $('.create_content .title').text('¿Listo para añadir un tema a Módulo 1 ?');
-    }else if(type == 4){
-       btn_accept = 'edit_for';
+    switch (type){
+        case 1:
+            container_in = 'dialog-confirm';
+            break;
+        case 2:
+            btn_accept = 'reg_for';
+            break;
+        case 3:
+            container_in = 'create_content';
+            position = 'absolute';
+            $('.create_content .title').text('¿Listo para añadir un tema a Módulo 1 ?');
+            $('.seccion').fadeOut(250);
+            break;
+        case 4:
+            btn_accept = 'edit_for';
+            break;
+        case 5:
+            container_in = 'create_test';
+            position = 'absolute';
+            $('.create_content .title').text('¿Listo para crear una prueba?');
+            $('.seccion').fadeOut(250);
+            break;
     }
 
     cont_mess.fadeIn(200,function(){
@@ -4258,26 +4317,47 @@ function show_type_message(type){
 }
 
 function fade_out(){
+    $('.no_resuls').remove();
     $('.container_message').fadeOut(200,function(){
         $('.dialog-confirm').fadeOut(100);
         $('.create_content').fadeOut(100);
+        $('.create_test').fadeOut(100);
         $('.lightbox').fadeOut(100);
+
     });
+    $('.seccion').fadeIn(250);
 }
 
-function delete_module($this){
+function del_item($this, model){
     var $del = $this;
     show_type_message(1);
     $('.p_text_dialog').html($this.find('input').val());
-    $('.dialog_text .green_btn').click(function(){
-        var $item = $del.parent().parent().parent();
-        var id = parseInt($item.find('input').val());
-        delete course_json['course.module'][id];
+    $('.dialog_text .green_btn').unbind("click").click(function(){
+        var $item, id;
+
+        if(model == 'course.module'){
+            $item = $del.parent().parent().parent();
+            id = parseInt($item.find('input').val());
+            delete course_json['course.module'][id];
+        }
+        if(model == 'course.content' | model == 'course.test'){
+            $item = $del.parent();
+            id = parseInt($item.find('input').val());
+            var id_parent = parseInt($item.parent().parent().parent().find('input').val());
+            delete course_json['course.module'][id_parent][model][id];
+        }
+        if(model == 'course.question'){
+            $item = $del.parent();
+            var id_mod = parseInt($('.id_mod_').val());
+            var id_test = parseInt($('.id_mod_').val());
+            var id = parseInt($item.find('.id').val());
+            delete question_json[id];
+        }
+
         $item.fadeOut(200, function(){
             $(this).remove();
         });
         fade_out();
-
     });
 }
 
@@ -4302,23 +4382,6 @@ function grade_test(answers, test_id, question_id){
     return ret;
 }
 
-function delete_content($this){
-    var $del = $this;
-    show_type_message(1);
-    $('.p_text_dialog').html($this.find('input').val());
-    $('.dialog_text .green_btn').unbind("click").click(function(){
-
-        var $item_cont = $del.parent();
-        var id_parent = parseInt($item_cont.parent().parent().parent().find('input').val());
-        var id = parseInt($item_cont.find('input').val());
-        delete course_json['course.module'][id_parent]['course.content'][id];
-        $item_cont.fadeOut(200, function(){
-            $(this).remove();
-        });
-        fade_out();
-    });
-}
-
 function update_content($this){
     var $this_ = $this.parent();
     var id_ = parseInt($this_.find('input').val());
@@ -4328,17 +4391,19 @@ function update_content($this){
     $('.create_content .name').val(content['name']);
     tinymce.activeEditor.setContent(content['text']);
 
-    $('.create_content .title').text('Editar ' + name);
+    $('.create_content .title').text('Editar un tema');
     $('.create_content .btn_save_pag').unbind("click").click(function(){
 
         if (tinyMCE) tinyMCE.triggerSave();
         var text = $('.create_content .textarea_page').val();
         var name = $('.create_content .name').val();
-        content = course_json['course.module'][id_parent]['course.content'][id_];
-        content['name'] = name;
-        content['text'] = text;
-        $this_.find('.title').html(name);
-        fade_out();
+        if(text.length != 0 && name.length != 0){
+            content = course_json['course.module'][id_parent]['course.content'][id_];
+            content['name'] = name;
+            content['text'] = text;
+            $this_.find('.title').html(name);
+            fade_out();
+        }
     });
 }
 
@@ -4349,32 +4414,181 @@ function add_content($item){
         last().find('input').val()) + 1;
 
     $('.create_content .btn_save_pag').unbind("click").click(function(){
+
         var item_content = item.find('.content .item_one').clone();
-        item_content.removeClass('item_one');
-        item_content.fadeIn(200);
         if (tinyMCE) tinyMCE.triggerSave();
         var text = $('.create_content .textarea_page').val();
         var name = $('.create_content .name').val();
-        item_content.find('.title').html(name);
-        item_content.find('input').val(count_cont);
-        item_content.find('.btn_delete .name').val(name);
-        item.find('.content').find('.place_pink').before(item_content);
+        if(text.length != 0 && name.length != 0){
+            item_content.removeClass('item_one');
+            item_content.fadeIn(200);
+            item_content.find('.title').html(name);
+            item_content.find('input').val(count_cont);
+            item_content.find('.btn_delete .name').val(name);
+            item.find('.content').find('.place_pink').before(item_content);
+            var id = parseInt(item.find('input').val());
+            course_json['course.module'][id]['course.content'][count_cont] = {
+                'name': name,
+                'text': text,
+                'order': count_cont
+            };
+            count_cont++;
+            item_content.find('.btn_delete').click(function(){
+               //delete_content($(this));
+                del_item($(this), 'course.content');
+            });
+
+            item_content.find('.green_btn').click(function(){
+                update_content($(this));
+            });
+            fade_out();
+        }
+    });
+}
+
+function add_test($item){
+    show_type_message(5);
+    question_json = {};
+    var $clone = $('.cuestion-one').clone();
+    var $clone_answer = $('.option_a .answer-one').clone();
+    $('.option_a .item-answer').remove();
+    $('.option_a .place_pink').after($clone_answer);
+    $('.container_cuestion .item_cuestion').remove();
+    $('.container_cuestion .place_pink').after($clone);
+    $('.option_a .name_c').val("");
+    $('.option_b .name_c').val("");
+    $('.create_test .field .name').val("");
+    var item = $item.parent().parent().parent();
+    var count_test = parseInt(item.find('.item_test').
+        last().find('input').val()) + 1;
+
+    if($('.create_test ').hasClass('edit_')){
+
+        $('.create_test .name').val($item.parent().find('.title').text());
+        item = $item.parent().parent().parent().parent();
+        count_test = parseInt($item.parent().find('input').val());
         var id = parseInt(item.find('input').val());
-        course_json['course.module'][id]['course.content'][count_cont] = {
-            'name': name,
-            'text': text,
-            'order': count_cont
-        };
-        count_cont++;
+        var questions = course_json['course.module'][id]['course.test'][count_test]['course.question'];
+        question_json = questions;
 
-        item_content.find('.btn_delete').click(function(){
-           delete_content($(this));
+        $.each(questions, function(k){
+            var $item_quest = $('.container_cuestion .cuestion-one').clone();
+            $item_quest.removeClass('cuestion-one');
+            $item_quest.find('.title').text(questions[k]['name']);
+            $item_quest.find('.id').val(k);
+            $('.container_cuestion').append($item_quest);
+            $item_quest.fadeIn(250);
+            $item_quest.find('.green_btn').click(function(){
+                save_question($(this));
+            });
+            $item_quest.find('.btn_delete').click(function(){
+                delete_item_question($(this));
+            });
         });
 
-        item_content.find('.green_btn').click(function(){
-            update_content($(this));
+        var $ite_ques = $('.container_cuestion .cuestion-one').clone();
+        $ite_ques.removeClass('cuestion-one');
+
+    }
+    $('.id_mod_').val(item.find('input').val());
+    $('.id_test_').val(count_test);
+
+    $('.create_test .btn_save_pag').unbind("click").click(function(){
+
+        var item_test = item.find('.test .test_one').clone();
+        if($('.create_test ').hasClass('edit_')){
+            item_test = $item.parent();
+        }
+
+        var name = $('.create_test .name').val();
+        var type_test = 0;
+        var count = 0;
+        if(parseInt($('.active_author').val()) == 1)
+            type_test = 1;
+        if(name.length != 0){
+
+            item_test.removeClass('test_one');
+            item_test.fadeIn(200);
+            item_test.find('.title').html(name);
+            item_test.find('input').val(count_test);
+            item_test.find('.btn_delete .name').val(name);
+
+            if(!$('.create_test ').hasClass('edit_')){
+                item.find('.test').find('.place_pink').before(item_test);
+            }
+            var id = parseInt(item.find('input').val());
+
+            course_json['course.module'][id]['course.test'][count_test] = {
+                'name': name,
+                'type': type_test,
+                'count': count,
+                'course.question': question_json
+            };
+            item_test.find('.btn_delete').click(function(){
+                del_item($(this), 'course.test');
+            });
+            item_test.find('.green_btn').click(function(){
+
+                $('.create_test').addClass('edit_');
+                add_test($(this));
+            });
+            fade_out();
+
+        }
+    });
+}
+
+function fade_create_cuestion_option(value){
+    var option_a = 'option_a';
+    var option_b = 'option_b';
+    if(value == 1){
+        option_a = 'option_b';
+        option_b = 'option_a';
+    }
+    $('.create_test .' + option_b).fadeOut(250, function(){
+        $('.create_test .' + option_a).fadeIn(250, function(){
+            $('.create_test .' + option_b).fadeOut(250);
         });
-        fade_out();
+    });
+}
+
+function click_check($this){
+
+    $this.click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            $(this).attr('src','/static/img/checkboxoff.png');
+        }else{
+            $(this).addClass('active');
+            $(this).attr('src','/static/img/checkboxon.png');
+        }
+    });
+}
+
+function delete_item_question($this){
+    $('.create_test .dialog-confirm').fadeIn();
+    var $item_ques =$this.parent();
+    var name = $this.parent().find('.title').text();
+    var id = parseInt($this.parent().find('.id').val());
+    $('.create_test .dialog-confirm .p_text_dialog').text('Se eliminará ' + name);
+    $('.create_test .dialog-confirm .dialog_btn_cancel').unbind('click').click(function(){
+        $('.create_test .dialog-confirm').fadeOut(250);
+    });
+    $('.create_test .dialog-confirm .green_btn').unbind('click').click(function(){
+        $('.create_test .dialog-confirm').fadeOut(250, function(){
+            $item_ques.fadeOut(250, function(){
+                $(this).remove();
+            });
+            delete question_json[id];
+        });
+    });
+}
+
+function delete_item_answer($this){
+    $this.click(function(){
+        $(this).parent().fadeOut(250,function(){
+            $(this).remove();
+        });
     });
 }
 
@@ -4394,4 +4608,183 @@ function update_model(model, id, field, value){
         }).done(function(data){
                      return data;
                  });
+}
+
+function clear_create_cuestion($this){
+    var $clone_answer = $('.option_a .answer-one').clone();
+    $('.option_a .item-answer').remove();
+    $('.option_a .place_pink').before($clone_answer);
+    var $clone_1 = $('.option_a .answer-one').clone();
+    $clone_1.removeClass('answer-one');
+    $clone_1.find('.field_').css({'border':'1px solid rgb(228, 228, 228)'});
+    $clone_1.find('.btn_delete').remove();
+    $clone_1.css({'display':'block'});
+    var $clone_2 = $clone_1.clone();
+    var $clone_3 = $clone_1.clone();
+    $clone_1.find('.id').val(1);
+    $clone_2.find('.id').val(2);
+    $clone_3.find('.id').val(3);
+    $('.option_a .place_pink').before($clone_1);
+    $('.option_a .place_pink').before($clone_2);
+    $('.option_a .place_pink').before($clone_3);
+    $('.option_a .name_c').val("");
+    $('.option_b .name_c').val("");
+    $('.option_c').fadeIn(250);
+    click_check($clone_1.find('.multi_check'));
+    delete_item_answer($clone_1.find('.btn_delete'));
+    click_check($clone_2.find('.multi_check'));
+    delete_item_answer($clone_2.find('.btn_delete'));
+    click_check($clone_3.find('.multi_check'));
+    delete_item_answer($clone_3.find('.btn_delete'));
+    $('.option_c').removeClass('edit_');
+    $('.option_a .name_c').css({'border':'1px solid rgb(228, 228, 228)'});
+    $('.option_b .name_c').css({'border':'1px solid rgb(228, 228, 228)'});
+    $('.option_a .lab2').css({'color':'#454545'});
+}
+
+function add_question($this){
+    var type_cuestion = parseInt($('.option_c .field_option').val());
+    var name_cuestion;
+    var id_cuest = parseInt($('.container_cuestion .item_cuestion').last().find('.id').val()) + 1;
+    var $item = $('.container_cuestion .cuestion-one').clone();
+
+    if($('.option_c').hasClass('edit_')){
+        id_cuest = parseInt($this.find('.id').val())
+        $item = $this;
+    }else{
+        $item.removeClass('cuestion-one');
+        $item.find('.id').val(id_cuest);
+        $('.container_cuestion ').append($item);
+    }
+
+    if(type_cuestion == 0)
+        name_cuestion = $('.option_c .option_a').find(' .name_c').val();
+    else
+        name_cuestion = $('.option_c .option_b').find(' .name_c').val();
+
+    question_json[id_cuest] = {
+        'name': name_cuestion,
+        'type_id': type_cuestion,
+        'course.option': {}
+    };
+
+    if(type_cuestion == 0){
+        var count_correct = 0;
+        var count_total = 0;
+        var avg = 0;
+
+        $.each($('.option_a .item-answer'), function(){
+            var name = $(this).find('.field_').val();
+            if(!$(this).hasClass('answer-one') && name.length != 0 &&
+                $(this).find('.multi_check').hasClass('active')){
+                count_correct++;
+            }
+            if(!$(this).hasClass('answer-one') && name.length != 0){
+                count_total++;
+            }
+        });
+
+        avg = parseFloat(count_total/count_correct);
+
+        $.each($('.option_a .item-answer'), function(){
+            var name = $(this).find('.field_').val();
+            if(!$(this).hasClass('answer-one') && name.length != 0){
+                var id = parseInt($(this).find('.id').val());
+                var value = 0;
+                if($(this).find('.multi_check').hasClass('active'))
+                    value = avg;
+                question_json[id_cuest]['course.option'][id] = {
+                    'label': name,
+                    'value': value,
+                    'question_dm': id_cuest
+                }
+            }
+        });
+    }else{
+
+        var type = parseInt($('.option_b .field_option').val());
+        name_cuestion = $('.option_c .option_b').find(' .name_c').val();
+        var val_a = 0;
+        var val_b = 1;
+
+        if(type == 0){
+            val_a = 1;
+            val_b = 0;
+        }
+
+        question_json[id_cuest]['course.option'][1] = {
+            'label': 'verdadero',
+            'value': val_a,
+            'question_dm': id_cuest
+        };
+        question_json[id_cuest]['course.option'][2] = {
+            'label': 'falso',
+            'value': val_b,
+            'question_dm': id_cuest
+        };
+    }
+
+    $item.find('.title').text(name_cuestion);
+    $item.find('.btn_delete .name').text(name_cuestion);
+    $item.find('.btn_delete .message').text('quest');
+    $item.find('.green_btn').click(function(){
+        save_question($(this));
+    });
+    $item.find('.btn_delete').click(function(){
+        delete_item_question($(this));
+    });
+    $('.option_c').fadeOut(250, function(){
+        $item.fadeIn(250);
+    });
+}
+
+function save_question($this){
+    $('.option_c').fadeIn(250);
+    var $item = $this.parent();
+    var id = parseInt($item.find('.id').val());
+    var name = question_json[id]['name'];
+    //console.log(question_json[id]);
+    clear_create_cuestion($this);
+    $('.option_c').addClass('edit_');
+
+    if(question_json[id]['type_id'] == 0){
+
+        $('.option_c .type_a .rad_sel').trigger('click');
+        $('.option_a .name_c').val(name);
+        var options = question_json[id]['course.option'];
+        var $option_clone = $('.option_a .answer-one').clone();
+        $('.option_a .item-answer').remove();
+        $('.option_a .place_pink').before($option_clone);
+
+        $.each(options, function(k){
+
+            var $option_ = $option_clone.clone();
+            $option_.css({'display':'block'});
+            $option_.removeClass('answer-one');
+            $option_.find('.field_').val(options[k]['label']);
+            $option_.find('.id').val(k);
+            click_check($option_.find('.multi_check'));
+            delete_item_answer($option_.find('.btn_delete'));
+
+            if(options[k]['value'] != 0)
+                $option_.find('.multi_check').trigger('click');
+
+            $('.option_a .place_pink').before($option_);
+        });
+
+    }else{
+        $('.option_c .type_b .rad_sel').trigger('click');
+        $('.option_b .name_c').val(name);
+        var option_ = question_json[id]['course.option'][1]['value'];
+        var type_check = 'a';
+
+        if(option_ == 1)
+            type_check = 'b';
+
+        $('.option_b .type_' + type_check + ' .rad_sel').trigger('click');
+    }
+    $('.btn_cuest .green_btn').unbind('click').click(function(){
+        if(valid_question($(this)))
+            add_question($item);
+    });
 }

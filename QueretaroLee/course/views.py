@@ -77,7 +77,7 @@ def get_course(request, **kwargs):
     list_content = list()
     for obj in modules:
         content = models.Content.objects.filter(module_dm=obj, status=True).order_by('order')
-        test = models.Test.objects.filter(module=obj)
+        test = models.Test.objects.filter(module_dm=obj)
         value = {
             'module': obj,
             'content': content,
@@ -374,19 +374,44 @@ def edit_course(request, **kwargs):
     users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
     user = request.user
     id_course = kwargs['id_course']
+    rate = account.Rate.objects.filter(
+        element_id=id_course, type='C').values('element_id').annotate(
+        count=db_model.Count('element_id'), score=db_model.Avg('grade'))
     course = models.Course.objects.filter(id=id_course, status=True)
-    modules = models.Module.objects.filter(course=course)
+    modules = models.Module.objects.filter(course_dm=course)
     dict_mod = {}
+
     for obj in modules:
-        content = models.Content.objects.filter(module=obj)
+        content = models.Content.objects.filter(module_dm__id=obj.id)
+        test = models.Test.objects.filter(module_dm__id=obj.id)
+        dict_test = {}
+
+        for te in test:
+            question = models.Question.objects.filter(test_dm__id=te.id)
+            dict_quest = {}
+
+            for ques in question:
+                option = models.Option.objects.filter(question_dm__id=ques.id)
+                dict_quest[ques.id] = {
+                    'question': ques,
+                    'option': option
+                }
+
+            dict_test[te.id] = {
+                'test': te,
+                'question': dict_quest
+            }
+
         dict_mod[obj.id] = {
             'module': obj,
-            'content': content
+            'content': content,
+            'test': dict_test
         }
 
     for obj in entities:
         list_autor[obj.id] = {
             'type': 'E',
+            'id': obj.id,
             'name': obj.name
         }
 
@@ -397,13 +422,19 @@ def edit_course(request, **kwargs):
 
         list_autor[user.id] = {
             'type': 'U',
+            'id': user.id,
             'name': name
         }
 
+    score = 0
+    print dict_mod
+    if rate:
+        score = rate[0]['score']
     context = {
         'list_autor': list_autor,
         'course': course,
-        'dict_mod': dict_mod
+        'dict_mod': dict_mod,
+        'count_rate': score
     }
 
     return render(request, template, context)

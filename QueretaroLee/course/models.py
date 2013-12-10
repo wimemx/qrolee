@@ -95,7 +95,7 @@ class Option(models.Model):
     question_dm = models.ForeignKey(Question, null=True)
 
     def __unicode__(self):
-        return '%s, %s' % (self.label, self.question)
+        return '%s, %s' % (self.label, self.order)
 
 
 class Answer(models.Model):
