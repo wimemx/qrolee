@@ -7,7 +7,7 @@ var content_array = new Array();
 var course_json = {
     'name': 'example',
     'description': 'text',
-    'type_pk': 17,
+    'type_id': 1,
     'type': 'E',
     'course.module': {
     }
@@ -212,11 +212,49 @@ $(document).ready(function(){
     $('.create_mod').click(function(){
         show_type_message(2);
     });
-    $('.create_module .accept').click(function(){
-        create_module($(this).parent());
+    $('.register_course .change').change(function(){
+        $.each($(this).find('option'), function(){
+            if($(this).attr('selected') == 'selected'){
+                var nam_class = $(this).attr('class').split('-');
+                course_json['type_id'] = nam_class[0];
+                course_json['type'] = nam_class[1];
+            }
+        });
     });
     $('.create_content .d-pink_buttom').click(function(){
         fade_out();
+    });
+    $('.edit_course .btns .green_btn').click(function(){
+        show_type_message(4);
+        var mod = $(this).parent().parent().parent();
+        var name = mod.find('.part_l .title').text();
+        $('.create_module').find('.title').html('Editar ' + name);
+        $('.create_module').find('p input').val(name);
+        $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
+        $('.create_module .accept').unbind("click").click(function(){
+            if($(this).hasClass('edit_for')){
+                var id = parseInt(mod.find('input').val());
+                edit_module($(this).parent(), mod, id);
+            }
+        });
+    });
+    $('.edit_course .btns .btn_delete').click(function(){
+        delete_module($(this));
+    });
+    $('.edit_course .content .btn_delete').click(function(){
+        delete_content($(this));
+    });
+    $('.edit_course .content .green_btn').click(function(){
+        update_content($(this));
+    });
+    $('.edit_course .content .place_pink').click(function(){
+        add_content($(this));
+    });
+
+    $('.create_module .accept').click(function(){
+        if($(this).hasClass('reg_for')){
+            create_module($(this).parent());
+        }
     });
     $('.del').click(function(e){
         e.preventDefault();
@@ -4071,11 +4109,26 @@ function link_active(){
             text_url = 'Organizaciones';
             break;
     }
-
     $.each($('.menu a'), function(){
         if($(this).html() == text_url)
             $(this).css({'color':'#edde83'});
     });
+}
+
+function edit_module($this, $mod, type){
+
+    var name = $this.find('p input').val();
+    var text = $this.find('p textarea').val();
+    var id = $mod.find('input').val();
+    $mod.find('.part_l .title').html(name);
+    $mod.find('.part_l .description').html(text);
+    var type_id = count_course;
+    if(type != 0)
+        type_id = type;
+
+    course_json['course.module'][type_id]['name'] = name;
+    course_json['course.module'][type_id]['text'] = text;
+    fade_out();
 }
 
 function create_module($this){
@@ -4100,17 +4153,7 @@ function create_module($this){
     $('.seccion').append(item);
     item.find('.pink_btn input').val(title);
     item.find('.btn_delete').click(function(){
-        var $del = $(this);
-        show_type_message(1);
-        $('.p_text_dialog').html($(this).find('input').val());
-        $('.dialog_text .green_btn').click(function(){
-            var $item = $del.parent().parent().parent();
-            var id = parseInt($item.find('input').val());
-            delete course_json['course.module'][id];
-            delele_mod($item);
-            fade_out();
-
-        });
+       delete_module($(this));
     });
     var count_cont = 1;
     item.find('.place_pink').click(function(){
@@ -4158,9 +4201,22 @@ function create_module($this){
                 });
 
                 fade_out();
+    item.find('.btns .green_btn').click(function(){
+        show_type_message(4);
+        var mod = $(this).parent().parent().parent();
+        var name = mod.find('.part_l .title').text();
+        $('.create_module').find('.title').html('Editar ' + name);
+        $('.create_module').find('p input').val(name);
+        $('.create_module').find('p textarea').val(mod.find('.part_l .description').text());
+        $('.create_module .accept').unbind("click").click(function(){
+            if($(this).hasClass('edit_for')){
+                edit_module($(this).parent(), mod, 0);
             }
-            i++;
         });
+    });
+
+    item.find('.place_pink').click(function(){
+        add_content($(this));
     });
     fade_out();
 }
@@ -4168,33 +4224,60 @@ function create_module($this){
 function show_type_message(type){
     var container_in = 'lightbox';
     var position = 'fixed';
+    var btn_accept = '';
+    var cont_mess = $('.container_message');
     fade_out();
+    cont_mess.find('.accept').removeClass('reg_for');
+    cont_mess.find('.accept').removeClass('edit_for');
+    $('.lightbox .title').html('Crea un nuevo módulo');
+    $('.lightbox ').find('input[name=name]').val('');
+    $('.lightbox ').find('input[name=description]').val('');
+    $('.create_content .name').val('');
+    tinymce.activeEditor.setContent('');
 
     if(type == 1){
         container_in = 'dialog-confirm';
+    }else if(type == 2){
+       btn_accept = 'reg_for';
     }else if(type == 3){
         container_in = 'create_content';
         position = 'absolute';
+        $('.create_content .title').text('¿Listo para añadir un tema a Módulo 1 ?');
+    }else if(type == 4){
+       btn_accept = 'edit_for';
     }
-    $('.container_message').fadeIn(200);
-    $('.container_message').css({'position':position});
-    $('.' + container_in).fadeIn(200);
-    closet($('.dialog_closet'));
-    closet($('.dialog_btn'));
-    aling_message();
+
+    cont_mess.fadeIn(200,function(){
+        cont_mess.css({'position':position});
+        $('.' + container_in).fadeIn(200);
+        closet($('.dialog_closet'));
+        closet($('.dialog_btn'));
+        aling_message();
+        cont_mess.find('.accept').addClass(btn_accept);
+    });
 }
 
 function fade_out(){
     $('.container_message').fadeOut(200,function(){
-        $('.dialog-confirm').fadeOut(200);
-        $('.create_content').fadeOut(200);
-        $('.lightbox').fadeOut(200);
+        $('.dialog-confirm').fadeOut(100);
+        $('.create_content').fadeOut(100);
+        $('.lightbox').fadeOut(100);
     });
 }
 
-function delele_mod($this){
-    $this.fadeOut(200, function(){
-        $(this).remove();
+function delete_module($this){
+    var $del = $this;
+    show_type_message(1);
+    $('.p_text_dialog').html($this.find('input').val());
+    $('.dialog_text .green_btn').click(function(){
+        var $item = $del.parent().parent().parent();
+        var id = parseInt($item.find('input').val());
+        delete course_json['course.module'][id];
+        $item.fadeOut(200, function(){
+            $(this).remove();
+        });
+        fade_out();
+
     });
 }
 
@@ -4217,4 +4300,98 @@ function grade_test(answers, test_id, question_id){
         ret = data;
         });
     return ret;
+}
+
+function delete_content($this){
+    var $del = $this;
+    show_type_message(1);
+    $('.p_text_dialog').html($this.find('input').val());
+    $('.dialog_text .green_btn').unbind("click").click(function(){
+
+        var $item_cont = $del.parent();
+        var id_parent = parseInt($item_cont.parent().parent().parent().find('input').val());
+        var id = parseInt($item_cont.find('input').val());
+        delete course_json['course.module'][id_parent]['course.content'][id];
+        $item_cont.fadeOut(200, function(){
+            $(this).remove();
+        });
+        fade_out();
+    });
+}
+
+function update_content($this){
+    var $this_ = $this.parent();
+    var id_ = parseInt($this_.find('input').val());
+    var id_parent = parseInt($this_.parent().parent().parent().find('input').val());
+    var content = course_json['course.module'][id_parent]['course.content'][id_];
+    show_type_message(3);
+    $('.create_content .name').val(content['name']);
+    tinymce.activeEditor.setContent(content['text']);
+
+    $('.create_content .title').text('Editar ' + name);
+    $('.create_content .btn_save_pag').unbind("click").click(function(){
+
+        if (tinyMCE) tinyMCE.triggerSave();
+        var text = $('.create_content .textarea_page').val();
+        var name = $('.create_content .name').val();
+        content = course_json['course.module'][id_parent]['course.content'][id_];
+        content['name'] = name;
+        content['text'] = text;
+        $this_.find('.title').html(name);
+        fade_out();
+    });
+}
+
+function add_content($item){
+    show_type_message(3);
+    var item = $item.parent().parent().parent();
+    var count_cont = parseInt($item.parent().find('.item_content').
+        last().find('input').val()) + 1;
+
+    $('.create_content .btn_save_pag').unbind("click").click(function(){
+        var item_content = item.find('.content .item_one').clone();
+        item_content.removeClass('item_one');
+        item_content.fadeIn(200);
+        if (tinyMCE) tinyMCE.triggerSave();
+        var text = $('.create_content .textarea_page').val();
+        var name = $('.create_content .name').val();
+        item_content.find('.title').html(name);
+        item_content.find('input').val(count_cont);
+        item_content.find('.btn_delete .name').val(name);
+        item.find('.content').find('.place_pink').before(item_content);
+        var id = parseInt(item.find('input').val());
+        course_json['course.module'][id]['course.content'][count_cont] = {
+            'name': name,
+            'text': text,
+            'order': count_cont
+        };
+        count_cont++;
+
+        item_content.find('.btn_delete').click(function(){
+           delete_content($(this));
+        });
+
+        item_content.find('.green_btn').click(function(){
+            update_content($(this));
+        });
+        fade_out();
+    });
+}
+
+function update_model(model, id, field, value){
+
+     $.ajax({
+            type: "POST",
+            url: '/registry/',
+            data: {
+                'csrfmiddlewaretoken': csrf_global,
+                'model': model,
+                'id': id,
+                'field': field,
+                'value': value
+            },
+            dataType: 'json'
+        }).done(function(data){
+                     return data;
+                 });
 }

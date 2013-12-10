@@ -279,6 +279,9 @@ ul.child li{
     border: 1px dashed #c4c4c4 !important;
 }
 
+    .register_course .grid-14{
+        padding: 40px 50px;
+    }
     .register_course .text{
         font-size: 14px!important;
     }
@@ -315,6 +318,9 @@ ul.child li{
         width: 100%;
         float: left;
         margin-top: 20px;
+    }
+    .register_course textarea{
+        height: 80px;
     }
 .item-mod{
     width: 100%;
@@ -406,8 +412,10 @@ ul.child li{
 }
 
 .item_content .btn_delete{
-    height: 13px;
     width: 13px!important;
+    float: right!important;
+}
+.item_content .green_btn{
     float: right!important;
     margin-right: 0px;
 }

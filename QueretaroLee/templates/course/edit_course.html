@@ -94,23 +94,19 @@
             </div>
         </div>
    </div>
-    <div class="grid-16 courses register_course">
+    <div class="grid-16 courses register_course edit_course">
         <div class="grid-14">
             <span class="grid-8 no-margin title">
-                ¿Listo para crear un curso?
+                Editar {{ course.0.name }}
             </span>
-            <p class="grid-8 no-margin text">
-                Lllena los campos que se presentan a continuación para registrar un curso
-                en Querétaro Lee.
-            </p>
-            <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}
+            <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object__/">{% csrf_token %}
                 <p class="grid-8 no-margin field">
                      <span class="attr">Nombre</span>
-                        <input name="name" />
+                        <input name="name" value="{{ course.0.name }}"  />
                 </p>
                 <p class="grid-8 no-margin field">
                      <span class="attr">Descripción</span>
-                    <textarea name="Description" ></textarea>
+                    <textarea name="Description"  >{{ course.0.description }}</textarea>
                 </p>
                 <span class="grid-8 no-margin discussion genre_sel">
                     <span class="fleft">Autor del curso</span>
@@ -120,7 +116,7 @@
                             <span class="dropdown"></span>
                             <select class="change value" name="privacy">
                                 {% for key, value in list_autor.items %}
-                                    <option  class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
+                                    <option value="{{ value.name }}">
                                         {{ value.name }}
                                     </option>
                                 {% endfor %}
@@ -139,7 +135,6 @@
                     Sección de Módulos
                 </span>
                 <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
-                <div class="grid-14 no_resuls" style="display: none;">El curso debe tener al menos un módulo</div>
                 <div class="item-mod one" style="display: none;">
                     <input type="hidden" value="0" />
                     <div class="grid-7 no-margin part_l">
@@ -184,30 +179,115 @@
                         </span>
                     </div>
                 </div>
+                {% for key, value in dict_mod.items %}
+                    <div class="item-mod" >
+                        <input type="hidden" value="{{ key }}" />
+                        <div class="grid-7 no-margin part_l">
+                            <span class="title grid-6 no-margin">{{ value.module.name }}</span>
+                            <span class="description grid-6 no-margin">{{ value.module.text }}
+                            </span>
+                            <span class="grid-3 no-margin btns">
+                                <span class="pink_btn size_btn_edit btn_delete">
+                                   <input type="hidden" class="name" value="{{ value.module.name }}" />
+                                   <input class="message" type='hidden' value="{{ key }}"/>
+                                </span>
+                                <span class="green_btn size_btn_edit del">
+                                </span>
+                           </span>
+                        </div>
+                        <div class="grid-7 no-margin part_r">
+                            <span class="content">
+                                <div class="item_content item_one" style="display: none;">
+                                    <input type="hidden" value="0">
+                                    <img src="/static/img/theme.png">
+                                    <span class="title"></span>
+                                    <span class="green_btn size_btn_edit del">
+                                    </span>
+                                    <span class="pink_btn size_btn_edit btn_delete">
+                                        <input type="hidden" class="name" value="tema 1" />
+                                        <input class="message" type='hidden' value="2"/>
+                                    </span>
+                                </div>
+                                {% for obj in value.content %}
+                                    <div class="item_content ">
+                                        <input type="hidden" value="{{ obj.id }}">
+                                        <img src="/static/img/theme.png">
+                                        <span class="title">{{ obj.name }}</span>
+                                        <input type="hidden" class="text" value="{{ obj.text }}"/>
+                                        <span class="green_btn size_btn_edit del">
+                                        </span>
+                                        <span class="pink_btn size_btn_edit btn_delete">
+                                            <input type="hidden" class="name" value="{{ obj.name }}" />
+                                            <input class="message" type='hidden' value="{{ obj.id }}"/>
+                                        </span>
+                                    </div>
+                                {% endfor %}
+                                <span class="place_pink">
+                                    Añadir nuevo tema
+                                </span>
+                            </span>
+                            <span class="test">
+                                <div class="item_test test_one" style="display: none;">
+                                    <input type="hidden" value="0">
+                                    <img src="/static/img/theme.png">
+                                    <span class="title"></span>
+                                </div>
+                                <span class="place_pink">
+                                    Añadir nueva prueba
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
+            var last_mod = 1;
+            $.each($('.item-mod '), function(){
+                var id = parseInt($(this).find('input').val());
+                last_mod = id;
+                if(id != 0){
+                    var name = $(this).find('.part_l .title').text();
+                    var text = $(this).find('.part_l .description').text();
+                    course_json['course.module'][id] = {
+                        'name': name,
+                        'text': text,
+                        'order': 1,
+                        'course.content': {
+                        }
+                    };
+                    $.each($(this).find('.content .item_content'), function(){
+                        var id_ = parseInt($(this).find('input').val());
+                        if(id_ != 0){
+                            name = $(this).find('.title').text();
+                            text = $(this).find('.text').val();;
+                            course_json['course.module'][id]['course.content'][id_] = {
+                                'name': name,
+                                'text': text,
+                                'order': 1
+                            };
+                        }
+                    });
+                }
+            });
 
+            count_course = last_mod + 1;
             $('#register_course').submit(function(e){
                 var valid = true;
                 var name = $(this).find('input[name=name]').val();
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
                 course_json['description'] = desc;
-                var course_data = {
-                    'course.course': {
-                        1: course_json
-                    }
-                }
+                console.log(course_json);
                 if(valid){
 
                     $.ajax({
                         type: "POST",
                         url: $(this).attr('action'),
                         data: {
-                            'data': JSON.stringify(course_data),
+                            'data': JSON.stringify(course_json),
                             'csrfmiddlewaretoken': csrf_global
                         },
                         dataType: 'json'
