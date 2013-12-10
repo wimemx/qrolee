@@ -309,7 +309,6 @@ $(document).ready(function(){
     $('.edit_course .btns .btn_delete').click(function(){
         //delete_module($(this));
         del_item($(this), 'course.module');
-
     });
     $('.edit_course .content .btn_delete').click(function(){
         //delete_content($(this));
@@ -320,6 +319,23 @@ $(document).ready(function(){
     });
     $('.edit_course .content .place_pink').click(function(){
         add_content($(this));
+    });
+    $('.edit_course .test .place_pink').click(function(){
+        $('.create_test').removeClass('edit_');
+        add_test($(this));
+    });
+    $('.edit_course .test .item_test .btn_delete').click(function(){
+        del_item($(this), 'course.test');
+    });
+    $('.edit_course .test .item_test .green_btn').click(function(){
+        $('.create_test').addClass('edit_');
+        add_test($(this));
+    });
+    $('.type_questi .rad_sel').click(function(){
+        if(parseInt($('.type_questi .field_option').val()) == 1)
+            $('.correct_answers').fadeIn(300);
+        else
+            $('.correct_answers').fadeOut(300);
     });
 
     $('.create_module .accept').click(function(){
@@ -4443,7 +4459,7 @@ function add_test($item){
     $('.option_b .name_c').val("");
     $('.create_test .field .name').val("");
     var item = $item.parent().parent().parent();
-    var count_test = parseInt(item.parent().find('.item_test').
+    var count_test = parseInt(item.find('.item_test').
         last().find('input').val()) + 1;
 
     if($('.create_test ').hasClass('edit_')){
@@ -4500,8 +4516,8 @@ function add_test($item){
             if(!$('.create_test ').hasClass('edit_')){
                 item.find('.test').find('.place_pink').before(item_test);
             }
-
             var id = parseInt(item.find('input').val());
+
             course_json['course.module'][id]['course.test'][count_test] = {
                 'name': name,
                 'type': type_test,

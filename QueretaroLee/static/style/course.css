@@ -651,7 +651,7 @@ ul.child li{
     height: 16px!important;
     padding: 3px 9px!important;
 }
-}
+
 
 .test .subtitle{
     border-top: 1px solid #c4c4c4 !important;
@@ -748,3 +748,6 @@ ul.child li{
         left: 60px;
         color: #e35e47;
     }
+.correct_answers{
+    display: none;
+}
