@@ -4208,6 +4208,7 @@ function create_module($this){
         'name': title,
         'text': description,
         'order': count_course,
+        'course_dm': '',
         'course.content': {
         },
         'course.test': {
@@ -4342,6 +4343,27 @@ function del_item($this, model){
         });
         fade_out();
     });
+}
+
+function grade_test(answers, test_id, question_id){
+    var ret = null;
+    if(question_id === undefined)
+        question_id = -1;
+    $.ajax({
+        type: "POST",
+        url: '/courses/grade_test/',
+        async: false,
+        data: {
+            'csrfmiddlewaretoken': csrf_global,
+            'answers': JSON.stringify(answers),
+            'test_id': test_id,
+            'question_id': question_id
+        },
+        dataType: 'json'
+    }).done(function(data){
+        ret = data;
+        });
+    return ret;
 }
 
 function update_content($this){

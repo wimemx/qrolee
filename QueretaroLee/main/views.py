@@ -1142,7 +1142,7 @@ def get_authors(request, **kwargs):
             author.img_url = img_url
             author.save()
 
-    if request.POST.get('field_value')!=None:
+    if request.POST.get('field_value')!= None:
         search = request.POST['field_value']
         authors = account_models.Author.objects.filter(name__icontains=search)
 

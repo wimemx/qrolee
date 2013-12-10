@@ -11,7 +11,6 @@ from account import models as account
 
 import json
 import ast
-import pprint
 
 
 def get_courses(request, **kwargs):
@@ -35,7 +34,7 @@ def get_course(request, **kwargs):
     user = request.user
     courses = models.Course.objects.filter(status=True)
     courser = models.Course.objects.get(id=id_course, status=True)
-    modules = models.Module.objects.filter(course=courser, status=True).order_by('order')
+    modules = models.Module.objects.filter(course_dm=courser, status=True).order_by('order')
     rate = account.Rate.objects.filter(
         element_id=courser.id, type='C').values('element_id').annotate(
             count=db_model.Count('element_id'), score=db_model.Avg('grade'))
@@ -75,14 +74,15 @@ def get_course(request, **kwargs):
     if len(my_rate) > 0:
             my_vot = my_rate[0].grade
 
-    dict_content = {}
     list_content = list()
     for obj in modules:
-        content = models.Content.objects.filter(module=obj, status=True).order_by('order')
+        content = models.Content.objects.filter(module_dm=obj, status=True).order_by('order')
+        test = models.Test.objects.filter(module=obj)
         value = {
             'module': obj,
             'content': content,
-            'key': obj.id
+            'key': obj.id,
+            'test': test
         }
         list_content.append(value)
 
@@ -102,11 +102,53 @@ def get_course(request, **kwargs):
     return render(request, template, context)
 
 
+def get_test(request, **kwargs):
+    template = kwargs['template_name']
+    id_course = kwargs['id_test']
+    user = request.user
+    courser = models.Test.objects.get(id=id_course, status=True)
+    courses = models.Module.objects.filter(status=True)
+    modules = models.Module.objects.filter(course_dm=courser, status=True).order_by('order')
+    owner = False
+
+    list_content = list()
+    for obj in modules:
+        content = models.Content.objects.filter(module_dm=obj, status=True).order_by('order')
+        test = models.Test.objects.filter(module=obj)
+        value = {
+            'module': obj,
+            'content': content,
+            'key': obj.id,
+            'test': test
+        }
+        list_content.append(value)
+
+    questions_dict = dict()
+    questions = models.Question.objects.filter(test_dm=courser)
+    for question in questions:
+        options = models.Option.objects.filter(question_dm=question)
+        options_dict = dict()
+        options_dict['question_id'] = question.id
+        for option in options:
+            options_dict[option.id] = option
+        questions_dict[question.title] = options_dict
+
+    context = {
+        'courses': courses,
+        'course': courser,
+        'list_modules': list_content,
+        'owner': owner,
+        'site_url': settings.SITE_URL,
+        'questions': questions_dict
+    }
+    return render(request, template, context)
+
+
 def dict_courses(courses, user):
 
     list_courses = {}
     for obj in courses:
-        modules = models.Module.objects.filter(course=obj)
+        modules = models.Module.objects.filter(course_dm=obj)
         user_course = False
 
         if obj.type == 'U' and obj.type_pk == user.id:
@@ -257,38 +299,72 @@ def register_course(request, **kwargs):
 
 
 def create_object(request):
-    print request.POST
-    data = """{"course.content":{"1":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_pk":1,"type":"E"}}}}},"2":{"name":"tema 1","text":"<p>text</p>","order":1,"module_id":"","course.module":{"1":{"name":"mod 1","text":"text","order":1,"course_id":"","course.course":{"1":{"name":"example","description":"text","type_id":1,"type":"E"}}}}}}}"""
+    data = request.POST.get('data')
     data = ast.literal_eval(data)
     create_objects(
-        data=data['course.content'], model_name='course.content')
+        data=data['course.course'], model_name='course.course')
+    context = {
+        'response': 'success'
+    }
+    context = json.dumps(context)
+    return HttpResponse(context, content_type='application/json')
 
 
 def create_objects(data, model_name, id=None):
     # Get the number of parent models to create
-    for num_parent_models in data:
-        # For each parent model inside get fields
-        app = model_name.split('.')
-        app_label = app[0]
-        app_model_name = app[1]
-        model = get_model(app_label, app_model_name)
-        data_dict = dict()
-        id = -1
-        for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
 
-            if len(parent_models_fields.split('.')) > 1:
-                id = create_objects(data=parent_models_values, model_name=parent_models_fields)
-            else:
-                data_dict[parent_models_fields] = parent_models_values
-
-        if id != -1:
+    for top_level in data:
+        for num_parent_models in top_level:
+            app = model_name.split('.')
+            app_label = app[0]
+            app_model_name = app[1]
+            model = get_model(app_label, app_model_name)
+            data_dict = dict()
+            object = model.objects.create(**data_dict)
+            inner_id = object.id
             for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-                if '_id' in parent_models_fields:
-                    data_dict[parent_models_fields] = id
+                if len(parent_models_fields.split('.')) > 1:
+                    create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
+                else:
+                    data_dict[parent_models_fields] = parent_models_values
+            if id != -1:
+                for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+                    if '_dm' in parent_models_fields:
+                        data_dict[parent_models_fields] = id
+        model.objects.filter(id=inner_id).update(**data_dict)
+    return 0
 
-        object = model(**data_dict)
-        object.save()
-        return object.id
+
+def grade_test(request):
+    test = models.Test.objects.get(id=request.POST.get('test_id'))
+    answers = ast.literal_eval(request.POST.get('answers'))
+    questions = models.Question.objects.filter(test_dm=test)
+    if int(request.POST.get('question_id')) != -1:
+        questions = models.Question.objects.filter(
+            id=int(request.POST.get('question_id')))
+
+    correct = 0.0
+    total = float(len(questions))
+    for answer in answers:
+        answer = int(answer)
+        if answer != -1:
+            option = models.Option.objects.get(
+                id=answer)
+            options = models.Option.objects.filter(
+                question_dm=option.question_dm).filter(
+                value__gt=0)
+
+            if len(answers) > len(options):
+                correct = 0.0
+                break
+            correct += float(option.value)
+
+    context = {
+        'response': float(correct/total)*100.0,
+        'correct_set': 'correct_set'
+    }
+    context = json.dumps(context)
+    return HttpResponse(context, content_type='application/json')
 
 
 def edit_course(request, **kwargs):
