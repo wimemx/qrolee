@@ -193,6 +193,11 @@
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
                 course_json['description'] = desc;
+                var course_data = {
+                    'course.course': {
+                        1: course_json
+                    }
+                }
 
                 if(valid){
 
@@ -200,7 +205,7 @@
                         type: "POST",
                         url: $(this).attr('action'),
                         data: {
-                            'data': JSON.stringify(course_json),
+                            'data': JSON.stringify(course_data),
                             'csrfmiddlewaretoken': csrf_global
                         },
                         dataType: 'json'

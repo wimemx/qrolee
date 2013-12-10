@@ -531,6 +531,18 @@ function auth_user(response){
 }
 
 $(document).ready(function(){
+    $('.test ul .radio_btn').click(function(){
+
+        if($(this).closest('li').hasClass('selected')){
+            $(this).closest('li').removeClass('selected');
+            $(this).parent().find('img').attr('src', '/static/img/radioOff.png');
+        }else{
+            $(this).closest('li').addClass('selected');
+            $(this).parent().find('img').attr('src', '/static/img/radioOn.png');
+        }
+
+
+    });
     $('.sortable li, .sortable .grid-7').mouseup(function(){
         $(this).removeClass('closeHand');
         $(this).addClass('openHand');

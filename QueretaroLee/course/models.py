@@ -23,7 +23,7 @@ class Module(models.Model):
     order = models.IntegerField(max_length=5, default=0)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True)
-    course = models.ForeignKey(Course)
+    course_dm = models.ForeignKey(Course)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.order)
@@ -35,7 +35,7 @@ class Content(models.Model):
     order = models.IntegerField(max_length=5, default=0)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField()
-    module = models.ForeignKey(Module)
+    module_dm = models.ForeignKey(Module)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.order)
@@ -44,10 +44,12 @@ class Content(models.Model):
 class Test(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=2000)
-    available = models.CharField(max_length=255)
+    status = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
     meta = models.CharField(max_length=255)
-    module = models.ForeignKey(Module)
+    number_correct = models.IntegerField(blank=True)
+    type = models.BooleanField()
+    module_dm = models.ForeignKey(Module)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.meta)
@@ -61,18 +63,6 @@ class Inscription(models.Model):
         return '%s, %s' % (self.course, self.user)
 
 
-class Question(models.Model):
-    title = models.CharField(max_length=255)
-    meta = models.CharField(max_length=255, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    order = models.IntegerField(max_length=5)
-    type = models.IntegerField(max_length=5)
-    parent_id = models.IntegerField(max_length=5, null=True)
-
-    def __unicode__(self):
-        return '%s, %s' % (self.title, self.order)
-
-
 class Question_Type(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=2000)
@@ -84,23 +74,35 @@ class Question_Type(models.Model):
         return '%s, %s' % (self.name, self.help_text)
 
 
-class Answer(models.Model):
-    value = models.CharField(max_length=255)
+class Question(models.Model):
+    title = models.CharField(max_length=255)
+    meta = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(max_length=5)
-    question = models.ForeignKey(Question)
+    type = models.ForeignKey(Question_Type)
+    test_dm = models.ForeignKey(Test)
 
     def __unicode__(self):
-        return '%s, %s' % (self.value, self.order)
+        return '%s, %s' % (self.title, self.order)
 
 
 class Option(models.Model):
     label = models.CharField(max_length=255)
-    value = models.CharField(max_length=255)
+    value = models.DecimalField(decimal_places=3, max_digits=3)
     order = models.IntegerField(max_length=5)
     meta = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
-    question = models.ForeignKey(Question)
+    question_dm = models.ForeignKey(Question)
 
     def __unicode__(self):
         return '%s, %s' % (self.label, self.question)
+
+
+class Answer(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    question = models.ForeignKey(Question)
+    option_choice = models.ForeignKey(Option)
+    user = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.value, self.order)

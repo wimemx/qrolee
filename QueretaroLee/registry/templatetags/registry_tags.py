@@ -474,5 +474,9 @@ def cut_word(text, index):
     word = text
     if len(text) > 30:
         word = text[0:30] + ' ' + text[30:len(text)]
+    return word
 
-    return  word
+
+@register.filter
+def times(number):
+    return range(number)

@@ -7,10 +7,9 @@ var content_array = new Array();
 var course_json = {
     'name': 'example',
     'description': 'text',
-    'type_id': 1,
+    'type_pk': 17,
     'type': 'E',
     'course.module': {
-        0: ''
     }
 };
 var count_course = 1;
@@ -212,7 +211,6 @@ $(document).ready(function(){
     csrf_global = $('.csrf_header').find('input').val();
     $('.create_mod').click(function(){
         show_type_message(2);
-        console.log(course_json);
     });
     $('.create_module .accept').click(function(){
         create_module($(this).parent());
@@ -395,6 +393,7 @@ $(document).ready(function(){
         });
 
     $('.radio_btn').click(function(){
+        if(!$(this).hasClass('test-radio')){
         $('.d-add_text_book').empty();
         $('.title_list').empty();
         $('.add_my_list').find('.d-item_book').fadeOut(250,function(){
@@ -416,6 +415,7 @@ $(document).ready(function(){
             $('.type_list').val('A');
             $('.title_list').append('Autores de tu lista');
             $('.d-add_text_book').append('+ Añadir un nuevo autor');
+        }
         }
     });
     $('.multi_select span').click(function(){
@@ -4085,8 +4085,8 @@ function create_module($this){
         'name': title,
         'text': description,
         'order': count_course,
+        'course_dm': '',
         'course.content': {
-            0: ''
         }
     };
 
@@ -4133,7 +4133,8 @@ function create_module($this){
                 course_json['course.module'][id]['course.content'][count_cont] = {
                     'name': name,
                     'text': text,
-                    'order': count_cont
+                    'order': count_cont,
+                    'module_dm':''
                 };
                 count_cont++;
 
@@ -4195,4 +4196,25 @@ function delele_mod($this){
     $this.fadeOut(200, function(){
         $(this).remove();
     });
+}
+
+function grade_test(answers, test_id, question_id){
+    var ret = null;
+    if(question_id === undefined)
+        question_id = -1;
+    $.ajax({
+        type: "POST",
+        url: '/courses/grade_test/',
+        async: false,
+        data: {
+            'csrfmiddlewaretoken': csrf_global,
+            'answers': JSON.stringify(answers),
+            'test_id': test_id,
+            'question_id': question_id
+        },
+        dataType: 'json'
+    }).done(function(data){
+        ret = data;
+        });
+    return ret;
 }

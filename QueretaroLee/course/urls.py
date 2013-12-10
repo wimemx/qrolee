@@ -17,5 +17,5 @@ urlpatterns = patterns('',
     url(r'register_course/$',views.register_course,
         {'template_name': 'course/register_course.html'}, name='register_curse'),
     url(r'create_object/$',views.create_object, name='create_object'),
-
+    url(r'grade_test/$',views.grade_test, name='grade_test'),
 )

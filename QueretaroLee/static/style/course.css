@@ -252,7 +252,7 @@
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
     background: #fffcf5;
 }
-ul li{
+ul.parent li{
     border: 1px solid #c4c4c4;
     border-right: none;
 }
@@ -420,3 +420,95 @@ ul.child li{
 .test .subtitle{
     border-top: 1px solid #c4c4c4 !important;
 }
+
+.test-wrap{
+    width: 100%;
+    height: 350px;
+    border: 1px solid #c4c4c4;
+    border-right: none;
+    position: relative;
+}
+#test{
+    height: 100%;
+}
+#test .finish{
+    width: 100% !important;
+}
+#test .option-set{
+    margin-top: 30px;
+    width: 100%;
+}
+
+#test .option-set li{
+    float: left;
+    width: 50%;
+}
+    #test .option-set li .text_rad{
+        margin-top: 0px;
+    }
+.finish{
+    width: 100%;
+    display: none;
+    margin-top: 30px;
+}
+.view_courser .container_text .test{
+    margin-top: 10px;
+}
+.view_courser .container_text  span.options-counter{
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 10px !important;
+    margin-right: 30px !important;
+}
+.curr,.total{
+    font-size: inherit;
+    font-weight: inherit;
+}
+.view_courser .container_text .gray_text{
+    margin: 15px 5px 0px 0px !important;
+}
+.controller{
+    width: 50px;
+    height: 25px;
+    position: absolute;
+    right: 0px;
+    top: 20px;
+    z-index: 99999;
+}
+#next, #prev,#next_, #prev_{
+    width: 20px;
+    height: 100%;
+    cursor: pointer;
+    background-position: center !important;
+}
+
+.grade-ajax #prev_, .grade-ajax #next_{
+    top: -25px;
+}
+
+.test-wrap .accept{
+    display: none;
+    top: -45px !important;
+}
+
+.correct-wrap{
+    float: left;
+    width: 100%;
+}
+.correct-wrap .answer{
+    width: 30px;
+    height: 30px;
+    float: left;
+    overflow: hidden;
+}
+    .correct-wrap .answer img{
+        position: relative;
+    }
+
+    .error{
+        display: none;
+        position: absolute;
+        bottom: 40px;
+        left: 60px;
+        color: #e35e47;
+    }
