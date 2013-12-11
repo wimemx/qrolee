@@ -281,7 +281,7 @@
                 Editar {{ course.0.name }}
             </span>
             <span class="fright del_course remove" style="margin-right: 0px;">Eliminar curso</span>
-            <form enctype="multipart/form-data" class="form_edit" method="post" id="register_course"  action="/courses/create_object__/">{% csrf_token %}
+            <form enctype="multipart/form-data" class="form_edit" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}
                 <p class="grid-8 no-margin field ">
                      <span class="attr">Nombre</span>
                         <span class="span_ grid-5 fright no-margin">{{ course.0.name }}</span>
