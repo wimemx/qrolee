@@ -3116,7 +3116,7 @@ p{
     margin-right: 44px;
 }
 
-.btn_page{
+.btn_page , .btn_cuest .btn_delete{
     background: #f89883;
     border: 1px solid #EB6346;
     color: #fff !important;
@@ -3125,7 +3125,7 @@ p{
     padding: 4px 9px;
 }
 
-.btn_save_pag{
+.btn_save_pag ,.btn_cuest .green_btn{
     padding: 4px 9px 4px 9px !important;
     cursor: pointer !important;
     font-size: 12px !important;
@@ -4650,3 +4650,17 @@ p input.green_btn{
             position: relative;
             left: 12px !important;
         }
+
+.published .dialog-confirm{
+    left: 33%!important;
+    top: 150px;
+}
+
+.contai_btns .brown_btn{
+    margin-bottom: 5px!important;
+    padding: 4px 16px!important;
+}
+.contai_btns .text_published{
+    float: left;
+    margin-left: 66px;
+}

@@ -538,7 +538,7 @@ ul.child li{
 }
 .create_cuestion .option_c{
     float: left;
-    width: 90%;
+    width: 95%;
     margin-left: 5%;
 }
     .option_c .option span{
@@ -595,7 +595,7 @@ ul.child li{
 }
 .create_option .field_{
     float: left;
-    width: 301px;
+    width: 318px;
 }
 .create_option .multi_check{
     margin-left: 11px;
@@ -604,13 +604,24 @@ ul.child li{
     float: right;
     margin-top: 20px!important;
 }
-.btn_cuest .green_btn ,.item_cuestion .green_btn{
+.item_cuestion .green_btn{
     top: 0px!important;
     height: 21px!important;
     border: 1px solid #a77340 !important;
     width: 23px!important;
     background-size: 16px!important;
     margin-right: 0px;
+}
+.btn_cuest .green_btn{
+    height: auto!important;
+    margin-right: 0px!important;
+    font-weight: 500;
+}
+.btn_cuest .btn_delete{
+    width: auto;
+    height: 17px;
+    font-size: 12px!important;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 .item_cuestion{
     margin-top: 10px;

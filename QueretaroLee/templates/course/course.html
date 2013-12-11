@@ -28,7 +28,21 @@
      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=476600992414046";
      fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-
+    <div class="container-16 container_message published" >
+        <div class="dialog-confirm"  >
+            <div class="dialog_text grid-6 no-margin" >
+                <span class="dialog_closet"></span>
+                <span>
+                    <p class="p_text_dialog">¿Estás seguro que deseas publicar este curso?</p>
+                    <p class="p_text_mini">Autores Contemporáneos se mostrará públicamente</p>
+                </span>
+                <div class="dialog_container_btn">
+                    <span class="dialog_btn_cancel dialog_btn">Cancelar</span>
+                    <span class="dialog_btn green_btn">Publicar</span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="grid-16 courses view">
         <div class="grid-15 load-margin">
         <div class="grid-3 fleft no-margin">
@@ -117,6 +131,7 @@
                         <span class="contai_btns">
                             <span class="accept fright green_btn_light">Publicar</span>
                             <a href="/courses/edit_course/{{ course.id }}" class="brown_btn fright edit_">Editar</a>
+                            <span class="text_published">Este curso no es público</span>
                         <span>
                     {% endif %}
                 </div>

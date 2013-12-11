@@ -3,6 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    status = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.status)
+
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
@@ -12,6 +20,7 @@ class Course(models.Model):
     type_pk = models.IntegerField(max_length=5)
     description = models.TextField(max_length=2000,null=True)
     status = models.BooleanField(default=True)
+    category = models.ForeignKey(Category)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.published)

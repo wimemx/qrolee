@@ -210,6 +210,22 @@ function post_to_fb(caption, description, content, redirect, url){
 $(document).ready(function(){
 
     csrf_global = $('.csrf_header').find('input').val();
+    $('.contai_btns .green_btn_light').click(function(){
+
+        var $this = $(this);
+
+        $('.published').fadeIn(300);
+        $('.published .dialog_btn_cancel, .dialog_closet').click(function(){
+            $('.published').fadeOut(300);
+        });
+        $('.published .green_btn').click(function(){
+            $('.published').fadeOut(300, function(){
+                $this.fadeOut(300);
+                $('.contai_btns .text_published').fadeOut(300);
+            });
+        });
+    });
+
     $('.create_mod').click(function(){
         show_type_message(2);
     });
@@ -4670,7 +4686,6 @@ function add_question($this){
 
     if(type_cuestion == 0){
         var count_correct = 0;
-        var count_total = 0;
         var avg = 0;
 
         $.each($('.option_a .item-answer'), function(){
@@ -4679,12 +4694,9 @@ function add_question($this){
                 $(this).find('.multi_check').hasClass('active')){
                 count_correct++;
             }
-            if(!$(this).hasClass('answer-one') && name.length != 0){
-                count_total++;
-            }
         });
 
-        avg = parseFloat(count_total/count_correct);
+        avg = parseFloat(1/count_correct);
 
         $.each($('.option_a .item-answer'), function(){
             var name = $(this).find('.field_').val();
