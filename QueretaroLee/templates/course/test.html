@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load registry_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "style/theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "style/course.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static "js/tiny.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/cycle.min.js" %}"></script>
+{% endblock %}
+
+
+{% block head %}
+    {% include 'header.html' %}
+{% endblock %}
+
+{% block main_site %}
+
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=476600992414046";
+     fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="grid-16 courses test view">
+        <div class="grid-15 load-margin">
+        <div style="border-right: 1px solid #c4c4c4;" class="grid-3 fleft no-margin">
+            <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
+            <div class="container_course grid-3 fleft no-margin">
+                    {% for obj in courses %}
+                        <div class="item {% if obj.id == course.id %} sele {% endif %}"
+                             {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                            <div class="container_item">
+                                <span class="title fleft">{{ obj.name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+            <div class="grid-11 fleft no-margin view_courser">
+                <div style="border: none;" class="container_text">
+                    <span class="grid-8 no-margin">
+                        <input type="hidden" class="id" value="{{ course.id }}"/>
+                        <span class="title test">Prueba: {{ course.name }}</span>
+                    </span>
+                    <span class="grid-3 no-margin fright">
+                        {% if course.type == 0 %}
+                            <span class="gray_text options-counter fright"><span class="curr">3</span>/<span class="total">3</span></span>
+                            <p class="gray_text fright">pregunta</p>
+                        {% else %}
+                            <span class="correct-wrap">
+                            {% for i in  course.number_correct|times %}
+                                <span class="answer {% if forloop.last %} no-border{% endif %}"><img src="/static/img/ok_test.png" alt="" /></span>
+                            {% endfor %}
+                            </span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="fleft test-wrap">
+                    <span class="start-test">
+
+                    </span>
+                    <div id="test" class="grid-9 center">
+                        {% for question, value in questions.iteritems  %}
+                            <span class="fleft question">
+                            <input type="hidden" value="-1" class="user_option"/>
+
+                                <h3 class="title">{{ question }}</h3>
+                                <ul class="fleft option-set">
+                                    {% for key, val in value.iteritems %}
+                                        {% if key == 'question_id' %}
+                                            <input type="hidden" value="{{ val }}" class="question_id"/>
+
+                                        {% else %}
+                                            <li>
+                                            <span class="fix-right fleft no-margin" style="margin-top: 10px!important;" >
+                                                <img src="/static/img/radioOff.png" class="radio_btn test-radio rad_ti fleft radio_buttom"/>
+                                                <span class="radio_btn test-radio text_rad" >{{ val.label }}</span>
+                                                <input type="hidden" class="active_title" value="1"/>
+                                                <input type="hidden" class="radio_value" value="title"/>
+                                                <input type="hidden" value="{{ val.id }}" class="option-id"/>
+                                            </span>
+                                            </li>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </ul>
+                            </span>
+                        {% endfor %}
+
+                    </div>
+                    <span class="error"><b>X</b> Respuesta incorrecta</span>
+                    {% if course.type == 0 %}
+                    <span class="accept fright">Finalizar</span>
+                    {% endif %}
+                    <span class="fleft finish">
+                        <span class="option-set center">
+                            <p class="center caption grid-3">Tu resultado es:</p>
+                            <h3 class="title result margin-30 center">100%</h3>
+                            <h4 class="title main center margin-30">¡Felicidades!</h4>
+                            <span class="no-margin grid-4 center">
+                                <p class="grid-4 center response">Haz conseguido la mayor puntuación <br>
+                                        Te invitamos a explorar las distintas pruebas.</p>
+                            </span>
+                        </span>
+                    </span>
+
+                    <div class="controller center {% if course.type == 1 %}grade-ajax{% endif %}">
+                        <span id="prev" class="prev fleft"></span>
+                        <span id="next" class="next fright"></span>
+                        {% if course.type == 1 %}
+                            <span id="prev_" class="prev fleft"></span>
+                            <span id="next_" class="next fright"></span>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        {% if course.type == 0 %}
+            var nowrap = 1;
+        {% else %}
+            var nowrap = 0;
+        {% endif %}
+        $('#test').cycle({
+            fx: 'scrollHorz',
+            timeout: 0,
+            next:   '#next',
+            prev:   '#prev',
+            nowrap: nowrap,
+            onPrevNextEvent: function(isNext, zeroBasedSlideIndex, slideElement) {
+                if(zeroBasedSlideIndex == 0){
+                    $('#test li').each(function(){
+                        $(this).find('img').attr('src', '/static/img/radioOff.png');
+                    });
+                }
+            }
+        });
+        var curr = 1;
+        var total = $('#test .question').length;
+        $('.total').html($('#test .question').length);
+        $('.curr').html(curr);
+        var option_id = new Array();
+        $('#next').click(function(e){
+            option_id = new Array();
+            if (curr < total){
+                curr++;
+                $('.curr').html(curr);
+                if(curr == total)
+                    $('.accept').fadeIn(300);
+            }else
+                e.preventDefault();
+
+        });
+        $('#prev').click(function(){
+            option_id = new Array();
+            if(curr != 0){
+                curr--;
+                $('.curr').html(curr);
+                if(curr != total)
+                    $('.accept').fadeOut(300);
+            }
+        });
+
+        $('.accept').click(function(){
+            var answers = new Array();
+            $('.question').each(function(){
+                //var option_set = new Array();
+                //var question_id = $(this).find('.question_id').val();
+                var option_id = $(this).find('.user_option').val();
+                //option_set.push(question_id);
+                //option_set.push(option_id);
+                answers.push(option_id);
+            });
+            var test_id = $('input.id').val();
+            var result = grade_test(answers, test_id);
+            $('.title.result').html(result.response+'%');
+            if(result.response >= 90){
+
+            }else if(result.response < 75){
+                $('.title.main').html('¡Buen trabajo!');
+                $('.response').html('Te invitamos a explorar las distintas pruebas.');
+            }else if(result.response < 86 ){
+                $('.title.main').html('¡En hora buena!');
+                $('.response').html('Haz hecho un buen trabjo <br> Te invitamos a explorar las distintas pruebas.');
+            }
+            $('#test').fadeOut(300, function(){
+                $('.accept').fadeOut(0);
+                $('.finish').fadeIn(300);
+            });
+        });
+
+        $('.radio_btn').click(function(){
+            var op_id = $(this).parent().find('.option-id').val();
+
+            if($(this).closest('li').hasClass('selected')){
+                option_id.push(op_id);
+            }else{
+                for(var i=option_id.length-1;i>=0;i--){
+                    if (option_id[i] == op_id)
+                        option_id.splice(i, 1);
+                }
+            }
+        });
+        var correct_counter = 0;
+        $('#next_').click(function(){
+            if($('.error').is(':visible')){
+                $('#next').trigger('click');
+                $('.error').fadeOut(300);
+                return 0;
+            }
+            $(this).closest('.option-set').closest('.question').find('.user_option').val(option_id);
+            var test_id = $('input.id').val();
+            var question_id = $('.question:eq('+(curr-1)+')').find('.question_id').val();
+            var result = grade_test(option_id, test_id, question_id);
+            if (result.response >= 99){
+                $('.correct-wrap').find('.answer:eq('+correct_counter+') img').css({
+                    'left': -30
+                });
+                correct_counter++;
+                $('#next').trigger('click');
+                $('.error').fadeOut(300);
+                if(correct_counter == $('.correct-wrap .answer').length)
+                    $('#test').fadeOut(300, function(){
+                        $('.finish .caption').html('Haz finalizado la prueba.');
+                        $('.title.result').html('');
+                        $('.finish p:eq(1)').html('Haz cumplido con los requisitos para aprobar la prueba, <br> Te invitamos a explorar las distintas pruebas.');
+                        $('.finish').fadeIn(300);
+                    });
+            }else{
+                $('.error').fadeIn(300);
+
+            }
+        });
+    });
+    </script>
+{% endblock %}

@@ -10,6 +10,7 @@ from registry import models as registry, settings
 from account import models as account
 
 import json
+import simplejson
 import ast
 
 
@@ -427,7 +428,6 @@ def edit_course(request, **kwargs):
         }
 
     score = 0
-    print dict_mod
     if rate:
         score = rate[0]['score']
     context = {
@@ -438,3 +438,29 @@ def edit_course(request, **kwargs):
     }
 
     return render(request, template, context)
+
+
+def update_function(request):
+    app = request.POST.get('model_name').split('.')
+    app_label = app[0]
+    model_name = app[1]
+    model = get_model(app_label, model_name)
+
+    field = request.POST.get('field')
+    value = request.POST.get('value')
+
+    update_dict = {
+        field: value
+    }
+    result = model.objects.filter(pk=request.POST.get('id')).update(**update_dict)
+
+    if result > 0:
+        success = ':)'
+    else:
+        success = ':('
+
+    context = {
+        'success': success
+    }
+    context = simplejson.dumps(context)
+    return HttpResponse(context, content_type='application/json')

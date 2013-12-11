@@ -7,7 +7,7 @@ var content_array = new Array();
 var course_json = {
     'name': 'example',
     'description': 'text',
-    'type_id': 1,
+    'type_pk': 1,
     'type': 'E',
     'course.module': {}
 };
@@ -295,7 +295,7 @@ $(document).ready(function(){
         $.each($(this).find('option'), function(){
             var nam_class = $(this).attr('class').split('-');
             if($(this).attr('selected') == 'selected'){
-                course_json['type_id'] = nam_class[0];
+                course_json['type_pk'] = nam_class[0];
                 course_json['type'] = nam_class[1];
             }
             if($('.sel_val input').val() == nam_class[0])
@@ -4446,7 +4446,8 @@ function add_content($item){
             course_json['course.module'][id]['course.content'][count_cont] = {
                 'name': name,
                 'text': text,
-                'order': count_cont
+                'order': count_cont,
+                'module_dm': ''
             };
             count_cont++;
             item_content.find('.btn_delete').click(function(){
@@ -4537,7 +4538,9 @@ function add_test($item){
             course_json['course.module'][id]['course.test'][count_test] = {
                 'name': name,
                 'type': type_test,
-                'count': count,
+                'number_correct': count,
+                'module_dm': '',
+                'description': '',
                 'course.question': question_json
             };
             item_test.find('.btn_delete').click(function(){
@@ -4679,8 +4682,10 @@ function add_question($this){
         name_cuestion = $('.option_c .option_b').find(' .name_c').val();
 
     question_json[id_cuest] = {
-        'name': name_cuestion,
-        'type_id': type_cuestion,
+        'title': name_cuestion,
+        'type': type_cuestion,
+        'test_dm': '',
+        'order': 0,
         'course.option': {}
     };
 
@@ -4696,19 +4701,23 @@ function add_question($this){
             }
         });
 
-        avg = parseFloat(1/count_correct);
+        if((1/count_correct) == 1)
+            avg = '0.999';
+        else
+            avg = (1/count_correct).toFixed(2);
 
         $.each($('.option_a .item-answer'), function(){
             var name = $(this).find('.field_').val();
             if(!$(this).hasClass('answer-one') && name.length != 0){
                 var id = parseInt($(this).find('.id').val());
-                var value = 0;
+                var value = 0.0;
                 if($(this).find('.multi_check').hasClass('active'))
                     value = avg;
                 question_json[id_cuest]['course.option'][id] = {
                     'label': name,
                     'value': value,
-                    'question_dm': id_cuest
+                    'order': 0,
+                    'question_dm': ''
                 }
             }
         });
