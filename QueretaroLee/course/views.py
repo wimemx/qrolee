@@ -17,12 +17,20 @@ import ast
 def get_courses(request, **kwargs):
 
     template = kwargs['template_name']
-    courses = models.Course.objects.filter(status=True)
+    categories = models.Category.objects.filter(status=True)
     user = request.user
-    list_courses = dict_courses(courses, user)
+    list_categories = {}
+
+    for obj in categories:
+        courses = models.Course.objects.filter(category=obj, status=True)
+        list_courses = dict_courses(courses, user)
+        list_categories[obj.id] = {
+            'category': obj,
+            'courses': list_courses
+        }
 
     context = {
-        'courses': list_courses
+        'categories': list_categories
     }
 
     return render(request, template, context)
@@ -115,7 +123,7 @@ def get_test(request, **kwargs):
     list_content = list()
     for obj in modules:
         content = models.Content.objects.filter(module_dm=obj, status=True).order_by('order')
-        test = models.Test.objects.filter(module=obj)
+        test = models.Test.objects.filter(module_dm=obj)
         value = {
             'module': obj,
             'content': content,
@@ -150,7 +158,6 @@ def dict_courses(courses, user):
     list_courses = {}
     for obj in courses:
         modules = models.Module.objects.filter(course_dm=obj)
-        user_course = False
 
         if obj.type == 'U' and obj.type_pk == user.id:
             user_course = True
@@ -194,15 +201,15 @@ def dict_courses(courses, user):
 def get_content(request, **kwargs):
     template = kwargs['template_name']
     content = models.Content.objects.get(id=kwargs['id_content'])
-    contents = models.Content.objects.filter(module=content.module)
+    contents = models.Content.objects.filter(module_dm=content.module_dm)
 
-    if content.module.course.type == 'E':
+    if content.module_dm.course_dm.type == 'E':
         entity = registry.Entity.objects.get(
-            id=content.module.course.type_pk)
+            id=content.module.course_dm.type_pk)
         uid = entity.user_id
     else:
         user = User.objects.get(
-            id=content.module.course.type_pk)
+            id=content.module_dm.course_dm.type_pk)
         uid = user.id
 
     discussions = account.Discussion.objects.get_or_create(
@@ -271,8 +278,9 @@ def update_position(request):
 def register_course(request, **kwargs):
     template = kwargs['template_name']
     list_autor = {}
-    entities = registry.Entity.objects.all().exclude(status=1)
-    users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
+    entities = registry.Entity.objects.filter(status=True, type=2, user = request.user)
+    users = registry.User.objects.filter(id=request.user.id).exclude(is_staff=1, is_active=0)
+    categories = models.Category.objects.all()
 
     for obj in entities:
         list_autor[obj.id] = {
@@ -293,17 +301,20 @@ def register_course(request, **kwargs):
         }
 
     context = {
-        'list_autor': list_autor
+        'list_autor': list_autor,
+        'categories': categories
     }
 
     return render(request, template, context)
 
 
 def create_object(request):
+
     data = request.POST.get('data')
     data = ast.literal_eval(data)
     create_objects(
         data=data['course.course'], model_name='course.course')
+
     context = {
         'response': 'success'
     }
@@ -371,28 +382,31 @@ def grade_test(request):
 def edit_course(request, **kwargs):
     template = kwargs['template_name']
     list_autor = {}
-    entities = registry.Entity.objects.all().exclude(status=1)
-    users = registry.User.objects.all().exclude(is_staff=1, is_active=0)
+    entities = registry.Entity.objects.filter(status=True, type=2, user = request.user)
     user = request.user
+    users = registry.User.objects.filter(id=user.id).exclude(is_staff=1, is_active=0)
     id_course = kwargs['id_course']
     rate = account.Rate.objects.filter(
         element_id=id_course, type='C').values('element_id').annotate(
         count=db_model.Count('element_id'), score=db_model.Avg('grade'))
     course = models.Course.objects.filter(id=id_course, status=True)
-    modules = models.Module.objects.filter(course_dm=course)
+    modules = models.Module.objects.filter(course_dm=course, status=True)
+    categories = models.Category.objects.all()
     dict_mod = {}
+    name_author = ''
+    sel_category = 0
 
     for obj in modules:
-        content = models.Content.objects.filter(module_dm__id=obj.id)
-        test = models.Test.objects.filter(module_dm__id=obj.id)
+        content = models.Content.objects.filter(module_dm__id=obj.id, status=True)
+        test = models.Test.objects.filter(module_dm__id=obj.id, status=True)
         dict_test = {}
 
         for te in test:
-            question = models.Question.objects.filter(test_dm__id=te.id)
+            question = models.Question.objects.filter(test_dm__id=te.id, status=True)
             dict_quest = {}
 
             for ques in question:
-                option = models.Option.objects.filter(question_dm__id=ques.id)
+                option = models.Option.objects.filter(question_dm__id=ques.id, status=True)
                 dict_quest[ques.id] = {
                     'question': ques,
                     'option': option
@@ -409,6 +423,9 @@ def edit_course(request, **kwargs):
             'test': dict_test
         }
 
+
+
+
     for obj in entities:
         list_autor[obj.id] = {
             'type': 'E',
@@ -416,25 +433,33 @@ def edit_course(request, **kwargs):
             'name': obj.name
         }
 
-    for user in users:
-        name = user.first_name
-        if not user.first_name:
-            name = user.username
+        if course[0].type_pk  == obj.id and course[0].type == 'E':
+            name_author = obj.name
+
+    for us in users:
+        name = us.first_name
+        if not us.first_name:
+            name = us.username
 
         list_autor[user.id] = {
             'type': 'U',
-            'id': user.id,
+            'id': us.id,
             'name': name
         }
+        if course[0].type_pk == us.id and course[0].type == 'U':
+            name_author = name
 
     score = 0
     if rate:
         score = rate[0]['score']
+
     context = {
         'list_autor': list_autor,
         'course': course,
         'dict_mod': dict_mod,
-        'count_rate': score
+        'count_rate': score,
+        'categories': categories,
+        'name_author': name_author
     }
 
     return render(request, template, context)
@@ -452,7 +477,14 @@ def update_function(request):
     update_dict = {
         field: value
     }
-    result = model.objects.filter(pk=request.POST.get('id')).update(**update_dict)
+
+    if(field == 'status'):
+        result = model.objects.get(pk=request.POST.get('id'))
+        result.status = 0;
+        result.save()
+    else:
+        result = model.objects.filter(pk=request.POST.get('id')).update(**update_dict)
+
 
     if result > 0:
         success = ':)'

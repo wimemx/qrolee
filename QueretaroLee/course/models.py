@@ -20,7 +20,7 @@ class Course(models.Model):
     type_pk = models.IntegerField(max_length=5, null=True)
     description = models.TextField(max_length=2000, null=True)
     status = models.BooleanField(default=True)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category,null=True)
 
     def __unicode__(self):
         return '%s, %s' % (self.name, self.published)
@@ -43,7 +43,7 @@ class Content(models.Model):
     text = models.TextField(max_length=2000, null=True)
     order = models.IntegerField(max_length=5, default=0)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     module_dm = models.ForeignKey(Module, null=True)
 
     def __unicode__(self):
@@ -53,7 +53,7 @@ class Content(models.Model):
 class Test(models.Model):
     name = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=2000, null=True)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
     meta = models.CharField(max_length=255, null=True)
     number_correct = models.IntegerField(blank=True, null=True)
@@ -89,6 +89,7 @@ class Question(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(max_length=5, null=True)
     type = models.IntegerField(null=True)
+    status = models.BooleanField(default=True)
     test_dm = models.ForeignKey(Test, null=True)
 
     def __unicode__(self):
@@ -101,6 +102,7 @@ class Option(models.Model):
     order = models.IntegerField(max_length=5, null=True)
     meta = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
     question_dm = models.ForeignKey(Question, null=True)
 
     def __unicode__(self):

@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block main_site %}
-    <div class="grid-16 courses all">
+    <div class="grid-16 courses all categ_">
         <div class="grid-15 load-margin">
             <div class="grid-8 no-margin container_text">
                 <span class="gri-7 no-margin">
@@ -39,35 +39,59 @@
                 </p>
                 <a href="/courses/register_course/" class="brown_btn fleft">Crear nuevo curso</a>
             </div>
-            <div class="container_course grid-6 no-margin">
-                {% for key, value in courses.items %}
-                    <span id="{{ key }}" class="item" {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
-                        {% if value.user_course %}
-                            <span class="remove fright">x</span>
-                        {% endif %}
-                        <a class="fleft" href="/courses/course/{{ key }}">
-                            <span class="container_item">
-                                <span class="title grid-4 fleft">{{ value.course.name }}</span>
-
-                                <span class="grid-2 no-margin fleft number">
-                                    <img  src="/static/img/starn_course.png" >
-                                    <span >{{ value.rate }}</span>
-                                    <img src="/static/img/modul.png" >
-                                    <span >{{ value.count_module }}</span>
-                                </span>
-
-                                <p class="grid-5 no-margin">
-                                    {{ value.course.description|truncatechars:200 }}
-                                </p>
-                            </span>
-                            </a>
-                            {% if value.user_course %}
-                                <span class="edit_wrapper">
-                                    <a class="green_btn" href="/courses/edit_course/{{ value.course.id }}"></a>
-                                </span>
-                            {% endif %}
+            <div class="container_course grid-7 no-margin">
+                <span class="show_categories" style="display:none;">
+                    <span>Ver categorías</span>
                     </span>
+                <span class="title title_categ" style="display:none;">
+                    <span>Categoria uno</span>
+                </span>
+                {% for k, v in categories.items %}
+                     <span id="{{ k }}" class="item categ " {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
+                        <span class="container_item">
+                            <span class="title grid-4 fleft">{{ v.category.name }}</span>
+
+                            <span class="grid-2 no-margin fright number">
+                                <img src="/static/img/course_icon.png" >
+                                <span >{{ v.courses|length }}</span>
+                            </span>
+                            <p class="grid-6 no-margin">
+                                {{ v.category.description|truncatechars:190 }}
+                            </p>
+                        </span>
+                    </span>
+                    {% for key, value in v.courses.items %}
+                        <span id="{{ key }}" class="item item-cours "
+                              style="display: none; {% if not forloop.last %}border-bottom: 0px; {% endif %}">
+                            <input type="hidden" value="{{ k }}" >
+                            {% if value.user_course %}
+                                <span class="remove fright">x</span>
+                            {% endif %}
+                            <a class="fleft" href="/courses/course/{{ key }}">
+                                <span class="container_item">
+                                    <span class="title grid-4 fleft">{{ value.course.name }}</span>
+
+                                    <span class="grid-2 no-margin fleft number">
+                                        <img  src="/static/img/starn_course.png" >
+                                        <span >{{ value.rate }}</span>
+                                        <img src="/static/img/modul.png" >
+                                        <span >{{ value.count_module }}</span>
+                                    </span>
+
+                                    <p class="grid-5 no-margin">
+                                        {{ value.course.description|truncatechars:200 }}
+                                    </p>
+                                </span>
+                                </a>
+                                {% if value.user_course %}
+                                    <span class="edit_wrapper">
+                                        <a class="green_btn" href="/courses/edit_course/{{ value.course.id }}"></a>
+                                    </span>
+                                {% endif %}
+                        </span>
+                    {% endfor %}
                 {% endfor %}
+
             </div>
         </div>
     </div>

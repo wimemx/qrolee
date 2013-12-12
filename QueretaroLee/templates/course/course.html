@@ -129,9 +129,16 @@
                     </p>{{ course.ty }}
                     {% if course.type_pk == user.id %}
                         <span class="contai_btns">
-                            <span class="accept fright green_btn_light">Publicar</span>
-                            <a href="/courses/edit_course/{{ course.id }}" class="brown_btn fright edit_">Editar</a>
-                            <span class="text_published">Este curso no es público</span>
+                            {% if not course.published %}
+                                <span class="accept fright green_btn_light">Publicar
+                                <input type="hidden" value="{{ course.id }}"/>
+                                </span>
+                            {% endif %}
+                            <a href="/courses/edit_course/{{ course.id }}"
+                               class="brown_btn fright edit_" style="padding: 4px 16px!important;" >Editar</a>
+                            {% if not course.published %}
+                                <span class="text_published">Este curso no es público</span>
+                            {% endif %}
                         <span>
                     {% endif %}
                 </div>

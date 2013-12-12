@@ -291,19 +291,39 @@
                      <span class="attr">Descripción</span>
                     <textarea name="Description" class="required regex_alpha_numeric" ></textarea>
                 </p>
-                <span class="grid-8 no-margin discussion genre_sel">
+                <span class="grid-8 no-margin discussion catg_">
+                    <span class="fleft">Categoria</span>
+                    <span class="grid-5 no-margin fright">
+                        <span class="select_wrapper grid-2 alpha fleft">
+                            <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                                <span class="text">Categoria</span>
+                                <span class="dropdown"></span>
+                                <select class="change value" name="privacy">
+                                    {% for obj in categories %}
+                                        <option  class="{{ obj.id }}" value="{{ obj.name }}">
+                                            {{ obj.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+                <span class="grid-8 no-margin discussion genre_sel author_">
                     <span class="fleft">Autor del curso</span>
-                    <span class="select_wrapper grid-2 alpha">
-                        <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
-                            <span class="text">Autor del curso</span>
-                            <span class="dropdown"></span>
-                            <select class="change value" name="privacy">
-                                {% for key, value in list_autor.items %}
-                                    <option  class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
-                                        {{ value.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                    <span class="grid-5 no-margin fright">
+                        <span class="select_wrapper grid-2 alpha fleft">
+                            <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                                <span class="text">Autor del curso</span>
+                                <span class="dropdown"></span>
+                                <select class="change value" name="privacy">
+                                       {% for key, value in list_autor.items %}
+                                        <option  class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
+                                            {{ value.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </span>
                         </span>
                     </span>
                 </span>
@@ -328,6 +348,7 @@
                             <span class="pink_btn size_btn_edit btn_delete">
                                <input type="hidden" class="name" value="modulo 1" />
                                <input class="message" type='hidden' value="1"/>
+                               <input type="hidden" class="model" value="course.module">
                             </span>
                             <span class="green_btn size_btn_edit del">
                             </span>
@@ -379,6 +400,8 @@
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
                 course_json['description'] = desc;
+                get_select();
+                delete_in_option(course_json);
                 console.log(course_json);
                 var course_data = {
                     'course.course': {

@@ -19,7 +19,41 @@
     float: left;
     background: #edd9af;
 }
+ .categ_ .courses .container_text{
+     margin-left: 10px;
+ }
+ .categ_ .show_categories{
+    background: #c69264;
+    color: #fff;
+    font-size: 12px;
+    width: 100%;
+    float: left;
+    font-family: 'Raleway';
+    font-weight: 500;
+    height: 30px;
+    margin-bottom: 0px;
+    cursor: pointer;
+ }
+ .categ_ .title_categ{
+     float: left;
+     height: 30px;
+     background: #f4e8d3;
+     width: 100%;
+     margin-bottom: 0px;
+ }
 
+ .categ_ .title_categ span{
+    float: left;
+    font-size: 13px;
+    padding: 6px 20px;
+    color: #777;
+}
+
+ .categ_ .show_categories span{
+    float: left;
+    font-size: 13px;
+    padding: 5px 20px;
+ }
 .container_text .title{
     margin-left: 25px;
     margin-top: 20px;
@@ -37,9 +71,6 @@
     margin-left: 25px;
     margin-bottom: 20px;
 }
-.all .container_course{
-    width: 360px!important;
-}
 .all .brown_btn{
     width: auto !important;
     padding: 4px 9px !important;
@@ -47,6 +78,15 @@
 .container_course{
     overflow: hidden;
 }
+
+.categ .grid-6{
+    position: relative!important;
+    margin-top: 5px!important;
+}
+.categ .number{
+    right: 15px;
+}
+
 .container_course .item{
     position: relative;
     border: 1px solid #C4C4C4;
@@ -268,10 +308,9 @@ ul.child li{
 .nonActive{
     opacity: 0.5;
 }
-.​openHand​{
+.openHand{
     cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
 }
-
 .closeHand {
     cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
 }​
@@ -310,7 +349,7 @@ ul.child li{
     }
 
     .register_course .select_wrapper{
-        left: 83px!important;
+        left: -2px!important;
     }
 
     .register_course .line_divide{

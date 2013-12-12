@@ -1976,9 +1976,9 @@ p{
         }
 
     .lightbox{
-        background: url('../img/register_form_bg.png');
+        background: #f4e5c8  url('../img/register_form_bg.png');
         position: relative;
-        background-color: #f4e5c8 !important;
+        background-repeat: repeat!important;
     }
     .lightbox .close{
             width: 9px;
@@ -3445,9 +3445,8 @@ textarea{
 .container_message .create-discussion-wrapper{
     padding: 30px 0px 40px 0px;
 }
-
     .container_message .create-discussion{
-        height: 290px;
+        height: 315px;
     }
 .container_message .btn_save{
     margin-top: 11px;
@@ -4658,9 +4657,11 @@ p input.green_btn{
 
 .contai_btns .brown_btn{
     margin-bottom: 5px!important;
-    padding: 4px 16px!important;
 }
 .contai_btns .text_published{
     float: left;
     margin-left: 66px;
+}
+.create-discussion input:focus , textarea:focus{
+    background-color: rgb(252, 248, 239);
 }

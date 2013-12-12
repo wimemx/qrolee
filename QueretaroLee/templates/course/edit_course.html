@@ -175,7 +175,7 @@
                     </span>
                     <span class="pink_btn size_btn_edit btn_delete">
                        <input type="hidden" class="name" value="mod">
-                       <input class="message" type="hidden" value="mod">
+                       <input class="id" type="hidden" value="mod">
                     </span>
                 </span>
                 <span class="place_pink">Añadir nueva pregunta</span>
@@ -208,7 +208,7 @@
                             <img class="multi_check" src="/static/img/checkboxoff.png" />
                             <span class="pink_btn size_btn_edit btn_delete" >
                                <input type="hidden" class="name" value="mod">
-                               <input class="message" type="hidden" value="mod">
+                               <input class="id" type="hidden" value="mod">
                             </span>
                         </p>
                         <p class="item-answer">
@@ -217,7 +217,7 @@
                             <img class="multi_check" src="/static/img/checkboxoff.png" />
                             <span class="pink_btn size_btn_edit btn_delete" >
                                <input type="hidden" class="name" value="mod">
-                               <input class="message" type="hidden" value="mod">
+                               <input class="id" type="hidden" value="mod">
                             </span>
                         </p>
                         <p class="item-answer">
@@ -226,7 +226,7 @@
                             <img class="multi_check" src="/static/img/checkboxoff.png" />
                             <span class="pink_btn size_btn_edit btn_delete" >
                                <input type="hidden" class="name" value="mod">
-                               <input class="message" type="hidden" value="mod">
+                               <input class="id" type="hidden" value="mod">
                             </span>
                         </p>
                         <p class="item-answer">
@@ -235,7 +235,7 @@
                             <img class="multi_check" src="/static/img/checkboxoff.png" />
                             <span class="pink_btn size_btn_edit btn_delete" >
                                <input type="hidden" class="name" value="mod">
-                               <input class="message" type="hidden" value="mod">
+                               <input class="id" type="hidden" value="mod">
                             </span>
                         </p>
 
@@ -259,15 +259,14 @@
                         </span>
                     </span>
                     <span class="grid-3 no-margin btn_cuest">
-                        <span class="green_btn size_btn_edit del">
+                        <span class="green_btn size_btn_edit del">Guardar
                         </span>
-                        <span class="pink_btn size_btn_edit btn_delete">
+                        <span class="pink_btn size_btn_edit btn_delete">Cancelar
                            <input type="hidden" class="name" value="mod">
                            <input class="message" type="hidden" value="mod">
                         </span>
                    </span>
                 </span>
-
             </span>
         </span>
     </div>
@@ -292,21 +291,44 @@
                      <span class="span_ grid-5 fright no-margin" >{{ course.0.description }}</span>
                     <textarea name="Description" class="val" style="display: none;padding-bottom: 10px;" >{{ course.0.description }}</textarea>
                 </p>
-                <span class="grid-8 no-margin discussion genre_sel">
+                <span class="grid-8 no-margin discussion catg_">
+                    <input type="hidden" class="id_category" value="{{ course.0.category.name }}" >
+                    <span class="fleft ">Categoria</span>
+                    <span class="span_ user_active grid-5 fright no-margin">{{ course.0.category.name }}</span>
+                    <span class="grid-5 no-margin fright">
+                        <span class="select_wrapper grid-2 alpha val" style="display: none;">
+                            <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                                <span class="text">Categoria</span>
+                                <span class="dropdown"></span>
+                                <select class="change value" name="privacy">
+                                    {% for obj in categories %}
+                                        <option  class="{{ obj.id }}" value="{{ obj.name }}">
+                                            {{ obj.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+                <span class="grid-8 no-margin discussion genre_sel author_">
+                    <input type="hidden" class="type" value="{{ course.0.type }}">
+                    <input type="hidden" class="type_pk" value="{{ course.0.type_pk }}">
                     <span class="fleft ">Autor del curso</span>
-                    <span class="span_ user_active grid-5 fright no-margin"></span>
-                    <span class="select_wrapper grid-2 alpha val" style="display: none;">
-                        <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
-                            <input type="hidden" value="{{ course.0.type_pk }}">
-                            <span class="text">Autor del curso</span>
-                            <span class="dropdown"></span>
-                            <select class="change value" name="privacy">
-                                {% for key, value in list_autor.items %}
-                                    <option class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
-                                        {{ value.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                    <span class="span_ user_active grid-5 fright no-margin">{{ name_author }}</span>
+                    <span class="grid-5 no-margin fright">
+                        <span class="select_wrapper grid-2 alpha val" style="display: none;">
+                            <span class="grid-2 select sel_val no-margin" style="top: 0px;left: 0px;">
+                                <span class="text">Autor del curso</span>
+                                <span class="dropdown"></span>
+                                <select class="change value" name="privacy">
+                                       {% for key, value in list_autor.items %}
+                                        <option  class="{{ value.id }}-{{ value.type }} " value="{{ value.name }}">
+                                            {{ value.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </span>
                         </span>
                     </span>
                 </span>
@@ -363,6 +385,7 @@
                                 <span class="pink_btn size_btn_edit btn_delete">
                                     <input type="hidden" class="name" value="tema 1" />
                                     <input class="message" type='hidden' value="2"/>
+                                    <input type="hidden" class="model" value="course.module">
                                 </span>
                             </div>
                             <span class="place_pink">
@@ -372,8 +395,14 @@
                         <span class="test">
                             <div class="item_test test_one" style="display: none;">
                                 <input type="hidden" value="0">
-                                <img src="/static/img/theme.png">
-                                <span class="title"></span>
+                                <img src="/static/img/star_test.png">
+                                <span class="title">test uno</span>
+                                <span class="green_btn size_btn_edit del">
+                                </span>
+                                <span class="pink_btn size_btn_edit btn_delete">
+                                    <input type="hidden" class="name" value="test 1" />
+                                    <input class="message" type='hidden' value="2"/>
+                                </span>
                             </div>
                             <span class="place_pink">
                                 Añadir nueva prueba
@@ -389,9 +418,10 @@
                             <span class="description grid-6 no-margin">{{ value.module.text }}
                             </span>
                             <span class="grid-3 no-margin btns">
-                                <span class="pink_btn size_btn_edit btn_delete">
+                                <span class="pink_btn size_btn_edit btn_delete del_int">
                                    <input type="hidden" class="name" value="{{ value.module.name }}" />
-                                   <input class="message" type='hidden' value="{{ key }}"/>
+                                   <input class="id" type='hidden' value="{{ key }}"/>
+                                   <input type="hidden" class="model" value="course.module">
                                 </span>
                                 <span class="green_btn size_btn_edit del">
                                 </span>
@@ -405,7 +435,7 @@
                                     <span class="title"></span>
                                     <span class="green_btn size_btn_edit del">
                                     </span>
-                                    <span class="pink_btn size_btn_edit btn_delete">
+                                    <span class="pink_btn size_btn_edit btn_delete ">
                                         <input type="hidden" class="name" value="tema 1" />
                                         <input class="message" type='hidden' value="2"/>
                                     </span>
@@ -418,9 +448,9 @@
                                         <input type="hidden" class="text" value="{{ obj.text }}"/>
                                         <span class="green_btn size_btn_edit del">
                                         </span>
-                                        <span class="pink_btn size_btn_edit btn_delete">
+                                        <span class="pink_btn size_btn_edit btn_delete del_int">
                                             <input type="hidden" class="name" value="{{ obj.name }}" />
-                                            <input class="message" type='hidden' value="{{ obj.id }}"/>
+                                            <input class="id" type='hidden' value="{{ obj.id }}"/>
                                         </span>
                                     </div>
                                 {% endfor %}
@@ -446,7 +476,7 @@
                                             <span class="item-q" style="display: none;" >
                                                 <span class="id_q">{{ v2.question.id }}</span>
                                                 <span class="text">{{ v2.question.title }}</span>
-                                                <span class="type" >0</span>
+                                                <span class="type" >{{ v2.question.type }}</span>
                                                 <span class="order">{{ v2.question.order }}</span>
                                                 {% for v3 in v2.option %}
                                                     <span class="option">
@@ -464,9 +494,9 @@
                                         <span class="title">{{ v.test.name }}</span>
                                         <span class="green_btn size_btn_edit del">
                                         </span>
-                                        <span class="pink_btn size_btn_edit btn_delete">
+                                        <span class="pink_btn size_btn_edit btn_delete del_int">
                                             <input type="hidden" class="name" value="{{ v.test.name }}" />
-                                            <input class="message" type='hidden' value="{{ v.test.id }}"/>
+                                            <input class="id" type='hidden' value="{{ v.test.id }}"/>
                                         </span>
                                     </div>
                                 {% endfor %}
@@ -480,6 +510,7 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
         $(document).ready(function(){
             var last_mod = 1;
@@ -488,6 +519,11 @@
                    $('.val').fadeIn(250);
                });
             });
+            get_select();
+            course_json['category'] = parseInt($('.catg_ .category_id').val());
+            course_json['type'] = parseInt($('.author_ .type').val());
+            course_json['type_pk'] = parseInt($('.author_ .type_pk').val());
+
             $.each($('.item-mod '), function(){
                 var id = parseInt($(this).find('input').val());
                 last_mod = id;
@@ -535,35 +571,42 @@
                                 var order_q = $(this).find('.order').text();
 
                                 course_json['course.module'][id]['course.test'][id_]['course.question'][id_q]= {
-                                    'name': na_q,
-                                    'type_id': type_q,
+                                    'title': na_q,
+                                    'type': type_q,
+                                    'test_dm': '',
+                                    'order': 0,
+                                    'bd': 1,
                                     'course.option': {}
                                 }
+
                                 $.each($(this).find('.option'), function(){
                                     var id_op = parseInt($(this).find('.id').text());
                                     var lab_op = $(this).find('.test').text();
-                                    var val_op = parseInt($(this).find('.value').text());
+                                    var val_op = parseFloat($(this).find('.value').text());
                                     course_json['course.module'][id]['course.test'][id_]['course.question'][id_q]['course.option'][id_op] = {
                                         'label': lab_op,
                                         'value': val_op,
-                                        'question_dm': id_q
+                                        'order': 0,
+                                        'bd': 0,
+                                        'question_dm': ''
                                     }
                                 });
-
                             });
                         }
                     });
                 }
             });
-            var val = selected.val();
-            $(this).find('select').val(val).trigger('change');
-            $('.user_active').text(val);
+
             count_course = last_mod + 1;
             $('#register_course').submit(function(e){
                 var name = $(this).find('input[name=name]').val();
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
                 course_json['description'] = desc;
+                course_json['id'] = parseInt($('.id_course').val());
+
+                get_select();
+                delete_in_option(course_json);
                 console.log(course_json);
 
                 if(valid_course($(this))){
