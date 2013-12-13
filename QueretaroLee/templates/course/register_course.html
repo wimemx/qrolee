@@ -403,7 +403,7 @@
                 course_json['name'] = name;
                 course_json['description'] = desc;
                 get_select();
-                delete_in_option(course_json);
+                //delete_in_option(course_json);
                 console.log(course_json);
 
                 var course_data = {
@@ -424,7 +424,7 @@
                         dataType: 'json'
                     }).done(function(data) {
 
-                        //window.location.href = '/courses/course/' + data.id;
+                        window.location.href = '/courses/course/' + data.id;
 
                             });
                 }

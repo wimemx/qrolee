@@ -610,13 +610,13 @@
 
                 get_select();
                 //delete_in_option(course_json);
-                console.log(course_json);
 
                  var course_data = {
                     'course.course': {
-                        1: course_json
                     }
                 }
+                course_data['course.course'][id_c] =  course_json;
+                console.log(course_data);
 
                 if(valid_course($(this))){
 
@@ -630,7 +630,7 @@
                         dataType: 'json'
                     }).done(function(data) {
 
-                        //window.location.href = '/courses/course/' + data.id;
+                        window.location.href = '/courses/course/' + id_c;
 
                             });
                 }
