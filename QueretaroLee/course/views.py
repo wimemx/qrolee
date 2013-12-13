@@ -9,6 +9,7 @@ from course import models
 from registry import models as registry, settings
 from account import models as account
 
+import pprint
 import json
 import simplejson
 import ast
@@ -154,7 +155,7 @@ def get_test(request, **kwargs):
 
 
 def dict_courses(courses, user):
-
+    print courses
     list_courses = {}
     for obj in courses:
         modules = models.Module.objects.filter(course_dm=obj)
@@ -205,7 +206,7 @@ def get_content(request, **kwargs):
 
     if content.module_dm.course_dm.type == 'E':
         entity = registry.Entity.objects.get(
-            id=content.module.course_dm.type_pk)
+            id=content.module_dm.course_dm.type_pk)
         uid = entity.user_id
     else:
         user = User.objects.get(
@@ -312,11 +313,21 @@ def create_object(request):
 
     data = request.POST.get('data')
     data = ast.literal_eval(data)
+    #pprint.pprint(data)
     create_objects(
         data=data['course.course'], model_name='course.course')
 
+    course = models.Course.objects.all()
+    id = 0
+
+    if len(course) == 1:
+        id = course[0].id
+    else:
+        id = course.latest('id').id
+
     context = {
-        'response': 'success'
+        'response': 'success',
+        'id': id
     }
     context = json.dumps(context)
     return HttpResponse(context, content_type='application/json')
@@ -332,18 +343,38 @@ def create_objects(data, model_name, id=None):
             app_model_name = app[1]
             model = get_model(app_label, app_model_name)
             data_dict = dict()
-            object = model.objects.create(**data_dict)
-            inner_id = object.id
+
+            #print top_level
+            print '------------'
+            print model
+
+            #obj_exist = model.objects.filter(id=top_level)
+
+            for objs in data[num_parent_models]:
+                print objs
+
+            print '------------'
+
+            '''if obj_exist:
+                object = obj_exist[0]
+            else:
+                object = model.objects.create(**data_dict)'''
+
+            #inner_id = object.id
+            inner_id = 1
+
             for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+
                 if len(parent_models_fields.split('.')) > 1:
                     create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
                 else:
                     data_dict[parent_models_fields] = parent_models_values
             if id != -1:
                 for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-                    if '_dm' in parent_models_fields:
+                    if '_dm' in parent_models_fields != None:
                         data_dict[parent_models_fields] = id
-        model.objects.filter(id=inner_id).update(**data_dict)
+
+        #model.objects.filter(id=inner_id).update(**data_dict)
     return 0
 
 

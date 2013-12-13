@@ -32,10 +32,10 @@
     <div class="grid-16 courses view content">
         <div class="grid-15 load-margin">
         <div class="container_course grid-3 no-margin">
-        <a href="/courses/course/{{ content.module.course.id }}"
-           class="brown_btn fleft">{{ content.module.course.name }}</a>
+        <a href="/courses/course/{{ content.module_dm.course_dm.id }}"
+           class="brown_btn fleft">{{ content.module_dm.course_dm.name }}</a>
         <div class="module_act module">
-            <span class="title grid-2 no-margin module_title">{{ content.module.name }}</span>
+            <span class="title grid-2 no-margin module_title">{{ content.module_dm.name }}</span>
         </div>
         {% for obj in contents %}
             <a href="/courses/content/{{ obj.id }}" class="module_act module {% if obj == content %} sele{% endif %}">

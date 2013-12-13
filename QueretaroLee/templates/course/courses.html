@@ -25,6 +25,7 @@
                     <span class="title">¡Aprende!</span>
                 </span>
                 <p class="grid-7 no-margin">
+                    <img src="/static/img/cup.png" class="fleft" style="padding: 0px 38px;" >
                     Términos y condiciones de uso de Querétaro Lee (propiedad de
                     Faktor T México, S. A. de C. V.) .
                     Este contrato describe los términos y condiciones (los "Términos y
@@ -65,13 +66,13 @@
                               style="display: none; {% if not forloop.last %}border-bottom: 0px; {% endif %}">
                             <input type="hidden" value="{{ k }}" >
                             {% if value.user_course %}
-                                <span class="remove fright">x</span>
+                                <span class="remove fright" style="display: none;">x</span>
                             {% endif %}
                             <a class="fleft" href="/courses/course/{{ key }}">
                                 <span class="container_item">
                                     <span class="title grid-4 fleft">{{ value.course.name }}</span>
 
-                                    <span class="grid-2 no-margin fleft number">
+                                    <span class="grid-2 no-margin fright number" style="margin-right: 15px;color: #454545;">
                                         <img  src="/static/img/starn_course.png" >
                                         <span >{{ value.rate }}</span>
                                         <img src="/static/img/modul.png" >
@@ -79,7 +80,7 @@
                                     </span>
 
                                     <p class="grid-5 no-margin">
-                                        {{ value.course.description|truncatechars:200 }}
+                                        {{ value.course.description|truncatechars:220 }}
                                     </p>
                                 </span>
                                 </a>

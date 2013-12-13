@@ -119,14 +119,16 @@
                     <span class="by fleft grid-5">
                         Por
                         {% if course.type == 'E' %}
-                            <a href="/qro_lee/entity/organization/{{ course.type_id }}" class="place_pink">{{ by }}</a>
+                            <a href="/qro_lee/entity/organization/{{ course.type_pk }}" class="place_pink">{{ by }}</a>
                         {% else %}
                             <a href="/accounts/users/profile/{{ course.type_pk }}" class="place_pink">{{ by }}</a>
                         {% endif %}
+
                     </span>
                     <p class="grid-8 no-margin">
                         {{ course.description }}
                     </p>{{ course.ty }}
+
                     {% if course.type_pk == user.id %}
                         <span class="contai_btns">
                             {% if not course.published %}
@@ -177,7 +179,7 @@
                                     <span class="title grid-6 no-margin subtitle"
                                           {% if forloop.last %}style="border-bottom: 0px;"{% endif %}
                                             >{{ obj.name }}</span>
-                                    <img src="/static/img/theme.png" />
+                                    <img src="/static/img/star_test.png" />
                                 </span>
                             </a>
                             </span>

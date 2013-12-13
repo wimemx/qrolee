@@ -355,13 +355,30 @@ function valid_course($form){
 }
 
 function valid_module($this){
-    var error = true;
-    var name = $this.parent().find('input[name=name]').val();
-    var desc = $this.parent().find('textarea[name=description]').val();
-    if(name.length == 0 || desc.length == 0)
-        error = false;
 
-    return error;
+    var ok = true;
+    var name = $this.parent().find('input[name=name]');
+    var desc = $this.parent().find('textarea[name=description]');
+
+    name.css({'border': '1px solid #c2baab'});
+    if(name.val().length == 0){
+        name.css(
+            {
+                'border': '1px solid rgb(248, 152, 131)'
+            });
+        ok = false;
+    }
+
+    desc.css({'border': '1px solid #c2baab'});
+    if(desc.val().length == 0){
+        desc.css(
+            {
+                'border': '1px solid rgb(248, 152, 131)'
+            });
+        ok = false;
+    }
+
+    return ok;
 }
 
 function valid_question($this){
@@ -419,4 +436,30 @@ function valid_question($this){
         error = false;
     }
     return error;
+}
+
+function valid_test(){
+
+    var ok = true;
+    var text = $('<div class="grid-14 no_resuls" style="display:none;" >' +
+        'Cada prueba debe tener minino una pregunta</div>');
+
+    $('.create_test .name').css({'border': '1px solid #e4e4e4'});
+    if($('.create_test .name').val().length == 0){
+        $('.create_test .name').css(
+            {
+                'border': '1px solid rgb(248, 152, 131)'
+            });
+        ok = false;
+    }
+
+    $('.no_resuls').remove();
+
+    if($('.container_cuestion .item_cuestion').length == 1){
+        ok = false;
+        $('.container_test').append(text);
+        text.fadeIn(300);
+    }
+
+    return ok;
 }

@@ -5,7 +5,6 @@ var courses_array = new Array();
 var modules_array = new Array();
 var content_array = new Array();
 var course_json = {
-    'id': 0,
     'name': 'example',
     'description': 'text',
     'type_pk': 1,
@@ -212,6 +211,10 @@ function post_to_fb(caption, description, content, redirect, url){
 $(document).ready(function(){
 
     csrf_global = $('.csrf_header').find('input').val();
+
+    $('.create_test .name').keyup(function(){
+        $(this).css({'border': '1px solid #e4e4e4'});
+    });
 
     $('.categ').click(function(){
         var id = parseInt($(this).attr('id'));
@@ -4262,6 +4265,7 @@ function create_module($this){
         'text': description,
         'order': count_course,
         'course_dm': '',
+        'bd': 0,
         'course.content': {
         },
         'course.test': {
@@ -4354,7 +4358,12 @@ function show_type_message(type){
 }
 
 function fade_out(){
+
     $('.no_resuls').remove();
+    $('.lightbox input[name=name]').css({'border': '1px solid #c2baab'});
+    $('.lightbox textarea[name=description]').css({'border': '1px solid #c2baab'});
+    $('.create_test .name').css({'border': '1px solid #e4e4e4'});
+
     $('.container_message').fadeOut(200,function(){
         $('.dialog-confirm').fadeOut(100, function(){
             $('.create_content').fadeOut(100, function(){
@@ -4479,7 +4488,8 @@ function add_content($item){
                 'name': name,
                 'text': text,
                 'order': count_cont,
-                'module_dm': ''
+                'module_dm': '',
+                'bd': 0
             };
             count_cont++;
             item_content.find('.btn_delete').click(function(){
@@ -4556,18 +4566,23 @@ function add_test($item){
 
     $('.create_test .btn_save_pag').unbind("click").click(function(){
 
-        var item_test = item.find('.test .test_one').clone();
-        if($('.create_test ').hasClass('edit_')){
-            item_test = $item.parent();
-        }
-
         var name = $('.create_test .name').val();
-        var type_test = parseInt($('.type_test .field_option').val());
-        var count = parseInt($('.correct_answers select').val());
 
-        if(parseInt($('.active_author').val()) == 1)
-            type_test = 1;
-        if(name.length != 0){
+        if(valid_test()){
+
+            var item_test = item.find('.test .test_one').clone();
+            var bd_test = 0;
+            if($('.create_test ').hasClass('edit_')){
+                item_test = $item.parent();
+                if($item.parent().find('.btn_delete').hasClass('del_int'))
+                    bd_test = 1;
+            }
+
+            var type_test = parseInt($('.type_test .field_option').val());
+            var count = parseInt($('.correct_answers select').val());
+
+            if(parseInt($('.active_author').val()) == 1)
+                type_test = 1;
 
             item_test.removeClass('test_one');
             item_test.fadeIn(200);
@@ -4586,6 +4601,7 @@ function add_test($item){
                 'number_correct': count,
                 'module_dm': '',
                 'description': '',
+                'bd': bd_test,
                 'course.question': question_json
             };
             item_test.find('.btn_delete').click(function(){
@@ -4638,6 +4654,7 @@ function delete_item_question($this){
     $('.create_test .dialog-confirm .dialog_btn_cancel').unbind('click').click(function(){
         $('.create_test .dialog-confirm').fadeOut(250);
     });
+
     $('.create_test .dialog-confirm .green_btn').unbind('click').click(function(){
         $('.create_test .dialog-confirm').fadeOut(250, function(){
             $item_ques.fadeOut(250, function(){
@@ -4721,10 +4738,13 @@ function add_question($this){
     var name_cuestion;
     var id_cuest = parseInt($('.container_cuestion .item_cuestion').last().find('.id').val()) + 1;
     var $item = $('.container_cuestion .cuestion-one').clone();
+    var bd_cuest = 0;
 
     if($('.option_c').hasClass('edit_')){
         id_cuest = parseInt($this.find('.id').val())
         $item = $this;
+        if($item.find('.btn_delete').hasClass('del_int'))
+            bd_cuest = 1;
     }else{
         $item.removeClass('cuestion-one');
         $item.find('.id').val(id_cuest);
@@ -4741,7 +4761,7 @@ function add_question($this){
         'type': type_cuestion,
         'test_dm': '',
         'order': 0,
-        'bd': 0,
+        'bd': bd_cuest,
         'course.option': {}
     };
 
@@ -4767,13 +4787,18 @@ function add_question($this){
             if(!$(this).hasClass('answer-one') && name.length != 0){
                 var id = parseInt($(this).find('.id').val());
                 var value = 0.0;
+                var bd_opt = 0;
+
                 if($(this).find('.multi_check').hasClass('active'))
                     value = avg;
+                if($(this).find('.btn_delete').hasClass())
+                    bd_opt= 1;
+
                 question_json[id_cuest]['course.option'][id] = {
                     'label': name,
                     'value': value,
                     'order': 0,
-                    'bd': 0,
+                    'bd': bd_opt,
                     'question_dm': ''
                 }
             }
@@ -4783,22 +4808,24 @@ function add_question($this){
         var type = parseInt($('.option_b .field_option').val());
         name_cuestion = $('.option_c .option_b').find(' .name_c').val();
         var val_a = 0;
-        var val_b = 1;
+        var val_b = 0.99;
 
         if(type == 0){
-            val_a = 1;
+            val_a = 0.99;
             val_b = 0;
         }
 
         question_json[id_cuest]['course.option'][1] = {
             'label': 'verdadero',
             'value': val_a,
-            'question_dm': id_cuest
+            'question_dm': id_cuest,
+            'bd': 0
         };
         question_json[id_cuest]['course.option'][2] = {
             'label': 'falso',
             'value': val_b,
-            'question_dm': id_cuest
+            'question_dm': id_cuest,
+            'bd': 0
         };
     }
 
@@ -4840,7 +4867,7 @@ function save_question($this){
             $option_.find('.field_').val(options[k]['label']);
             $option_.find('.id').val(k);
             if(count_option < 3)
-                $option_.find('.btn_delete').remove();
+                $option_.find('.btn_delete').css({'display':'none'});
             count_option++;
             click_check($option_.find('.multi_check'));
             $option_.find('.btn_delete').addClass('del_int');
@@ -4890,18 +4917,63 @@ function get_select(){
 }
 
 function delete_in_option(course_json_){
+    var course_tem = clone_json(course_json_);
+
     $.each(course_json_['course.module'], function(i){
+
         var ite = course_json_['course.module'][i]['course.test'];
+        var ite2 = course_json_['course.module'][i]['course.content'];
+
+        console.log(course_json_['course.module'][i]['bd']);
+
+        if(course_json_['course.module'][i]['bd'] == 0){;
+            course_tem['course.module']['n'+i] = clone_json(course_json_['course.module'][i]);
+            delete course_tem['course.module'][i];
+        }
+
         $.each(ite, function(i2){
+
+            if(ite[i2]['bd'] == 0){
+                course_tem['course.module']['n'+i]['course.test']['n'+i2] = clone_json(ite[i2]);
+                delete course_tem['course.module']['n'+i]['course.test'][i2];
+            }
+
             $.each(ite[i2]['course.question'], function(i3){
                 var ques = ite[i2]['course.question'][i3];
+
+                if(ite[i2]['course.question'][i3]['bd'] == 0){
+                    course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3] =
+                        clone_json(ques);
+                    delete course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question'][i3];
+                }
                 delete course_json['course.module'][i]['course.test'][i2]
-                    ['course.question'][i3]['bd'];
+                  ['course.question'][i3]['bd'];
                 $.each(ques['course.option'], function(i4){
+
+                    if(ques['course.option'][i4]['bd'] == 0){
+                        course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3]['course.option']['n'+i4] =
+                            clone_json(ques['course.option'][i4]);
+                        delete course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3]['course.option'][i4];
+                    }
                     delete course_json['course.module'][i]['course.test'][i2]
                         ['course.question'][i3]['course.option'][i4]['bd'];
                 });
             });
         });
-    })
+
+        $.each(ite2, function(i22){
+            if(ite2[i22]['bd'] == 0){
+                course_tem['course.module']['n'+i]['course.content']['n'+i22] = clone_json(ite2[i22]);
+                delete course_tem['course.module']['n'+i]['course.content'][i22];
+            }
+        });
+    });
+
+    console.log(course_tem);
+}
+
+function clone_json(json){
+
+   return JSON.parse(JSON.stringify(json));
+
 }
