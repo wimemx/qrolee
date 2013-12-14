@@ -9,10 +9,11 @@ from course import models
 from registry import models as registry, settings
 from account import models as account
 
-import pprint
+
 import json
 import simplejson
 import ast
+import math
 
 
 def get_courses(request, **kwargs):
@@ -360,21 +361,23 @@ def create_objects(data, model_name, id=None):
             else:
                 object = model.objects.create(**data_dict)'''
 
-            #inner_id = object.id
-            inner_id = 1
+            object = model.objects.create(**data_dict)
+            inner_id = object.id
+            #inner_id = 1
 
             for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
 
                 if len(parent_models_fields.split('.')) > 1:
                     create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
                 else:
-                    data_dict[parent_models_fields] = parent_models_values
+                    if parent_models_fields != 'bd':
+                        data_dict[parent_models_fields] = parent_models_values
             if id != -1:
                 for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-                    if '_dm' in parent_models_fields != None:
+                    if '_dm' in parent_models_fields is not None:
                         data_dict[parent_models_fields] = id
-
-        #model.objects.filter(id=inner_id).update(**data_dict)
+        print data_dict
+        model.objects.filter(id=inner_id).update(**data_dict)
     return 0
 
 
@@ -385,25 +388,28 @@ def grade_test(request):
     if int(request.POST.get('question_id')) != -1:
         questions = models.Question.objects.filter(
             id=int(request.POST.get('question_id')))
-
     correct = 0.0
     total = float(len(questions))
-    for answer in answers:
-        answer = int(answer)
-        if answer != -1:
-            option = models.Option.objects.get(
-                id=answer)
-            options = models.Option.objects.filter(
-                question_dm=option.question_dm).filter(
-                value__gt=0)
+    for a in answers:
+        for answer in a:
+            answer = int(answer)
+            print answer
+            if answer != -1:
+                option = models.Option.objects.get(
+                    id=answer)
+                options = models.Option.objects.filter(
+                    question_dm=option.question_dm).filter(
+                    value__gt=0)
 
-            if len(answers) > len(options):
-                correct = 0.0
-                break
-            correct += float(option.value)
+                if len(a) > len(options):
+                    correct = 0.0
+                    break
+                correct += float(option.value)
 
+    final_score = float(correct/total)*100.0
+    final_score = math.ceil(final_score)
     context = {
-        'response': float(correct/total)*100.0,
+        'response': final_score,
         'correct_set': 'correct_set'
     }
     context = json.dumps(context)

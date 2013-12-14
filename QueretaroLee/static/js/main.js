@@ -558,6 +558,7 @@ $(document).ready(function(){
         });
 
     $('.radio_btn').click(function(){
+        if ($(this).closest('ul').length != 1){
         $('.d-add_text_book').empty();
         $('.title_list').empty();
         $('.add_my_list').find('.d-item_book').fadeOut(250,function(){
@@ -579,6 +580,7 @@ $(document).ready(function(){
             $('.type_list').val('A');
             $('.title_list').append('Autores de tu lista');
             $('.d-add_text_book').append('+ Añadir un nuevo autor');
+        }
         }
     });
     $('.multi_select span').click(function(){
