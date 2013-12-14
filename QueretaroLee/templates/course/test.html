@@ -153,7 +153,9 @@
         $('.total').html($('#test .question').length);
         $('.curr').html(curr);
         var option_id = new Array();
+        var final_op = new Array();
         $('#next').click(function(e){
+            final_op.push(option_id);
             option_id = new Array();
             if (curr < total){
                 curr++;
@@ -165,6 +167,7 @@
 
         });
         $('#prev').click(function(){
+            final_op.push(option_id);
             option_id = new Array();
             if(curr != 0){
                 curr--;
@@ -179,13 +182,17 @@
             $('.question').each(function(){
                 //var option_set = new Array();
                 //var question_id = $(this).find('.question_id').val();
-                var option_id = $(this).find('.user_option').val();
+                //var option_id = $(this).find('.user_option').val();
+                //console.log(option_id);
                 //option_set.push(question_id);
                 //option_set.push(option_id);
-                answers.push(option_id);
+                //answers.push(option_id);
             });
+            if(curr == total)
+                final_op.push(option_id);
             var test_id = $('input.id').val();
-            var result = grade_test(answers, test_id);
+
+            var result = grade_test(final_op, test_id);
             $('.title.result').html(result.response+'%');
             if(result.response >= 90){
 
@@ -204,7 +211,7 @@
 
         $('.radio_btn').click(function(){
             var op_id = $(this).parent().find('.option-id').val();
-
+            console.log(op_id);
             if($(this).closest('li').hasClass('selected')){
                 option_id.push(op_id);
             }else{
@@ -213,6 +220,7 @@
                         option_id.splice(i, 1);
                 }
             }
+            console.log(option_id);
         });
         var correct_counter = 0;
         $('#next_').click(function(){
@@ -224,7 +232,7 @@
             $(this).closest('.option-set').closest('.question').find('.user_option').val(option_id);
             var test_id = $('input.id').val();
             var question_id = $('.question:eq('+(curr-1)+')').find('.question_id').val();
-            var result = grade_test(option_id, test_id, question_id);
+            var result = grade_test([option_id], test_id, question_id);
             if (result.response >= 99){
                 $('.correct-wrap').find('.answer:eq('+correct_counter+') img').css({
                     'left': -30
