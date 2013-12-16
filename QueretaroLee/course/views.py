@@ -52,11 +52,17 @@ def get_course(request, **kwargs):
     my_rate = account.Rate.objects.filter(
         user=user, element_id=courser.id, type='C')
 
+    course_owner = 0
+
     if courser.type == 'U':
         by = user.first_name
+        user = registry.User.objects.get(id=courser.type_pk)
+        course_owner = user.id
+
     else:
         entity = registry.Entity.objects.get(id=courser.type_pk)
         by = entity.name
+        course_owner = entity.user.id
 
     owner = False
     if courser.type == 'U' and courser.type_pk == request.user.id:
@@ -107,7 +113,8 @@ def get_course(request, **kwargs):
         'by': by,
         'list_modules': list_content,
         'owner': owner,
-        'site_url': settings.SITE_URL
+        'site_url': settings.SITE_URL,
+        'course_owner': course_owner
     }
 
     return render(request, template, context)
@@ -118,7 +125,7 @@ def get_test(request, **kwargs):
     id_course = kwargs['id_test']
     user = request.user
     courser = models.Test.objects.get(id=id_course, status=True)
-    courses = models.Module.objects.filter(status=True)
+    courses = models.Course.objects.filter(status=True)
     modules = models.Module.objects.filter(course_dm=courser, status=True).order_by('order')
     owner = False
 

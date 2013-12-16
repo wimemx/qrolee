@@ -354,6 +354,19 @@ function valid_course($form){
     return form;
 }
 
+function valid_content(){
+    var ok = true;
+    var text = $('.create_content .textarea_page').val();
+    var name = $('.create_content .name').val();
+    $('.create_content .name').css({'border':'1px solid #e4e4e4'});
+
+    if(text.length == 0 || name.length == 0){
+        $('.create_content .name').css({'border':'1px solid rgb(248, 152, 131)'});
+        ok = false;
+    }
+    return ok;
+}
+
 function valid_module($this){
 
     var ok = true;
