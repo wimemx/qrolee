@@ -8,6 +8,7 @@ var course_json = {
     'name': 'example',
     'description': 'text',
     'type_pk': 1,
+    'bd': 0,
     'type': 'E',
     'category': 1,
     'course.module': {}
@@ -4573,11 +4574,10 @@ function add_test($item){
         if(valid_test()){
 
             var item_test = item.find('.test .test_one').clone();
-            var bd_test = 0;
+
             if($('.create_test ').hasClass('edit_')){
                 item_test = $item.parent();
-                if($item.parent().find('.btn_delete').hasClass('del_int'))
-                    bd_test = 1;
+
             }
 
             var type_test = parseInt($('.type_test .field_option').val());
@@ -4597,15 +4597,26 @@ function add_test($item){
             }
             var id = parseInt(item.find('input').val());
 
-            course_json['course.module'][id]['course.test'][count_test] = {
-                'name': name,
-                'type': type_test,
-                'number_correct': count,
-                'module_dm': '',
-                'description': '',
-                'bd': bd_test,
-                'course.question': question_json
-            };
+            if(count_test in course_json['course.module'][id]['course.test']){
+                course_json['course.module'][id]['course.test'][count_test]['name'] = name;
+                course_json['course.module'][id]['course.test'][count_test]['type'] = type_test;
+                course_json['course.module'][id]['course.test'][count_test]['number_correct'] = count;
+                course_json['course.module'][id]['course.test'][count_test]['description'] =  '';
+                course_json['course.module'][id]['course.test'][count_test]['course.question'] = question_json;
+
+            }else{
+                course_json['course.module'][id]['course.test'][count_test] = {
+                    'name': name,
+                    'type': type_test,
+                    'number_correct': count,
+                    'module_dm': '',
+                    'description': '',
+                    'bd': 0,
+                    'course.question': question_json
+                };
+            }
+
+
             item_test.find('.btn_delete').click(function(){
                 del_item($(this), 'course.test');
             });
@@ -4740,13 +4751,10 @@ function add_question($this){
     var name_cuestion;
     var id_cuest = parseInt($('.container_cuestion .item_cuestion').last().find('.id').val()) + 1;
     var $item = $('.container_cuestion .cuestion-one').clone();
-    var bd_cuest = 0;
 
     if($('.option_c').hasClass('edit_')){
         id_cuest = parseInt($this.find('.id').val())
         $item = $this;
-        if($item.find('.btn_delete').hasClass('del_int'))
-            bd_cuest = 1;
     }else{
         $item.removeClass('cuestion-one');
         $item.find('.id').val(id_cuest);
@@ -4758,14 +4766,24 @@ function add_question($this){
     else
         name_cuestion = $('.option_c .option_b').find(' .name_c').val();
 
-    question_json[id_cuest] = {
-        'title': name_cuestion,
-        'type': type_cuestion,
-        'test_dm': '',
-        'order': 0,
-        'bd': bd_cuest,
-        'course.option': {}
-    };
+    if(id_cuest in question_json){
+
+        question_json[id_cuest]['title'] = name_cuestion;
+        question_json[id_cuest]['type'] = type_cuestion;
+        question_json[id_cuest]['order'] = 0;
+
+    }else{
+
+        question_json[id_cuest] = {
+            'title': name_cuestion,
+            'type': type_cuestion,
+            'test_dm': '',
+            'order': 0,
+            'bd': 0,
+            'course.option': {}
+        };
+    }
+
 
     if(type_cuestion == 0){
         var count_correct = 0;
@@ -4789,20 +4807,26 @@ function add_question($this){
             if(!$(this).hasClass('answer-one') && name.length != 0){
                 var id = parseInt($(this).find('.id').val());
                 var value = 0.0;
-                var bd_opt = 0;
 
                 if($(this).find('.multi_check').hasClass('active'))
                     value = avg;
-                if($(this).find('.btn_delete').hasClass())
-                    bd_opt= 1;
 
-                question_json[id_cuest]['course.option'][id] = {
-                    'label': name,
-                    'value': value,
-                    'order': 0,
-                    'bd': bd_opt,
-                    'question_dm': ''
+                if(id in question_json[id_cuest]['course.option']){
+
+                    question_json[id_cuest]['course.option'][id]['label'] = name;
+                    question_json[id_cuest]['course.option'][id]['value'] = value;
+                    question_json[id_cuest]['course.option'][id]['order'] = 0;
+
+                }else{
+                    question_json[id_cuest]['course.option'][id] = {
+                        'label': name,
+                        'value': value,
+                        'order': 0,
+                        'bd': 0,
+                        'question_dm': ''
+                    }
                 }
+
             }
         });
     }else{
@@ -4817,18 +4841,37 @@ function add_question($this){
             val_b = 0;
         }
 
-        question_json[id_cuest]['course.option'][1] = {
-            'label': 'verdadero',
-            'value': val_a,
-            'question_dm': id_cuest,
-            'bd': 0
-        };
-        question_json[id_cuest]['course.option'][2] = {
-            'label': 'falso',
-            'value': val_b,
-            'question_dm': id_cuest,
-            'bd': 0
-        };
+        if(1 in question_json[id_cuest]['course.option']){
+
+            question_json[id_cuest]['course.option'][1]['label'] = 'verdadero';
+            question_json[id_cuest]['course.option'][1]['value'] = val_a;
+            question_json[id_cuest]['course.option'][1]['order'] = 0;
+
+        }else{
+            question_json[id_cuest]['course.option'][1] = {
+                'label': 'verdadero',
+                'value': val_a,
+                'order': 0,
+                'bd': 0,
+                'question_dm': ''
+            }
+        }
+
+        if(2 in question_json[id_cuest]['course.option']){
+
+            question_json[id_cuest]['course.option'][2]['label'] = 'falso';
+            question_json[id_cuest]['course.option'][2]['value'] = val_b;
+            question_json[id_cuest]['course.option'][2]['order'] = 0;
+
+        }else{
+            question_json[id_cuest]['course.option'][2] = {
+                'label': 'falso',
+                'value': val_b,
+                'order': 0,
+                'bd': 0,
+                'question_dm': ''
+            }
+        }
     }
 
     $item.find('.title').text(name_cuestion);
@@ -4916,66 +4959,4 @@ function get_select(){
         if($('.sel_val input').val() == nam_class[0])
             selected = $(this);
     });
-}
-
-function delete_in_option(course_json_){
-    var course_tem = clone_json(course_json_);
-
-    $.each(course_json_['course.module'], function(i){
-
-        var ite = course_json_['course.module'][i]['course.test'];
-        var ite2 = course_json_['course.module'][i]['course.content'];
-
-        console.log(course_json_['course.module'][i]['bd']);
-
-        if(course_json_['course.module'][i]['bd'] == 0){;
-            course_tem['course.module']['n'+i] = clone_json(course_json_['course.module'][i]);
-            delete course_tem['course.module'][i];
-        }
-
-        $.each(ite, function(i2){
-
-            if(ite[i2]['bd'] == 0){
-                course_tem['course.module']['n'+i]['course.test']['n'+i2] = clone_json(ite[i2]);
-                delete course_tem['course.module']['n'+i]['course.test'][i2];
-            }
-
-            $.each(ite[i2]['course.question'], function(i3){
-                var ques = ite[i2]['course.question'][i3];
-
-                if(ite[i2]['course.question'][i3]['bd'] == 0){
-                    course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3] =
-                        clone_json(ques);
-                    delete course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question'][i3];
-                }
-                delete course_json['course.module'][i]['course.test'][i2]
-                  ['course.question'][i3]['bd'];
-                $.each(ques['course.option'], function(i4){
-
-                    if(ques['course.option'][i4]['bd'] == 0){
-                        course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3]['course.option']['n'+i4] =
-                            clone_json(ques['course.option'][i4]);
-                        delete course_tem['course.module']['n'+i]['course.test']['n'+i2]['course.question']['n'+i3]['course.option'][i4];
-                    }
-                    delete course_json['course.module'][i]['course.test'][i2]
-                        ['course.question'][i3]['course.option'][i4]['bd'];
-                });
-            });
-        });
-
-        $.each(ite2, function(i22){
-            if(ite2[i22]['bd'] == 0){
-                course_tem['course.module']['n'+i]['course.content']['n'+i22] = clone_json(ite2[i22]);
-                delete course_tem['course.module']['n'+i]['course.content'][i22];
-            }
-        });
-    });
-
-    console.log(course_tem);
-}
-
-function clone_json(json){
-
-   return JSON.parse(JSON.stringify(json));
-
 }

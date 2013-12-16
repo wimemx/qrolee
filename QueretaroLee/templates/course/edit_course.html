@@ -563,7 +563,7 @@
                             course_json['course.module'][id]['course.test'][id_] = {
                                 'name': name,
                                 'type': 0,
-                                'count': 0,
+                                'number_correct': 0,
                                 'bd': 1,
                                 'course.question': {}
                             };
@@ -605,18 +605,19 @@
                 var name = $(this).find('input[name=name]').val();
                 var desc = $(this).find('textarea[name=Description]').val();
                 course_json['name'] = name;
+                course_json['bd'] = 1;
                 course_json['description'] = desc;
                 var id_c = parseInt($('.id_course').val());
 
                 get_select();
                 //delete_in_option(course_json);
-                console.log(course_json);
 
                  var course_data = {
                     'course.course': {
-                        1: course_json
                     }
                 }
+                course_data['course.course'][id_c] =  course_json;
+                console.log(course_data);
 
                 if(valid_course($(this))){
 
@@ -630,7 +631,7 @@
                         dataType: 'json'
                     }).done(function(data) {
 
-                        //window.location.href = '/courses/course/' + data.id;
+                        window.location.href = '/courses/course/' + id_c;
 
                             });
                 }
