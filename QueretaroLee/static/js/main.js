@@ -8,6 +8,7 @@ var course_json = {
     'name': 'example',
     'description': 'text',
     'type_pk': 1,
+    'bd': 0,
     'type': 'E',
     'category': 1,
     'course.module': {}

@@ -311,10 +311,8 @@ def register_course(request, **kwargs):
 
 
 def create_object(request):
-
     data = request.POST.get('data')
     data = ast.literal_eval(data)
-    #pprint.pprint(data)
     create_objects(
         data=data['course.course'], model_name='course.course')
 
@@ -336,48 +334,41 @@ def create_object(request):
 
 def create_objects(data, model_name, id=None):
     # Get the number of parent models to create
+    for num_parent_models in data:
 
-    for top_level in data:
-        for num_parent_models in top_level:
-            app = model_name.split('.')
-            app_label = app[0]
-            app_model_name = app[1]
-            model = get_model(app_label, app_model_name)
-            data_dict = dict()
 
-            #print top_level
-            print '------------'
-            print model
+        app = model_name.split('.')
+        app_label = app[0]
+        app_model_name = app[1]
+        model = get_model(app_label, app_model_name)
+        data_dict = dict()
 
-            #obj_exist = model.objects.filter(id=top_level)
+        for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
 
-            for objs in data[num_parent_models]:
-                print objs
-
-            print '------------'
-
-            '''if obj_exist:
-                object = obj_exist[0]
-            else:
-                object = model.objects.create(**data_dict)'''
-
-            object = model.objects.create(**data_dict)
-            inner_id = object.id
-            #inner_id = 1
-
-            for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-
-                if len(parent_models_fields.split('.')) > 1:
-                    create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
+            if parent_models_fields == 'bd':
+                if parent_models_values == 1:
+                    obj_exist = model.objects.filter(id=num_parent_models)
+                    object = obj_exist[0]
                 else:
-                    if parent_models_fields != 'bd':
-                        data_dict[parent_models_fields] = parent_models_values
-            if id != -1:
-                for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-                    if '_dm' in parent_models_fields is not None:
-                        data_dict[parent_models_fields] = id
-        print data_dict
+                    object = model.objects.create(**data_dict)
+
+        inner_id = object.id
+
+        for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+
+
+            if len(parent_models_fields.split('.')) > 1:
+                create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
+            else:
+                if parent_models_fields != 'bd':
+                    data_dict[parent_models_fields] = parent_models_values
+        if id != -1:
+            for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
+                if '_dm' in parent_models_fields is not None:
+                    data_dict[parent_models_fields] = id
+
         model.objects.filter(id=inner_id).update(**data_dict)
+
     return 0
 
 
