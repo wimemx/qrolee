@@ -329,7 +329,7 @@
                 </span>
                 <span class="grid-3 no-margin fright">
                     <input id="submit" class="accept fright" value="Guardar" type="submit">
-                    <span class="remove fright">Cancelar</span>
+                    <a href="/courses/" class="remove fright">Cancelar</a>
                 </span>
            </form>
             <div class="line_divide fleft"></div>
@@ -403,8 +403,6 @@
                 course_json['name'] = name;
                 course_json['description'] = desc;
                 get_select();
-                //delete_in_option(course_json);
-                console.log(course_json);
 
                 var course_data = {
                     'course.course': {

@@ -247,6 +247,7 @@ $(document).ready(function(){
         var $this = $(this);
 
         $('.published').fadeIn(300);
+        $('.published .p_text_mini').text($('.view_courser .container_text .title').text() + ' se mostrará públicamente');
         $('.published .dialog_btn_cancel, .dialog_closet').click(function(){
             $('.published').fadeOut(300);
         });
@@ -4479,7 +4480,7 @@ function add_content($item){
         if (tinyMCE) tinyMCE.triggerSave();
         var text = $('.create_content .textarea_page').val();
         var name = $('.create_content .name').val();
-        if(text.length != 0 && name.length != 0){
+        if(valid_content()){
             item_content.removeClass('item_one');
             item_content.fadeIn(200);
             item_content.find('.title').html(name);
