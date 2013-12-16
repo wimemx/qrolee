@@ -342,16 +342,17 @@ def create_objects(data, model_name, id=None):
         app_model_name = app[1]
         model = get_model(app_label, app_model_name)
         data_dict = dict()
+        object = None
 
         for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
-
+            print parent_models_fields
             if parent_models_fields == 'bd':
                 if parent_models_values == 1:
                     obj_exist = model.objects.filter(id=num_parent_models)
                     object = obj_exist[0]
                 else:
                     object = model.objects.create(**data_dict)
-
+        print object
         inner_id = object.id
 
         for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
