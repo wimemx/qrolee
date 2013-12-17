@@ -875,3 +875,13 @@ div .place_pink{
 .grade-type{
     margin-right: 20px !important;
 }
+
+.container_course .subtitle{
+    border:none !important;
+}
+    .container_course .module_act{
+        border: 1px solid #c4c4c4 !important;
+        border-bottom: none !important;
+        float: left;
+        width: 100%;
+    }
