@@ -370,7 +370,6 @@ def create_objects(data, model_name, id=None):
 
         for parent_models_fields, parent_models_values in data[num_parent_models].iteritems():
 
-
             if len(parent_models_fields.split('.')) > 1:
                 create_objects(data=parent_models_values, model_name=parent_models_fields, id=inner_id)
             else:
@@ -520,13 +519,12 @@ def update_function(request):
         field: value
     }
 
-    if(field == 'status'):
+    if field == 'status':
         result = model.objects.get(pk=request.POST.get('id'))
-        result.status = 0;
+        result.status = 0
         result.save()
     else:
         result = model.objects.filter(pk=request.POST.get('id')).update(**update_dict)
-
 
     if result > 0:
         success = ':)'

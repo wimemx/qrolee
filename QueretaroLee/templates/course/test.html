@@ -33,7 +33,7 @@
 
     <div class="grid-16 courses test view">
         <div class="grid-15 load-margin">
-        <div style="border-right: 1px solid #c4c4c4;" class="grid-3 fleft no-margin">
+        <div class="grid-3 fleft no-margin">
             <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
             <div class="container_course grid-3 fleft no-margin">
                     <a  class="item "style="border-bottom: 0px;">
@@ -55,13 +55,13 @@
                     {% endfor %}
             </div>
         </div>
-            <div class="grid-11 fleft no-margin view_courser">
-                <div style="border: none;" class="container_text">
+            <div class="grid-12 fleft no-margin view_courser">
+                <div class="container_text">
                     <span class="grid-8 no-margin">
                         <input type="hidden" class="id" value="{{ course.id }}"/>
                         <span class="title test">Prueba: {{ course.name }}</span>
                     </span>
-                    <span class="grid-3 no-margin fright">
+                    <span class="grid-3 no-margin grade-type fright">
                         {% if course.type == 0 %}
                             <span class="gray_text options-counter fright"><span class="curr">3</span>/<span class="total">3</span></span>
                             <p class="gray_text fright">pregunta</p>
@@ -78,7 +78,7 @@
                     <span class="start-test">
 
                     </span>
-                    <div id="test" class="grid-9 center">
+                    <div id="test" class="grid-9">
                         {% for question, value in questions.iteritems  %}
                             <span class="fleft question">
                             <input type="hidden" value="-1" class="user_option"/>
@@ -144,7 +144,7 @@
             var nowrap = 0;
         {% endif %}
         $('#test').cycle({
-            fx: 'scrollHorz',
+            fx: 'fade',
             timeout: 0,
             next:   '#next',
             prev:   '#prev',
@@ -152,7 +152,7 @@
             onPrevNextEvent: function(isNext, zeroBasedSlideIndex, slideElement) {
                 if(zeroBasedSlideIndex == 0){
                     $('#test li').each(function(){
-                        $(this).find('img').attr('src', '/static/img/radioOff.png');
+                        //$(this).find('img').attr('src', '/static/img/radioOff.png');
                     });
                 }
             }
@@ -182,12 +182,13 @@
                 curr--;
                 $('.curr').html(curr);
                 if(curr != total)
-                    $('.accept').remove();
+                    $('.accept').fadeOut();
             }
         });
 
         $('.accept').click(function(){
             $('#next,#prev').remove();
+            $(this).remove();
             var answers = new Array();
             $('.question').each(function(){
                 //var option_set = new Array();
@@ -255,7 +256,9 @@
                         $('.finish .caption').html('Haz finalizado la prueba.');
                         $('.title.result').html('');
                         $('.finish p:eq(1)').html('Haz cumplido con los requisitos para aprobar la prueba, <br> Te invitamos a explorar las distintas pruebas.');
-                        $('.finish').fadeIn(300);
+                        $('.finish').fadeIn(300, function(){
+                            $('.error').remove();
+                        });
                     });
             }else{
                 $('.error').fadeIn(300);
