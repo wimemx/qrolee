@@ -127,6 +127,8 @@ def get_test(request, **kwargs):
     courser = models.Test.objects.get(id=id_course, status=True)
     courses = models.Course.objects.filter(status=True)
     modules = models.Module.objects.filter(course_dm=courser, status=True).order_by('order')
+    content = models.Content.objects.filter(module_dm=courser.module_dm)
+    test = models.Test.objects.filter(module_dm=courser.module_dm)
     owner = False
 
     list_content = list()
@@ -157,7 +159,9 @@ def get_test(request, **kwargs):
         'list_modules': list_content,
         'owner': owner,
         'site_url': settings.SITE_URL,
-        'questions': questions_dict
+        'questions': questions_dict,
+        'content': content,
+        'test': test
     }
     return render(request, template, context)
 
@@ -211,6 +215,7 @@ def get_content(request, **kwargs):
     template = kwargs['template_name']
     content = models.Content.objects.get(id=kwargs['id_content'])
     contents = models.Content.objects.filter(module_dm=content.module_dm)
+    test = models.Test.objects.filter(module_dm=content.module_dm)
 
     if content.module_dm.course_dm.type == 'E':
         entity = registry.Entity.objects.get(
@@ -232,7 +237,8 @@ def get_content(request, **kwargs):
     context = {
         'content': content,
         'contents': contents,
-        'discussions': discussions
+        'discussions': discussions,
+        'test': test
     }
 
     return render(request, template, context)

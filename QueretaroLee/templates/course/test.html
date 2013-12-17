@@ -36,12 +36,21 @@
         <div style="border-right: 1px solid #c4c4c4;" class="grid-3 fleft no-margin">
             <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
             <div class="container_course grid-3 fleft no-margin">
-                    {% for obj in courses %}
-                         <a href="/courses/course/{{ obj.id }}"  class="item {% if obj.id == course.id %} sele {% endif %}"
-                             {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
-                            <div class="container_item">
-                                <span class="title fleft">{{ obj.name }}</span>
-                            </div>
+                    <a  class="item "style="border-bottom: 0px;">
+                        <div class="container_item">
+                            <span class="title fleft">{{ course.modulo_dm.name }}</span>
+                        </div>
+                    </a>
+                    {% for obj in content %}
+                        <a href="/courses/content/{{ obj.id }}" class="module_act module">
+                            <img src="/static/img/theme.png">
+                            <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
+                        </a>
+                    {% endfor %}
+                    {% for obj in test %}
+                        <a href="/courses/test/{{ obj.id }}" class="module_act module {% if obj.id == course.id %} sele{% endif %}">
+                            <img src="/static/img/star_test.png">
+                            <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
                         </a>
                     {% endfor %}
             </div>

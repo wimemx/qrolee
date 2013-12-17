@@ -12,7 +12,6 @@
     min-height: 640px;
     background: #fffcf5;
     display: block;
-    padding-bottom: 80px;
 }
 
 .courses .container_text{
@@ -509,8 +508,23 @@ ul.child li{
     padding-top: 5px;
 }
 
-.create_content .grid-14, .create_test .grid-14{
-    padding: 40px 50px;
+.create_content .grid-15, .create_test .grid-15{
+    padding: 40px 40px 40px 40px;
+    background: #fffcf5;
+    display: block;
+    min-height: 640px;
+    margin: 0px;
+}
+.create_content{
+    margin: 26px 10px 30px 10px;
+    display: block
+}
+
+.create_content p{
+    color: #222222;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Raleway';
 }
 
 .form_edit{

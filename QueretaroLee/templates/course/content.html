@@ -43,6 +43,12 @@
                 <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
             </a>
         {% endfor %}
+        {% for obj in test %}
+            <a href="/courses/test/{{ obj.id }}" class="module_act module">
+                <img src="/static/img/star_test.png">
+                <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
+            </a>
+        {% endfor %}
         </div>
         <div class="grid-12 no-margin view_courser">
             <div class="container_text">
