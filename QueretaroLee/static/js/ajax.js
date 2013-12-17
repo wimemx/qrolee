@@ -543,6 +543,7 @@ $(document).ready(function(){
 
 
     });
+
     $('.sortable li, .sortable .grid-7').mouseup(function(){
         $(this).removeClass('closeHand');
         $(this).addClass('openHand');
@@ -586,6 +587,7 @@ $(document).ready(function(){
 
     });
     $( "ul, li" ).disableSelection();
+
     $('.container_course .remove').click(function(){
         eliminateCourse($(this).closest('.item').attr('id'), 'course.course');
     });

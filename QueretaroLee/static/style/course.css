@@ -728,7 +728,7 @@ ul.child li{
 
 #test .option-set li{
     float: left;
-    width: 50%;
+    width: 100%;
 }
     #test .option-set li .text_rad{
         margin-top: 0px;

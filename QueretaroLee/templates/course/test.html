@@ -173,12 +173,13 @@
                 curr--;
                 $('.curr').html(curr);
                 if(curr != total)
-                    $('.accept').remove();
+                    $('.accept').fadeOut();
             }
         });
 
         $('.accept').click(function(){
             $('#next,#prev').remove();
+            $(this).remove();
             var answers = new Array();
             $('.question').each(function(){
                 //var option_set = new Array();
