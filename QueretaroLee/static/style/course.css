@@ -209,12 +209,16 @@
     font-size: 16px;
 }
 
+
+
 .module .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     padding: 5px 10px;
     font-family: 'Conv_fontscore.com_d-dinproregular';
     border-bottom: 1px solid #c4c4c4;
     float: right;
+    color: #777;
+
 }
 
 .module_act .subtitle{
@@ -240,6 +244,7 @@
 }
 .module p{
     margin-left: 20px;
+    color: #777;
 }
 .module .grid-7{
     transition: all ease-in 0.3s;
@@ -706,6 +711,9 @@ ul.child li{
 
 .test .subtitle{
     border-top: 1px solid #c4c4c4 !important;
+    border-bottom: none;
+    font-family: 'Raleway';
+    color: #000;
 }
 
 .test-wrap{
@@ -805,4 +813,9 @@ ul.child li{
 
 .create_content .container_btn{
     margin-top: 20px!important;
+}
+
+div .place_pink{
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+    font-size: 12px !important;
 }
