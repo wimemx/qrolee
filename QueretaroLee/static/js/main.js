@@ -4311,6 +4311,7 @@ function create_module($this){
         add_test($(this));
     });
     fade_out();
+    load_drop();
 }
 
 function show_type_message(type){

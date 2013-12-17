@@ -55,6 +55,7 @@ class Test(models.Model):
     description = models.TextField(max_length=2000, null=True)
     status = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(max_length=5, default=0)
     meta = models.CharField(max_length=255, null=True)
     number_correct = models.IntegerField(blank=True, null=True)
     type = models.BooleanField(default=False)

@@ -172,7 +172,10 @@
                             </li>
                         {% endfor %}
                         </ul>
+                        <ul style="width: 400px;" class="{% if owner %}sortable{% endif %} child fright">
+                        <input type="hidden" class="model_name" value="course.test"/>
                         {% for obj in value.test %}
+                            <li id="{{ obj.id }}" class="fleft">
                             <span class="test" class="fright no-margin">
                             <a href="/courses/test/{{ obj.id }}" class="fright">
                                 <span class="grid-7 no-margin fright">
@@ -183,7 +186,9 @@
                                 </span>
                             </a>
                             </span>
+                            </li>
                         {% endfor %}
+                        </ul>
                     </li>
                 {% endfor %}
                 </ul>

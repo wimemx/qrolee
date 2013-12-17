@@ -333,12 +333,13 @@
                 </span>
            </form>
             <div class="line_divide fleft"></div>
-            <div class="seccion">
+            <ul class="fleft seccion sortable parent">
+                <input type="hidden" class="model_name" value="course.module"/>
                 <span class="title">
                     Sección de Módulos
                 </span>
                 <span class="brown_btn fright create_mod">Crear nuevo módulo</span>
-                <div class="item-mod one" style="display: none;">
+                <li id="" class="item-mod one ui-state-default" style="display: none;border: none;border-bottom: 1px solid #c4c4c4;" >
                     <input type="hidden" class="id_modl" value="0" />
                     <div class="grid-7 no-margin part_l">
                         <span class="title grid-6 no-margin"></span>
@@ -389,8 +390,8 @@
                             </span>
                         </span>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
     <script type="text/javascript">
