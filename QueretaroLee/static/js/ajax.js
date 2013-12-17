@@ -543,49 +543,9 @@ $(document).ready(function(){
 
 
     });
-    $('.sortable li, .sortable .grid-7').mouseup(function(){
-        $(this).removeClass('closeHand');
-        $(this).addClass('openHand');
-    }).mousedown(function(){
-        $(this).removeClass('openHand');
-        $(this).addClass('closeHand');
-        });
-    $('.sortable li, .sortable .grid-7').mouseover(function(){
-        $(this).addClass('activeHover');
-        $(this).parent().find('li').each(function(){
-                if(!$(this).hasClass('activeHover'))
-                    $(this).addClass('nonActive');
-            });
-    }).mouseout(function(){
-        $(this).removeClass('activeHover');
-            $(this).parent().find('li').each(function(){
-                    $(this).removeClass('nonActive');
-            });
-        });
-    $( ".sortable" ).sortable({
-        revert: true,
-        update: function(e, ui) {
-            var position = new Array();
-            var model_name = $(this).find('.model_name:eq(0)').val();
 
-            if($(this).hasClass('child')){
-                var model_name = $(this).find('.model_name').val();
-                $(this).find('li').each(function(){
-                    position.push(parseInt($(this).attr('id')));
-                });
-            }else{
-                $(this).find('li').each(function(){
-                    if($(this).parent().hasClass('parent'))
-                        position.push(parseInt($(this).attr('id')));
-                });
-            }
+    load_drop();
 
-
-            update_position(position, model_name);
-        }
-
-    });
-    $( "ul, li" ).disableSelection();
     $('.container_course .remove').click(function(){
         eliminateCourse($(this).closest('.item').attr('id'), 'course.course');
     });
@@ -2666,3 +2626,50 @@ $(document).click(function(){
     combo_act = false;
 
 });
+
+function load_drop(){
+    console.log(88);
+    $('.sortable li, .sortable .grid-7').mouseup(function(){
+        $(this).removeClass('closeHand');
+        $(this).addClass('openHand');
+    }).mousedown(function(){
+        $(this).removeClass('openHand');
+        $(this).addClass('closeHand');
+        });
+    $('.sortable li, .sortable .grid-7').mouseover(function(){
+        $(this).addClass('activeHover');
+        $(this).parent().find('li').each(function(){
+                if(!$(this).hasClass('activeHover'))
+                    $(this).addClass('nonActive');
+            });
+    }).mouseout(function(){
+        $(this).removeClass('activeHover');
+            $(this).parent().find('li').each(function(){
+                    $(this).removeClass('nonActive');
+            });
+        });
+    $( ".sortable" ).sortable({
+        revert: true,
+        update: function(e, ui) {
+            var position = new Array();
+            var model_name = $(this).find('.model_name:eq(0)').val();
+
+            if($(this).hasClass('child')){
+                var model_name = $(this).find('.model_name').val();
+                $(this).find('li').each(function(){
+                    position.push(parseInt($(this).attr('id')));
+                });
+            }else{
+                $(this).find('li').each(function(){
+                    if($(this).parent().hasClass('parent'))
+                        position.push(parseInt($(this).attr('id')));
+                });
+            }
+
+
+            update_position(position, model_name);
+        }
+
+    });
+    $( "ul, li" ).disableSelection();
+}

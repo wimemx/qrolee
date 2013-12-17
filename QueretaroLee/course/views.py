@@ -94,7 +94,7 @@ def get_course(request, **kwargs):
     list_content = list()
     for obj in modules:
         content = models.Content.objects.filter(module_dm=obj, status=True).order_by('order')
-        test = models.Test.objects.filter(module_dm=obj)
+        test = models.Test.objects.filter(module_dm=obj).order_by('order')
         value = {
             'module': obj,
             'content': content,
