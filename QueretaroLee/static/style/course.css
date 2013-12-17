@@ -93,7 +93,6 @@
     float: left;
     height: auto;
     transition: all ease-in 0.3s;
-    padding-bottom: 25px;
 }
     .container_course .item .remove{
         position: relative;
@@ -120,7 +119,7 @@
     float: left;
 }
 .container_item .title{
-    font-size: 16px;
+    font-size: 12px;
 }
 .container_item p{
     font-size: 11px;
@@ -128,10 +127,11 @@
 }
 .courses .brown_btn{
     width: 100%;
-    text-align: center;
+    text-align: left;
     padding-left:0px;
     padding-right:0px;
     position: relative;
+    text-indent: 15px;
 }
 .container_course .number span{
     padding: 0px 3px;
@@ -156,7 +156,7 @@
 }
 
 .view .container_item{
-    padding: 5px 15px;
+    padding: 5px 15px 5px 15px;
     margin-top: 0px!important;
     margin-left: 0px;
 }
@@ -183,7 +183,7 @@
 }
 .view .by{
     margin-left: 25px;
-    font-size:  14px;
+    font-size:  13px;
     font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 .view .by span{
@@ -196,6 +196,7 @@
 
 .view_courser .container_text{
     border-left:  1px solid #C4C4C4;
+    padding-bottom: 20px;
 }
 .module{
     border: 1px solid #c4c4c4;
@@ -213,7 +214,7 @@
 
 .module .subtitle {
     font-size: 13px;
-    padding: 5px 10px;
+    padding: 7px 10px;
     font-family: 'Conv_fontscore.com_d-dinproregular';
     border-bottom: 1px solid #c4c4c4;
     float: right;
@@ -484,9 +485,13 @@ ul.child li{
     display: block;
     float: left;;
 }
-.container_text .edit_{
+div .container_text .edit_{
     margin-top: 0px;
     margin-left: 0px;
+    font-family: 'Raleway';
+    font-size: 12px;
+    line-height: 19px !important;
+    height: 19px !important;
 }
 .btn_form .brown_btn ,.container_text .edit_{
     padding: 4px 9px 4px 9px !important;
@@ -500,14 +505,15 @@ ul.child li{
 }
 .green_btn_light{
     cursor: pointer;
-    padding: 4px 9px 4px 9px !important;
-    line-height: 17px !important;
+    padding: 0px 9px !important;
+    line-height: 19px !important;
     color: #000;
-    font-size: 13px;
+    font-size: 12px;
     margin-right: 15px;
     background: #60967E !important;
     border: 1px solid #326F53 !important;
     font-weight: 500;
+    font-family: 'Raleway';
 }
 
 .span_{
@@ -718,19 +724,22 @@ ul.child li{
 
 .test-wrap{
     width: 100%;
-    height: 350px;
     border: 1px solid #c4c4c4;
     border-right: none;
     position: relative;
+    padding-bottom: 30px;
 }
 #test{
-    height: 100%;
+    display: block;
+    overflow: visible;
+    float: left;
+    margin:0px 0px 0px 25px;
 }
 #test .finish{
     width: 100% !important;
 }
 #test .option-set{
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
 }
 
@@ -740,6 +749,12 @@ ul.child li{
 }
     #test .option-set li .text_rad{
         margin-top: 0px;
+        font-size: 12px;
+        font-family: 'Conv_fontscore.com_d-dinproregular';
+        text-transform: capitalize;
+    }
+    #test .title{
+        font-size: 14px;
     }
 .finish{
     width: 100%;
@@ -748,52 +763,65 @@ ul.child li{
 }
 .view_courser .container_text .test{
     margin-top: 10px;
-}
-.view_courser .container_text  span.options-counter{
     font-size: 18px;
+}
+.view_courser .container_text span.options-counter{
+    font-size: 15px;
     font-weight: 400;
-    margin-top: 10px !important;
-    margin-right: 30px !important;
+    margin-top: 13px !important;
+    margin-right: 0px !important;
+    color: #777;
+}
+.curr{
+    font-size: 14px !important;
+}
+.total{
+
 }
 .curr,.total{
     font-size: inherit;
     font-weight: inherit;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
 .view_courser .container_text .gray_text{
     margin: 15px 5px 0px 0px !important;
 }
 .controller{
-    width: 50px;
+    width: 53px;
     height: 25px;
     position: absolute;
-    right: 0px;
+    right: 20px;
     top: 20px;
     z-index: 99999;
 }
 #next, #prev,#next_, #prev_{
-    width: 20px;
-    height: 100%;
+    width: 22px;
+    height: 22px;
     cursor: pointer;
     background-position: center !important;
 }
 
 .grade-ajax #prev_, .grade-ajax #next_{
-    top: -25px;
+    top: -22px;
 }
 
 .test-wrap .accept{
     display: none;
-    top: -45px !important;
+    position: relative;
+    float: right;
+    clear: both;
+    top: 0px;
 }
 
 .correct-wrap{
     float: left;
     width: 100%;
+    margin-top: 7px;
 }
 .correct-wrap .answer{
-    width: 30px;
+    width: 25px;
     height: 30px;
-    float: left;
+    float: right;
     overflow: hidden;
 }
     .correct-wrap .answer img{
@@ -802,10 +830,11 @@ ul.child li{
 
     .error{
         display: none;
-        position: absolute;
-        bottom: 40px;
-        left: 60px;
+        position: relative;
+        float: left;
+        clear: left;
         color: #e35e47;
+        margin: 15px 0px 0px 25px;
     }
 .correct_answers{
     display: none;
@@ -818,4 +847,17 @@ ul.child li{
 div .place_pink{
     font-family: 'Conv_fontscore.com_d-dinproregular';
     font-size: 12px !important;
+}
+
+.contai_btns .text_published{
+    float: left;
+    margin-left: 66px;
+    color: #777;
+    font-size: 12px;
+    text-align: right;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
+}
+
+.grade-type{
+    margin-right: 20px !important;
 }
