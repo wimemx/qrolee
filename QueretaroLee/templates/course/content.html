@@ -44,7 +44,7 @@
             </a>
         {% endfor %}
         {% for obj in test %}
-            <a href="/courses/test/{{ obj.id }}" class="module_act module">
+            <a href="/courses/test/{{ obj.id }}" class="module_act {% if forloop.last %}bbottom{% endif %} module">
                 <img src="/static/img/star_test.png">
                 <span class="title grid-2 no-margin subtitle">{{ obj.name }}</span>
             </a>

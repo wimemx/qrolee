@@ -154,16 +154,20 @@ def get_test(request, **kwargs):
             options_dict[option.id] = option
         questions_dict[question.title] = options_dict
 
+    parent = models.Course.objects.get(
+        id=courser.module_dm.course_dm.id)
+
     context = {
-        'courses': courses,
         'course': courser,
         'list_modules': list_content,
         'owner': owner,
         'site_url': settings.SITE_URL,
         'questions': questions_dict,
         'content': content,
-        'test': test
+        'test': test,
+        'parent': parent
     }
+
     return render(request, template, context)
 
 

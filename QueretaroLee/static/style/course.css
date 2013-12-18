@@ -130,7 +130,6 @@
     padding-left:0px;
     padding-right:0px;
     position: relative;
-    text-indent: 15px;
 }
 .container_course .number span{
     padding: 0px 3px;
@@ -197,13 +196,16 @@
     border-left:  1px solid #C4C4C4;
     padding-bottom: 20px;
 }
+.view_courser{
+    padding-bottom: 40px;
+}
 .module{
     border: 1px solid #c4c4c4;
     border-right: 0px;
 }
 
 .module .title{
-    padding: 10px 20px;
+    padding: 10px 15px;
     float: left;
     margin-bottom: 0;
     font-size: 16px;
@@ -272,7 +274,9 @@
 
 .content_text{
     float: left;
-    margin: 20px 0px 0px 35px;
+    padding: 20px 0px 0px 35px;
+    border-left: 1px solid #c4c4c4;
+    border-top: 1px solid #c4c4c4;
 }
 
 .content .brown_btn{
@@ -292,6 +296,7 @@
 
 .coments.grid-10{
     margin-left: 35px;
+    padding-bottom: 20px;
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
@@ -885,3 +890,11 @@ div .place_pink{
         float: left;
         width: 100%;
     }
+
+.container_course .brown_btn, .contain_course .brown_btn{
+    padding-left: 15px;
+}
+
+.container_course .bbottom{
+    border-bottom: 1px solid #c4c4c4 !important;
+}

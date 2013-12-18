@@ -45,11 +45,11 @@
     </div>
     <div class="grid-16 courses view">
         <div class="grid-15 load-margin">
-        <div class="grid-3 fleft no-margin">
+        <div class="grid-3 contain_course fleft no-margin">
             <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
             <div class="container_course grid-3 fleft no-margin">
                     {% for obj in courses %}
-                        <a href="/courses/course/{{ obj.id }}" class="item {% if obj.id == course.id %} sele {% endif %}"
+                        <a href="/courses/course/{{ obj.id }}" class="item {% if forloop.last %}bbottom{% endif %} {% if obj.id == course.id %} sele {% endif %}"
                              {% if not forloop.last %}style="border-bottom: 0px;" {% endif %}>
                             <div class="container_item">
                                 <span class="title fleft">{{ obj.name }}</span>
