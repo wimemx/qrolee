@@ -46,7 +46,9 @@
     <div class="grid-16 courses view">
         <div class="grid-15 load-margin">
         <div class="grid-3 contain_course fleft no-margin">
-            <a class="brown_btn fleft all_courses" href="/courses/">Ver todos los cursos <img src="" alt=""/></a>
+            <a class="brown_btn fleft all_courses" href="/courses/"><span>
+                Ver todos los cursos <img src="/static/img/settings_pointer.png" alt=""/>
+            </span></a>
             <div class="container_course grid-3 fleft no-margin">
                     {% for obj in courses %}
                         <a href="/courses/course/{{ obj.id }}" class="item {% if forloop.last %}bbottom{% endif %} {% if obj.id == course.id %} sele {% endif %}"
@@ -151,9 +153,9 @@
 
                 {% for value in list_modules %}
                     <li id="{{ value.key }}" class="grid-12 no-margin module {% if owner %}ui-state-default{% endif %}" {% if not forloop.last %}style="border-bottom: 0px;"{% endif %} >
-                        <div class="grid-4 no-margin">
-                            <span class="title">{{ value.module.name }}</span>
-                            <p>
+                        <div class="grid-4 no-margin module-info">
+                            <span class="title parent">{{ value.module.name }}</span>
+                            <p class="fleft no-margin">
                                 {{ value.module.text|truncatechars:177 }}
                             </p>
                         </div>

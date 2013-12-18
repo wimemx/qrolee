@@ -532,15 +532,15 @@ function auth_user(response){
 
 $(document).ready(function(){
     $('.test ul .radio_btn').click(function(){
-
-        if($(this).closest('li').hasClass('selected')){
-            $(this).closest('li').removeClass('selected');
-            $(this).parent().find('img').attr('src', '/static/img/radioOff.png');
-        }else{
-            $(this).closest('li').addClass('selected');
-            $(this).parent().find('img').attr('src', '/static/img/radioOn.png');
+        if(!$('.error').is(':visible')){
+            if($(this).closest('li').hasClass('selected')){
+                $(this).closest('li').removeClass('selected');
+                $(this).parent().find('img').attr('src', '/static/img/radioOff.png');
+            }else{
+                $(this).closest('li').addClass('selected');
+                $(this).parent().find('img').attr('src', '/static/img/radioOn.png');
+            }
         }
-
 
     });
 
@@ -556,10 +556,16 @@ $(document).ready(function(){
            $('.container_course').animate({
                 'height': course_height
             }, 300);
+            $(this).find('img').css({
+                "transform": "rotate(0deg)"
+            });
         }else{
             $('.container_course').animate({
                 'height': 0
             }, 300);
+            $(this).find('img').css({
+                "transform": "rotate(-90deg)"
+            });
         }
         return false;
     });
