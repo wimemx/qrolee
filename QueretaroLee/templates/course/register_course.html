@@ -47,7 +47,7 @@
     <div class="container-16 container_message create_module" >
         <div class="dialog-confirm"     style="display: none;" >
             <div class="dialog_text grid-6 no-margin" >
-                <span class="dialog_closet"></span>
+                <!--<span class="dialog_closet"></span>-->
                 <span>
                     <p class="p_text_dialog">Se eliminará La Sombra del Viento tus libros favoritos</p>
                 </span>
@@ -57,8 +57,8 @@
                 </div>
             </div>
         </div>
-        <div class="create-discussion-wrapper margin-50 grid-8 lightbox center" style="display: none;">
-            <span class="close"></span>
+        <div class="create-discussion-wrapper margin-50 grid-8 dialog_text lightbox center" style="display: none;">
+            <!--<span class="close"></span>-->
             <span class="create-discussion grid-7 center">
                 <p class="title center">Crea un nuevo módulo</p>
                 <p class="fleft labelText">Título del módulo
@@ -96,7 +96,7 @@
         <div class="create_test grid-16 courses" style="display: none;">
             <div class="dialog-confirm"     style="display: none;" >
                 <div class="dialog_text grid-6 no-margin" >
-                    <span class="dialog_closet"></span>
+                    <!--<span class="dialog_closet"></span>-->
                     <span>
                         <p class="p_text_dialog">Se eliminará La Sombra del Viento tus libros favoritos</p>
                     </span>
@@ -274,12 +274,12 @@
         </div>
    </div>
     <div class="grid-16 courses register_course">
-        <div class="grid-14">
+        <div class="grid-15">
             <span class="grid-8 no-margin title">
                 ¿Listo para crear un curso?
             </span>
             <p class="grid-8 no-margin text label">
-                Lllena los campos que se presentan a continuación para registrar un curso
+                Llena los campos que se presentan a continuación para registrar un curso
                 en Querétaro Lee.
             </p>
             <form enctype="multipart/form-data" method="post" id="register_course"  action="/courses/create_object/">{% csrf_token %}

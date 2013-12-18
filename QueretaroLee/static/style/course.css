@@ -18,6 +18,9 @@
     float: left;
     background: #edd9af;
 }
+.courses .container_text.home{
+    padding-right: 20px;
+}
  .categ_ .courses .container_text{
      margin-left: 10px;
  }
@@ -37,22 +40,26 @@
      float: left;
      height: 30px;
      background: #f4e8d3;
+     line-height: 30px;
      width: 100%;
      margin-bottom: 0px;
+     padding: 5px 0px 5px 0px;
  }
 
- .categ_ .title_categ span{
+.categ_ .title_categ span{
     float: left;
-    font-size: 13px;
-    padding: 6px 20px;
+    font-size: 16px;
     color: #777;
+    margin-left: 20px;
 }
 
- .categ_ .show_categories span{
+.categ_ .show_categories span{
     float: left;
     font-size: 13px;
-    padding: 5px 20px;
- }
+    height: 100%;
+    line-height: 30px;
+    margin-left: 20px;
+}
 .container_text .title{
     margin-left: 25px;
     margin-top: 20px;
@@ -106,8 +113,8 @@
     cursor: pointer;
 }
 .edit_wrapper{
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     position: absolute;
     bottom: 0px;
     right: 0px;
@@ -120,6 +127,26 @@
 .container_item .title{
     font-size: 12px;
 }
+.container_item .item.categ{
+    padding-bottom: 0px;
+}
+.container_item .item{
+    padding-bottom: 30px;
+}
+.categ .title{
+    padding-bottom: 0px;
+    font-size: 13px;
+}
+.container_course .item.item-cours{
+    padding-bottom: 30px;
+}
+    .item.item-cours p{
+        font-size: 12px;
+        margin-top: 0px !important;
+    }
+    .item-cours .number{
+
+    }
 .container_item p{
     font-size: 11px;
     margin-top: 10px!important;
@@ -132,7 +159,8 @@
     position: relative;
 }
 .container_course .number span{
-    padding: 0px 3px;
+    margin-left: 10px;
+    margin-right: 3px;
     float: right;
 }
 
@@ -143,6 +171,8 @@
 }
 .container_course .green_btn{
     top: 0px!important;
+    width: 28px !important;
+    height: 28px !important;
 }
 
 .container_course .sele{
@@ -210,12 +240,16 @@
     margin-bottom: 0;
     font-size: 16px;
 }
-
-
+.module .title.parent{
+    padding: 0px;
+}
+.module-info{
+    margin: 20px 0px 20px 20px !important;
+}
 
 .module .subtitle {
     font-size: 13px;
-    padding: 7px 10px;
+    padding: 8px 10px;
     font-family: 'Conv_fontscore.com_d-dinproregular';
     border-bottom: 1px solid #c4c4c4;
     float: right;
@@ -242,7 +276,7 @@
 
 .module img {
     float: right;
-    padding: 8px 0px;
+    margin-top: 11px;
 }
 .module p{
     margin-left: 20px;
@@ -344,7 +378,16 @@ ul.child li{
         text-indent:5px;
         border: 1px solid #e4e4e4;
         background: #fff;
-        padding: 0px 0px;
+        padding: 0px 0px 0px 10px;
+    }
+    p input{
+        padding-left: 10px;
+    }
+    textarea{
+        padding: 10px 0px 0px 10px;
+    }
+    .register_course .field textarea{
+        padding-top: 10px;
     }
     .register_course .field{
         padding: 4px 0px;
@@ -386,7 +429,7 @@ ul.child li{
         font-size:  16px;
     }
     .item-mod .description{
-        margin-top: 15px;
+        margin-top: 5px;
         margin-bottom: 10px;
     }
 
@@ -439,6 +482,10 @@ ul.child li{
     float: left;
 
 }
+    #register_course .select_wrapper{
+        position: relative;
+        left: -11px !important;
+    }
 .item-mod .btns{
     margin-bottom: 25px;
 }
@@ -524,12 +571,12 @@ div .container_text .edit_{
     padding-top: 5px;
 }
 
-.create_content .grid-15, .create_test .grid-15{
-    padding: 40px 40px 40px 40px;
+.create_content .grid-15, .create_test .grid-15, .register_course .grid-15{
     background: #fffcf5;
     display: block;
     min-height: 640px;
-    margin: 0px;
+    margin: 20px auto;
+    float: none;
 }
 .create_content{
     margin: 26px 10px 30px 10px;
@@ -883,6 +930,7 @@ div .place_pink{
 
 .container_course .subtitle{
     border:none !important;
+    font-family: 'Conv_fontscore.com_d-dinproregular';
 }
     .container_course .module_act{
         border: 1px solid #c4c4c4 !important;
@@ -891,10 +939,33 @@ div .place_pink{
         width: 100%;
     }
 
-.container_course .brown_btn, .contain_course .brown_btn{
-    padding-left: 15px;
+.container_course .brown_btn span, .contain_course .brown_btn span{
+    margin-left: 15px;
+    float: left;
 }
-
+    .container_course .brown_btn span img, .contain_course .brown_btn span img{
+        margin-left: 10px;
+    }
 .container_course .bbottom{
     border-bottom: 1px solid #c4c4c4 !important;
+}
+
+.dialog_text.lightbox .labelText{
+    text-align: left;
+}
+
+.dialog_text.lightbox p{
+    position: relative;
+    left: -5px !important;
+}
+
+.dialog_text.lightbox .remove{
+    margin-right: 0px;
+}
+.dialog_text.lightbox .accept{
+    left: 15px !important;
+}
+
+.dialog_text textarea, .dialog_text input{
+    font-size: 12px;
 }

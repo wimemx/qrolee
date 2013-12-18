@@ -20,7 +20,7 @@
 {% block main_site %}
     <div class="grid-16 courses all categ_">
         <div class="grid-15 load-margin">
-            <div class="grid-8 no-margin container_text">
+            <div class="grid-8 no-margin container_text home">
                 <span class="gri-7 no-margin">
                     <span class="title">¡Aprende!</span>
                 </span>
@@ -40,7 +40,7 @@
                 </p>
                 <a href="/courses/register_course/" class="brown_btn fleft">Crear nuevo curso</a>
             </div>
-            <div class="container_course grid-7 no-margin">
+            <div class="container_course fright grid-7 no-margin">
                 <span class="show_categories" style="display:none;">
                     <span>Ver categorías</span>
                     </span>
@@ -70,9 +70,9 @@
                             {% endif %}
                             <a class="fleft" href="/courses/course/{{ key }}">
                                 <span class="container_item">
-                                    <span class="title grid-4 fleft">{{ value.course.name }}</span>
+                                    <span class="title grid-5 fleft">{{ value.course.name }}</span>
 
-                                    <span class="grid-2 no-margin fright number" style="margin-right: 15px;color: #454545;">
+                                    <span class="no-margin fright number" style="margin-right: 15px;color: #454545;">
                                         <img  src="/static/img/starn_course.png" >
                                         <span >{{ value.rate }}</span>
                                         <img src="/static/img/modul.png" >
