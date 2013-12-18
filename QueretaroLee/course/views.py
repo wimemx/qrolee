@@ -24,7 +24,9 @@ def get_courses(request, **kwargs):
     list_categories = {}
 
     for obj in categories:
+        print obj.id
         courses = models.Course.objects.filter(category=obj, status=True)
+        print courses
         list_courses = dict_courses(courses, user)
         list_categories[obj.id] = {
             'category': obj,
@@ -55,10 +57,9 @@ def get_course(request, **kwargs):
     course_owner = 0
 
     if courser.type == 'U':
-        by = user.first_name
         user = registry.User.objects.get(id=courser.type_pk)
         course_owner = user.id
-
+        by = user.first_name
     else:
         entity = registry.Entity.objects.get(id=courser.type_pk)
         by = entity.name
@@ -169,6 +170,7 @@ def get_test(request, **kwargs):
 def dict_courses(courses, user):
     print courses
     list_courses = {}
+    user_course = False
     for obj in courses:
         modules = models.Module.objects.filter(course_dm=obj)
 
