@@ -2105,7 +2105,8 @@ function search_entities($this){
         $('.sidebar-a .item').each(function(){
             $(this).remove();
         });
-        populateCal(100,$item);
+
+        populateCal(curr_month,$item);
 
     }else{
         var url = '/qro_lee/entities/'+
