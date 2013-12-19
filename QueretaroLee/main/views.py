@@ -91,16 +91,16 @@ def index(request, **kwargs):
 @login_required(login_url='/')
 def get_entities(request, **kwargs):
     is_ajax_call = False
-    status = True
+    status = 1
     if 'csrfmiddlewaretoken' in request.POST:
         is_ajax_call = True
 
     template = kwargs['template_name']
     entity_type = kwargs['entity_type']
     if entity_type == 'all':
-        entity_type_ids = models.Type.objects.all().order_by('id')
+        entity_type_ids = models.Type.objects.filter(status=status).order_by('id')
     else:
-        entity_type_ids = models.Type.objects.filter(name=entity_type).order_by('id')
+        entity_type_ids = models.Type.objects.filter(status=status, name=entity_type).order_by('id')
 
     entity_ids = list()
     user_ids = list()
@@ -118,7 +118,7 @@ def get_entities(request, **kwargs):
             #print a.user_id
             if request.user.id == a.user_id:
                 request_user_is_admin.append(e.id)
-    user_entities = entity.filter(id__in=request_user_is_admin,status=status).order_by('id')
+    user_entities = entity.filter(id__in=request_user_is_admin, status=status).order_by('id')
     entity = entity.exclude(id__in=request_user_is_admin)
 
     if request.POST.get('field_search_entity'):
@@ -134,11 +134,11 @@ def get_entities(request, **kwargs):
             request_user_is_admin = list()
             for e in entity:
                 admins = models.MemberToObject.objects.filter(
-                    object_type='E', object=e.id, is_admin=True).order_by('id')
+                    object_type='E', object=e.id, is_admin=True, status=status).order_by('id')
                 for a in admins:
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
-            user_entities = entity.filter(id__in=request_user_is_admin,status=status).order_by('id')
+            user_entities = entity.filter(id__in=request_user_is_admin, status=status).order_by('id')
             entity = entity.exclude(id__in=request_user_is_admin).order_by('id')
 
 
