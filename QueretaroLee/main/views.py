@@ -98,9 +98,9 @@ def get_entities(request, **kwargs):
     template = kwargs['template_name']
     entity_type = kwargs['entity_type']
     if entity_type == 'all':
-        entity_type_ids = models.Type.objects.filter(status=status).order_by('id')
+        entity_type_ids = models.Type.objects.all().order_by('id')
     else:
-        entity_type_ids = models.Type.objects.filter(status=status, name=entity_type).order_by('id')
+        entity_type_ids = models.Type.objects.filter(name=entity_type).order_by('id')
 
     entity_ids = list()
     user_ids = list()
