@@ -1056,7 +1056,6 @@ $(document).ready(function(){
 
 
     if($('.discussion.load').length > 0 ){
-
         $('.discussion.load a.title').click(function(e){
             $(this).parent().parent().find('.item').each(function(){
                 $(this).removeClass('active');
@@ -1260,6 +1259,7 @@ function discussion(id, type){
     }).done(function(data){
             var $item = $('div.discuss.main').clone();
             $item.removeClass('main');
+            $item.find('.respond .wrapper').after('<img class="pt" src="/static/img/3_blanco.png">');
             $item.find('.main textarea').focus(function(){
                 if(!textarea_flag){
                     $(this).val('');
@@ -1289,7 +1289,7 @@ function discussion(id, type){
                         var discussion = data[i][index];
                         var $discussion_response = $('.discussion_response').clone();
                         $discussion_response.removeClass().addClass('discussion_response grid-9 no-margin fleft item_'+discussion.id);
-
+                        $discussion_response.find('.answer .title').before($('<img class="pt" src="/static/img/3_cafe.png" >'));
                         if($discussion_response.hasClass('item_'+discussion.id)){
                             $discussion_response.find('.answer p').html(discussion.content);
                             $discussion_response.find('.name.title span:eq(0)').html(discussion.username);
@@ -1410,7 +1410,7 @@ function respond_discussion($ele, parent_discussion, $item, entity_id, is_son, t
                 var discussion = data['response'];
                 var $discussion_response = $('.discussion_response.main').clone();
                 $discussion_response.removeClass().addClass('discussion_response grid-9 no-margin fleft item_'+discussion.id);
-
+                $discussion_response.find('.answer .title').before($('<img class="pt" src="/static/img/3_cafe.png" >'));
                 if($discussion_response.hasClass('item_'+discussion.id)){
                     $discussion_response.find('.answer p').html(discussion.content);
                     $discussion_response.find('.name.title span:eq(0)').html(discussion.username);

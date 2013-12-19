@@ -1159,11 +1159,11 @@ p{
             font-size: 13px;
             width: 100%;
             float: left;
-            margin: 5px 0px 5px 0px;
+            margin: 0px 0px 5px 0px;
             font-weight: 500;
         }
             .answer .gray_text{
-                margin-left: 15px;
+                margin-left: 7px;
                 font-size: 11px;
                 font-weight: 400;
                 font-family: 'Conv_fontscore.com_d-dinproregular';
@@ -3490,7 +3490,7 @@ textarea{
 }
 
 .list__ .title{
-    font-size: 18px!important;
+    font-size: 16px!important;
 }
 
 .all_list{
@@ -4665,4 +4665,17 @@ p input.green_btn{
 }
 .create-discussion input:focus , textarea:focus{
     background-color: rgb(252, 248, 239);
+}
+.respond .pt{
+    margin-left: 50px;
+    position: absolute;
+    top: -6px;
+    z-index: 12;
+}
+
+.answer .pt{
+    margin-left: 34px;
+    position: absolute;
+    top: -7px;
+    z-index: 12;
 }
