@@ -98,9 +98,9 @@ def get_entities(request, **kwargs):
     template = kwargs['template_name']
     entity_type = kwargs['entity_type']
     if entity_type == 'all':
-        entity_type_ids = models.Type.objects.all().order_by('id')
+        entity_type_ids = models.Type.objects.all()
     else:
-        entity_type_ids = models.Type.objects.filter(name=entity_type).order_by('id')
+        entity_type_ids = models.Type.objects.filter(name=entity_type)
 
     entity_ids = list()
     user_ids = list()
@@ -134,17 +134,16 @@ def get_entities(request, **kwargs):
             request_user_is_admin = list()
             for e in entity:
                 admins = models.MemberToObject.objects.filter(
-                    object_type='E', object=e.id, is_admin=True, status=status).order_by('id')
+                    object_type='E', object=e.id, is_admin=True, status=status)
                 for a in admins:
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
             user_entities = entity.filter(id__in=request_user_is_admin, status=status).order_by('id')
-            entity = entity.exclude(id__in=request_user_is_admin).order_by('id')
-
+            entity = entity.exclude(id__in=request_user_is_admin)
 
 
     value = {}
-    user_entities_value = {}
+    user_entities_value = dict()
     fields_related_objects = models.Entity._meta.get_all_related_objects(
         local_only=True)
     fields = models.Entity._meta.get_all_field_names()
@@ -226,9 +225,10 @@ def get_entities(request, **kwargs):
                 }
             context_fields['tags'] = tags
         if obj.status != 0:
-            user_entities_value[obj.id] = context_fields
+            user_entities_value[int(obj.id)] = context_fields
 
     if is_ajax_call:
+
         context = {
             str(entity_type): value,
             'user_entities': user_entities_value
@@ -257,10 +257,11 @@ def get_entities(request, **kwargs):
         user_entities = user_entities_value
 
         context = {
-            'entities': entity,
+            'entities': sorted(entity.items()),
             'entity_type': entity_type,
             'content': content,
-            'user_entities': user_entities
+            'user_entities': sorted(user_entities.items()),
+            'count_entity_user': len(user_entities_value)
         }
 
         if 'post' in request.POST:

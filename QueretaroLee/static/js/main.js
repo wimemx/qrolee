@@ -853,12 +853,30 @@ function dmap(data,id){
         mapOptions);
 
     if(id==1){
+
         var counter = 1;
+        var admin_spot = new Array();
+        var spot_ = new Array();
+
         $.each(data,function(index,k){
             var spot = data[index];
-            $.each(spot,function(index2){
+            $.each(spot,function(key){
+                if(spot[key].is_admin == 1)
+                    admin_spot.push(spot[key]);
+                else
+                    spot_.push(spot[key]);
+            });
+        });
+        var json_spot = {
+            1: admin_spot,
+            2: spot_
+        };
 
-                var companyPos = new google.maps.LatLng(spot[index2].lat,spot[index2].long);
+        $.each(json_spot,function(keys){
+            object = json_spot[keys];
+        $.each(object,function(index2){
+
+                var companyPos = new google.maps.LatLng(object[index2].lat,object[index2].long);
                 var companyMarker = new google.maps.Marker({
                     position: companyPos,
                     map: map,
@@ -870,12 +888,11 @@ function dmap(data,id){
                         new google.maps.Point(0, 0) // point on image to center on latlng (scaled)
 
                     ),
-                    title:spot[index2].name
+                    title:object[index2].name
 
                 });
                 counter++;
             });
-
         });
     }
     if(id==2){
