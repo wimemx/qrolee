@@ -98,9 +98,9 @@ def get_entities(request, **kwargs):
     template = kwargs['template_name']
     entity_type = kwargs['entity_type']
     if entity_type == 'all':
-        entity_type_ids = models.Type.objects.all()
+        entity_type_ids = models.Type.objects.all().order_by('id')
     else:
-        entity_type_ids = models.Type.objects.filter(name=entity_type)
+        entity_type_ids = models.Type.objects.filter(name=entity_type).order_by('id')
 
     entity_ids = list()
     user_ids = list()
@@ -108,38 +108,38 @@ def get_entities(request, **kwargs):
         entity_ids.append(ele.id)
 
     entity = models.Entity.objects.filter(
-        type_id__in=entity_ids, status=status)
+        type_id__in=entity_ids, status=status).order_by('id')
 
     request_user_is_admin = list()
     for e in entity:
         admins = models.MemberToObject.objects.filter(
-            object_type='E', object=e.id, is_admin=True)
+            object_type='E', object=e.id, is_admin=True).order_by('id')
         for a in admins:
             #print a.user_id
             if request.user.id == a.user_id:
                 request_user_is_admin.append(e.id)
-    user_entities = entity.filter(id__in=request_user_is_admin,status=status)
+    user_entities = entity.filter(id__in=request_user_is_admin,status=status).order_by('id')
     entity = entity.exclude(id__in=request_user_is_admin)
 
     if request.POST.get('field_search_entity'):
         if request.POST['field_search_entity'] == '*':
             entity = models.Entity.objects.filter(
-                type_id__in=entity_ids, status=status).exclude(user_id=request.user)
+                type_id__in=entity_ids, status=status).exclude(user_id=request.user).order_by('id')
         else:
             search = request.POST['field_search_entity']
             entity = models.Entity.objects.filter(
-                type_id__in=entity_ids, name__icontains=search, status=status)
+                type_id__in=entity_ids, name__icontains=search, status=status).order_by('id')
             admins_list = list()
             entites_list = list()
             request_user_is_admin = list()
             for e in entity:
                 admins = models.MemberToObject.objects.filter(
-                    object_type='E', object=e.id, is_admin=True)
+                    object_type='E', object=e.id, is_admin=True).order_by('id')
                 for a in admins:
                     if request.user.id == a.user_id:
                         request_user_is_admin.append(e.id)
-            user_entities = entity.filter(id__in=request_user_is_admin,status=status)
-            entity = entity.exclude(id__in=request_user_is_admin)
+            user_entities = entity.filter(id__in=request_user_is_admin,status=status).order_by('id')
+            entity = entity.exclude(id__in=request_user_is_admin).order_by('id')
 
 
 
