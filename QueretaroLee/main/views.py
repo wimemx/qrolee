@@ -445,6 +445,7 @@ def get_events(request, **kwargs):
     status = True
     entity = kwargs['entity_id']
     if int(entity) > 0 or int(request.POST.get('curr_month')) == -1:
+
         if int(entity) != -1:
             events_ = models.Event.objects.filter(
                 location_id=int(entity), status=status)
@@ -466,6 +467,7 @@ def get_events(request, **kwargs):
             events.append(event_date)
 
     if int(request.POST.get('curr_month')) != -1:
+
         if int(entity) != -1:
             current_month = int(request.POST.get('curr_month'))+1
             start_time = datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
@@ -500,7 +502,6 @@ def get_events(request, **kwargs):
                     location_id=int(entity), status=status, start_time__gte=start_time, owner_id__in=admins_list,
                     start_time__lt=end_time).order_by('start_time')
             else:
-
                 if int(request.POST.get('curr_month')) == 100:
                     events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
                 else:
@@ -508,13 +509,19 @@ def get_events(request, **kwargs):
                     if current_month > 12:
                         current_month -= 12
                     start_time = datetime.datetime(int(request.POST.get('curr_year')), current_month, 1)
+                    days_30 = [4, 6, 9, 11]
 
-                    if int(request.POST.get('curr_month')) >= 11:
-                        end_time = datetime.datetime(start_time.year+1, 1, 1)
+                    if current_month in days_30:
+                        last_day = 30
+                    elif current_month == 2:
+                        last_day = 28
                     else:
-                        end_time = datetime.datetime(start_time.year, start_time.month+1, 1)
+                        last_day = 31
+
+                    end_time = datetime.datetime(start_time.year, current_month, last_day)
+
                     events_ = models.Event.objects.filter(
-                        status=status, start_time__gte=start_time, start_time__lt=end_time,).order_by('start_time')
+                        status=status, start_time__gt=start_time, start_time__lt=end_time).order_by('start_time')
 
             #if request.POST.get('id_entity') is not None:
             #    if int(request.POST['id_entity']) != -1:
