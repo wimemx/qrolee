@@ -1559,7 +1559,7 @@ def get_profile(request, **kwargs):
 
     if t != 'L':
         discussions = account_models.Discussion.objects.get_or_create(
-            object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=2)
+            object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=4)
     else:
         discussions = account_models.Discussion.objects.get_or_create(
             object=profile.id, type=t, parent_discussion_id__isnull=True, user_id=profile.user_id)
