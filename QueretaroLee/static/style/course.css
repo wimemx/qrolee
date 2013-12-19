@@ -414,6 +414,7 @@ ul.child li{
         width: 100%;
         float: left;
         margin-top: 20px;
+        padding-bottom: 50px;
     }
     .register_course textarea{
         height: 105px;
@@ -430,7 +431,10 @@ ul.child li{
     }
     .item-mod .description{
         margin-top: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        font-family: 'Conv_fontscore.com_d-dinproregular';
+        font-size: 13px;
+        color: #777;
     }
 
     .item-mod .part_l{
@@ -746,7 +750,9 @@ div .container_text .edit_{
     width: 100%;
 }
 .item_cuestion .title{
-    font-size: 14px;
+    font-size: 12px;
+    width: 80% !important;
+    float: left;
 }
 .item_cuestion .green_btn{
     width: 17px!important;

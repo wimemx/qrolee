@@ -18,6 +18,7 @@
             selector: ".textarea_tinymce",
             theme: "modern",
             language: 'es',
+            height: 300,
             plugins: [
                 "advlist autolink lists link image charmap print preview hr anchor pagebreak",
                 "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -70,7 +71,7 @@
             </span>
     </div>
     <div class="create_content grid-16 courses" style="display: none;">
-        <div class="grid-14">
+        <div class="grid-15">
             <div class="heading">
                 <h3 class="title title_page fleft">¿Listo para añadir un tema a Módulo 1 ?</h3>
             </div>
@@ -106,7 +107,7 @@
             </div>
         </div>
     </div>
-    <div class="grid-14">
+    <div class="grid-15">
         <div class="heading">
             <input type="hidden" class="id_mod_" value="0" >
             <input type="hidden" class="id_test_" value="0" >
@@ -167,16 +168,18 @@
         <span class="line_divide"></span>
         <span class="container_test">
             <span class="title fleft">Sección de preguntas</span>
-            <span class="grid-7 no-margin container_cuestion">
+            <span class="grid-8 no-margin container_cuestion">
                 <span class="item_cuestion cuestion-one" style="display: none;">
                     <input class="id" type="hidden" value="0" />
                     <span class="title">Pregunta example</span>
+                    <span class="btn-contianer fright">
                     <span class="green_btn size_btn_edit del">
                     </span>
                     <span class="pink_btn size_btn_edit btn_delete">
                        <input type="hidden" class="name" value="mod">
                        <input class="id" type="hidden" value="mod">
                     </span>
+                        </span>
                 </span>
                 <span class="place_pink">Añadir nueva pregunta</span>
             </span>
@@ -275,7 +278,7 @@
     <div class="grid-16 courses register_course edit_course">
         <input type="hidden" value="{{ course.0.id }}" class="id_course" />
     <input type="hidden" value="{{ course.0.name }}" class="name_course" />
-        <div class="grid-14">
+        <div class="grid-15">
             <span class="grid-8 no-margin title">
                 Editar {{ course.0.name }}
             </span>
@@ -361,7 +364,7 @@
                 </span>
                 <div class="item-mod one" style="display: none;">
                     <input type="hidden" class="id_modl"  value="0" />
-                    <div class="grid-7 no-margin part_l">
+                    <div class="grid-8 no-margin part_l">
                         <span class="title grid-6 no-margin"></span>
                         <span class="description grid-6 no-margin">
                         </span>
@@ -413,7 +416,7 @@
                 {% for key, value in dict_mod.items %}
                     <div class="item-mod" >
                         <input type="hidden" class="id_modl"  value="{{ key }}" />
-                        <div class="grid-7 no-margin part_l">
+                        <div class="grid-8 no-margin part_l">
                             <span class="title grid-6 no-margin">{{ value.module.name }}</span>
                             <span class="description grid-6 no-margin">{{ value.module.text }}
                             </span>

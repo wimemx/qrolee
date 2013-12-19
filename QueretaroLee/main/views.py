@@ -278,7 +278,14 @@ def get_entities(request, **kwargs):
 def get_entity(request, **kwargs):
     template = kwargs['template_name']
     id_entity = int(kwargs['entity'])
-    entity = models.Entity.objects.get(id=id_entity)
+    entity = models.Entity.objects.filter(id=id_entity)
+    if not entity:
+        return HttpResponseRedirect('/qro_lee')
+    else:
+        entity = models.Entity.objects.get(id=id_entity)
+
+    if entity.status == 0:
+        return HttpResponseRedirect('/qro_lee')
     categories = models.EntityCategory.objects.filter(
         entity_id=entity.id)
     rate = account_models.Rate.objects.filter(
