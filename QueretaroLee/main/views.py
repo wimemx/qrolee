@@ -502,7 +502,7 @@ def get_events(request, **kwargs):
                     location_id=int(entity), status=status, start_time__gte=start_time, owner_id__in=admins_list,
                     start_time__lt=end_time).order_by('start_time')
             else:
-                if int(request.POST.get('curr_month')) == 100:
+                if request.POST['field_search'] != '':
                     events_ = models.Event.objects.filter(status=status, name__icontains=request.POST['field_search'])
                 else:
                     current_month = int(request.POST.get('curr_month'))+1
