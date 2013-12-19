@@ -484,6 +484,6 @@ def times(number):
 @register.filter
 def sum(arg_a, arg_b):
 
-    total = arg_a + len(arg_b)
+    total = arg_a + arg_b
 
     return total
