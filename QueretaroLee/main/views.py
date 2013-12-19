@@ -196,8 +196,8 @@ def get_entities(request, **kwargs):
                     'name': tag.category.name
                 }
             context_fields['tags'] = tags
-
-        value[obj.id] = context_fields
+        if obj.status != 0:
+            value[obj.id] = context_fields
 
     for obj in user_entities:
         context_fields = {
@@ -225,8 +225,8 @@ def get_entities(request, **kwargs):
                     'name': tag.category.name
                 }
             context_fields['tags'] = tags
-
-        user_entities_value[obj.id] = context_fields
+        if obj.status != 0:
+            user_entities_value[obj.id] = context_fields
 
     if is_ajax_call:
         context = {
