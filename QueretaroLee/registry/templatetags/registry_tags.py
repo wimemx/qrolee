@@ -480,3 +480,10 @@ def cut_word(text, index):
 @register.filter
 def times(number):
     return range(number)
+
+@register.filter
+def sum(arg_a, arg_b):
+
+    total = arg_a + len(arg_b)
+
+    return total
