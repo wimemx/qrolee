@@ -305,7 +305,9 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-
+.content .container_text{
+    padding-bottom: 0px;
+}
 .content_text{
     float: left;
     padding: 20px 0px 0px 35px;
