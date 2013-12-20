@@ -2218,6 +2218,7 @@ p{
     padding: 4px 9px 4px 9px;
     font-size: 12px;
     font-family: 'Raleway' sans-serif;
+    margin-right: 10px;
 }
 
 .dialog_text{
@@ -2278,6 +2279,9 @@ p{
 
 .wrapper_message{
     width: 100%;
+    position: fixed;
+    left: 0px;
+    z-index: 100;
 }
 
 .container_message{
