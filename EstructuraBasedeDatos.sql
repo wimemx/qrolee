@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-01-2014 a las 11:25:12
+-- Tiempo de generación: 06-01-2014 a las 11:39:59
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.3.10-1ubuntu3.8
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `queretaroleeBK`
+-- Base de datos: `queretarolee`
 --
 
 -- --------------------------------------------------------
@@ -67,12 +67,11 @@ CREATE TABLE IF NOT EXISTS `account_activity` (
   PRIMARY KEY (`id`),
   KEY `account_activity_6340c63c` (`user_id`),
   KEY `account_activity_8005e431` (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=125 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1192 ;
 
 --
 -- Volcado de datos para la tabla `account_activity`
 --
-
 
 -- --------------------------------------------------------
 
@@ -89,12 +88,14 @@ CREATE TABLE IF NOT EXISTS `account_author` (
   `biography` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
   `id_api` longtext NOT NULL,
+  `img_url` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=359 ;
 
 --
 -- Volcado de datos para la tabla `account_author`
 --
+
 
 -- --------------------------------------------------------
 
@@ -109,12 +110,11 @@ CREATE TABLE IF NOT EXISTS `account_authortitle` (
   PRIMARY KEY (`id`),
   KEY `account_authortitle_9246ed76` (`title_id`),
   KEY `account_authortitle_e969df21` (`author_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=128 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=705 ;
 
 --
 -- Volcado de datos para la tabla `account_authortitle`
 --
-
 
 -- --------------------------------------------------------
 
@@ -129,15 +129,18 @@ CREATE TABLE IF NOT EXISTS `account_discussion` (
   `date` datetime NOT NULL,
   `meta` varchar(1) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `entity_id` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  `object` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `parent_discussion_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `account_discussion_c096cf48` (`entity_id`),
   KEY `account_discussion_6340c63c` (`user_id`),
   KEY `account_discussion_36e895f7` (`parent_discussion_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=78 ;
 
+--
+-- Volcado de datos para la tabla `account_discussion`
+--
 -- --------------------------------------------------------
 
 --
@@ -207,12 +210,11 @@ CREATE TABLE IF NOT EXISTS `account_list` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `account_list_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=85 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1954 ;
 
 --
 -- Volcado de datos para la tabla `account_list`
 --
-
 -- --------------------------------------------------------
 
 --
@@ -226,7 +228,13 @@ CREATE TABLE IF NOT EXISTS `account_listauthor` (
   PRIMARY KEY (`id`),
   KEY `account_listauthor_c142dac4` (`list_id`),
   KEY `account_listauthor_e969df21` (`author_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Volcado de datos para la tabla `account_listauthor`
+--
+
+
 
 -- --------------------------------------------------------
 
@@ -242,12 +250,11 @@ CREATE TABLE IF NOT EXISTS `account_listgenre` (
   PRIMARY KEY (`id`),
   KEY `account_listgenre_c142dac4` (`list_id`),
   KEY `account_listgenre_33e6008b` (`genre_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=83 ;
 
 --
 -- Volcado de datos para la tabla `account_listgenre`
 --
-
 
 -- --------------------------------------------------------
 
@@ -262,12 +269,11 @@ CREATE TABLE IF NOT EXISTS `account_listtitle` (
   PRIMARY KEY (`id`),
   KEY `account_listtitle_9246ed76` (`title_id`),
   KEY `account_listtitle_c142dac4` (`list_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=124 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=962 ;
 
 --
 -- Volcado de datos para la tabla `account_listtitle`
 --
-
 
 -- --------------------------------------------------------
 
@@ -302,11 +308,12 @@ CREATE TABLE IF NOT EXISTS `account_rate` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `account_rate_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97 ;
 
 --
 -- Volcado de datos para la tabla `account_rate`
 --
+
 
 -- --------------------------------------------------------
 
@@ -335,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `account_title` (
   `id_google` longtext NOT NULL,
   `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=110 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=658 ;
 
 --
 -- Volcado de datos para la tabla `account_title`
@@ -384,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=118 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
 
 --
 -- Volcado de datos para la tabla `auth_permission`
@@ -507,7 +514,34 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (114, 'Can delete facebook session', 38, 'delete_facebooksession'),
 (115, 'Can add twitter session', 39, 'add_twittersession'),
 (116, 'Can change twitter session', 39, 'change_twittersession'),
-(117, 'Can delete twitter session', 39, 'delete_twittersession');
+(117, 'Can delete twitter session', 39, 'delete_twittersession'),
+(118, 'Can add category', 40, 'add_category'),
+(119, 'Can change category', 40, 'change_category'),
+(120, 'Can delete category', 40, 'delete_category'),
+(121, 'Can add course', 41, 'add_course'),
+(122, 'Can change course', 41, 'change_course'),
+(123, 'Can delete course', 41, 'delete_course'),
+(124, 'Can add module', 42, 'add_module'),
+(125, 'Can change module', 42, 'change_module'),
+(126, 'Can delete module', 42, 'delete_module'),
+(127, 'Can add content', 43, 'add_content'),
+(128, 'Can change content', 43, 'change_content'),
+(129, 'Can delete content', 43, 'delete_content'),
+(130, 'Can add test', 44, 'add_test'),
+(131, 'Can change test', 44, 'change_test'),
+(132, 'Can delete test', 44, 'delete_test'),
+(133, 'Can add inscription', 45, 'add_inscription'),
+(134, 'Can change inscription', 45, 'change_inscription'),
+(135, 'Can delete inscription', 45, 'delete_inscription'),
+(136, 'Can add question', 46, 'add_question'),
+(137, 'Can change question', 46, 'change_question'),
+(138, 'Can delete question', 46, 'delete_question'),
+(139, 'Can add option', 47, 'add_option'),
+(140, 'Can change option', 47, 'change_option'),
+(141, 'Can delete option', 47, 'delete_option'),
+(142, 'Can add answer', 48, 'add_answer'),
+(143, 'Can change answer', 48, 'change_answer'),
+(144, 'Can delete answer', 48, 'delete_answer');
 
 -- --------------------------------------------------------
 
@@ -521,23 +555,23 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `last_login` datetime NOT NULL,
   `is_superuser` tinyint(1) NOT NULL,
   `username` varchar(30) NOT NULL,
-  `first_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `last_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `first_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(75) NOT NULL,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=391 ;
 
 --
 -- Volcado de datos para la tabla `auth_user`
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$12000$HfcqHFuMT5VN$7ZouDMi3m2f7bGpAQ7kFvEnJcnZ4ZRHRjB2VirRm4hc=', '2013-11-14 17:34:55', 1, 'admin', '', '', 'andres@wime.com.mx', 1, 1, '2013-11-14 04:02:35'),
-
+(1, 'pbkdf2_sha256$12000$Z5CUyBxv4x1s$8BTpKSM3NXqVrHIH5VYRjT+/YzDeahcnCyAOjDu+CrQ=', '2014-01-06 16:57:08', 1, 'admin', '', '', 'andres@wime.com.mx', 1, 1, '2013-11-18 20:39:04'),
+(4, '!EzCJzqRn1OIOinqFGfg9PqhaREPfPS04uR6hvEpx', '2014-01-06 17:00:29', 0, 'AndyTuzo', 'Andrés', 'García', 'gb_andres@hotmail.com', 0, 1, '2013-11-18 20:59:21'),
 -- --------------------------------------------------------
 
 --
@@ -573,6 +607,178 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `course_answer`
+--
+
+CREATE TABLE IF NOT EXISTS `course_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `option_choice_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_answer_25110688` (`question_id`),
+  KEY `course_answer_67180c06` (`option_choice_id`),
+  KEY `course_answer_6340c63c` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_category`
+--
+
+CREATE TABLE IF NOT EXISTS `course_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `course_category`
+--
+
+INSERT INTO `course_category` (`id`, `name`, `description`, `status`) VALUES
+(1, 'Círculo de lectura', 'Cursos de como fomentar un círculo de lectura', 1),
+(2, 'Promoción', 'Como promoveer la lectura', 1),
+(3, 'Literatura', 'Cursos de literatura', 1),
+(4, 'Ingles', 'Cursos en ingles', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_content`
+--
+
+CREATE TABLE IF NOT EXISTS `course_content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `text` longtext,
+  `order` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `module_dm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_content_d920b992` (`module_dm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_course`
+--
+
+CREATE TABLE IF NOT EXISTS `course_course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL,
+  `date` datetime NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `type_pk` int(11) DEFAULT NULL,
+  `description` longtext,
+  `status` tinyint(1) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_course_6f33f001` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_inscription`
+--
+
+CREATE TABLE IF NOT EXISTS `course_inscription` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_inscription_6234103b` (`course_id`),
+  KEY `course_inscription_6340c63c` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_module`
+--
+
+CREATE TABLE IF NOT EXISTS `course_module` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `text` longtext,
+  `order` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `course_dm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_module_485d4aa0` (`course_dm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_option`
+--
+
+CREATE TABLE IF NOT EXISTS `course_option` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) DEFAULT NULL,
+  `value` decimal(3,3) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `meta` varchar(255) DEFAULT NULL,
+  `date` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `question_dm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_option_705f205e` (`question_dm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_question`
+--
+
+CREATE TABLE IF NOT EXISTS `course_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `meta` varchar(255) DEFAULT NULL,
+  `date` datetime NOT NULL,
+  `order` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL,
+  `test_dm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_question_7a9ccef6` (`test_dm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `course_test`
+--
+
+CREATE TABLE IF NOT EXISTS `course_test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` longtext,
+  `status` tinyint(1) NOT NULL,
+  `date` datetime NOT NULL,
+  `order` int(11) NOT NULL,
+  `meta` varchar(255) DEFAULT NULL,
+  `number_correct` int(11) DEFAULT NULL,
+  `type` tinyint(1) NOT NULL,
+  `module_dm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_test_d920b992` (`module_dm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `django_admin_log`
 --
 
@@ -588,11 +794,13 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   PRIMARY KEY (`id`),
   KEY `django_admin_log_6340c63c` (`user_id`),
   KEY `django_admin_log_37ef4eb4` (`content_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `django_admin_log`
 --
+
+
 
 -- --------------------------------------------------------
 
@@ -607,7 +815,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
 --
 -- Volcado de datos para la tabla `django_content_type`
@@ -652,7 +860,16 @@ INSERT INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES
 (36, 'member to object', 'registry', 'membertoobject'),
 (37, 'external user', 'registry', 'externaluser'),
 (38, 'facebook session', 'registry', 'facebooksession'),
-(39, 'twitter session', 'registry', 'twittersession');
+(39, 'twitter session', 'registry', 'twittersession'),
+(40, 'category', 'course', 'category'),
+(41, 'course', 'course', 'course'),
+(42, 'module', 'course', 'module'),
+(43, 'content', 'course', 'content'),
+(44, 'test', 'course', 'test'),
+(45, 'inscription', 'course', 'inscription'),
+(46, 'question', 'course', 'question'),
+(47, 'option', 'course', 'option'),
+(48, 'answer', 'course', 'answer');
 
 -- --------------------------------------------------------
 
@@ -706,7 +923,7 @@ CREATE TABLE IF NOT EXISTS `registry_assistevent` (
   PRIMARY KEY (`id`),
   KEY `registry_assistevent_a41e20fe` (`event_id`),
   KEY `registry_assistevent_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `registry_assistevent`
@@ -774,7 +991,7 @@ CREATE TABLE IF NOT EXISTS `registry_book` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `registry_book_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Volcado de datos para la tabla `registry_book`
@@ -854,9 +1071,9 @@ CREATE TABLE IF NOT EXISTS `registry_countries` (
 
 CREATE TABLE IF NOT EXISTS `registry_entity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
-  `picture` varchar(255) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `cover_picture` varchar(255) DEFAULT NULL,
   `date` datetime NOT NULL,
   `address` varchar(255) DEFAULT NULL,
@@ -875,11 +1092,12 @@ CREATE TABLE IF NOT EXISTS `registry_entity` (
   PRIMARY KEY (`id`),
   KEY `registry_entity_6340c63c` (`user_id`),
   KEY `registry_entity_403d8ff3` (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Volcado de datos para la tabla `registry_entity`
 --
+
 
 -- --------------------------------------------------------
 
@@ -894,11 +1112,12 @@ CREATE TABLE IF NOT EXISTS `registry_entitycategory` (
   PRIMARY KEY (`id`),
   KEY `registry_entitycategory_6f33f001` (`category_id`),
   KEY `registry_entitycategory_c096cf48` (`entity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
 --
 -- Volcado de datos para la tabla `registry_entitycategory`
 --
+
 -- --------------------------------------------------------
 
 --
@@ -907,12 +1126,12 @@ CREATE TABLE IF NOT EXISTS `registry_entitycategory` (
 
 CREATE TABLE IF NOT EXISTS `registry_event` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `picture` varchar(255) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `cover_picture` varchar(255) DEFAULT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `description` longtext,
+  `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `location_name` varchar(255) NOT NULL,
   `place_spot` tinyint(1) NOT NULL,
   `lat` varchar(255) DEFAULT NULL,
@@ -927,11 +1146,12 @@ CREATE TABLE IF NOT EXISTS `registry_event` (
   PRIMARY KEY (`id`),
   KEY `registry_event_afbb987d` (`location_id`),
   KEY `registry_event_cb902d83` (`owner_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Volcado de datos para la tabla `registry_event`
 --
+
 -- --------------------------------------------------------
 
 --
@@ -944,14 +1164,7 @@ CREATE TABLE IF NOT EXISTS `registry_externaluser` (
   `email` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Volcado de datos para la tabla `registry_externaluser`
---
-
-INSERT INTO `registry_externaluser` (`id`, `name`, `email`, `status`) VALUES
-(1, 'Andres Garcia', 'prueba@correo.cm', 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -969,11 +1182,13 @@ CREATE TABLE IF NOT EXISTS `registry_facebooksession` (
   UNIQUE KEY `access_token` (`access_token`),
   UNIQUE KEY `user_id` (`user_id`,`uid`,`access_token`,`expires`),
   KEY `registry_facebooksession_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=262 ;
 
 --
 -- Volcado de datos para la tabla `registry_facebooksession`
 --
+
+
 -- --------------------------------------------------------
 
 --
@@ -992,13 +1207,13 @@ CREATE TABLE IF NOT EXISTS `registry_membertoobject` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `registry_membertoobject_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=160 ;
 
 --
 -- Volcado de datos para la tabla `registry_membertoobject`
 --
 
--- --------------------------------------------------------
+-------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `registry_profile`
@@ -1024,13 +1239,13 @@ CREATE TABLE IF NOT EXISTS `registry_profile` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `registry_profile_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=390 ;
 
 --
 -- Volcado de datos para la tabla `registry_profile`
 --
 
--- --------------------------------------------------------
+------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `registry_states`
@@ -1065,12 +1280,11 @@ CREATE TABLE IF NOT EXISTS `registry_travel` (
   `book_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `registry_travel_36c249d7` (`book_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Volcado de datos para la tabla `registry_travel`
 --
-
 
 -- --------------------------------------------------------
 
@@ -1086,11 +1300,12 @@ CREATE TABLE IF NOT EXISTS `registry_twittersession` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `request_token` (`request_token`,`oauth_token`),
   KEY `registry_twittersession_6340c63c` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
 
 --
 -- Volcado de datos para la tabla `registry_twittersession`
 --
+
 
 -- --------------------------------------------------------
 
@@ -1137,7 +1352,6 @@ ALTER TABLE `account_authortitle`
 -- Filtros para la tabla `account_discussion`
 --
 ALTER TABLE `account_discussion`
-  ADD CONSTRAINT `entity_id_refs_id_9718efdc` FOREIGN KEY (`entity_id`) REFERENCES `registry_entity` (`id`),
   ADD CONSTRAINT `parent_discussion_id_refs_id_031c6262` FOREIGN KEY (`parent_discussion_id`) REFERENCES `account_discussion` (`id`),
   ADD CONSTRAINT `user_id_refs_id_567b56df` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
@@ -1215,18 +1429,69 @@ ALTER TABLE `auth_user_user_permissions`
   ADD CONSTRAINT `permission_id_refs_id_35d9ac25` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`);
 
 --
+-- Filtros para la tabla `course_answer`
+--
+ALTER TABLE `course_answer`
+  ADD CONSTRAINT `question_id_refs_id_aa8dc468` FOREIGN KEY (`question_id`) REFERENCES `course_question` (`id`),
+  ADD CONSTRAINT `option_choice_id_refs_id_7f9dd927` FOREIGN KEY (`option_choice_id`) REFERENCES `course_option` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_33a39e65` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Filtros para la tabla `course_content`
+--
+ALTER TABLE `course_content`
+  ADD CONSTRAINT `module_dm_id_refs_id_88ad4119` FOREIGN KEY (`module_dm_id`) REFERENCES `course_module` (`id`);
+
+--
+-- Filtros para la tabla `course_course`
+--
+ALTER TABLE `course_course`
+  ADD CONSTRAINT `category_id_refs_id_1da5e2c7` FOREIGN KEY (`category_id`) REFERENCES `course_category` (`id`);
+
+--
+-- Filtros para la tabla `course_inscription`
+--
+ALTER TABLE `course_inscription`
+  ADD CONSTRAINT `user_id_refs_id_512ccfe3` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  ADD CONSTRAINT `course_id_refs_id_9b502262` FOREIGN KEY (`course_id`) REFERENCES `course_course` (`id`);
+
+--
+-- Filtros para la tabla `course_module`
+--
+ALTER TABLE `course_module`
+  ADD CONSTRAINT `course_dm_id_refs_id_082b3723` FOREIGN KEY (`course_dm_id`) REFERENCES `course_course` (`id`);
+
+--
+-- Filtros para la tabla `course_option`
+--
+ALTER TABLE `course_option`
+  ADD CONSTRAINT `question_dm_id_refs_id_798dcbaa` FOREIGN KEY (`question_dm_id`) REFERENCES `course_question` (`id`);
+
+--
+-- Filtros para la tabla `course_question`
+--
+ALTER TABLE `course_question`
+  ADD CONSTRAINT `test_dm_id_refs_id_2a5a20c0` FOREIGN KEY (`test_dm_id`) REFERENCES `course_test` (`id`);
+
+--
+-- Filtros para la tabla `course_test`
+--
+ALTER TABLE `course_test`
+  ADD CONSTRAINT `module_dm_id_refs_id_91d2ea87` FOREIGN KEY (`module_dm_id`) REFERENCES `course_module` (`id`);
+
+--
 -- Filtros para la tabla `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  ADD CONSTRAINT `user_id_refs_id_c0d12874` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `content_type_id_refs_id_93d2d1f8` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
+  ADD CONSTRAINT `content_type_id_refs_id_93d2d1f8` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_c0d12874` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `registry_assistevent`
 --
 ALTER TABLE `registry_assistevent`
-  ADD CONSTRAINT `user_id_refs_id_309c59fc` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `event_id_refs_id_b73952be` FOREIGN KEY (`event_id`) REFERENCES `registry_event` (`id`);
+  ADD CONSTRAINT `event_id_refs_id_b73952be` FOREIGN KEY (`event_id`) REFERENCES `registry_event` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_309c59fc` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `registry_attribute`
@@ -1251,22 +1516,22 @@ ALTER TABLE `registry_category`
 -- Filtros para la tabla `registry_entity`
 --
 ALTER TABLE `registry_entity`
-  ADD CONSTRAINT `user_id_refs_id_b7139ff8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `type_id_refs_id_97008501` FOREIGN KEY (`type_id`) REFERENCES `registry_type` (`id`);
+  ADD CONSTRAINT `type_id_refs_id_97008501` FOREIGN KEY (`type_id`) REFERENCES `registry_type` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_b7139ff8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `registry_entitycategory`
 --
 ALTER TABLE `registry_entitycategory`
-  ADD CONSTRAINT `entity_id_refs_id_bb966c89` FOREIGN KEY (`entity_id`) REFERENCES `registry_entity` (`id`),
-  ADD CONSTRAINT `category_id_refs_id_52bc03e5` FOREIGN KEY (`category_id`) REFERENCES `registry_category` (`id`);
+  ADD CONSTRAINT `category_id_refs_id_52bc03e5` FOREIGN KEY (`category_id`) REFERENCES `registry_category` (`id`),
+  ADD CONSTRAINT `entity_id_refs_id_bb966c89` FOREIGN KEY (`entity_id`) REFERENCES `registry_entity` (`id`);
 
 --
 -- Filtros para la tabla `registry_event`
 --
 ALTER TABLE `registry_event`
-  ADD CONSTRAINT `owner_id_refs_id_38a31619` FOREIGN KEY (`owner_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `location_id_refs_id_3a74f17c` FOREIGN KEY (`location_id`) REFERENCES `registry_entity` (`id`);
+  ADD CONSTRAINT `location_id_refs_id_3a74f17c` FOREIGN KEY (`location_id`) REFERENCES `registry_entity` (`id`),
+  ADD CONSTRAINT `owner_id_refs_id_38a31619` FOREIGN KEY (`owner_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `registry_facebooksession`
