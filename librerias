@@ -1,0 +1,18 @@
+APIs:
+Google Maps: Se utilizó para guardar la ubicación de organizaciones , lugares, eventos al momento de crearlas y libros de bookcrossing.
+Goodreads: El api permite acceder al banco de datos de Goodreads para obtener la información completa de cerca 700,000 libros
+Freebase: Se trata de una colección en línea de datos estructurados obtenidos a partir de múltiples fuentes. El api es una colección de HTTP APIs que provee acceso a la información de Freebase, se utiliza para obtener la información de los autores.
+Facebook: Se utilizó para poder iniciar sesion en qrolee a través de facebook y compartir la información de qrolee..
+Twitter: Se utilizó para poder iniciar sesion en qrolee a través de twitter y compartir la información de qrolee.
+
+Librerías Python:
+
+xhtml2pdf: Es un convertidor html2pdf haciendo uso de ReportLab Toolkit, HTML5lib y pyPdf, se utiliza para la creación de etiquetas del libro vagabundo
+htmlparse: Parsea archivos de texto en formato HTML y XHTML, se utiliza para generar el calendario de los eventos.
+python StringIO: Se utilizó para generar el pdf de la etiqueta de un libro vagabundo y poder imprimirla cuando lo liberas
+python SimpleJson: Se utilizó realizar un petición al servidor y convertir un diccionario en un objecto  json y mandarlo para ser utilizado de la forma que se desee.
+python EmailMessage: Se utilizó para mandar los comentarios en dudas y sugerencias de qrolee.
+python oauth2: Se utilizó para autenticar los usuarios de facebook y twitter y poder iniciar sesion en qrolee. 
+python httplib: Se utilizó generar las imágenes de los qr de los libros vagabundos que fueron liberados. 
+hashlibSe utilizó encriptar las contraseña de los usuario en MD5. 
+minidom: Se utilizó para leer un servicio xml. 
